@@ -67,6 +67,8 @@ def _cmd_watch(args: argparse.Namespace) -> int:
 
 
 def _cmd_publish(args: argparse.Namespace) -> int:
+    if args.out:
+        return _publish_release(args)
     from .events.publisher import from_env
 
     publisher = from_env(Lake(args.lake), dict(os.environ))
@@ -74,6 +76,21 @@ def _cmd_publish(args: argparse.Namespace) -> int:
         print("Set ATLAS_KAFKA_BOOTSTRAP (e.g. localhost:19092) to publish events", file=sys.stderr)
         return 2
     print(publisher.publish(backfill=args.backfill).summary())
+    return 0
+
+
+def _publish_release(args: argparse.Namespace) -> int:
+    from .publish import PrivacyCheckFailed, publish
+
+    try:
+        release = publish(Lake(args.lake), args.out, as_of=args.as_of)
+    except PrivacyCheckFailed as error:
+        print(error, file=sys.stderr)
+        return 1
+    for dataset, rows in release.rows.items():
+        print(f"{dataset}: {rows} rows")
+    print(f"Release {release.version} (snapshot {release.snapshot_id}) in {release.out}: "
+          f"{len(release.files) + 1} files, checksums in SHA256SUMS")
     return 0
 
 
@@ -179,9 +196,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--once", action="store_true", help="run once and exit")
     p.set_defaults(func=_cmd_watch)
 
-    p = sub.add_parser("publish", help="publish new gold rows to Kafka (needs ATLAS_KAFKA_BOOTSTRAP)")
+    p = sub.add_parser(
+        "publish", help="with --out: write an open-data release (docs/open-data.md); without: gold rows to Kafka"
+    )
+    p.add_argument("--out", help="release folder: Parquet, DuckDB, datapackage.json, quality report, SHA256SUMS")
+    p.add_argument("--as-of", type=int, help="DuckLake snapshot to release (default: the current one)")
     p.add_argument("--backfill", action="store_true",
-                   help="without a checkpoint, publish all history instead of starting at the newest row")
+                   help="Kafka: without a checkpoint, publish all history instead of starting at the newest row")
     p.set_defaults(func=_cmd_publish)
 
     p = sub.add_parser("reference", help="refresh reference data")
