@@ -41,12 +41,18 @@ Owns: `src/disclosure_atlas/events/`, `contracts/events/`, `services/realtime-ga
 - Keycloak realm (passkeys, website client with PKCE, partner client credentials) and API keys; the website
   gets sign-in and a watchlist page.
 
-### P4 AI layer `[ ]`
-Owns: `src/disclosure_atlas/ai/`, `evals/ask/`.
-- Stateless MCP server (spec 2026-07-28): `search_issuers`, `insider_activity`, `short_interest`,
-  `cluster_buys`, `filing_lag_stats`, read-only `sql`, and an MCP App rendering an issuer timeline.
-- Ask the Atlas: natural-language questions to guarded read-only SQL (sqlglot), answers with their SQL and a
-  chart, gated by a golden question set.
+### P4 AI layer `[x]`
+Owns: `src/disclosure_atlas/ai/`, `evals/ask/`, `docs/ai.md`. Details: [docs/ai.md](docs/ai.md).
+- [x] Stateless MCP server (spec 2026-07-28, `mcp` 2.3): `search_issuers`, `insider_activity`,
+  `largest_insider_buys`, `cluster_buys`, `short_interest`, `filing_lag_stats`, read-only `sql`, an
+  `atlas://schema` resource and an MCP App rendering an issuer's monthly insider flow; mounted at `/mcp` on the
+  API and available over stdio (`disclosure-atlas mcp`).
+- [x] SQL guard: sqlglot static checks (one SELECT, allowlisted gold views, no file or network functions, enforced
+  LIMIT) plus a locked-down DuckDB sandbox with a query timeout.
+- [x] Ask the Atlas: `POST /v1/ask`, Claude writes guarded read-only SQL from the gold schema, answers come with
+  their SQL and rows; versioned prompts; 503 problem+json without a key.
+- [x] Golden set of 35 questions on a synthetic lake, execution-accuracy runner with a gate, offline guard tests.
+- [ ] Next: a chart spec in `/v1/ask` responses for the website, Langfuse traces, the filing explainer.
 
 ### P5 Website product `[ ]`
 Owns: `web/`.

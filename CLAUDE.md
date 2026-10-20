@@ -4,11 +4,11 @@ Open, unified data on insider trading (MAR Article 19) and short selling (SSR Ar
 markets, plus reproducible research on top of it. Read README.md first, then ROADMAP.md for your workstream.
 
 ## Commands
-- Setup: `python3.14 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev,api]'`
+- Setup: `python3.14 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev,api,ai]'`
 - Checks (run before every commit): `ruff check . && pytest -q`
 - Live checks (hit real endpoints, opt-in): `pytest -m network -q`
 - CLI: `disclosure-atlas sources | ingest <source> --start YYYY-MM-DD | watch <source> | reference fx | serve |
-  openapi | stats | query "<SQL>" | export`
+  openapi | mcp | stats | query "<SQL>" | export`
 - API contract: after changing `src/disclosure_atlas/api/`, run
   `disclosure-atlas --lake /tmp/empty-lake openapi > web/openapi.json && (cd web && npm run api:types)`
   (CI fails if `web/openapi.json` drifts from the code).
@@ -27,6 +27,8 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
 - `src/disclosure_atlas/privacy.py`: pseudonyms for natural persons; legal-entity detection.
 - `src/disclosure_atlas/lake.py`: bronze (raw) -> silver (Parquet) -> gold (DuckDB views).
 - `src/disclosure_atlas/api/`: FastAPI app (REST `/v1`, SSE `/v1/stream`), read model pinned to the lake version.
+- `src/disclosure_atlas/ai/`: SQL guard, MCP server (`/mcp`, stdio) and Ask the Atlas (`/v1/ask`); evals in
+  `evals/ask/`; see docs/ai.md.
 - `src/disclosure_atlas/reference/`: reference data (ECB FX now; LEI, ISIN and tickers in WS5).
 - `web/`: Next.js website; a client of the public API only.
 - `services/<name>/`: Go services (realtime-gateway, alerts), each with its own go.mod, tests and Dockerfile.
