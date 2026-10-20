@@ -1,0 +1,92 @@
+{{- if .Values.kafka.enabled }}
+{{- $k := .Values.kafka }}
+# KRaft node pool: combined controller and broker roles (one pool keeps dev and preview small; prod raises replicas).
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaNodePool
+metadata:
+  name: dual-role
+  labels:
+    strimzi.io/cluster: atlas
+spec:
+  replicas: {{ $k.replicas }}
+  roles: [controller, broker]
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: {{ $k.storage }}
+        deleteClaim: false
+        kraftMetadata: shared
+  resources:
+    {{- toYaml $k.resources | nindent 4 }}
+---
+apiVersion: kafka.strimzi.io/v1
+kind: Kafka
+metadata:
+  name: atlas
+spec:
+  kafka:
+    {{- with $k.version }}
+    version: {{ . }}
+    {{- end }}
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    config:
+      offsets.topic.replication.factor: {{ min 3 $k.replicas }}
+      transaction.state.log.replication.factor: {{ min 3 $k.replicas }}
+      transaction.state.log.min.isr: {{ min 2 $k.replicas }}
+      default.replication.factor: {{ min 3 $k.replicas }}
+      min.insync.replicas: {{ min 2 $k.replicas }}
+      auto.create.topics.enable: false
+  entityOperator:
+    topicOperator: {}
+---
+# Kafka clients reach the brokers on 9092 only from Atlas pods; the Strimzi operators reach their own ports.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kafka
+spec:
+  podSelector:
+    matchLabels:
+      strimzi.io/cluster: atlas
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - ports: [{port: 9092, protocol: TCP}]
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/part-of: atlas
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: keda
+    - from:
+        - podSelector:
+            matchLabels:
+              strimzi.io/cluster: atlas
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: strimzi
+  egress:
+    - {}
+{{- range $k.topics }}
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: {{ .name | replace "." "-" }}
+  labels:
+    strimzi.io/cluster: atlas
+spec:
+  topicName: {{ .name }}
+  partitions: {{ .partitions }}
+  replicas: {{ min 3 $k.replicas }}
+  config:
+    retention.ms: {{ .retentionMs | int64 }}
+    cleanup.policy: delete
+{{- end }}
+{{- end }}

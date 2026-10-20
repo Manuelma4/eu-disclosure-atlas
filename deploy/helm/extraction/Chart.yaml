@@ -1,0 +1,10 @@
+apiVersion: v2
+name: extraction
+description: "AI-assisted extraction of PDF filings, consuming extraction requests from Kafka"
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: atlas-lib
+    version: 0.1.0
+    repository: file://../atlas-lib

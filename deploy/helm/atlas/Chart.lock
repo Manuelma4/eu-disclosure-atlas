@@ -1,0 +1,24 @@
+dependencies:
+- name: query-api
+  repository: file://../query-api
+  version: 0.1.0
+- name: web
+  repository: file://../web
+  version: 0.1.0
+- name: ingestion
+  repository: file://../ingestion
+  version: 0.1.0
+- name: extraction
+  repository: file://../extraction
+  version: 0.1.0
+- name: ai-service
+  repository: file://../ai-service
+  version: 0.1.0
+- name: realtime-gateway
+  repository: file://../realtime-gateway
+  version: 0.1.0
+- name: alerts
+  repository: file://../alerts
+  version: 0.1.0
+digest: sha256:2fa78524842f18f9d5bf6f51c5ac44ae604ef20e0f5dfd03f3d7080398245cfe
+generated: "2026-10-20T11:55:00.462115708Z"

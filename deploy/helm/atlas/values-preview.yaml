@@ -1,0 +1,29 @@
+# Pull-request preview namespaces (atlas-pr-<number>), created by the Argo CD ApplicationSet. The tag and the
+# hostnames are set by the ApplicationSet: global.image.tag=sha-<head>, global.domain=pr-<number>.preview.<domain>.
+global:
+  ingress:
+    className: traefik
+    clusterIssuer: letsencrypt-prod
+    tls: true
+lake:
+  size: 1Gi
+kafka:
+  enabled: true
+  storage: 2Gi
+  resources:
+    requests: {cpu: 100m, memory: 768Mi}
+    limits: {cpu: "1", memory: 1Gi}
+postgres:
+  enabled: true
+  storage: 1Gi
+ingestion:
+  # Previews read the synthetic lake seeded by the smoke data job, not live regulators.
+  enabled: false
+query-api:
+  autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
+  replicaCount: 1
+  pdb: {enabled: true, maxUnavailable: 1}
+web:
+  autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
+  replicaCount: 1
+  pdb: {enabled: true, maxUnavailable: 1}

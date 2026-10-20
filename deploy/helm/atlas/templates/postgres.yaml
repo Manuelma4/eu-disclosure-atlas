@@ -1,0 +1,73 @@
+{{- if .Values.postgres.enabled }}
+{{- $pg := .Values.postgres }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: atlas-pg
+spec:
+  instances: {{ $pg.instances }}
+  imageName: {{ $pg.imageName }}
+  storage:
+    size: {{ $pg.storage }}
+  resources:
+    {{- toYaml $pg.resources | nindent 4 }}
+  bootstrap:
+    initdb:
+      database: atlas
+      owner: atlas
+  enablePDB: {{ gt (int $pg.instances) 1 }}
+  {{- if $pg.backup.enabled }}
+  backup:
+    retentionPolicy: {{ $pg.backup.retentionPolicy }}
+    barmanObjectStore:
+      destinationPath: {{ required "postgres.backup.destinationPath" $pg.backup.destinationPath }}
+      endpointURL: {{ $pg.backup.endpointURL }}
+      s3Credentials:
+        accessKeyId:
+          name: {{ $pg.backup.credentialsSecret }}
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: {{ $pg.backup.credentialsSecret }}
+          key: SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+  {{- end }}
+---
+# PostgreSQL accepts connections from Atlas pods; CloudNativePG instances talk to each other and to the operator.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: atlas-pg
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: atlas-pg
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - ports: [{port: 5432, protocol: TCP}]
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/part-of: atlas
+    - from:
+        - podSelector:
+            matchLabels:
+              cnpg.io/cluster: atlas-pg
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-system
+  egress:
+    - {}
+{{- if $pg.backup.enabled }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: atlas-pg-daily
+spec:
+  schedule: "0 0 3 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: atlas-pg
+{{- end }}
+{{- end }}

@@ -1,0 +1,61 @@
+# Production on Scaleway Kapsule (infra/tofu/environments/prod). The image tag is promoted by pull request
+# (.github/workflows/deploy.yml); Argo CD syncs whatever main says.
+global:
+  # Placeholder until the domain is registered (infra/tofu dns module).
+  domain: atlas.example.org
+  webUrl: https://atlas.example.org
+  image:
+    tag: sha-d5aa9bd
+    pullPolicy: IfNotPresent
+  ingress:
+    className: traefik
+    clusterIssuer: letsencrypt-prod
+    tls: true
+
+lake:
+  size: 50Gi
+  storageClass: sbs-default
+
+kafka:
+  enabled: true
+  replicas: 3
+  storage: 50Gi
+  resources:
+    requests: {cpu: 500m, memory: 2Gi}
+    limits: {cpu: "2", memory: 3Gi}
+
+postgres:
+  enabled: true
+  instances: 2
+  storage: 20Gi
+  backup:
+    enabled: true
+    destinationPath: s3://atlas-prod-pg-backups/
+    endpointURL: https://s3.fr-par.scw.cloud
+
+externalSecrets:
+  enabled: true
+  storeName: scaleway
+  secrets:
+    - name: atlas-llm
+      data: [{secretKey: ANTHROPIC_API_KEY, remoteKey: "name:atlas-anthropic-api-key"}]
+    - name: atlas-backup-s3
+      data:
+        - {secretKey: ACCESS_KEY_ID, remoteKey: "name:atlas-backup-access-key"}
+        - {secretKey: SECRET_ACCESS_KEY, remoteKey: "name:atlas-backup-secret-key"}
+    - name: atlas-alerts
+      data: [{secretKey: SMTP_PASSWORD, remoteKey: "name:atlas-smtp-password"}]
+
+query-api:
+  autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 10, targetCPUUtilizationPercentage: 65}
+  resources:
+    requests: {cpu: 250m, memory: 512Mi}
+    limits: {cpu: "2", memory: 2Gi}
+web:
+  autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 8, targetCPUUtilizationPercentage: 65}
+extraction:
+  enabled: false
+realtime-gateway:
+  enabled: false
+alerts:
+  enabled: false

@@ -1,0 +1,19 @@
+# Policies apply to namespaces labelled with this selector (every Atlas environment and preview namespace).
+namespaceSelector:
+  matchLabels:
+    app.kubernetes.io/part-of: atlas
+
+# Deny in prod and previews; Audit on a laptop, where images are built locally and unsigned.
+signedImages:
+  validationActions: [Deny]
+  images: ["ghcr.io/manuelma4/atlas-*"]
+  # Keyless cosign: images signed by the images workflow of this repository, through GitHub's OIDC issuer.
+  issuer: https://token.actions.githubusercontent.com
+  subjectRegExp: '^https://github\.com/Manuelma4/eu-disclosure-atlas/\.github/workflows/images\.yml@refs/.+$'
+  rekorUrl: https://rekor.sigstore.dev
+
+noLatestTag:
+  validationActions: [Deny]
+
+requiredResources:
+  validationActions: [Deny]

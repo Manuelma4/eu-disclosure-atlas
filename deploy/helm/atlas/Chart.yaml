@@ -1,0 +1,14 @@
+apiVersion: v2
+name: atlas
+description: "EU Disclosure Atlas umbrella chart; every service plus its namespace-level platform resources"
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - {name: query-api, version: 0.1.0, repository: file://../query-api, condition: query-api.enabled}
+  - {name: web, version: 0.1.0, repository: file://../web, condition: web.enabled}
+  - {name: ingestion, version: 0.1.0, repository: file://../ingestion, condition: ingestion.enabled}
+  - {name: extraction, version: 0.1.0, repository: file://../extraction, condition: extraction.enabled}
+  - {name: ai-service, version: 0.1.0, repository: file://../ai-service, condition: ai-service.enabled}
+  - {name: realtime-gateway, version: 0.1.0, repository: file://../realtime-gateway, condition: realtime-gateway.enabled}
+  - {name: alerts, version: 0.1.0, repository: file://../alerts, condition: alerts.enabled}

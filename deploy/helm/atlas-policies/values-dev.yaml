@@ -1,0 +1,3 @@
+# Laptop clusters run locally built, unsigned `dev` images: report signature failures instead of denying.
+signedImages:
+  validationActions: [Audit]

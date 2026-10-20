@@ -1,0 +1,3 @@
+EU Disclosure Atlas ({{ .Release.Namespace }}), image tag {{ .Values.global.image.tag | default "(per service)" }}.
+  Website: {{ .Values.global.webUrl }}
+  API:     kubectl -n {{ .Release.Namespace }} port-forward svc/query-api 8000:8000, then GET /v1/health

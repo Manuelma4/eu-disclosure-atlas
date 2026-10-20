@@ -22,3 +22,11 @@ exports/
 .DS_Store
 .vscode/
 .idea/
+
+# Deploy: rendered manifests, packaged chart dependencies, local cluster state
+deploy/.rendered/
+deploy/helm/*/charts/
+.k3d/
+infra/tofu/**/.terraform/
+infra/tofu/**/*.tfstate*
+infra/tofu/**/*.tfplan

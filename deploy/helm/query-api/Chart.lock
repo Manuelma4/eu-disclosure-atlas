@@ -1,0 +1,6 @@
+dependencies:
+- name: atlas-lib
+  repository: file://../atlas-lib
+  version: 0.1.0
+digest: sha256:fba873006e4611b33542e151431a809f9f74c7c090eb37b907f337ce4df5979b
+generated: "2026-10-20T11:54:51.587044801Z"
