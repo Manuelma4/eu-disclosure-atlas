@@ -1,0 +1,81 @@
+# Production on Scaleway Kapsule (infra/tofu/environments/prod). The image tag is promoted by pull request
+# (.github/workflows/deploy.yml); Argo CD syncs whatever main says.
+global:
+  # Placeholder until the domain is registered (infra/tofu dns module).
+  domain: atlas.example.org
+  webUrl: https://atlas.example.org
+  image:
+    tag: sha-d5aa9bd
+    pullPolicy: IfNotPresent
+  ingress:
+    className: traefik
+    clusterIssuer: letsencrypt-prod
+    tls: true
+
+lake:
+  size: 50Gi
+  storageClass: sbs-default
+
+kafka:
+  enabled: true
+  replicas: 3
+  storage: 50Gi
+  resources:
+    requests: {cpu: 500m, memory: 2Gi}
+    limits: {cpu: "2", memory: 3Gi}
+
+postgres:
+  enabled: true
+  instances: 2
+  storage: 20Gi
+  backup:
+    enabled: true
+    destinationPath: s3://atlas-prod-pg-backups/
+    endpointURL: https://s3.fr-par.scw.cloud
+
+externalSecrets:
+  enabled: true
+  storeName: scaleway
+  secrets:
+    - name: atlas-llm
+      data: [{secretKey: ANTHROPIC_API_KEY, remoteKey: "name:atlas-anthropic-api-key"}]
+    - name: atlas-backup-s3
+      data:
+        - {secretKey: ACCESS_KEY_ID, remoteKey: "name:atlas-backup-access-key"}
+        - {secretKey: SECRET_ACCESS_KEY, remoteKey: "name:atlas-backup-secret-key"}
+    - name: atlas-alerts
+      data: [{secretKey: SMTP_PASSWORD, remoteKey: "name:atlas-smtp-password"}]
+
+# OpenTelemetry, rate limits and proxy trust from P7 (deploy/observability/helm/*-values.yaml).
+query-api:
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+    OTEL_SERVICE_NAME: query-api
+    OTEL_RESOURCE_ATTRIBUTES: service.namespace=atlas,k8s.cluster.name=atlas-prod
+    ATLAS_ENVIRONMENT: {fieldRef: {fieldPath: metadata.namespace}}
+    # Per replica; global quotas are enforced at the gateway.
+    ATLAS_RATE_LIMIT_PER_MINUTE: "600"
+    ATLAS_RATE_LIMIT_BURST: "100"
+    # Trust X-Forwarded-For only from in-cluster proxies (Kapsule Cilium pod range); never "*".
+    FORWARDED_ALLOW_IPS: 100.64.0.0/15
+    ATLAS_CORS_ORIGINS: https://atlas.example.org
+  networkPolicy:
+    egressOtlp: true
+  autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 10, targetCPUUtilizationPercentage: 65}
+  resources:
+    requests: {cpu: 250m, memory: 512Mi}
+    limits: {cpu: "2", memory: 2Gi}
+web:
+  env:
+    ATLAS_API_URL: http://query-api:8000
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+    OTEL_SERVICE_NAME: web
+  networkPolicy:
+    egressOtlp: true
+  autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 8, targetCPUUtilizationPercentage: 65}
+extraction:
+  enabled: false
+realtime-gateway:
+  enabled: false
+alerts:
+  enabled: false

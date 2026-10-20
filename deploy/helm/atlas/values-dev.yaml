@@ -1,0 +1,23 @@
+# Local k3d cluster (deploy/k3d): images built on the laptop and imported into the cluster as tag `dev`.
+global:
+  domain: atlas.localhost
+  webUrl: http://atlas.localhost:8080
+  image:
+    tag: dev
+    pullPolicy: Never
+  ingress:
+    className: traefik
+
+kafka:
+  enabled: true
+  storage: 2Gi
+postgres:
+  enabled: true
+  storage: 1Gi
+
+query-api:
+  autoscaling: {enabled: true, minReplicas: 1, maxReplicas: 3, targetCPUUtilizationPercentage: 70}
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}
+web:
+  autoscaling: {enabled: true, minReplicas: 1, maxReplicas: 3, targetCPUUtilizationPercentage: 70}
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}

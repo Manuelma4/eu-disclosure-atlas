@@ -1,0 +1,23 @@
+# argo-cd Helm chart values (deploy/k3d/atlas.sh argocd; the same file bootstraps Kapsule clusters).
+global:
+  domain: argocd.atlas.localhost
+configs:
+  params:
+    # TLS ends at the ingress.
+    server.insecure: true
+  cm:
+    # Kyverno reports change constantly; keep them out of the Argo CD cache.
+    resource.exclusions: |
+      - apiGroups: ["kyverno.io", "reports.kyverno.io", "wgpolicyk8s.io"]
+        kinds: ["*Report", "ClusterPolicyReport", "PolicyReport", "EphemeralReport", "ClusterEphemeralReport"]
+        clusters: ["*"]
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+applicationSet:
+  replicas: 1
+controller:
+  replicas: 1
+redis-ha:
+  enabled: false

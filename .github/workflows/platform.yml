@@ -1,0 +1,79 @@
+name: Platform
+# Helm lint and kubeconform on every rendered chart, Argo CD and OpenTofu checks, and a k3d smoke test that
+# builds the images, installs the charts and calls the API health endpoint through the ingress.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "deploy/**"
+      - "infra/tofu/**"
+      - "Dockerfile"
+      - ".dockerignore"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "src/**"
+      - "web/**"
+      - ".github/workflows/platform.yml"
+  pull_request:
+    paths:
+      - "deploy/**"
+      - "infra/tofu/**"
+      - "Dockerfile"
+      - ".dockerignore"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "src/**"
+      - "web/**"
+      - ".github/workflows/platform.yml"
+
+concurrency:
+  group: platform-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  HELM_VERSION: v4.3.1
+  K3D_VERSION: v5.9.0
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - name: uv.lock matches pyproject.toml
+        run: docker run --rm -v "$PWD":/src -w /src ghcr.io/astral-sh/uv:0.9-python3.14-bookworm-slim uv lock --check
+      - name: Argo CD operator applications match deploy/platform/operators.env
+        run: python3 deploy/scripts/argocd_platform.py --check
+      - name: helm lint and kubeconform
+        run: deploy/scripts/validate.sh
+      - name: OpenTofu fmt and validate
+        run: deploy/scripts/tofu-check.sh
+
+  k3d-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - name: Install k3d
+        run: curl -fsSL https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG="$K3D_VERSION" bash
+      - name: Smoke test (cluster, images, charts, /v1/health)
+        run: deploy/k3d/atlas.sh smoke
+      - name: Diagnostics
+        if: failure()
+        run: |
+          export KUBECONFIG="$PWD/.k3d/kubeconfig-host"
+          kubectl get pods,events -A -o wide || true
+          kubectl -n atlas describe pods || true
+          kubectl -n atlas logs -l app.kubernetes.io/part-of=atlas --all-containers --tail=100 || true

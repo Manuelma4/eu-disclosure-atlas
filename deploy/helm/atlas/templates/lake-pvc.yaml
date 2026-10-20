@@ -1,0 +1,19 @@
+{{- if .Values.lake.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-lake
+  labels:
+    app.kubernetes.io/part-of: atlas
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes: [{{ .Values.lake.accessMode }}]
+  {{- with .Values.lake.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.lake.size }}
+{{- end }}

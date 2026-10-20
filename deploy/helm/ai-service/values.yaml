@@ -1,0 +1,88 @@
+# ai-service: Ask the Atlas, filing explainer and MCP server.
+enabled: false
+component: api
+replicaCount: 1
+image:
+  # registry and tag default to global.image.* (set per environment by the umbrella chart).
+  registry: ""
+  repository: atlas-python
+  tag: ""
+  # A digest pins the exact image Kyverno verifies (set by the promotion workflow in prod).
+  digest: ""
+  pullPolicy: ""
+command: []
+args: ["ai-service", "--host", "0.0.0.0", "--port", "8000"]
+containerPort: 8000
+service:
+  port: 8000
+env:
+  ATLAS_API_URL: 'http://query-api:8000'
+envFromSecret: "atlas-llm"
+kafka:
+  bootstrapServers: ""
+# Enabled once the ai-service lands (P4).
+probes:
+  liveness:
+    httpGet: {path: /healthz, port: http}
+  readiness:
+    httpGet: {path: /healthz, port: http}
+resources:
+  requests: {cpu: 100m, memory: 256Mi}
+  limits: {cpu: "1", memory: 1Gi}
+strategy: {}
+terminationGracePeriodSeconds: 30
+pdb:
+  enabled: true
+  maxUnavailable: 1
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+keda:
+  enabled: false
+  minReplicas: 0
+  maxReplicas: 1
+  topics: []
+lake:
+  enabled: false
+  claimName: atlas-lake
+  readOnly: true
+networkPolicy:
+  enabled: true
+  ingressControllerNamespace: kube-system
+  allowMonitoring: false
+  monitoringNamespace: monitoring
+  # OTLP traces and metrics to the OpenTelemetry Collector (deploy/observability, P7).
+  egressOtlp: false
+  otlpNamespace: observability
+  ingressFrom: [web]
+  allowIngressController: true
+  egressTo:
+    - {name: query-api, port: 8000}
+  egressKafka: false
+  egressPostgres: false
+  egressInternet: true
+ingress:
+  enabled: false
+  host: "ai.{{ .Values.global.domain | default \"atlas.localhost\" }}"
+  annotations: {}
+global: {}
+
+# Restricted Pod Security: the image's non-root user; the root filesystem is read-only.
+securityContext:
+  runAsUser: 10001
+# Writable emptyDir mounts (the root filesystem is read-only).
+writablePaths: ["/tmp"]
+scratchSizeLimit: 256Mi
+podLabels: {}
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: ai-service

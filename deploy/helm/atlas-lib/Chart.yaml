@@ -1,0 +1,5 @@
+apiVersion: v2
+name: atlas-lib
+description: "Shared templates for the EU Disclosure Atlas service charts (workload, service, probes, PDB, NetworkPolicy, HPA, KEDA)"
+type: library
+version: 0.1.0

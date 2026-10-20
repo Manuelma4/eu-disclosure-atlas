@@ -74,7 +74,7 @@ Owns: `web/`, `src/disclosure_atlas/api/{prices,exports}.py`, `src/disclosure_at
   dark mode), Lighthouse budgets, Playwright end-to-end tests against a fixture API, all in CI
 - [ ] Follow-ups: research pages (with WS6/WS7 results) and an API reference page (Scalar)
 
-### P6 Kubernetes, GitOps and supply chain `[ ]`
+### P6 Kubernetes, GitOps and supply chain `[x]`
 Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deploy). Design: decision 0012.
 - Dockerfiles for every service (non-root, distroless or slim), Helm charts (probes, resources, PDBs,
   NetworkPolicies, HPA or KEDA ScaledObjects), an umbrella chart, and a k3d cluster that runs everything.

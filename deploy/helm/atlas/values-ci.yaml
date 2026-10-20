@@ -1,0 +1,15 @@
+# k3d smoke test in CI and `make k3d-smoke`: the API and the website only, no operators, no network crawling.
+global:
+  image:
+    tag: dev
+    pullPolicy: Never
+ingestion:
+  enabled: false
+query-api:
+  autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
+  replicaCount: 1
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}
+web:
+  autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
+  replicaCount: 1
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}

@@ -1,0 +1,94 @@
+# query-api: Public REST /v1 and SSE read API over the gold views (FastAPI).
+enabled: true
+component: api
+replicaCount: 2
+image:
+  # registry and tag default to global.image.* (set per environment by the umbrella chart).
+  registry: ""
+  repository: atlas-python
+  tag: ""
+  # A digest pins the exact image Kyverno verifies (set by the promotion workflow in prod).
+  digest: ""
+  pullPolicy: ""
+command: []
+args: ["serve", "--host", "0.0.0.0", "--port", "8000"]
+containerPort: 8000
+service:
+  port: 8000
+env:
+  ATLAS_CORS_ORIGINS: '{{ .Values.global.webUrl | default "http://atlas.localhost:8080" }}'
+envFromSecret: ""
+kafka:
+  bootstrapServers: ""
+probes:
+  startup:
+    httpGet: {path: /v1/health, port: http}
+    periodSeconds: 2
+    failureThreshold: 30
+  liveness:
+    httpGet: {path: /v1/health, port: http}
+    periodSeconds: 10
+    timeoutSeconds: 3
+  readiness:
+    httpGet: {path: /v1/health, port: http}
+    periodSeconds: 5
+    timeoutSeconds: 3
+resources:
+  requests: {cpu: 100m, memory: 256Mi}
+  limits: {cpu: "1", memory: 1Gi}
+strategy: {}
+terminationGracePeriodSeconds: 30
+pdb:
+  enabled: true
+  minAvailable: 1
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+keda:
+  enabled: false
+  minReplicas: 0
+  maxReplicas: 1
+  topics: []
+lake:
+  enabled: true
+  claimName: atlas-lake
+  readOnly: true
+networkPolicy:
+  enabled: true
+  ingressControllerNamespace: kube-system
+  allowMonitoring: false
+  monitoringNamespace: monitoring
+  # OTLP traces and metrics to the OpenTelemetry Collector (deploy/observability, P7).
+  egressOtlp: false
+  otlpNamespace: observability
+  ingressFrom: [web]
+  allowIngressController: true
+  egressTo: []
+  egressKafka: false
+  egressPostgres: false
+  egressInternet: false
+ingress:
+  enabled: true
+  host: "api.{{ .Values.global.domain | default \"atlas.localhost\" }}"
+  annotations: {}
+global: {}
+
+# Restricted Pod Security: the image's non-root user; the root filesystem is read-only.
+securityContext:
+  runAsUser: 10001
+# Writable emptyDir mounts (the root filesystem is read-only).
+writablePaths: ["/tmp"]
+scratchSizeLimit: 256Mi
+podLabels: {}
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: query-api

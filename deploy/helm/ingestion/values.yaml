@@ -1,0 +1,84 @@
+# ingestion: Connectors: fetch regulator filings into the lake (bronze, silver, gold) and publish the change feed.
+enabled: true
+component: worker
+replicaCount: 1
+image:
+  # registry and tag default to global.image.* (set per environment by the umbrella chart).
+  registry: ""
+  repository: atlas-python
+  tag: ""
+  # A digest pins the exact image Kyverno verifies (set by the promotion workflow in prod).
+  digest: ""
+  pullPolicy: ""
+command: []
+args: ["watch", "se_fi_pdmr", "--every", "300", "--lookback", "2"]
+containerPort: 0
+service:
+  port: 0
+env: {}
+envFromSecret: ""
+kafka:
+  bootstrapServers: ""
+# A worker loop without an HTTP endpoint: Kubernetes restarts it if the process exits. Liveness and
+# readiness probes arrive with the Dagster code location (P2).
+probes: {}
+resources:
+  requests: {cpu: 100m, memory: 256Mi}
+  limits: {cpu: "1", memory: 1Gi}
+strategy:
+  type: Recreate
+terminationGracePeriodSeconds: 30
+pdb:
+  enabled: false
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+keda:
+  enabled: false
+  minReplicas: 0
+  maxReplicas: 1
+  topics: []
+lake:
+  enabled: true
+  claimName: atlas-lake
+  readOnly: false
+networkPolicy:
+  enabled: true
+  ingressControllerNamespace: kube-system
+  allowMonitoring: false
+  monitoringNamespace: monitoring
+  # OTLP traces and metrics to the OpenTelemetry Collector (deploy/observability, P7).
+  egressOtlp: false
+  otlpNamespace: observability
+  ingressFrom: []
+  allowIngressController: false
+  egressTo: []
+  egressKafka: true
+  egressPostgres: true
+  # Regulator websites and the ECB.
+  egressInternet: true
+ingress:
+  enabled: false
+  host: ""
+  annotations: {}
+global: {}
+
+# Restricted Pod Security: the image's non-root user; the root filesystem is read-only.
+securityContext:
+  runAsUser: 10001
+# Writable emptyDir mounts (the root filesystem is read-only).
+writablePaths: ["/tmp"]
+scratchSizeLimit: 256Mi
+podLabels: {}
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: ingestion

@@ -1,0 +1,95 @@
+# Umbrella chart for one Atlas environment (one namespace). Environment files: values-dev.yaml (k3d),
+# values-prod.yaml (Scaleway Kapsule), values-preview.yaml (pull-request namespaces), values-ci.yaml (smoke test).
+global:
+  # Public hostnames: <domain> for the website, api.<domain> and stream.<domain>.
+  domain: atlas.localhost
+  webUrl: http://atlas.localhost:8080
+  image:
+    registry: ghcr.io/manuelma4
+    # Every image of a release shares one tag: sha-<7 hex> from CI, or `dev` for local builds. Never `latest`.
+    tag: ""
+    pullPolicy: IfNotPresent
+  ingress:
+    className: traefik
+    clusterIssuer: ""
+    tls: false
+  kafka:
+    # Empty means the Strimzi cluster below: atlas-kafka-bootstrap.<namespace>.svc:9092.
+    bootstrapServers: ""
+
+# Namespace-wide default deny (ingress and egress); each service chart adds its own allow-list.
+networkPolicy:
+  defaultDeny: true
+
+# Shared lake volume (bronze, silver, gold) until object storage and DuckLake replace it (P2).
+lake:
+  enabled: true
+  size: 5Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
+
+# Apache Kafka 4 in KRaft mode, run by the Strimzi operator, plus the topics from docs/architecture.md.
+kafka:
+  enabled: false
+  replicas: 1
+  # Empty means the Strimzi operator's default Kafka version.
+  version: ""
+  storage: 10Gi
+  resources:
+    requests: {cpu: 250m, memory: 1Gi}
+    limits: {cpu: "1", memory: 1536Mi}
+  topicOperatorResources:
+    requests: {cpu: 50m, memory: 256Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  topics:
+    - {name: atlas.filings.v1, partitions: 6, retentionMs: 2592000000}
+    - {name: atlas.snapshots.v1, partitions: 1, retentionMs: 2592000000}
+    - {name: atlas.extraction.requests.v1, partitions: 6, retentionMs: 604800000}
+    - {name: atlas.extraction.results.v1, partitions: 6, retentionMs: 604800000}
+    - {name: atlas.notifications.v1, partitions: 6, retentionMs: 604800000}
+    - {name: atlas.notifications.v1.retry.5m, partitions: 3, retentionMs: 604800000}
+    - {name: atlas.notifications.v1.retry.1h, partitions: 3, retentionMs: 604800000}
+    - {name: atlas.notifications.v1.dlq, partitions: 1, retentionMs: 2592000000}
+    - {name: atlas.signals.v1, partitions: 6, retentionMs: 2592000000}
+
+# PostgreSQL 18 run by CloudNativePG (DuckLake catalog, accounts, watchlists, Dagster storage).
+postgres:
+  enabled: false
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  storage: 5Gi
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: "1", memory: 1Gi}
+  # Base backups and WAL archive to S3-compatible object storage (prod).
+  backup:
+    enabled: false
+    destinationPath: ""
+    endpointURL: ""
+    credentialsSecret: atlas-backup-s3
+    retentionPolicy: 30d
+
+# Secrets come from External Secrets (a ClusterSecretStore backed by Scaleway Secret Manager in prod);
+# bootstrap values live SOPS-encrypted in deploy/secrets/ (see docs/operations.md).
+externalSecrets:
+  enabled: false
+  storeName: scaleway
+  refreshInterval: 1h
+  secrets: []
+  # - name: atlas-llm
+  #   data: [{secretKey: ANTHROPIC_API_KEY, remoteKey: atlas-anthropic-api-key}]
+
+query-api:
+  enabled: true
+web:
+  enabled: true
+ingestion:
+  enabled: true
+extraction:
+  enabled: false
+ai-service:
+  enabled: false
+realtime-gateway:
+  enabled: false
+alerts:
+  enabled: false

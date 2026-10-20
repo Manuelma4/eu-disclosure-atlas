@@ -29,5 +29,14 @@ exports/
 .vscode/
 .idea/
 
+# Deploy: rendered manifests, packaged chart dependencies, local cluster state
+deploy/.rendered/
+deploy/helm/*/charts/
+.k3d/
+infra/tofu/**/.terraform/
+infra/tofu/**/*.tfstate*
+infra/tofu/**/*.tfplan
+infra/tofu/modules/*/.terraform.lock.hcl
+
 # Evaluation run reports (regenerated; summarize notable runs in evals/*/README.md)
 evals/*/results/

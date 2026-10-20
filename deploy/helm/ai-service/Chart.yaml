@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ai-service
+description: "Ask the Atlas, filing explainer and MCP server"
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: atlas-lib
+    version: 0.1.0
+    repository: file://../atlas-lib

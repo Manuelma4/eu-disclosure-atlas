@@ -1,0 +1,17 @@
+# Local cluster: one k3s server and one agent. Created by deploy/k3d/atlas.sh (make k3d-up), which sets the
+# cluster name, the API port and the load-balancer ports (default atlas, 6550 and http://*.atlas.localhost:8080;
+# override with ATLAS_K3D_CLUSTER, ATLAS_K3D_API_PORT, ATLAS_K3D_HTTP_PORT and ATLAS_K3D_HTTPS_PORT).
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: atlas
+servers: 1
+agents: 1
+image: rancher/k3s:v1.36.5-k3s1
+options:
+  k3d:
+    wait: true
+    timeout: 180s
+  kubeconfig:
+    updateDefaultKubeconfig: false
+    switchCurrentContext: false

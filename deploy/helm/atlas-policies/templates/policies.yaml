@@ -1,0 +1,72 @@
+{{- $match := dict "namespaceSelector" .Values.namespaceSelector "resourceRules" (list (dict "apiGroups" (list "") "apiVersions" (list "v1") "operations" (list "CREATE" "UPDATE") "resources" (list "pods"))) }}
+# Only images signed by this repository's CI (keyless cosign, Sigstore transparency log) are admitted.
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: atlas-signed-images
+  annotations:
+    policies.kyverno.io/title: Signed Atlas images only
+    policies.kyverno.io/category: Supply chain
+spec:
+  validationActions: {{ toJson .Values.signedImages.validationActions }}
+  matchConstraints:
+    {{- toYaml $match | nindent 4 }}
+  matchImageReferences:
+    {{- range .Values.signedImages.images }}
+    - glob: {{ . | quote }}
+    {{- end }}
+  attestors:
+    - name: github
+      cosign:
+        keyless:
+          identities:
+            - issuer: {{ .Values.signedImages.issuer }}
+              subjectRegExp: {{ .Values.signedImages.subjectRegExp | quote }}
+        ctlog:
+          url: {{ .Values.signedImages.rekorUrl }}
+  validations:
+    - expression: >-
+        images.containers.map(image, verifyImageSignatures(image, [attestors.github])).all(e, e > 0)
+      message: Atlas images must be signed by the eu-disclosure-atlas images workflow (cosign keyless).
+---
+# Every image is pinned: a tag other than `latest`, or a digest.
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: atlas-no-latest-tag
+  annotations:
+    policies.kyverno.io/title: No latest or missing image tags
+    policies.kyverno.io/category: Supply chain
+spec:
+  validationActions: {{ toJson .Values.noLatestTag.validationActions }}
+  matchConstraints:
+    {{- toYaml $match | nindent 4 }}
+  variables:
+    - name: images
+      expression: >-
+        object.spec.containers.map(c, c.image) +
+        (has(object.spec.initContainers) ? object.spec.initContainers.map(c, c.image) : [])
+  validations:
+    - expression: >-
+        variables.images.all(i, i.contains('@sha256:') ||
+          (i.matches('^[^@]+:[^/:@]+$') && !i.endsWith(':latest')))
+      message: Images must use a pinned tag or a digest; `latest` and untagged images are not allowed.
+---
+# Every container declares CPU and memory requests and a memory limit.
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: atlas-required-resources
+  annotations:
+    policies.kyverno.io/title: Required resource requests and limits
+    policies.kyverno.io/category: Reliability
+spec:
+  validationActions: {{ toJson .Values.requiredResources.validationActions }}
+  matchConstraints:
+    {{- toYaml $match | nindent 4 }}
+  validations:
+    - expression: >-
+        object.spec.containers.all(c, has(c.resources) &&
+          has(c.resources.requests) && 'cpu' in c.resources.requests && 'memory' in c.resources.requests &&
+          has(c.resources.limits) && 'memory' in c.resources.limits)
+      message: Every container needs CPU and memory requests and a memory limit.

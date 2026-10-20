@@ -1,0 +1,46 @@
+# Two projects: the platform (operators and cluster-wide objects) and the Atlas workloads, which may only
+# deploy namespaced resources into atlas and atlas-pr-* namespaces from this repository.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: atlas-platform
+  namespace: argocd
+spec:
+  description: Operators, policies and cluster-wide configuration
+  sourceRepos:
+    - https://github.com/Manuelma4/eu-disclosure-atlas.git
+    - https://strimzi.io/charts/
+    - https://cloudnative-pg.github.io/charts
+    - https://charts.jetstack.io
+    - https://kedacore.github.io/charts
+    - https://kyverno.github.io/kyverno/
+    - https://charts.external-secrets.io
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: atlas
+  namespace: argocd
+spec:
+  description: EU Disclosure Atlas services
+  sourceRepos:
+    - https://github.com/Manuelma4/eu-disclosure-atlas.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: atlas
+    - server: https://kubernetes.default.svc
+      namespace: atlas-pr-*
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceBlacklist:
+    - group: ""
+      kind: ResourceQuota
+  orphanedResources:
+    warn: true

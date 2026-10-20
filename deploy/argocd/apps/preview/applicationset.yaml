@@ -1,0 +1,58 @@
+# One preview environment per pull request labelled `preview`: namespace atlas-pr-<number>, the PR's images
+# (sha-<head sha>, built and signed by the images workflow) and https://pr-<number>.preview.<domain>.
+# Argo CD deletes the Application, and with it the namespace's resources, when the PR closes or loses the label.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: atlas-previews
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - pullRequest:
+        requeueAfterSeconds: 120
+        github:
+          owner: Manuelma4
+          repo: eu-disclosure-atlas
+          labels: [preview]
+          tokenRef:
+            secretName: github-previews
+            key: token
+  template:
+    metadata:
+      name: "atlas-pr-{{ .number }}"
+      labels:
+        atlas.preview/pr: "{{ .number }}"
+      finalizers: [resources-finalizer.argocd.argoproj.io]
+    spec:
+      project: atlas
+      source:
+        repoURL: https://github.com/Manuelma4/eu-disclosure-atlas.git
+        targetRevision: "{{ .head_sha }}"
+        path: deploy/helm/atlas
+        helm:
+          releaseName: atlas
+          valueFiles: [values.yaml, values-preview.yaml]
+          parameters:
+            - name: global.image.tag
+              value: "sha-{{ .head_short_sha_7 }}"
+            - name: global.domain
+              value: "pr-{{ .number }}.preview.atlas.example.org"
+            - name: global.webUrl
+              value: "https://pr-{{ .number }}.preview.atlas.example.org"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "atlas-pr-{{ .number }}"
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true, ServerSideApply=true]
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/part-of: atlas
+            atlas.preview/pr: "{{ .number }}"
+            pod-security.kubernetes.io/enforce: restricted
+            pod-security.kubernetes.io/enforce-version: latest
+        retry:
+          limit: 5
+          backoff: {duration: 30s, factor: 2, maxDuration: 5m}
