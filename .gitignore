@@ -30,3 +30,4 @@ deploy/helm/*/charts/
 infra/tofu/**/.terraform/
 infra/tofu/**/*.tfstate*
 infra/tofu/**/*.tfplan
+infra/tofu/modules/*/.terraform.lock.hcl

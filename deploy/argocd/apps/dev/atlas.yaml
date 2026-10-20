@@ -1,0 +1,38 @@
+# The Atlas release for dev: the umbrella chart with values-dev.yaml. Image tags come from that file, so a
+# deploy is a commit (see .github/workflows/deploy.yml) and a rollback is a revert.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dev-atlas
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: atlas
+  source:
+    repoURL: https://github.com/Manuelma4/eu-disclosure-atlas.git
+    targetRevision: main
+    path: deploy/helm/atlas
+    helm:
+      releaseName: atlas
+      valueFiles: [values.yaml, values-dev.yaml]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: atlas
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/part-of: atlas
+        pod-security.kubernetes.io/enforce: restricted
+        pod-security.kubernetes.io/enforce-version: latest
+    retry:
+      limit: 5
+      backoff: {duration: 10s, factor: 2, maxDuration: 3m}
+  ignoreDifferences:
+    # The HPA and KEDA own the replica counts.
+    - group: apps
+      kind: Deployment
+      jsonPointers: [/spec/replicas]

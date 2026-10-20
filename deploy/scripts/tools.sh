@@ -7,7 +7,7 @@ ATLAS_REPO_ROOT="${ATLAS_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 
 HELM_IMAGE="${HELM_IMAGE:-alpine/helm:4.3.1}"
 K3D_IMAGE="${K3D_IMAGE:-ghcr.io/k3d-io/k3d:5.9.0}"
 KUBECONFORM_IMAGE="${KUBECONFORM_IMAGE:-ghcr.io/yannh/kubeconform:v0.8.0}"
-TOFU_IMAGE="${TOFU_IMAGE:-ghcr.io/opentofu/opentofu:1.13.1-minimal}"
+TOFU_IMAGE="${TOFU_IMAGE:-ghcr.io/opentofu/opentofu:1.13.1}"
 KUBECTL_IMAGE="${KUBECTL_IMAGE:-registry.k8s.io/kubectl:v1.36.5}"
 # Kubeconfigs written by deploy/k3d/atlas.sh: containers reach the API through the k3d network, host binaries
 # through 127.0.0.1. An explicit KUBECONFIG wins for host binaries.

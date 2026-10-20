@@ -1,0 +1,21 @@
+# Cluster-wide objects that need the operators' CRDs: the Let's Encrypt issuer and the secret store.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-platform-manifests
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: atlas-platform
+  source:
+    repoURL: https://github.com/Manuelma4/eu-disclosure-atlas.git
+    targetRevision: main
+    path: deploy/platform/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [SkipDryRunOnMissingResource=true]

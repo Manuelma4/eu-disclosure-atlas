@@ -56,9 +56,9 @@ operators() {
     [[ -z "$release" || "$release" == \#* ]] && continue
     log "operator $release $version"
     helm upgrade --install "$release" "$chart" --repo "$repo" --version "$version" \
-      --namespace "$namespace" --create-namespace -f "deploy/k3d/operator-values/$release.yaml" \
+      --namespace "$namespace" --create-namespace -f "deploy/platform/values/$release.yaml" \
       --wait --timeout 10m >/dev/null
-  done 3< deploy/k3d/operators.env
+  done 3< deploy/platform/operators.env
   log "Kyverno policies (signatures audited locally)"
   helm upgrade --install atlas-policies deploy/helm/atlas-policies -n kyverno \
     -f deploy/helm/atlas-policies/values-dev.yaml --wait >/dev/null

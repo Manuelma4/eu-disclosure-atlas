@@ -1,0 +1,19 @@
+# Root application (app-of-apps) for the preview cluster: syncs every Application in deploy/argocd/apps/preview.
+# Bootstrap once with: kubectl apply -n argocd -f deploy/argocd/projects/atlas.yaml -f deploy/argocd/environments/preview.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: preview
+  namespace: argocd
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: atlas-platform
+  source:
+    repoURL: https://github.com/Manuelma4/eu-disclosure-atlas.git
+    targetRevision: main
+    path: deploy/argocd/apps/preview
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}

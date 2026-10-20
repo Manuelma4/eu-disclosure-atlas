@@ -20,6 +20,6 @@ deploy/scripts/render.sh "$ATLAS_REPO_ROOT/deploy/.rendered"
   echo "helm lint: ok"
 )
 
-kubeconform -strict -summary -kubernetes-version "$K8S_VERSION" \
+kubeconform -strict -summary -ignore-filename-pattern "install/values.yaml" -kubernetes-version "$K8S_VERSION" \
   -schema-location default -schema-location "$CRD_SCHEMAS" \
-  deploy/.rendered deploy/argocd deploy/k3d/manifests
+  deploy/.rendered deploy/argocd deploy/platform/manifests
