@@ -27,6 +27,7 @@ from .. import __version__, connectors
 from ..lake import Lake
 from .readmodel import ReadModel, Snapshot
 from .schemas import (
+    TX_COLUMNS,
     CountryStat,
     FlowPoint,
     Health,
@@ -40,13 +41,6 @@ from .schemas import (
     Transaction,
 )
 
-TX_COLUMNS = """
-    record_id AS id, source, jurisdiction AS country, published_at, first_seen_at, transaction_date,
-    issuer_name, issuer_lei, pdmr_id AS person_id, pdmr_role AS role, pdmr_role_raw AS role_raw,
-    notifier_name, closely_associated, nature, direction, instrument_type, instrument_name, isin,
-    volume, price, currency, amount, amount_eur, venue, is_open_market AS open_market, is_amendment,
-    filing_lag_days
-"""
 ISSUER_COLUMNS = """
     issuer_lei AS lei, arg_max(issuer_name, published_at) AS name, arg_max(jurisdiction, published_at) AS country,
     count(*) AS transactions, max(published_at) AS last_published_at,

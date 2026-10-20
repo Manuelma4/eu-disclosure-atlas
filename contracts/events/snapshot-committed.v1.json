@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/contracts/events/snapshot-committed.v1.json",
+  "x-cloudevents-type": "eu.disclosure-atlas.snapshot.committed.v1",
+  "x-kafka-topic": "atlas.snapshots.v1",
+  "description": "One change-feed run over a dataset: the lake version it read and what it published.",
+  "properties": {
+    "dataset": {
+      "description": "Gold dataset, e.g. insider_transactions",
+      "title": "Dataset",
+      "type": "string"
+    },
+    "snapshot": {
+      "description": "Lake version the run read (the API's X-Atlas-Snapshot)",
+      "title": "Snapshot",
+      "type": "string"
+    },
+    "previous_snapshot": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Version read by the previous run, if any",
+      "title": "Previous Snapshot"
+    },
+    "committed_at": {
+      "description": "When the run finished publishing (UTC)",
+      "format": "date-time",
+      "title": "Committed At",
+      "type": "string"
+    },
+    "filings_published": {
+      "description": "Number of filing.published events in this run",
+      "title": "Filings Published",
+      "type": "integer"
+    },
+    "checkpoint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Stream position after this run (`<first_seen_at>|<record id>`)",
+      "title": "Checkpoint"
+    }
+  },
+  "required": [
+    "dataset",
+    "snapshot",
+    "previous_snapshot",
+    "committed_at",
+    "filings_published",
+    "checkpoint"
+  ],
+  "title": "SnapshotCommitted",
+  "type": "object"
+}

@@ -21,6 +21,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.6"]
 api = ["fastapi>=0.115", "uvicorn[standard]>=0.30"]
+events = ["confluent-kafka>=2.12"]
 pdf = ["pdfplumber>=0.11"]
 llm = ["anthropic>=0.40"]
 research = ["pandas>=2.2", "numpy>=1.26", "statsmodels>=0.14", "yfinance>=0.2.40", "matplotlib>=3.8"]
