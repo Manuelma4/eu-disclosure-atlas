@@ -35,8 +35,19 @@ Shared by every chart (`components/diverging-bars.tsx` is the reference): the va
 `--other` tokens in `globals.css`, thin marks, a legend for two or more series, tooltips on hover and on keyboard
 focus, and a table view for every chart.
 
+## Responsive and touch
+- Below 768 px the header collapses into a menu button (search, sections, account, language); Escape closes it.
+- Grid items may shrink (`globals.css`), wide tables scroll inside their card as focusable regions, and the filings
+  table becomes stacked rows below 640 px.
+- On touch screens controls are at least 44 px tall; chart tooltips open on tap.
+- The explorer builds its plots at the card's width and rebuilds them when a card crosses 420 px.
+- `node scripts/audit-pages.mjs <base-url> <out-dir> [lei] [--shots]` checks every page at 360 to 1440 px in en, fr
+  and de: horizontal overflow, console errors, failed requests, and screenshots.
+
 ## End-to-end tests
 `scripts/serve-fixture.mjs` writes a synthetic lake (`e2e/fixture_lake.py`, invented names only), serves it with
 the real FastAPI app on port 8005 (synthetic prices) and the production build on port 3005. The suite covers the
 home, search, company, filings and explore flows, translations, keyboard paths and axe scans in light and dark
-mode. The million-row explorer benchmark is opt-in: `FIXTURE_ROWS=1200000 npx playwright test explore-scale`.
+mode. The `phone` (Pixel 7) and `tablet` (Galaxy Tab S4) projects run `e2e/responsive.spec.ts`: no horizontal
+scroll on any page, the mobile menu, tap targets, tap tooltips and stacked tables. The million-row explorer
+benchmark is opt-in: `FIXTURE_ROWS=1200000 npx playwright test explore-scale`.

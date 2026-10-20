@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { Card } from "@/components/ui";
+import { Card, TableScroll } from "@/components/ui";
 import { alternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -38,7 +38,7 @@ const LAYERS: { id: keyof IntlMessages["architecture"]["layers"]; nodes: Node[] 
     id: "state",
     nodes: [
       { name: "", nameKey: "lakehouseName", detail: "lakehouse", live: true },
-      { name: "Kafka 4 + schema registry", detail: "kafka", live: false },
+      { name: "", nameKey: "kafkaName", detail: "kafka", live: false },
       { name: "PostgreSQL 18", detail: "postgres", live: false },
       { name: "", nameKey: "storageName", detail: "storage", live: false },
     ],
@@ -54,17 +54,18 @@ const LAYERS: { id: keyof IntlMessages["architecture"]["layers"]; nodes: Node[] 
   },
 ];
 
+// Product names stay as they are; `null` choices contain words and are translated (stackChoice.<id>).
 const STACK: [keyof IntlMessages["architecture"]["stack"], string | null][] = [
   ["website", "Next.js 16.4, React 19.3, TypeScript, Tailwind CSS v4, next-intl"],
-  ["explorer", "DuckDB-WASM, Mosaic (vgplot), Parquet over HTTP range requests"],
+  ["explorer", null],
   ["api", "FastAPI on Python 3.14, Pydantic v2, OpenAPI 3.1"],
   ["engine", "DuckDB 1.5, Parquet, DuckLake 1.0"],
   ["orchestration", "Dagster 1.13"],
-  ["events", "Kafka 4 (KRaft), schema registry, CloudEvents"],
+  ["events", null],
   ["services", null],
   ["platform", "Kubernetes, Helm, Argo CD, KEDA, OpenTofu (Scaleway, EU)"],
   ["security", "Keycloak, Envoy Gateway, cosign, SBOM"],
-  ["ai", "Claude API or local Ollama, MCP"],
+  ["ai", null],
   ["observability", "OpenTelemetry, Prometheus, Loki, Tempo, Grafana"],
 ];
 
@@ -118,8 +119,8 @@ export default async function ArchitecturePage() {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card title={t("stackTitle")} subtitle={t("stackSubtitle")}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <TableScroll label={t("stackTitle")}>
+            <table className="w-full min-w-[36rem] text-sm">
               <thead className="text-left text-ink-3">
                 <tr className="border-b border-hairline">
                   <th scope="col" className="py-2 pr-4 font-medium">{t("layer")}</th>
@@ -131,13 +132,15 @@ export default async function ArchitecturePage() {
                 {STACK.map(([id, choice]) => (
                   <tr key={id} className="border-b border-hairline/60 align-top">
                     <td className="py-2 pr-4 font-medium">{t(`stack.${id}.layer`)}</td>
-                    <td className="py-2 pr-4 text-ink-2">{choice ?? t("stackChoice.services")}</td>
+                    <td className="py-2 pr-4 text-ink-2">
+                      {choice ?? t(`stackChoice.${id as "services" | "explorer" | "events" | "ai"}`)}
+                    </td>
                     <td className="py-2 text-ink-3">{t(`stack.${id}.why`)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </Card>
         <Card title={t("principlesTitle")}>
           <ol className="grid list-decimal gap-2 pl-5 text-sm text-ink-2">

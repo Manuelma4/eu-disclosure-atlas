@@ -13,7 +13,9 @@
     "api": "API",
     "skip": "Saltar al contenido",
     "language": "Idioma",
-    "home": "EU Disclosure Atlas, inicio"
+    "home": "EU Disclosure Atlas, inicio",
+    "menu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú"
   },
   "search": {
     "open": "Buscar empresas",
@@ -147,7 +149,8 @@
     "late": "retraso · {days} d",
     "lateTitle": "Publicada más de 5 días naturales después de la operación",
     "via": "vía {name}",
-    "empty": "Ninguna notificación coincide."
+    "empty": "Ninguna notificación coincide.",
+    "caption": "Tabla de notificaciones"
   },
   "filings": {
     "metaDescription": "Busque todas las operaciones de directivos del Atlas por emisor, cargo, naturaleza y fecha.",
@@ -279,7 +282,8 @@
       "gateway": "Difusión SSE; flujo en Python ya activo",
       "website": "Cache Components, cliente tipado, explorador DuckDB-WASM",
       "websiteName": "Sitio web · Next.js 16.4",
-      "ai": "Pregunte al Atlas, MCP sin estado, MCP Apps"
+      "ai": "Pregunte al Atlas, MCP sin estado, MCP Apps",
+      "kafkaName": "Kafka 4 + registro de esquemas"
     },
     "stackTitle": "Tecnologías",
     "stackSubtitle": "Versiones actuales, octubre de 2026",
@@ -333,7 +337,10 @@
       }
     },
     "stackChoice": {
-      "services": "Microservicios en Python, Go y TypeScript"
+      "services": "Microservicios en Python, Go y TypeScript",
+      "explorer": "DuckDB-WASM, Mosaic (vgplot), Parquet leído con peticiones HTTP parciales",
+      "events": "Kafka 4 (KRaft), registro de esquemas, CloudEvents",
+      "ai": "API de Claude u Ollama en local, MCP"
     },
     "principlesTitle": "Principios",
     "principles": {

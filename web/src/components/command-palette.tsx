@@ -12,10 +12,46 @@ const API_URL = process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000"
 type Item = { id: string; href: string; label: string; detail?: string; group: "companies" | "pages" };
 type State = { status: "idle" | "loading" | "done" | "error"; issuers: IssuerSummary[] };
 
+/** Window event that opens the palette (dispatched by every SearchButton). */
+export const OPEN_SEARCH = "atlas:open-search";
+
 const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const noSubscribe = () => () => {};
 
-/** Ctrl/Cmd+K search over issuers (GET /v1/issuers?q=) and the site's pages, as an accessible combobox. */
+/** Button that opens the palette: compact in the header bar, full width in the mobile menu. */
+export function SearchButton({ variant = "bar" }: { variant?: "bar" | "menu" }) {
+  const t = useTranslations("search");
+  const mac = useSyncExternalStore(noSubscribe, isMac, () => false);
+  return (
+    <button
+      type="button"
+      onClick={() => window.dispatchEvent(new Event(OPEN_SEARCH))}
+      aria-haspopup="dialog"
+      aria-keyshortcuts="Control+K Meta+K"
+      className={
+        variant === "menu"
+          ? "flex min-h-11 w-full items-center gap-2 rounded-md border border-hairline bg-page px-3 text-left text-sm text-ink-3"
+          : "flex h-8 shrink-0 items-center gap-2 whitespace-nowrap rounded-md border border-hairline bg-surface px-2.5 text-sm text-ink-3 hover:text-ink"
+      }
+    >
+      <svg aria-hidden="true" viewBox="0 0 16 16" className="size-3.5 shrink-0">
+        <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+      <span className={variant === "menu" ? "" : "sr-only xl:not-sr-only"}>{t("open")}</span>
+      {variant === "bar" && (
+        <kbd className="hidden rounded border border-hairline px-1 font-sans text-[11px] text-ink-3 xl:inline">
+          {t("shortcut", { key: mac ? "⌘" : "Ctrl" })}
+        </kbd>
+      )}
+    </button>
+  );
+}
+
+/**
+ * Ctrl/Cmd+K search over issuers (GET /v1/issuers?q=) and the site's pages, as an accessible combobox in a
+ * native dialog. Mounted once; SearchButton and the shortcut open it.
+ */
 export function CommandPalette() {
   const t = useTranslations("search");
   const nav = useTranslations("nav");
@@ -27,7 +63,6 @@ export function CommandPalette() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [state, setState] = useState<State>({ status: "idle", issuers: [] });
-  const mac = useSyncExternalStore(noSubscribe, isMac, () => false);
 
   const open = useCallback(() => {
     if (dialog.current?.open) return;
@@ -43,7 +78,11 @@ export function CommandPalette() {
       }
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener(OPEN_SEARCH, open);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener(OPEN_SEARCH, open);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -137,23 +176,6 @@ export function CommandPalette() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={open}
-        aria-haspopup="dialog"
-        aria-keyshortcuts="Control+K Meta+K"
-        className="flex h-8 items-center gap-2 rounded-md border border-hairline bg-surface px-2.5 text-sm text-ink-3 hover:text-ink"
-      >
-        <svg aria-hidden="true" viewBox="0 0 16 16" className="size-3.5">
-          <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-        <span className="hidden sm:inline">{t("open")}</span>
-        <kbd className="hidden rounded border border-hairline px-1 font-sans text-[11px] text-ink-3 sm:inline">
-          {t("shortcut", { key: mac ? "⌘" : "Ctrl" })}
-        </kbd>
-      </button>
-
       <dialog
         ref={dialog}
         aria-label={t("dialogLabel")}

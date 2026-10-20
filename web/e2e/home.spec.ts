@@ -28,7 +28,7 @@ test("live tape connects to the stream", async ({ page }) => {
 
 test("language switch keeps the page and translates it", async ({ page }) => {
   await page.goto("/en/filings");
-  await page.getByLabel("Language").selectOption("fr");
+  await page.getByRole("combobox", { name: "Language" }).selectOption("fr");
   await expect(page).toHaveURL(/\/fr\/filings$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "fr");
   await expect(page.getByRole("navigation", { name: /./ }).first()).not.toContainText("Overview");

@@ -57,22 +57,26 @@ async function Results({ searchParams }: { searchParams: Promise<Search> }) {
   );
 
   return (
-    <Card
-      title={
-        <form role="search" aria-label={t("filters")} className="flex flex-wrap items-end gap-3 text-sm" action="">
-          <label className="grid gap-1 font-normal text-ink-3">
+    <Card>
+        <form
+          role="search"
+          aria-label={t("filters")}
+          className="grid grid-cols-2 items-end gap-3 border-b border-hairline pb-4 text-sm sm:flex sm:flex-wrap"
+          action=""
+        >
+          <label className="col-span-2 grid gap-1 font-normal text-ink-3 sm:col-span-1">
             {t("issuer")}
             <input
               name="q"
               type="search"
               defaultValue={query.q ?? ""}
               placeholder={t("issuerPlaceholder")}
-              className={`w-56 px-2.5 py-1.5 placeholder:text-ink-3 ${field}`}
+              className={`w-full px-2.5 py-1.5 placeholder:text-ink-3 sm:w-56 ${field}`}
             />
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
             {t("nature")}
-            <select name="nature" defaultValue={query.nature?.[0] ?? ""} className={`px-2 py-1.5 ${field}`}>
+            <select name="nature" defaultValue={query.nature?.[0] ?? ""} className={`w-full px-2 py-1.5 ${field}`}>
               <option value="">{t("all")}</option>
               {NATURES.map((n) => (
                 <option key={n} value={n}>
@@ -83,7 +87,7 @@ async function Results({ searchParams }: { searchParams: Promise<Search> }) {
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
             {t("role")}
-            <select name="role" defaultValue={query.role?.[0] ?? ""} className={`px-2 py-1.5 ${field}`}>
+            <select name="role" defaultValue={query.role?.[0] ?? ""} className={`w-full px-2 py-1.5 ${field}`}>
               <option value="">{t("all")}</option>
               {ROLES.map((r) => (
                 <option key={r} value={r}>
@@ -94,30 +98,33 @@ async function Results({ searchParams }: { searchParams: Promise<Search> }) {
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
             {t("since")}
-            <input type="date" name="since" defaultValue={query.since ?? ""} className={`px-2 py-1 ${field}`} />
+            <input type="date" name="since" defaultValue={query.since ?? ""} className={`w-full px-2 py-1 ${field}`} />
           </label>
-          <label className="flex items-center gap-2 pb-1.5 font-normal text-ink-2">
+          <label className="flex min-h-11 items-center gap-2 font-normal text-ink-2 sm:min-h-0 sm:pb-1.5">
             <input type="checkbox" name="open_market" value="true" defaultChecked={query.open_market === true} />
             {t("openMarket")}
           </label>
-          <button className="rounded-md bg-ink px-3 py-1.5 font-medium text-page hover:opacity-90" type="submit">
-            {t("apply")}
-          </button>
-          {Object.keys(params).length > 0 && (
-            <Link href="/filings" className="pb-1.5 text-ink-3 hover:text-ink">
-              {t("reset")}
-            </Link>
-          )}
+          <div className="col-span-2 flex items-center gap-4 sm:col-span-1">
+            <button className="rounded-md bg-ink px-4 py-1.5 font-medium text-page hover:opacity-90" type="submit">
+              {t("apply")}
+            </button>
+            {Object.keys(params).length > 0 && (
+              <Link href="/filings" className="flex min-h-11 items-center text-ink-3 hover:text-ink sm:min-h-0">
+                {t("reset")}
+              </Link>
+            )}
+          </div>
         </form>
-      }
-    >
       <TransactionsTable items={page.items} />
       <div className="mt-4 flex items-center justify-between text-sm text-ink-3">
         <span>
           {tc("snapshot")} <code className="font-mono text-xs">{page.snapshot}</code>
         </span>
         {page.next_cursor && (
-          <Link href={`/filings?${next.toString()}`} className="rounded-md border border-hairline px-3 py-1.5 text-ink hover:bg-surface-2">
+          <Link
+            href={`/filings?${next.toString()}`}
+            className="flex min-h-11 items-center rounded-md border border-hairline px-3 text-ink hover:bg-surface-2 sm:min-h-0 sm:py-1.5"
+          >
             {t("next")} <span aria-hidden="true">→</span>
           </Link>
         )}

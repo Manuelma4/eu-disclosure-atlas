@@ -13,7 +13,9 @@
     "api": "API",
     "skip": "Aller au contenu",
     "language": "Langue",
-    "home": "EU Disclosure Atlas, accueil"
+    "home": "EU Disclosure Atlas, accueil",
+    "menu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
   },
   "search": {
     "open": "Rechercher des sociétés",
@@ -147,7 +149,8 @@
     "late": "retard · {days} j",
     "lateTitle": "Publiée plus de 5 jours calendaires après l’opération",
     "via": "via {name}",
-    "empty": "Aucune déclaration ne correspond."
+    "empty": "Aucune déclaration ne correspond.",
+    "caption": "Tableau des déclarations"
   },
   "filings": {
     "metaDescription": "Recherchez toutes les opérations des dirigeants de l’Atlas par émetteur, fonction, nature et date.",
@@ -279,7 +282,8 @@
       "gateway": "Diffusion SSE ; flux Python déjà en service",
       "website": "Cache Components, client typé, explorateur DuckDB-WASM",
       "websiteName": "Site web · Next.js 16.4",
-      "ai": "Interroger l’Atlas, MCP sans état, MCP Apps"
+      "ai": "Interroger l’Atlas, MCP sans état, MCP Apps",
+      "kafkaName": "Kafka 4 + registre de schémas"
     },
     "stackTitle": "Pile technique",
     "stackSubtitle": "Versions actuelles, octobre 2026",
@@ -333,7 +337,10 @@
       }
     },
     "stackChoice": {
-      "services": "Microservices Python, Go et TypeScript"
+      "services": "Microservices Python, Go et TypeScript",
+      "explorer": "DuckDB-WASM, Mosaic (vgplot), Parquet lu par requêtes HTTP partielles",
+      "events": "Kafka 4 (KRaft), registre de schémas, CloudEvents",
+      "ai": "API Claude ou Ollama en local, MCP"
     },
     "principlesTitle": "Principes",
     "principles": {

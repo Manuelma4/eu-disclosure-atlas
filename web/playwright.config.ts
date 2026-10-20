@@ -17,7 +17,12 @@ export default defineConfig({
     locale: "en-GB",
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] }, testIgnore: /responsive\.spec\.ts/ },
+    // Responsive checks on touch devices: a phone (412 px) and a small tablet (712 px), both Chromium.
+    { name: "phone", use: { ...devices["Pixel 7"] }, testMatch: /responsive\.spec\.ts/ },
+    { name: "tablet", use: { ...devices["Galaxy Tab S4"] }, testMatch: /responsive\.spec\.ts/ },
+  ],
   webServer: {
     command: "node scripts/serve-fixture.mjs",
     url: "http://127.0.0.1:3005/en",

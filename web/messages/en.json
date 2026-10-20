@@ -13,7 +13,9 @@
     "api": "API",
     "skip": "Skip to content",
     "language": "Language",
-    "home": "EU Disclosure Atlas, home"
+    "home": "EU Disclosure Atlas, home",
+    "menu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "search": {
     "open": "Search companies",
@@ -147,7 +149,8 @@
     "late": "late · {days} d",
     "lateTitle": "Published more than 5 calendar days after the trade",
     "via": "via {name}",
-    "empty": "No filings match."
+    "empty": "No filings match.",
+    "caption": "Filings table"
   },
   "filings": {
     "metaDescription": "Search every managers’ transaction in the Atlas by issuer, role, nature and date.",
@@ -279,7 +282,8 @@
       "gateway": "SSE fan-out; Python stream live today",
       "website": "Cache Components, typed client, DuckDB-WASM explorer",
       "websiteName": "Website · Next.js 16.4",
-      "ai": "Ask the Atlas, stateless MCP, MCP Apps"
+      "ai": "Ask the Atlas, stateless MCP, MCP Apps",
+      "kafkaName": "Kafka 4 + schema registry"
     },
     "stackTitle": "Stack",
     "stackSubtitle": "Current versions, October 2026",
@@ -333,7 +337,10 @@
       }
     },
     "stackChoice": {
-      "services": "Python, Go and TypeScript microservices"
+      "services": "Python, Go and TypeScript microservices",
+      "explorer": "DuckDB-WASM, Mosaic (vgplot), Parquet over HTTP range requests",
+      "events": "Kafka 4 (KRaft), schema registry, CloudEvents",
+      "ai": "Claude API or local Ollama, MCP"
     },
     "principlesTitle": "Principles",
     "principles": {
