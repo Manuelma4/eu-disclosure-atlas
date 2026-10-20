@@ -160,10 +160,77 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/ask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ask
+         * @description Answer a question with a guarded, read-only SQL query over the gold views, the rows it returned
+         *     and a short answer written from those rows. Research data, not investment advice.
+         */
+        post: operations["ask_v1_ask_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AskRequest */
+        AskRequest: {
+            /**
+             * Question
+             * @description A question about the data, in plain English
+             */
+            question: string;
+        };
+        /** AskResponse */
+        AskResponse: {
+            /** Question */
+            question: string;
+            /**
+             * Sql
+             * @description The read-only query that produced the rows, as it ran
+             */
+            sql: string;
+            /**
+             * Explanation
+             * @description What the query computes
+             */
+            explanation: string;
+            /** Columns */
+            columns: string[];
+            /** Rows */
+            rows: unknown[][];
+            /**
+             * Truncated
+             * @description True when the row limit may have cut the result
+             */
+            truncated: boolean;
+            /**
+             * Answer
+             * @description Short answer written from the rows only; not investment advice
+             */
+            answer: string;
+            /** Model */
+            model: string;
+            /** Prompt Version */
+            prompt_version: string;
+            /**
+             * Snapshot
+             * @description Data version the query ran on
+             */
+            snapshot: string;
+        };
         /** CountryStat */
         CountryStat: {
             /** Country */
@@ -524,6 +591,8 @@ export interface operations {
                 q?: string | null;
                 limit?: number;
                 cursor?: string | null;
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
             };
             header?: never;
             path?: never;
@@ -553,7 +622,10 @@ export interface operations {
     };
     get_transaction_v1_insider_transactions__record_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
+            };
             header?: never;
             path: {
                 record_id: string;
@@ -589,6 +661,8 @@ export interface operations {
                 q?: string | null;
                 country?: string | null;
                 limit?: number;
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
             };
             header?: never;
             path?: never;
@@ -618,7 +692,10 @@ export interface operations {
     };
     get_issuer_v1_issuers__lei__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
+            };
             header?: never;
             path: {
                 lei: string;
@@ -729,6 +806,51 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+        };
+    };
+    ask_v1_ask_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AskRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AskResponse"];
+                };
+            };
+            /** @description The question could not be turned into a valid read-only query */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The model provider failed */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Ask the Atlas is not configured on this server */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

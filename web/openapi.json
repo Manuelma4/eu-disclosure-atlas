@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "EU Disclosure Atlas API",
-    "description": "\nOpen, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European\nmarkets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,\nexposed in the `ETag` and `X-Atlas-Snapshot` headers. Not investment advice.\n",
+    "description": "\nOpen, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European\nmarkets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,\nexposed in the `ETag` and `X-Atlas-Snapshot` headers. Transaction and issuer endpoints accept `?as_of=<snapshot>`\nto answer from an earlier snapshot, so published figures stay reproducible. Not investment advice.\n",
     "contact": {
       "name": "Manuel David Maya Rosero",
       "url": "https://manuelma4.github.io/"
@@ -278,6 +278,25 @@
               ],
               "title": "Cursor"
             }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)",
+              "title": "As Of"
+            },
+            "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"
           }
         ],
         "responses": {
@@ -320,6 +339,25 @@
               "type": "string",
               "title": "Record Id"
             }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)",
+              "title": "As Of"
+            },
+            "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"
           }
         ],
         "responses": {
@@ -399,6 +437,25 @@
               "default": 50,
               "title": "Limit"
             }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)",
+              "title": "As Of"
+            },
+            "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"
           }
         ],
         "responses": {
@@ -445,6 +502,25 @@
               "type": "string",
               "title": "Lei"
             }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)",
+              "title": "As Of"
+            },
+            "description": "Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"
           }
         ],
         "responses": {
@@ -619,10 +695,137 @@
           }
         }
       }
+    },
+    "/v1/ask": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Ask",
+        "description": "Answer a question with a guarded, read-only SQL query over the gold views, the rows it returned\nand a short answer written from those rows. Research data, not investment advice.",
+        "operationId": "ask_v1_ask_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The question could not be turned into a valid read-only query"
+          },
+          "502": {
+            "description": "The model provider failed"
+          },
+          "503": {
+            "description": "Ask the Atlas is not configured on this server"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AskRequest": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Question",
+            "description": "A question about the data, in plain English"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "title": "AskRequest"
+      },
+      "AskResponse": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "sql": {
+            "type": "string",
+            "title": "Sql",
+            "description": "The read-only query that produced the rows, as it ran"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation",
+            "description": "What the query computes"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "rows": {
+            "items": {
+              "items": {},
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated",
+            "description": "True when the row limit may have cut the result"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "Short answer written from the rows only; not investment advice"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot",
+            "description": "Data version the query ran on"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "sql",
+          "explanation",
+          "columns",
+          "rows",
+          "truncated",
+          "answer",
+          "model",
+          "prompt_version",
+          "snapshot"
+        ],
+        "title": "AskResponse"
+      },
       "CountryStat": {
         "properties": {
           "country": {
@@ -1499,6 +1702,10 @@
     {
       "name": "stream",
       "description": "Server-sent events for new filings"
+    },
+    {
+      "name": "ai",
+      "description": "Ask the Atlas: questions in plain English, answered with SQL"
     },
     {
       "name": "meta",

@@ -1,0 +1,29 @@
+name: Single contributor
+# The owner (Manuelma4) must be the only author: no other identities, no bots, no attribution trailers.
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  authors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # The PR head, not GitHub's synthetic merge commit (which GitHub authors with the account's email).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Check commit authors and trailers
+        env:
+          EXPECTED: 71296266+Manuelma4@users.noreply.github.com
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          # The PR's own commits, not the synthetic refs/pull/N/merge commit GitHub creates for the test run.
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then RANGE="$HEAD_SHA"; else RANGE="$BASE..$HEAD_SHA"; fi
+          bad=$(git log --format='%h %ae %an' $RANGE | awk -v e="$EXPECTED" '$2 != e')
+          trailers=$(git log --format='%h %B' $RANGE | grep -i -E 'co-authored-by:|claude-session:' || true)
+          if [ -n "$bad$trailers" ]; then
+            echo "Commits violating the single-contributor policy:"; echo "$bad"; echo "$trailers"; exit 1
+          fi
+          echo "All commits in $RANGE are authored by Manuelma4 without attribution trailers."

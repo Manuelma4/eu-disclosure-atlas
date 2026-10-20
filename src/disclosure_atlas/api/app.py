@@ -7,6 +7,7 @@ caches everywhere at once (see docs/decisions/0008).
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import hashlib
 import json
 import os
@@ -24,9 +25,13 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .. import __version__, connectors
-from ..lake import Lake
+from ..lake import Lake, UnknownSnapshot
+from . import telemetry
 from .readmodel import ReadModel, Snapshot
 from .schemas import (
+    TX_COLUMNS,
+    AskRequest,
+    AskResponse,
     CountryStat,
     FlowPoint,
     Health,
@@ -39,14 +44,8 @@ from .schemas import (
     SourceStatus,
     Transaction,
 )
+from .security import RateLimitMiddleware, SecurityHeadersMiddleware, rate_limit_settings
 
-TX_COLUMNS = """
-    record_id AS id, source, jurisdiction AS country, published_at, first_seen_at, transaction_date,
-    issuer_name, issuer_lei, pdmr_id AS person_id, pdmr_role AS role, pdmr_role_raw AS role_raw,
-    notifier_name, closely_associated, nature, direction, instrument_type, instrument_name, isin,
-    volume, price, currency, amount, amount_eur, venue, is_open_market AS open_market, is_amendment,
-    filing_lag_days
-"""
 ISSUER_COLUMNS = """
     issuer_lei AS lei, arg_max(issuer_name, published_at) AS name, arg_max(jurisdiction, published_at) AS country,
     count(*) AS transactions, max(published_at) AS last_published_at,
@@ -54,10 +53,16 @@ ISSUER_COLUMNS = """
         AS net_open_market_eur_365d
 """
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
+IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+AsOf = Annotated[
+    int | None,
+    Query(ge=0, description="Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"),
+]
 DESCRIPTION = """
 Open, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European
 markets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,
-exposed in the `ETag` and `X-Atlas-Snapshot` headers. Not investment advice.
+exposed in the `ETag` and `X-Atlas-Snapshot` headers. Transaction and issuer endpoints accept `?as_of=<snapshot>`
+to answer from an earlier snapshot, so published figures stay reproducible. Not investment advice.
 """
 
 
@@ -85,7 +90,8 @@ def _parse_event_id(event_id: str) -> tuple[datetime, str]:
 def _conditional(request: Request, response: Response, snapshot: Snapshot) -> Response | None:
     """Set ETag and caching headers; return a 304 response when the client already has this version."""
     etag = f'W/"{snapshot.version}-{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"'
-    headers = {"ETag": etag, "Cache-Control": CACHE_CONTROL, "X-Atlas-Snapshot": snapshot.version}
+    cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
+    headers = {"ETag": etag, "Cache-Control": cache, "X-Atlas-Snapshot": snapshot.version}
     if request.headers.get("if-none-match") == etag:
         return Response(status_code=HTTPStatus.NOT_MODIFIED, headers=headers)
     response.headers.update(headers)
@@ -98,9 +104,50 @@ def _problem(request: Request, status: int, detail: Any) -> JSONResponse:
     return JSONResponse(body, status_code=status, media_type="application/problem+json")
 
 
-def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -> FastAPI:
-    read_model = ReadModel(Lake(lake_root or os.environ.get("ATLAS_LAKE", "lake")))
+def _mount_mcp(app: FastAPI, lake: Lake) -> Any:
+    """Mount the stateless MCP server at /mcp when the `ai` extra is installed; returns its session manager."""
+    try:
+        from mcp.server.transport_security import TransportSecuritySettings
+
+        from ..ai.guard import SandboxedLake
+        from ..ai.mcp_server import build_server
+    except ImportError:
+        return None
+    # DNS-rebinding protection: only these Host values are served ("*" turns the check off behind a gateway).
+    setting = os.environ.get("ATLAS_MCP_ALLOWED_HOSTS", "127.0.0.1:*,localhost:*,[::1]:*")
+    hosts = [h.strip() for h in setting.split(",") if h.strip()]
+    security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=setting.strip() != "*",
+        allowed_hosts=hosts,
+        allowed_origins=[f"{scheme}://{h}" for h in hosts for scheme in ("http", "https")],
+    )
+    server = build_server(ReadModel(SandboxedLake(lake)))
+    mcp_app = server.streamable_http_app(
+        streamable_http_path="/mcp", stateless_http=True, json_response=True, transport_security=security
+    )
+    app.router.routes.extend(mcp_app.routes)
+    return server.session_manager
+
+
+def create_app(
+    lake_root: str | None = None,
+    stream_poll_seconds: float = 5.0,
+    asker: Any = None,
+    rate_limit: tuple[int, int] | None = None,
+) -> FastAPI:
+    """The API. `asker` overrides the Ask the Atlas model client (tests and evaluations); `rate_limit` is
+    (requests per minute, burst) per client IP, defaulting to the environment settings."""
+    lake = Lake(lake_root or os.environ.get("ATLAS_LAKE", "lake"))
+    read_model = ReadModel(lake)
+    mcp_sessions: Any = None
+
+    @contextlib.asynccontextmanager
+    async def lifespan(_: FastAPI) -> Any:
+        async with mcp_sessions.run() if mcp_sessions else contextlib.nullcontext():
+            yield
+
     app = FastAPI(
+        lifespan=lifespan,
         title="EU Disclosure Atlas API",
         version=__version__,
         description=DESCRIPTION,
@@ -111,21 +158,33 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
             {"name": "issuers", "description": "Issuer profiles and insider activity"},
             {"name": "stats", "description": "Market-wide aggregates"},
             {"name": "stream", "description": "Server-sent events for new filings"},
+            {"name": "ai", "description": "Ask the Atlas: questions in plain English, answered with SQL"},
             {"name": "meta", "description": "Health and source coverage"},
         ],
     )
+    mcp_sessions = _mount_mcp(app, lake)
+    ai_read_model: ReadModel | None = None
+    # Middleware runs outermost last-added: security headers, then CORS, then the per-IP rate limit.
+    per_minute, burst = rate_limit or rate_limit_settings()
+    if per_minute > 0:
+        app.add_middleware(RateLimitMiddleware, per_minute=per_minute, burst=burst)
     origins = os.environ.get("ATLAS_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[o.strip() for o in origins.split(",") if o.strip()],
-        allow_methods=["GET"],
+        allow_methods=["GET", "POST"],
         allow_headers=["*"],
         expose_headers=["ETag", "X-Atlas-Snapshot"],
     )
+    app.add_middleware(SecurityHeadersMiddleware)
 
     @app.exception_handler(StarletteHTTPException)
     async def http_problem(request: Request, exc: StarletteHTTPException) -> JSONResponse:
         return _problem(request, exc.status_code, exc.detail)
+
+    @app.exception_handler(UnknownSnapshot)
+    async def unknown_snapshot(request: Request, exc: UnknownSnapshot) -> JSONResponse:
+        return _problem(request, HTTPStatus.NOT_FOUND, str(exc))
 
     @app.exception_handler(RequestValidationError)
     async def validation_problem(request: Request, exc: RequestValidationError) -> JSONResponse:
@@ -177,6 +236,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         q: Annotated[str | None, Query(description="Issuer name contains")] = None,
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
         cursor: str | None = None,
+        as_of: AsOf = None,
     ) -> Any:
         where: list[str] = []
         params: list[Any] = []
@@ -221,7 +281,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
                 )
                 params += [published, published, record]
         clause = f"WHERE {' AND '.join(where)}" if where else ""
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             rows = snap.rows(
@@ -235,8 +295,8 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
             return Page[Transaction](items=items, next_cursor=next_cursor, snapshot=snap.version)
 
     @app.get("/v1/insider-transactions/{record_id}", response_model=Transaction, tags=["insider-transactions"])
-    def get_transaction(record_id: str, request: Request, response: Response) -> Any:
-        with read_model.snapshot() as snap:
+    def get_transaction(record_id: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             row = snap.one(f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE record_id = ?", [record_id])
@@ -251,6 +311,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         q: Annotated[str | None, Query(description="Name contains, or exact LEI")] = None,
         country: str | None = None,
         limit: Annotated[int, Query(ge=1, le=500)] = 50,
+        as_of: AsOf = None,
     ) -> Any:
         where, params = ["issuer_lei IS NOT NULL"], []
         if q:
@@ -259,7 +320,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         if country:
             where.append("jurisdiction = ?")
             params.append(country.upper())
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             return snap.rows(
@@ -269,9 +330,9 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
             )
 
     @app.get("/v1/issuers/{lei}", response_model=IssuerDetail, tags=["issuers"])
-    def get_issuer(lei: str, request: Request, response: Response) -> Any:
+    def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         lei = lei.upper()
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             summary = snap.one(
@@ -415,22 +476,67 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
 
         async def events() -> Any:
             nonlocal position
-            yield "retry: 5000\n\n"
-            last_ping = time.monotonic()
-            while not await request.is_disconnected():
-                for row in await run_in_threadpool(new_filings, position):
-                    position = (row["first_seen_at"], row["id"])
-                    event_id = f"{row['first_seen_at'].isoformat()}|{row['id']}"
-                    yield f"id: {event_id}\nevent: filing\ndata: {Transaction(**row).model_dump_json()}\n\n"
-                if time.monotonic() - last_ping >= 15:
-                    yield ": ping\n\n"
-                    last_ping = time.monotonic()
-                await asyncio.sleep(stream_poll_seconds)
+            telemetry.stream_opened()
+            try:
+                yield "retry: 5000\n\n"
+                last_ping = time.monotonic()
+                while not await request.is_disconnected():
+                    for row in await run_in_threadpool(new_filings, position):
+                        position = (row["first_seen_at"], row["id"])
+                        event_id = f"{row['first_seen_at'].isoformat()}|{row['id']}"
+                        yield f"id: {event_id}\nevent: filing\ndata: {Transaction(**row).model_dump_json()}\n\n"
+                        telemetry.stream_event_sent(row["first_seen_at"])
+                    if time.monotonic() - last_ping >= 15:
+                        yield ": ping\n\n"
+                        last_ping = time.monotonic()
+                    await asyncio.sleep(stream_poll_seconds)
+            finally:
+                telemetry.stream_closed()
 
         return StreamingResponse(
             events(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
         )
 
+    @app.post(
+        "/v1/ask",
+        response_model=AskResponse,
+        tags=["ai"],
+        responses={
+            422: {"description": "The question could not be turned into a valid read-only query"},
+            502: {"description": "The model provider failed"},
+            503: {"description": "Ask the Atlas is not configured on this server"},
+        },
+    )
+    def ask(body: AskRequest) -> Any:
+        """Answer a question with a guarded, read-only SQL query over the gold views, the rows it returned
+        and a short answer written from those rows. Research data, not investment advice."""
+        nonlocal ai_read_model
+        try:
+            from ..ai.ask import Asker, AskError, AskUnavailable
+            from ..ai.guard import SandboxedLake
+        except ImportError as exc:
+            raise HTTPException(HTTPStatus.SERVICE_UNAVAILABLE, "The ai extra is not installed") from exc
+        try:
+            client = asker or Asker.from_env()
+        except AskUnavailable as exc:
+            raise HTTPException(HTTPStatus.SERVICE_UNAVAILABLE, str(exc)) from exc
+        ai_read_model = ai_read_model or ReadModel(SandboxedLake(lake))
+        with ai_read_model.snapshot() as snap:
+            try:
+                result = client.ask(snap.cursor, body.question)
+            except AskError as exc:
+                raise HTTPException(HTTPStatus.UNPROCESSABLE_ENTITY, str(exc)) from exc
+            except Exception as exc:
+                if type(exc).__module__.startswith("anthropic"):
+                    raise HTTPException(HTTPStatus.BAD_GATEWAY, "The model provider failed; try again") from exc
+                raise
+            return AskResponse(**result.to_dict(), snapshot=snap.version)
+
+    def source_stats() -> list[dict[str, Any]]:
+        with read_model.snapshot() as snap:
+            return snap.rows(telemetry.SOURCE_STATS_SQL)
+
+    telemetry.configure(app, source_stats)
     return app
 
 

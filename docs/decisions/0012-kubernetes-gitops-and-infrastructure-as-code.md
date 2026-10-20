@@ -22,4 +22,5 @@ and preview environments for pull requests, operated by one person.
 
 ## Consequences
 - Every environment is declared in git and reproducible from scratch.
-- More platform components to keep current, managed by Renovate and Argo CD.
+- More platform components to keep current: versions are pinned and upgraded by the owner, with vulnerability
+  audits in CI. There is no update bot, so the owner stays the only contributor.

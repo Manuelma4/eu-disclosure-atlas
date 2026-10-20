@@ -144,3 +144,17 @@ def test_flow_buckets_buys_and_sells(client):
     weeks = client.get("/v1/stats/flow", params={"bucket": "week", "days": 30}).json()
     assert sum(w["buys"] for w in weeks) == 1 and sum(w["sells"] for w in weeks) == 1
     assert client.get("/v1/stats/flow", params={"bucket": "year"}).status_code == 422
+
+
+def test_as_of_time_travel_on_transactions_and_issuers(client, lake):
+    pinned = client.get("/v1/insider-transactions").headers["x-atlas-snapshot"]
+    _load(lake, [fi_row(**{"Publication date": _published(0.5), "Volume": "1.0"})])
+    old = client.get("/v1/insider-transactions", params={"as_of": pinned})
+    assert old.status_code == 200 and len(old.json()["items"]) == 3 and old.json()["snapshot"] == pinned
+    assert "immutable" in old.headers["cache-control"]
+    lei = client.get("/v1/issuers", params={"q": "robotics", "as_of": pinned}).json()[0]["lei"]
+    assert client.get(f"/v1/issuers/{lei}", params={"as_of": pinned}).json()["transactions"] == 2
+    item = old.json()["items"][0]["id"]
+    assert client.get(f"/v1/insider-transactions/{item}", params={"as_of": pinned}).status_code == 200
+    missing = client.get("/v1/insider-transactions", params={"as_of": 10_000})
+    assert missing.status_code == 404 and missing.json()["status"] == 404

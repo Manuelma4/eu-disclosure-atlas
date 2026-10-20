@@ -43,13 +43,14 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 |---|---|---|
 | **Website** | Live tape of new filings, insider flow, largest buys, company pages, filings explorer, architecture | Live (Next.js 16.4) |
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
-| **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
+| **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable; fanned out from Kafka by a Go gateway | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
-| **MCP server** | Tools and MCP Apps so AI agents can query the dataset | Planned (P4) |
-| **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
+| **MCP server `/mcp`** | Tools, a guarded `sql` tool and an MCP App so AI agents can query the dataset ([docs/ai.md](docs/ai.md)) | Live |
+| **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
+| **Alerts and webhooks** | Sign-in (Keycloak, passkeys), watchlists, email and Standard Webhooks with retries (Go service on Kafka) | Live (local stack) |
 
-Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
-models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
+Under the hood: connectors per regulator → a medallion lakehouse on DuckLake (bronze, silver, gold) orchestrated
+by Dagster → snapshot-pinned read models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
 PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](docs/architecture.md), decisions:
 [docs/decisions/](docs/decisions/).
 
@@ -57,8 +58,8 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 |---|---|
 | Website | Next.js 16.4 (React 19.3, Cache Components), TypeScript, Tailwind CSS v4, typed client generated from OpenAPI |
 | API | Python 3.14, FastAPI, Pydantic v2, OpenAPI 3.1, SSE, RFC 9457 errors |
-| Data | DuckDB 1.5 on Parquet today, DuckLake 1.0 (PostgreSQL 18 catalog, Cloudflare R2) next |
-| Pipeline | Connector plugins today, Dagster 1.13 assets, sensors and checks next |
+| Data | DuckLake 1.0 on DuckDB 1.5: PostgreSQL 18 catalog, Parquet on local disk or Cloudflare R2, snapshot time travel |
+| Pipeline | Connector plugins orchestrated by Dagster 1.13: partitioned assets, business-hours schedules, asset checks |
 | Services | Python (ingestion, extraction, query-api, ai-service), Go (realtime-gateway, alerts), TypeScript (web) |
 | Events | Apache Kafka 4 (KRaft) with a schema registry, CloudEvents contracts, retry and dead-letter topics |
 | Platform | Kubernetes, Helm, Argo CD (GitOps), KEDA, Strimzi, CloudNativePG, OpenTofu on Scaleway (EU) |
@@ -90,10 +91,25 @@ disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedis
 disclosure-atlas ingest fr_amf_pdmr --start 2026-07-22    # 90 days of French filings (PDF, about 20 minutes)
 disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs
 disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest every 5 minutes
+pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server over stdio (docs/ai.md)
+# or orchestrate every source with Dagster (schedules, backfills, checks): see docs/operations.md
 
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000
 ```
+
+Run the event-driven platform locally (Kafka, PostgreSQL, Keycloak, the Go realtime-gateway and alerts):
+
+```bash
+pip install -e '.[dev,api,events]'
+docker compose -p atlas -f infra/compose.yaml up -d --build  # Keycloak demo account: demo@example.org / demo-dev-only
+ATLAS_KAFKA_BOOTSTRAP=localhost:19092 ATLAS_SCHEMA_REGISTRY_URL=http://localhost:18081 \
+  disclosure-atlas watch se_fi_pdmr                       # new filings → atlas.filings.v1
+cd web && NEXT_PUBLIC_ATLAS_STREAM_URL=http://localhost:8090 npm run dev   # live tape via the gateway; sign in → Watchlist
+```
+
+Alert emails land in Mailpit (http://localhost:8025); webhooks can target the dev sink
+(`http://webhook-sink:8099/hook`, received payloads on http://localhost:8099/deliveries).
 
 Query the data directly:
 

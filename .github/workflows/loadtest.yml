@@ -1,0 +1,38 @@
+# k6 smoke profile with budgets (P7, decision 0014): REST p95 under 200 ms, revalidation p95 under 50 ms,
+# errors under 1%, live-stream connections that deliver events. Longer profiles run on demand.
+name: Load test
+on:
+  # Performance budgets are judged on main (shared runners make per-PR timings noisy), and on demand.
+  push:
+    branches: [main]
+    paths: ["src/**", "loadtests/**", "pyproject.toml"]
+  workflow_dispatch:
+
+jobs:
+  k6:
+    runs-on: ubuntu-latest
+    env:
+      PROFILE: ${{ inputs.profile || 'smoke' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install -e '.[api]'
+      - name: Seed a synthetic lake and start the API
+        env:
+          ATLAS_RATE_LIMIT_PER_MINUTE: "0"   # one load generator IP would otherwise be throttled
+        run: |
+          python loadtests/seed_lake.py /tmp/lake --transactions 20000
+          nohup disclosure-atlas --lake /tmp/lake serve --port 8000 > /tmp/api.log 2>&1 &
+          timeout 60 sh -c 'until curl -sf http://localhost:8000/v1/health; do sleep 1; done'
+      - uses: grafana/setup-k6-action@v1
+      - name: Run k6 (${{ env.PROFILE }})
+        run: k6 run -e BASE_URL=http://localhost:8000 -e PROFILE="$PROFILE" --summary-export k6-summary.json loadtests/atlas.js
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-${{ env.PROFILE }}
+          path: |
+            k6-summary.json
+            /tmp/api.log

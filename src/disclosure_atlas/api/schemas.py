@@ -3,8 +3,18 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from typing import Any
 
 from pydantic import BaseModel, Field
+
+# Gold columns behind `Transaction`, shared by the REST API, the SSE stream and the change-feed publisher.
+TX_COLUMNS = """
+    record_id AS id, source, jurisdiction AS country, published_at, first_seen_at, transaction_date,
+    issuer_name, issuer_lei, pdmr_id AS person_id, pdmr_role AS role, pdmr_role_raw AS role_raw,
+    notifier_name, closely_associated, nature, direction, instrument_type, instrument_name, isin,
+    volume, price, currency, amount, amount_eur, venue, is_open_market AS open_market, is_amendment,
+    filing_lag_days
+"""
 
 
 class Transaction(BaseModel):
@@ -122,3 +132,20 @@ class Health(BaseModel):
     status: str
     snapshot: str
     records: int
+
+
+class AskRequest(BaseModel):
+    question: str = Field(min_length=3, max_length=500, description="A question about the data, in plain English")
+
+
+class AskResponse(BaseModel):
+    question: str
+    sql: str = Field(description="The read-only query that produced the rows, as it ran")
+    explanation: str = Field(description="What the query computes")
+    columns: list[str]
+    rows: list[list[Any]]
+    truncated: bool = Field(description="True when the row limit may have cut the result")
+    answer: str = Field(description="Short answer written from the rows only; not investment advice")
+    model: str
+    prompt_version: str
+    snapshot: str = Field(description="Data version the query ran on")

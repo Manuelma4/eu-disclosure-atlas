@@ -122,12 +122,14 @@ class NetShortPosition(_Record):
     source_url: str | None = None
     published_at: datetime | None = None
     position_date: date
-    holder_name: str
+    holder_name: str  # a pseudonym ("p_...") when the holder is a natural person
+    holder_is_natural_person: bool = False
     holder_lei: str | None = None
     issuer_name: str
     issuer_lei: str | None = None
     isin: str | None = None
-    position_pct: float
+    position_pct: float | None  # None when the source only says "below 0.5%"
+    below_threshold: bool = False  # the notification that the position fell below 0.5%
     is_superseded: bool = False
     fetched_at: datetime
     parser: str

@@ -43,7 +43,9 @@ One public net short position (SSR Article 6: at least 0.5% of issued share capi
 |---|---|---|
 | `record_id`, `source`, `jurisdiction`, `source_url`, `published_at` | | As above |
 | `position_date` | date | Date of the position |
-| `holder_name`, `holder_lei` | string | Position holder (a legal entity) |
+| `holder_name`, `holder_lei` | string | Position holder; legal entities keep their name, natural persons get a pseudonym (`p_...`, stable per issuer) |
+| `holder_is_natural_person` | bool | The holder did not look like a legal entity (no LEI, legal form or institutional word) and was pseudonymized |
 | `issuer_name`, `issuer_lei`, `isin` | string | Issuer of the shares |
-| `position_pct` | float | Net short position in % of issued share capital |
+| `position_pct` | float | Net short position in % of issued share capital; null when the source only says "below 0.5%" |
+| `below_threshold` | bool | The disclosure that the position fell below 0.5% (published once, then the position is no longer public) |
 | `is_superseded`, `fetched_at`, `parser` | | As above |

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date
+from pathlib import Path
 
-from .connectors.base import Connector, ParseContext
+from .connectors.base import Connector, ParseContext, RawDocument
 from .lake import Lake
 
 
@@ -27,13 +28,18 @@ class IngestReport:
         return "\n".join([text, *(f"  warning: {w}" for w in self.warnings)])
 
 
+def provenance(connector: Connector, lake: Lake, doc: RawDocument, bronze_path: Path) -> dict[str, str]:
+    """Recorded in the DuckLake commit, so each snapshot names the raw document and parser behind it."""
+    return {"sha256": doc.sha256, "parser": connector.parser_id, "bronze": str(bronze_path.relative_to(lake.root))}
+
+
 def ingest(connector: Connector, lake: Lake, start: date, end: date) -> IngestReport:
     report = IngestReport(source=connector.name, start=start, end=end)
     ctx = ParseContext(pseudonym_key=lake.pseudonym_key())
     for doc in connector.fetch(start, end):
-        lake.write_bronze(doc)
+        path = lake.write_bronze(doc)
         records = list(connector.parse(doc, ctx))
-        lake.write_silver(connector.dataset, connector.name, records)
+        lake.write_silver(connector.dataset, connector.name, records, provenance=provenance(connector, lake, doc, path))
         report.documents += 1
         report.records += len(records)
         report.superseded += sum(1 for r in records if r.is_superseded)

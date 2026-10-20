@@ -24,13 +24,22 @@ class PoliteClient:
         self._last_request: dict[str, float] = {}
 
     def get(self, url: str, params: Mapping[str, Any] | None = None) -> httpx.Response:
+        return self.request("GET", url, params=params)
+
+    def post(self, url: str, data: Mapping[str, Any] | None = None) -> httpx.Response:
+        """Form POST (some registers are stateful search forms); cookies persist across calls."""
+        return self.request("POST", url, data=data)
+
+    def request(
+        self, method: str, url: str, params: Mapping[str, Any] | None = None, data: Mapping[str, Any] | None = None
+    ) -> httpx.Response:
         host = httpx.URL(url).host
         for attempt in range(self.retries + 1):
             wait = self.min_interval - (time.monotonic() - self._last_request.get(host, 0.0))
             if wait > 0:
                 time.sleep(wait)
             try:
-                response = self._client.get(url, params=params)
+                response = self._client.request(method, url, params=params, data=data)
             except httpx.TransportError:
                 if attempt == self.retries:
                     raise
