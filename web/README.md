@@ -37,6 +37,6 @@ focus, and a table view for every chart.
 
 ## End-to-end tests
 `scripts/serve-fixture.mjs` writes a synthetic lake (`e2e/fixture_lake.py`, invented names only), serves it with
-the real FastAPI app on port 8790 (synthetic prices) and the production build on port 3190. The suite covers the
+the real FastAPI app on port 8005 (synthetic prices) and the production build on port 3005. The suite covers the
 home, search, company, filings and explore flows, translations, keyboard paths and axe scans in light and dark
 mode. The million-row explorer benchmark is opt-in: `FIXTURE_ROWS=1200000 npx playwright test explore-scale`.

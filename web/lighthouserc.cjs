@@ -2,7 +2,7 @@
 // Run with `npm run lighthouse` (starts scripts/serve-fixture.mjs, uses Playwright's Chromium).
 const { chromium } = require("@playwright/test");
 
-const BASE = "http://127.0.0.1:3190";
+const BASE = "http://127.0.0.1:3005";
 const ROBOTICS_LEI = "549300EXAMPLE0000073";
 
 module.exports = {

@@ -1,7 +1,7 @@
 // Starts the website against a fixture API, for Playwright and Lighthouse:
 //   1. writes a synthetic lake (e2e/fixture_lake.py; FIXTURE_ROWS rows, 4,000 by default),
-//   2. serves it with the real FastAPI app on :8790 (synthetic prices, CORS for :3190),
-//   3. builds the site into .next-e2e (skip with --no-build) and serves it on :3190.
+//   2. serves it with the real FastAPI app on :8005 (synthetic prices, CORS for :3005),
+//   3. builds the site into .next-e2e (skip with --no-build) and serves it on :3005.
 // Python: $ATLAS_PYTHON, else ../.venv/bin/python, else python3 (needs `pip install -e '.[api]'`).
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -12,8 +12,8 @@ const web = join(dirname(fileURLToPath(import.meta.url)), "..");
 const repo = join(web, "..");
 const python =
   process.env.ATLAS_PYTHON ?? (existsSync(join(repo, ".venv", "bin", "python")) ? join(repo, ".venv", "bin", "python") : "python3");
-const API_PORT = 8790;
-const WEB_PORT = 3190;
+const API_PORT = 8005;
+const WEB_PORT = 3005;
 const api = `http://127.0.0.1:${API_PORT}`;
 const lake = join(web, "e2e", ".lake");
 const env = {
