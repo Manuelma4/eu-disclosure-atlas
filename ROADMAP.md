@@ -103,11 +103,14 @@ Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs 
 
 ## M2 Short positions `[ ]`
 
-### WS4 Net short positions (SSR) `[ ]`
+### WS4 Net short positions (SSR) `[x]`
 Owns: `connectors/*_shorts.py`, their docs and tests.
 - Current and historic public net short positions from FR, DE, NL, ES, IT, IE, SE, then others.
 - Holder names are legal entities (funds); keep them. Map issuers to LEI/ISIN where the source provides them.
 - Done when: five jurisdictions ingest full available history into `net_short_positions`.
+- Done: `fr_amf_shorts`, `de_bafin_shorts`, `nl_afm_shorts`, `es_cnmv_shorts`, `ie_cbi_shorts`, `se_fi_shorts`
+  (about 177,000 positions since November 2012). Italy (Consob) is blocked by a CAPTCHA. Next: DK, FI, NO, BE, AT,
+  PT and others.
 
 ## M3 Reference data and enrichment `[ ]`
 
