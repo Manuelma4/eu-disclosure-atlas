@@ -23,6 +23,7 @@ dev = ["pytest>=8.0", "ruff>=0.6"]
 api = ["fastapi>=0.115", "uvicorn[standard]>=0.30"]
 pdf = ["pdfplumber>=0.11"]
 llm = ["anthropic>=0.40"]
+ai = ["mcp>=2.3,<3", "anthropic>=1.15", "sqlglot>=30.20"]
 research = ["pandas>=2.2", "numpy>=1.26", "statsmodels>=0.14", "yfinance>=0.2.40", "matplotlib>=3.8"]
 
 [project.scripts]
@@ -34,8 +35,11 @@ Homepage = "https://github.com/Manuelma4/eu-disclosure-atlas"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"disclosure_atlas.ai" = ["prompts/*.md", "ui/*.html"]
+
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "evals"]
 pythonpath = ["tests"]
 addopts = "-m 'not network'"
 markers = ["network: hits live regulator endpoints (run with: pytest -m network)"]

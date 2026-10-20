@@ -619,10 +619,137 @@
           }
         }
       }
+    },
+    "/v1/ask": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Ask",
+        "description": "Answer a question with a guarded, read-only SQL query over the gold views, the rows it returned\nand a short answer written from those rows. Research data, not investment advice.",
+        "operationId": "ask_v1_ask_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The question could not be turned into a valid read-only query"
+          },
+          "502": {
+            "description": "The model provider failed"
+          },
+          "503": {
+            "description": "Ask the Atlas is not configured on this server"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AskRequest": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Question",
+            "description": "A question about the data, in plain English"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "title": "AskRequest"
+      },
+      "AskResponse": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "sql": {
+            "type": "string",
+            "title": "Sql",
+            "description": "The read-only query that produced the rows, as it ran"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation",
+            "description": "What the query computes"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "rows": {
+            "items": {
+              "items": {},
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated",
+            "description": "True when the row limit may have cut the result"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "Short answer written from the rows only; not investment advice"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot",
+            "description": "Data version the query ran on"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "sql",
+          "explanation",
+          "columns",
+          "rows",
+          "truncated",
+          "answer",
+          "model",
+          "prompt_version",
+          "snapshot"
+        ],
+        "title": "AskResponse"
+      },
       "CountryStat": {
         "properties": {
           "country": {
@@ -1499,6 +1626,10 @@
     {
       "name": "stream",
       "description": "Server-sent events for new filings"
+    },
+    {
+      "name": "ai",
+      "description": "Ask the Atlas: questions in plain English, answered with SQL"
     },
     {
       "name": "meta",
