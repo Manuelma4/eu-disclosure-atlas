@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { DivergingBars } from "@/components/diverging-bars";
 import { LiveTape } from "@/components/live-tape";
 import { TimeAgo } from "@/components/time-ago";
-import { Card, Skeleton, StatTile } from "@/components/ui";
+import { Card, Skeleton, StatTile, TableScroll } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { getFlow, getOverview, getSources } from "@/lib/api/data";
 import { getFormat, getLabels } from "@/lib/format-server";
@@ -102,7 +102,7 @@ async function HomeData() {
             })}
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           <StatTile label={t("filings")} value={format.int(overview.transactions)} note={t("liveSources", { count: overview.sources })} />
           <StatTile label={t("issuers")} value={format.int(overview.issuers)} note={t("countries", { count: overview.countries })} />
           <StatTile
@@ -161,8 +161,8 @@ async function HomeData() {
       </div>
 
       <Card title={t("coverageTitle")} subtitle={t("coverageSubtitle")}>
-        <div className="overflow-x-auto">
-          <table className="tabular w-full text-sm">
+        <TableScroll label={t("coverageTitle")}>
+          <table className="tabular w-full min-w-[34rem] text-sm">
             <thead className="text-left text-ink-3">
               <tr className="border-b border-hairline">
                 <th scope="col" className="py-2 pr-4 font-medium">{t("country")}</th>
@@ -199,7 +199,7 @@ async function HomeData() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       </Card>
     </div>
   );

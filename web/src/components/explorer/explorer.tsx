@@ -43,8 +43,22 @@ export function Explorer() {
   const weekPlot = useRef<HTMLDivElement>(null);
   const rolePlot = useRef<HTMLDivElement>(null);
   const amountPlot = useRef<HTMLDivElement>(null);
+  // "narrow" when a half-width card is under 420 px (phones, small tablets): fewer ticks, tighter margins.
+  // Plots are built at their card's width and scale with it; crossing this breakpoint rebuilds them.
+  const [layout, setLayout] = useState<"narrow" | "wide" | null>(null);
+  useEffect(() => {
+    const element = amountPlot.current;
+    if (!element) return;
+    const measure = () => setLayout(element.clientWidth < 420 ? "narrow" : "wide");
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!layout) return;
+    const narrow = layout === "narrow";
     let cancelled = false;
     let teardown = () => {};
     (async () => {
@@ -63,7 +77,7 @@ export function Explorer() {
         const domain = [labels.buy, labels.sell, labels.other];
         const range = ["var(--buy)", "var(--sell)", "var(--other)"];
         const common = (el: HTMLElement | null, height: number) => [
-          vg.width(Math.max(320, el?.clientWidth ?? 640)),
+          vg.width(Math.max(260, el?.clientWidth ?? 640)),
           vg.height(height),
           vg.colorDomain(domain),
           vg.colorRange(range),
@@ -85,6 +99,7 @@ export function Explorer() {
           vg.yLabel(t("count")),
           vg.yTickFormat("~s"),
           vg.xTickFormat((d: Date) => format.month(d.toISOString())),
+          vg.xTicks(Math.max(3, Math.floor((weekPlot.current?.clientWidth ?? 640) / 90))),
           vg.marginLeft(44),
           vg.yGrid(true),
           ...common(weekPlot.current, 220),
@@ -102,7 +117,7 @@ export function Explorer() {
           vg.xLabel(t("count")),
           vg.yLabel(null),
           vg.xTickFormat("~s"),
-          vg.marginLeft(104),
+          vg.marginLeft(narrow ? 88 : 104),
           vg.xGrid(true),
           ...common(rolePlot.current, 240),
         );
@@ -121,6 +136,7 @@ export function Explorer() {
           vg.yLabel(t("count")),
           vg.yTickFormat("~s"),
           vg.xTickFormat((v: number) => format.eur(v)),
+          vg.xTicks(narrow ? 3 : 6),
           vg.marginLeft(44),
           vg.yGrid(true),
           ...common(amountPlot.current, 240),
@@ -191,7 +207,7 @@ export function Explorer() {
       cancelled = true;
       teardown();
     };
-  }, [labels, t, format, attempt]);
+  }, [labels, t, format, attempt, layout]);
 
   const toggleRole = useCallback(
     (label: string) => {
@@ -427,7 +443,7 @@ function View({
           <div ref={plot} className="explorer-plot text-ink-3" />
           {loading && <div aria-hidden="true" className="absolute inset-0 animate-pulse rounded-lg bg-surface-2" />}
         </div>
-        <div id={tableId} hidden={!showTable} className="mt-4 max-h-80 overflow-auto">
+        <div id={tableId} hidden={!showTable} role="region" aria-label={title} tabIndex={0} className="mt-4 max-h-80 overflow-auto">
           {table}
         </div>
       </div>
@@ -451,7 +467,7 @@ function SideTable({
   const t = useTranslations("explore");
   const format = useFormat();
   return (
-    <table className="tabular w-full text-sm">
+    <table className="tabular w-full min-w-[26rem] text-sm">
       <caption className="sr-only">{caption}</caption>
       <thead className="sticky top-0 bg-surface text-left text-ink-3">
         <tr className="border-b border-hairline">

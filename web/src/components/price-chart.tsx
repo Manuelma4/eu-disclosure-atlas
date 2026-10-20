@@ -88,7 +88,8 @@ export function PriceChart({ series, issuerName }: { series: PriceSeries; issuer
         rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.12, bottom: 0.12 } },
         timeScale: { borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
         handleScale: { mouseWheel: false },
-        handleScroll: { mouseWheel: false, pressedMouseMove: true },
+        // Vertical swipes scroll the page on phones; horizontal drags pan the chart.
+        handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
         kineticScroll: { mouse: !reduceMotion, touch: !reduceMotion },
         crosshair: { mode: lw.CrosshairMode.Magnet },
       });
@@ -171,6 +172,22 @@ export function PriceChart({ series, issuerName }: { series: PriceSeries; issuer
     });
   };
 
+  // Touch: the library shows its crosshair only after a long press, so a tap selects the nearest day here.
+  const tapStart = useRef<{ x: number; y: number } | null>(null);
+  const onPointerDown = (event: React.PointerEvent) => {
+    tapStart.current = event.pointerType === "mouse" ? null : { x: event.clientX, y: event.clientY };
+  };
+  const onPointerUp = (event: React.PointerEvent) => {
+    const start = tapStart.current;
+    const ref = chartRef.current;
+    tapStart.current = null;
+    if (!start || !ref || !container.current) return;
+    if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > 10) return; // a drag, not a tap
+    const x = event.clientX - container.current.getBoundingClientRect().left;
+    const logical = ref.chart.timeScale().coordinateToLogical(x);
+    if (logical !== null) moveTo(Math.round(logical));
+  };
+
   const onKeyDown = (event: React.KeyboardEvent) => {
     const current = active ?? days.length - 1;
     const keys: Record<string, () => number | undefined> = {
@@ -230,6 +247,8 @@ export function PriceChart({ series, issuerName }: { series: PriceSeries; issuer
         aria-roledescription="chart"
         aria-label={t("ariaLabel", { name: issuerName })}
         onKeyDown={onKeyDown}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
         onBlur={() => {
           chartRef.current?.chart.clearCrosshairPosition();
           setHover(null);
@@ -240,8 +259,9 @@ export function PriceChart({ series, issuerName }: { series: PriceSeries; issuer
         <div
           role="status"
           aria-live="polite"
-          className={`pointer-events-none absolute top-1 z-10 w-52 rounded-lg border border-hairline bg-surface p-3 text-xs shadow-lg ${point ? "" : "sr-only"}`}
-          style={hover ? { left: hover.left } : undefined}
+          // Phones: under the chart, full width (a floating box would hide most of it). Larger: beside the crosshair.
+          className={`pointer-events-none relative mt-2 rounded-lg border border-hairline bg-surface p-3 text-xs sm:absolute sm:top-1 sm:z-10 sm:mt-0 sm:w-52 sm:left-[var(--tip-left)] sm:shadow-lg ${point ? "" : "sr-only"}`}
+          style={hover ? ({ "--tip-left": `${hover.left}px` } as React.CSSProperties) : undefined}
         >
           {point && (
             <>
@@ -283,8 +303,8 @@ export function PriceChart({ series, issuerName }: { series: PriceSeries; issuer
         })}
       </p>
 
-      <div id={tableId} hidden={!showTable} className="mt-4 max-h-80 overflow-auto">
-        <table className="tabular w-full text-sm">
+      <div id={tableId} hidden={!showTable} role="region" aria-label={t("tableCaption")} tabIndex={0} className="mt-4 max-h-80 overflow-auto">
+        <table className="tabular w-full min-w-[30rem] text-sm">
           <caption className="sr-only">{t("tableCaption")}</caption>
           <thead className="sticky top-0 bg-surface text-left text-ink-3">
             <tr className="border-b border-hairline">

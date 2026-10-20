@@ -48,3 +48,12 @@ export function NatureBadge({ nature, label, hint }: { nature: string; label: st
 export function Skeleton({ className = "" }: { className?: string }) {
   return <div aria-hidden="true" className={`animate-pulse rounded-xl border border-hairline bg-surface ${className}`} />;
 }
+
+/** Horizontal scroll area for a wide table: keyboard-focusable and labelled, as WCAG requires of scroll regions. */
+export function TableScroll({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
+  return (
+    <div role="region" aria-label={label} tabIndex={0} className={`overflow-x-auto rounded-sm ${className}`}>
+      {children}
+    </div>
+  );
+}

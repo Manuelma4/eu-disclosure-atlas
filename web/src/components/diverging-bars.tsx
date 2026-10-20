@@ -41,10 +41,20 @@ export function DivergingBars({ data, granularity, height = 260 }: {
   const [showTable, setShowTable] = useState(false);
   const tableId = useId();
 
+  // Tapping outside the chart closes a tooltip opened by touch.
+  useEffect(() => {
+    if (active === null) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!wrapper.current?.contains(event.target as Node)) setActive(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [active]);
+
   useEffect(() => {
     const element = wrapper.current;
     if (!element) return;
-    const observer = new ResizeObserver(([entry]) => setWidth(Math.max(280, entry.contentRect.width)));
+    const observer = new ResizeObserver(([entry]) => setWidth(Math.max(240, entry.contentRect.width)));
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
@@ -92,8 +102,18 @@ export function DivergingBars({ data, granularity, height = 260 }: {
         </button>
       </div>
 
-      <div ref={wrapper} className="relative" onPointerLeave={() => setActive(null)}>
-        <svg width={width} height={height} role="group" aria-label={t("ariaLabel")}>
+      <div
+        ref={wrapper}
+        className="relative"
+        // A finger "leaves" as soon as it lifts: keep the tapped period's tooltip until the next tap.
+        onPointerLeave={(event) => event.pointerType === "mouse" && setActive(null)}
+      >
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="block h-auto w-full"
+          role="group"
+          aria-label={t("ariaLabel")}
+        >
           {ticks.map((tick) => (
             <g key={tick}>
               <line
@@ -145,6 +165,7 @@ export function DivergingBars({ data, granularity, height = 260 }: {
                     sells: d.sells,
                   })}
                   onPointerEnter={() => setActive(i)}
+                  onPointerDown={() => setActive(i)}
                   onFocus={() => setActive(i)}
                   onBlur={() => setActive(null)}
                   className="cursor-default outline-none focus-visible:stroke-[var(--accent)] focus-visible:stroke-2"
@@ -183,8 +204,8 @@ export function DivergingBars({ data, granularity, height = 260 }: {
         )}
       </div>
 
-      <div id={tableId} hidden={!showTable} className="mt-4 overflow-x-auto">
-        <table className="tabular w-full text-sm">
+      <div id={tableId} hidden={!showTable} role="region" aria-label={t("ariaLabel")} tabIndex={0} className="mt-4 overflow-x-auto">
+        <table className="tabular w-full min-w-[34rem] text-sm">
           <thead className="text-left text-ink-3">
             <tr className="border-b border-hairline">
               <th scope="col" className="py-2 pr-4 font-medium">{t("period")}</th>

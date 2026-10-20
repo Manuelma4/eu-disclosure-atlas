@@ -68,7 +68,7 @@ async function Company({ params }: { params: Promise<{ lei: string }> }) {
         </p>
       </header>
 
-      <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label={t("net365")} value={format.signedEur(issuer.net_open_market_eur_365d)} note={t("net365Note")} />
         <StatTile label={t("buyers90")} value={format.int(issuer.distinct_buyers_90d)} note={t("people")} />
         <StatTile label={t("sellers90")} value={format.int(issuer.distinct_sellers_90d)} note={t("people")} />

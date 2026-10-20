@@ -187,28 +187,30 @@ export function WatchlistManager() {
       </Card>
 
       <Card title={t("deliveriesTitle")} className="lg:col-span-2">
-        <table className="w-full text-left text-sm">
-          <thead className="text-xs text-ink-3">
-            <tr>
-              <th scope="col" className="py-1 font-normal">{t("when")}</th>
-              <th scope="col" className="py-1 font-normal">{t("channel")}</th>
-              <th scope="col" className="py-1 font-normal">{t("status")}</th>
-              <th scope="col" className="py-1 font-normal">{t("attempts")}</th>
-              <th scope="col" className="py-1 font-normal">{t("filing")}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-hairline">
-            {(data?.deliveries ?? []).map((d) => (
-              <tr key={d.id}>
-                <td className="py-1.5 text-ink-2">{format.dateTime(d.created_at)}</td>
-                <td className="py-1.5">{t(`channel_${d.channel}`)}</td>
-                <td className="py-1.5">{t(`state_${d.status}`)}</td>
-                <td className="py-1.5 tabular">{d.attempts}</td>
-                <td className="py-1.5 font-mono text-xs text-ink-3">{d.filing_id.slice(0, 12)}</td>
+        <div className="overflow-x-auto" role="region" aria-label={t("deliveriesTitle")} tabIndex={0}>
+          <table className="w-full min-w-[30rem] text-left text-sm">
+            <thead className="text-xs text-ink-3">
+              <tr>
+                <th scope="col" className="py-1 font-normal">{t("when")}</th>
+                <th scope="col" className="py-1 font-normal">{t("channel")}</th>
+                <th scope="col" className="py-1 font-normal">{t("status")}</th>
+                <th scope="col" className="py-1 font-normal">{t("attempts")}</th>
+                <th scope="col" className="py-1 font-normal">{t("filing")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-hairline">
+              {(data?.deliveries ?? []).map((d) => (
+                <tr key={d.id}>
+                  <td className="py-1.5 text-ink-2">{format.dateTime(d.created_at)}</td>
+                  <td className="py-1.5">{t(`channel_${d.channel}`)}</td>
+                  <td className="py-1.5">{t(`state_${d.status}`)}</td>
+                  <td className="py-1.5 tabular">{d.attempts}</td>
+                  <td className="py-1.5 font-mono text-xs text-ink-3">{d.filing_id.slice(0, 12)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {data && !data.deliveries.length && <p className="pt-2 text-sm text-ink-3">{t("noDeliveries")}</p>}
       </Card>
     </div>

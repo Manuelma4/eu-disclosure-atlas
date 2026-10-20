@@ -13,7 +13,9 @@
     "api": "API",
     "skip": "Zum Inhalt springen",
     "language": "Sprache",
-    "home": "EU Disclosure Atlas, Startseite"
+    "home": "EU Disclosure Atlas, Startseite",
+    "menu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
   },
   "search": {
     "open": "Unternehmen suchen",
@@ -147,7 +149,8 @@
     "late": "verspätet · {days} T",
     "lateTitle": "Mehr als 5 Kalendertage nach dem Geschäft veröffentlicht",
     "via": "über {name}",
-    "empty": "Keine passenden Meldungen."
+    "empty": "Keine passenden Meldungen.",
+    "caption": "Tabelle der Meldungen"
   },
   "filings": {
     "metaDescription": "Durchsuchen Sie alle Eigengeschäfte von Führungskräften im Atlas nach Emittent, Funktion, Art und Datum.",
@@ -279,7 +282,8 @@
       "gateway": "SSE-Fan-out; Python-Stream bereits live",
       "website": "Cache Components, typisierter Client, DuckDB-WASM-Explorer",
       "websiteName": "Website · Next.js 16.4",
-      "ai": "Den Atlas fragen, zustandsloses MCP, MCP Apps"
+      "ai": "Den Atlas fragen, zustandsloses MCP, MCP Apps",
+      "kafkaName": "Kafka 4 + Schema-Registry"
     },
     "stackTitle": "Stack",
     "stackSubtitle": "Aktuelle Versionen, Oktober 2026",
@@ -333,7 +337,10 @@
       }
     },
     "stackChoice": {
-      "services": "Microservices in Python, Go und TypeScript"
+      "services": "Microservices in Python, Go und TypeScript",
+      "explorer": "DuckDB-WASM, Mosaic (vgplot), Parquet über HTTP-Range-Anfragen",
+      "events": "Kafka 4 (KRaft), Schema-Registry, CloudEvents",
+      "ai": "Claude-API oder lokales Ollama, MCP"
     },
     "principlesTitle": "Prinzipien",
     "principles": {
