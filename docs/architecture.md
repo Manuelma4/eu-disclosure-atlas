@@ -254,7 +254,8 @@ Details: [0012](decisions/0012-kubernetes-gitops-and-infrastructure-as-code.md).
   - images built, scanned, given an SBOM, signed and pushed to GHCR.
 - **CD:** Argo CD (GitOps) with an app-of-apps per environment and an ephemeral namespace per pull request.
   Production runs on Scaleway Kapsule (EU), declared with OpenTofu. k3d runs the same charts locally and in CI.
-- **Releases:** conventional commits and release-please, one version per service.
+- **Releases:** conventional commits and tags created by the owner, with GitHub Releases built from tags. No bot
+  commits: the owner is the only contributor, enforced by hooks and a CI check.
 
 ## Evolution
 | Phase | Scope |

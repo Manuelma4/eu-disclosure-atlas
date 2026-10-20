@@ -1,0 +1,120 @@
+{
+  "uid": "atlas-kafka-lag",
+  "title": "Kafka: consumer lag (placeholder)",
+  "description": "Consumer-group lag for the event backbone (decision 0011). Fills in once P3's consumers run: Redpanda locally, kafka-exporter on Strimzi.",
+  "tags": [
+    "atlas",
+    "kafka",
+    "events"
+  ],
+  "schemaVersion": 41,
+  "version": 1,
+  "editable": false,
+  "timezone": "utc",
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "graphTooltip": 1,
+  "links": [
+    {
+      "title": "Runbooks",
+      "type": "link",
+      "targetBlank": true,
+      "url": "https://github.com/Manuelma4/eu-disclosure-atlas/tree/main/docs/runbooks"
+    }
+  ],
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Lag by consumer group (records)",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (group) (redpanda_kafka_consumer_group_lag_sum) or sum by (group) (label_replace(kafka_consumergroup_lag, \"group\", \"$1\", \"consumergroup\", \"(.*)\"))",
+          "legendFormat": "{{group}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {},
+      "id": 1
+    },
+    {
+      "type": "timeseries",
+      "title": "Produced records per second by topic",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (redpanda_topic) (rate(redpanda_kafka_records_produced_total[$__rate_interval]))",
+          "legendFormat": "{{redpanda_topic}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {},
+      "id": 2
+    }
+  ]
+}

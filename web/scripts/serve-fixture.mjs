@@ -24,6 +24,8 @@ const env = {
   ATLAS_PRICE_PROVIDER: "synthetic",
   ATLAS_CORS_ORIGINS: `http://127.0.0.1:${WEB_PORT},http://localhost:${WEB_PORT}`,
   NEXT_TELEMETRY_DISABLED: "1",
+  // Every test shares one client address; the per-IP rate limit is covered by the API test suite.
+  ATLAS_RATE_LIMIT_PER_MINUTE: "0",
   NEXT_PUBLIC_SITE_URL: `http://127.0.0.1:${WEB_PORT}`,
 };
 

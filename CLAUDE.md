@@ -4,11 +4,11 @@ Open, unified data on insider trading (MAR Article 19) and short selling (SSR Ar
 markets, plus reproducible research on top of it. Read README.md first, then ROADMAP.md for your workstream.
 
 ## Commands
-- Setup: `python3.14 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev,api]'`
+- Setup: `python3.14 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev,api,ai]'`
 - Checks (run before every commit): `ruff check . && pytest -q`
 - Live checks (hit real endpoints, opt-in): `pytest -m network -q`
 - CLI: `disclosure-atlas sources | ingest <source> --start YYYY-MM-DD | watch <source> | reference fx | serve |
-  openapi | stats | query "<SQL>" | export`
+  openapi | mcp | stats | query "<SQL>" | export`
 - API contract: after changing `src/disclosure_atlas/api/`, run
   `disclosure-atlas --lake /tmp/empty-lake openapi > web/openapi.json && (cd web && npm run api:types)`
   (CI fails if `web/openapi.json` drifts from the code).
@@ -27,6 +27,8 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
 - `src/disclosure_atlas/privacy.py`: pseudonyms for natural persons; legal-entity detection.
 - `src/disclosure_atlas/lake.py`: bronze (raw) -> silver (Parquet) -> gold (DuckDB views).
 - `src/disclosure_atlas/api/`: FastAPI app (REST `/v1`, SSE `/v1/stream`), read model pinned to the lake version.
+- `src/disclosure_atlas/ai/`: SQL guard, MCP server (`/mcp`, stdio) and Ask the Atlas (`/v1/ask`); evals in
+  `evals/ask/`; see docs/ai.md.
 - `src/disclosure_atlas/reference/`: reference data (ECB FX now; LEI, ISIN and tickers in WS5).
 - `web/`: Next.js website; a client of the public API only.
 - `services/<name>/`: Go services (realtime-gateway, alerts), each with its own go.mod, tests and Dockerfile.
@@ -36,8 +38,11 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
 
 ## Rules
 - English only: code, docs, commits, PRs.
-- Git: commits authored by `Manuelma4 <71296266+Manuelma4@users.noreply.github.com>`, with no Co-Authored-By
-  or Claude-Session trailers (the owner's explicit preference).
+- Git: the owner must be the **only contributor**. Commits are authored and committed by
+  `Manuelma4 <71296266+Manuelma4@users.noreply.github.com>`, with no Co-Authored-By or Claude-Session trailers,
+  and PR bodies carry no "Generated with" lines. No bot commits or bot PRs: no Renovate, no Dependabot version
+  updates, no release-please, and no GitHub Actions that push commits (dependency risk is covered by audits in
+  CI). Local hooks strip trailers and block foreign authors; the `Single contributor` workflow enforces it on PRs.
 - One branch per workstream (see ROADMAP.md), PR to `main`, CI green. Do not push to `main` directly unless
   the owner asks.
 - Stay in your lane: own your workstream's files. Changes to shared modules (`models.py`, `normalize.py`,

@@ -45,7 +45,8 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`, `GET /v1/exports`), daily releases next | Partial |
-| **MCP server** | Tools and MCP Apps so AI agents can query the dataset | Planned (P4) |
+| **MCP server `/mcp`** | Tools, a guarded `sql` tool and an MCP App so AI agents can query the dataset ([docs/ai.md](docs/ai.md)) | Live |
+| **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
 | **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
 
 Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
@@ -89,6 +90,7 @@ disclosure-atlas reference fx                             # ECB euro reference r
 disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
 disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs
 disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest every 5 minutes
+pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server over stdio (docs/ai.md)
 
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000

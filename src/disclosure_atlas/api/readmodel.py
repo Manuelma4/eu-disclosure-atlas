@@ -12,6 +12,7 @@ from typing import Any
 import duckdb
 
 from ..lake import Lake
+from .telemetry import query_span
 
 
 @dataclass
@@ -22,9 +23,10 @@ class Snapshot:
     cursor: duckdb.DuckDBPyConnection
 
     def rows(self, sql: str, params: list[Any] | None = None) -> list[dict[str, Any]]:
-        result = self.cursor.execute(sql, params or [])
-        columns = [d[0] for d in result.description]
-        return [dict(zip(columns, row, strict=True)) for row in result.fetchall()]
+        with query_span(sql):
+            result = self.cursor.execute(sql, params or [])
+            columns = [d[0] for d in result.description]
+            return [dict(zip(columns, row, strict=True)) for row in result.fetchall()]
 
     def one(self, sql: str, params: list[Any] | None = None) -> dict[str, Any] | None:
         rows = self.rows(sql, params)

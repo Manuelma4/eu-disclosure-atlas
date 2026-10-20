@@ -1,0 +1,21 @@
+# Values snippet for the query-api chart (P6 owns the chart): merge into its values or pass with -f.
+# Assumes the chart renders `env` into the container and `podAnnotations` onto pods.
+env:
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: http://otel-collector.observability.svc:4318
+  - name: OTEL_SERVICE_NAME
+    value: query-api
+  - name: OTEL_RESOURCE_ATTRIBUTES
+    value: service.namespace=atlas,k8s.cluster.name=atlas
+  - name: ATLAS_ENVIRONMENT
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.namespace
+  # Per-replica limit; global quotas are enforced by Envoy Gateway.
+  - name: ATLAS_RATE_LIMIT_PER_MINUTE
+    value: "600"
+  - name: ATLAS_RATE_LIMIT_BURST
+    value: "100"
+  # uvicorn trusts X-Forwarded-For only from the gateway (src/disclosure_atlas/api/security.py); never "*".
+  - name: FORWARDED_ALLOW_IPS
+    value: "10.42.0.0/16"

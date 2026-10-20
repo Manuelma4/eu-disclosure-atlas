@@ -1,0 +1,856 @@
+[
+  {
+    "id": "count-all",
+    "category": "lookup",
+    "question": "How many insider transactions are in the dataset?",
+    "sql": "SELECT count(*) AS transactions FROM insider_transactions",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "transactions"
+      ],
+      "rows": [
+        [
+          400
+        ]
+      ]
+    }
+  },
+  {
+    "id": "se-open-buys",
+    "category": "aggregation",
+    "question": "How many open-market insider purchases were reported in Sweden?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE jurisdiction = 'SE' AND is_open_market AND direction > 0",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          44
+        ]
+      ]
+    }
+  },
+  {
+    "id": "fr-buy-eur-2025",
+    "category": "aggregation",
+    "question": "What was the total value in euros of open-market insider buying in France in 2025?",
+    "sql": "SELECT sum(amount_eur) FROM insider_transactions WHERE jurisdiction = 'FR' AND is_open_market AND direction > 0 AND year(transaction_date) = 2025",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "sum(amount_eur)"
+      ],
+      "rows": [
+        [
+          12617405.5
+        ]
+      ]
+    }
+  },
+  {
+    "id": "top5-buying-2025",
+    "category": "ranking",
+    "question": "Which five issuers had the largest open-market insider buying in euros in 2025, and how much?",
+    "sql": "SELECT issuer_name, sum(amount_eur) AS buy_eur FROM insider_transactions WHERE is_open_market AND direction > 0 AND year(transaction_date) = 2025 GROUP BY issuer_name ORDER BY buy_eur DESC LIMIT 5",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "issuer_name",
+        "buy_eur"
+      ],
+      "rows": [
+        [
+          "Vignoble Industries SA",
+          11057052.5
+        ],
+        [
+          "Polderdam Holding NV",
+          2764095.5
+        ],
+        [
+          "Rheinwerk Systems AG",
+          2727672.5
+        ],
+        [
+          "Solvik Pharma AB",
+          2498423.5390079627
+        ],
+        [
+          "Bergmann Logistik AG",
+          1925685.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "tx-per-country",
+    "category": "aggregation",
+    "question": "How many insider transactions are there per country?",
+    "sql": "SELECT jurisdiction, count(*) FROM insider_transactions GROUP BY jurisdiction",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "jurisdiction",
+        "count_star()"
+      ],
+      "rows": [
+        [
+          "ES",
+          50
+        ],
+        [
+          "FR",
+          95
+        ],
+        [
+          "SE",
+          105
+        ],
+        [
+          "NL",
+          85
+        ],
+        [
+          "DE",
+          65
+        ]
+      ]
+    }
+  },
+  {
+    "id": "late-share-top-country",
+    "category": "filing_lag",
+    "question": "Which country has the highest share of insider filings published more than 5 calendar days after the trade?",
+    "sql": "SELECT jurisdiction FROM insider_transactions WHERE filing_lag_days IS NOT NULL GROUP BY jurisdiction ORDER BY avg(CASE WHEN filing_lag_days > 5 THEN 1 ELSE 0 END) DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "jurisdiction"
+      ],
+      "rows": [
+        [
+          "ES"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "de-median-lag",
+    "category": "filing_lag",
+    "question": "What is the median filing lag in days for German insider filings?",
+    "sql": "SELECT median(filing_lag_days) FROM insider_transactions WHERE jurisdiction = 'DE'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "median(filing_lag_days)"
+      ],
+      "rows": [
+        [
+          3.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "nordvik-buyers",
+    "category": "aggregation",
+    "question": "How many distinct managers bought shares on the open market at Nordvik Robotics AB?",
+    "sql": "SELECT count(DISTINCT pdmr_id) FROM insider_transactions WHERE issuer_name = 'Nordvik Robotics AB' AND is_open_market AND direction > 0",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count(DISTINCT pdmr_id)"
+      ],
+      "rows": [
+        [
+          4
+        ]
+      ]
+    }
+  },
+  {
+    "id": "rheinwerk-net-2026",
+    "category": "aggregation",
+    "question": "What was the net open-market insider flow in euros (buys minus sells) at Rheinwerk Systems AG in 2026?",
+    "sql": "SELECT sum(direction * amount_eur) FROM insider_transactions WHERE issuer_name = 'Rheinwerk Systems AG' AND is_open_market AND year(transaction_date) = 2026",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "sum((direction * amount_eur))"
+      ],
+      "rows": [
+        [
+          4924533.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "top10-buys-2026",
+    "category": "ranking",
+    "question": "List the 10 largest single open-market insider purchases in 2026 with the issuer, the transaction date and the amount in euros.",
+    "sql": "SELECT issuer_name, transaction_date, amount_eur FROM insider_transactions WHERE is_open_market AND direction > 0 AND year(transaction_date) = 2026 ORDER BY amount_eur DESC LIMIT 10",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "issuer_name",
+        "transaction_date",
+        "amount_eur"
+      ],
+      "rows": [
+        [
+          "Rheinwerk Systems AG",
+          "2026-04-07",
+          2180500.0
+        ],
+        [
+          "Rheinwerk Systems AG",
+          "2026-01-27",
+          1928000.0
+        ],
+        [
+          "Vignoble Industries SA",
+          "2026-09-25",
+          1064000.0
+        ],
+        [
+          "Vignoble Industries SA",
+          "2026-02-23",
+          1022700.0
+        ],
+        [
+          "Atelier Lumiere SA",
+          "2026-05-05",
+          994250.0
+        ],
+        [
+          "Atelier Lumiere SA",
+          "2026-08-18",
+          861750.0
+        ],
+        [
+          "Vignoble Industries SA",
+          "2026-03-20",
+          686000.0
+        ],
+        [
+          "Vignoble Industries SA",
+          "2026-07-30",
+          635300.0
+        ],
+        [
+          "Nordvik Robotics AB",
+          "2026-02-26",
+          461973.44322344323
+        ],
+        [
+          "Rheinwerk Systems AG",
+          "2026-07-06",
+          452350.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "ceo-count",
+    "category": "lookup",
+    "question": "How many insider transactions were made by CEOs?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE pdmr_role = 'ceo'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          87
+        ]
+      ]
+    }
+  },
+  {
+    "id": "role-most-sales",
+    "category": "ranking",
+    "question": "Which managerial role made the most open-market sales?",
+    "sql": "SELECT pdmr_role FROM insider_transactions WHERE is_open_market AND direction < 0 GROUP BY pdmr_role ORDER BY count(*) DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "pdmr_role"
+      ],
+      "rows": [
+        [
+          "executive"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "se-monthly-buys-2025",
+    "category": "time",
+    "question": "Give the monthly number of open-market insider purchases in Sweden during 2025.",
+    "sql": "SELECT date_trunc('month', transaction_date) AS month, count(*) FROM insider_transactions WHERE jurisdiction = 'SE' AND is_open_market AND direction > 0 AND year(transaction_date) = 2025 GROUP BY 1 ORDER BY 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "month",
+        "count_star()"
+      ],
+      "rows": [
+        [
+          "2025-01-01T00:00:00",
+          3
+        ],
+        [
+          "2025-02-01T00:00:00",
+          1
+        ],
+        [
+          "2025-03-01T00:00:00",
+          4
+        ],
+        [
+          "2025-04-01T00:00:00",
+          3
+        ],
+        [
+          "2025-05-01T00:00:00",
+          3
+        ],
+        [
+          "2025-06-01T00:00:00",
+          1
+        ],
+        [
+          "2025-08-01T00:00:00",
+          1
+        ],
+        [
+          "2025-09-01T00:00:00",
+          1
+        ],
+        [
+          "2025-10-01T00:00:00",
+          3
+        ],
+        [
+          "2025-12-01T00:00:00",
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "id": "closely-associated",
+    "category": "lookup",
+    "question": "How many transactions were made by persons closely associated with a manager?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE closely_associated",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          19
+        ]
+      ]
+    }
+  },
+  {
+    "id": "legal-entity-notifiers",
+    "category": "aggregation",
+    "question": "Which legal entities notified transactions as closely associated persons, and how many transactions each?",
+    "sql": "SELECT notifier_name, count(*) FROM insider_transactions WHERE closely_associated AND notifier_name IS NOT NULL GROUP BY notifier_name",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "notifier_name",
+        "count_star()"
+      ],
+      "rows": [
+        [
+          "Lumiere Participations SAS",
+          7
+        ],
+        [
+          "Rheinwerk Beteiligungs GmbH",
+          1
+        ],
+        [
+          "Gracht Capital BV",
+          1
+        ],
+        [
+          "Solvik Invest AB",
+          6
+        ],
+        [
+          "Nordvik Family Holding AB",
+          4
+        ]
+      ]
+    }
+  },
+  {
+    "id": "grant-count",
+    "category": "lookup",
+    "question": "How many share option grants were reported?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE nature = 'grant'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          38
+        ]
+      ]
+    }
+  },
+  {
+    "id": "gracht-shares-bought",
+    "category": "aggregation",
+    "question": "How many shares in total did managers of Grachtenbank NV buy on the open market?",
+    "sql": "SELECT sum(volume) FROM insider_transactions WHERE issuer_name = 'Grachtenbank NV' AND is_open_market AND direction > 0",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "sum(volume)"
+      ],
+      "rows": [
+        [
+          100250.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "solvik-vwap-2025",
+    "category": "aggregation",
+    "question": "What was the volume-weighted average price in SEK of open-market insider purchases of Solvik Pharma AB shares in 2025?",
+    "sql": "SELECT sum(amount) / sum(volume) FROM insider_transactions WHERE issuer_name = 'Solvik Pharma AB' AND is_open_market AND direction > 0 AND year(transaction_date) = 2025",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "(sum(amount) / sum(volume))"
+      ],
+      "rows": [
+        [
+          404.3396551724138
+        ]
+      ]
+    }
+  },
+  {
+    "id": "net-sellers",
+    "category": "aggregation",
+    "question": "Which issuers had more open-market insider selling than buying in euros over the whole dataset?",
+    "sql": "SELECT issuer_name FROM insider_transactions WHERE is_open_market GROUP BY issuer_name HAVING sum(direction * amount_eur) < 0",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "issuer_name"
+      ],
+      "rows": [
+        [
+          "Fjallberg Energy AB"
+        ],
+        [
+          "Polderdam Holding NV"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "issuers-per-country",
+    "category": "aggregation",
+    "question": "How many issuers are there per country?",
+    "sql": "SELECT jurisdiction, count(DISTINCT issuer_lei) FROM insider_transactions GROUP BY jurisdiction",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "jurisdiction",
+        "count(DISTINCT issuer_lei)"
+      ],
+      "rows": [
+        [
+          "ES",
+          1
+        ],
+        [
+          "FR",
+          2
+        ],
+        [
+          "SE",
+          3
+        ],
+        [
+          "NL",
+          2
+        ],
+        [
+          "DE",
+          2
+        ]
+      ]
+    }
+  },
+  {
+    "id": "top-month-2026",
+    "category": "time",
+    "question": "In which month of 2026 was open-market insider buying in euros the highest, across all countries?",
+    "sql": "SELECT date_trunc('month', transaction_date) AS month FROM insider_transactions WHERE is_open_market AND direction > 0 AND year(transaction_date) = 2026 GROUP BY 1 ORDER BY sum(amount_eur) DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "month"
+      ],
+      "rows": [
+        [
+          "2026-01-01T00:00:00"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "published-sep-2026",
+    "category": "time",
+    "question": "How many insider transactions were published in September 2026?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE published_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND published_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          8
+        ]
+      ]
+    }
+  },
+  {
+    "id": "lumiere-shorts",
+    "category": "shorts",
+    "question": "How many net short position disclosures are recorded for Atelier Lumiere SA?",
+    "sql": "SELECT count(*) FROM net_short_positions WHERE issuer_name = 'Atelier Lumiere SA'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          47
+        ]
+      ]
+    }
+  },
+  {
+    "id": "fund-most-disclosures",
+    "category": "shorts",
+    "question": "Which fund has the most net short position disclosures?",
+    "sql": "SELECT holder_name FROM net_short_positions GROUP BY holder_name ORDER BY count(*) DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "holder_name"
+      ],
+      "rows": [
+        [
+          "Aurora Capital Partners LLP"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "max-short",
+    "category": "shorts",
+    "question": "What is the largest net short position ever disclosed: which holder, on which issuer, and what percentage?",
+    "sql": "SELECT holder_name, issuer_name, position_pct FROM net_short_positions ORDER BY position_pct DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "holder_name",
+        "issuer_name",
+        "position_pct"
+      ],
+      "rows": [
+        [
+          "Driftwood Investments LLC",
+          "Iberluz Renovables SA",
+          2.66
+        ]
+      ]
+    }
+  },
+  {
+    "id": "holders-per-issuer",
+    "category": "shorts",
+    "question": "For each issuer with disclosed short positions, how many distinct position holders are there?",
+    "sql": "SELECT issuer_name, count(DISTINCT holder_name) FROM net_short_positions GROUP BY issuer_name",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "issuer_name",
+        "count(DISTINCT holder_name)"
+      ],
+      "rows": [
+        [
+          "Bergmann Logistik AG",
+          4
+        ],
+        [
+          "Rheinwerk Systems AG",
+          4
+        ],
+        [
+          "Iberluz Renovables SA",
+          4
+        ],
+        [
+          "Nordvik Robotics AB",
+          4
+        ],
+        [
+          "Atelier Lumiere SA",
+          4
+        ]
+      ]
+    }
+  },
+  {
+    "id": "iberluz-avg-short-2026",
+    "category": "shorts",
+    "question": "What was the average disclosed net short position, in percent, on Iberluz Renovables SA in 2026?",
+    "sql": "SELECT avg(position_pct) FROM net_short_positions WHERE issuer_name = 'Iberluz Renovables SA' AND year(position_date) = 2026",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "avg(position_pct)"
+      ],
+      "rows": [
+        [
+          1.9158823529411761
+        ]
+      ]
+    }
+  },
+  {
+    "id": "rheinwerk-latest-shorts",
+    "category": "shorts",
+    "question": "What is the latest disclosed net short position of each holder in Rheinwerk Systems AG, with its date?",
+    "sql": "SELECT holder_name, position_date, position_pct FROM net_short_positions WHERE issuer_name = 'Rheinwerk Systems AG' QUALIFY row_number() OVER (PARTITION BY holder_name ORDER BY position_date DESC) = 1",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "holder_name",
+        "position_date",
+        "position_pct"
+      ],
+      "rows": [
+        [
+          "Foxglove Partners LLP",
+          "2026-09-10",
+          1.65
+        ],
+        [
+          "Cormorant Fund Management LP",
+          "2026-09-09",
+          0.96
+        ],
+        [
+          "Bluefin Asset Management Ltd",
+          "2026-09-15",
+          2.26
+        ],
+        [
+          "Eastgate Capital Management Ltd",
+          "2026-08-29",
+          1.6
+        ]
+      ]
+    }
+  },
+  {
+    "id": "buys-and-shorts-2025",
+    "category": "join",
+    "question": "Which issuers had both open-market insider buying and disclosed net short positions in 2025?",
+    "sql": "SELECT DISTINCT t.issuer_name FROM insider_transactions t WHERE t.is_open_market AND t.direction > 0 AND year(t.transaction_date) = 2025 AND t.issuer_lei IN (SELECT issuer_lei FROM net_short_positions WHERE year(position_date) = 2025)",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "issuer_name"
+      ],
+      "rows": [
+        [
+          "Bergmann Logistik AG"
+        ],
+        [
+          "Rheinwerk Systems AG"
+        ],
+        [
+          "Iberluz Renovables SA"
+        ],
+        [
+          "Atelier Lumiere SA"
+        ],
+        [
+          "Nordvik Robotics AB"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "nl-sales-q1-2026",
+    "category": "time",
+    "question": "How many open-market insider sales happened in the Netherlands in the first quarter of 2026?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE jurisdiction = 'NL' AND is_open_market AND direction < 0 AND transaction_date BETWEEN DATE '2026-01-01' AND DATE '2026-03-31'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "id": "lag-by-role",
+    "category": "filing_lag",
+    "question": "What is the average filing lag in days by managerial role?",
+    "sql": "SELECT pdmr_role, avg(filing_lag_days) FROM insider_transactions GROUP BY pdmr_role",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "pdmr_role",
+        "avg(filing_lag_days)"
+      ],
+      "rows": [
+        [
+          "ceo",
+          4.517241379310345
+        ],
+        [
+          "board_member",
+          3.9714285714285715
+        ],
+        [
+          "cfo",
+          4.2875
+        ],
+        [
+          "chair",
+          3.896103896103896
+        ],
+        [
+          "executive",
+          4.372093023255814
+        ]
+      ]
+    }
+  },
+  {
+    "id": "buy-sell-by-country-2025",
+    "category": "aggregation",
+    "question": "What were the total euro values of open-market insider buying and of selling per country in 2025?",
+    "sql": "SELECT jurisdiction, sum(amount_eur) FILTER (WHERE direction > 0) AS buy_eur, sum(amount_eur) FILTER (WHERE direction < 0) AS sell_eur FROM insider_transactions WHERE is_open_market AND year(transaction_date) = 2025 GROUP BY jurisdiction",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "jurisdiction",
+        "buy_eur",
+        "sell_eur"
+      ],
+      "rows": [
+        [
+          "ES",
+          507337.0,
+          284964.5
+        ],
+        [
+          "FR",
+          12617405.5,
+          2309660.0
+        ],
+        [
+          "SE",
+          3636902.872691349,
+          2508403.916438426
+        ],
+        [
+          "NL",
+          3156670.5,
+          2602013.0
+        ],
+        [
+          "DE",
+          4653357.5,
+          2358554.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "es-buy-fraction",
+    "category": "aggregation",
+    "question": "What fraction (between 0 and 1) of open-market insider trades in Spain were purchases?",
+    "sql": "SELECT avg(CASE WHEN direction > 0 THEN 1.0 ELSE 0.0 END) FROM insider_transactions WHERE jurisdiction = 'ES' AND is_open_market",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "avg(CASE  WHEN ((direction > 0)) THEN (1.0) ELSE 0.0 END)"
+      ],
+      "rows": [
+        [
+          0.6285714285714286
+        ]
+      ]
+    }
+  },
+  {
+    "id": "lumiere-top-buyer",
+    "category": "ranking",
+    "question": "Which manager (pseudonymous id) at Atelier Lumiere SA bought the most on the open market in euros, and how much?",
+    "sql": "SELECT pdmr_id, sum(amount_eur) AS buy_eur FROM insider_transactions WHERE issuer_name = 'Atelier Lumiere SA' AND is_open_market AND direction > 0 GROUP BY pdmr_id ORDER BY buy_eur DESC LIMIT 1",
+    "ordered": true,
+    "expected": {
+      "columns": [
+        "pdmr_id",
+        "buy_eur"
+      ],
+      "rows": [
+        [
+          "p0304",
+          2133500.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "bond-count",
+    "category": "lookup",
+    "question": "How many transactions in bonds were reported?",
+    "sql": "SELECT count(*) FROM insider_transactions WHERE instrument_type = 'bond'",
+    "ordered": false,
+    "expected": {
+      "columns": [
+        "count_star()"
+      ],
+      "rows": [
+        [
+          12
+        ]
+      ]
+    }
+  }
+]
