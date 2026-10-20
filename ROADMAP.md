@@ -168,10 +168,12 @@ Owns: `research/thresholds/`.
 
 ## M5 Publishing and access `[ ]`
 
-### WS8 Open-data releases `[ ]`
-Owns: `.github/workflows/release-data.yml`, `src/disclosure_atlas/publish/`.
-- Daily Parquet and DuckDB releases with a Frictionless `datapackage.json`, data-quality report and freshness
-  badge (the API, website and live ingestion moved to the platform workstreams above).
+### WS8 Open-data releases `[x]`
+Owns: `scripts/release-data.sh`, `src/disclosure_atlas/publish/`, `docs/open-data.md`.
+- `disclosure-atlas publish --out`: Parquet and DuckDB releases of one snapshot with a Frictionless
+  `datapackage.json`, data-quality report, freshness badge and SHA-256 checksums; refused if a privacy check fails.
+- Released by the owner with `scripts/release-data.sh` (`gh release create`, tags `data-*`): no scheduled
+  workflow and no bot releases (the API, website and live ingestion moved to the platform workstreams above).
 
 ## M6 Integration `[ ]`
 

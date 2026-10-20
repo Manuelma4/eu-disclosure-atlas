@@ -121,7 +121,23 @@ disclosure-atlas query "
   FROM insider_transactions WHERE is_open_market AND nature = 'buy'
   ORDER BY amount_eur DESC LIMIT 10"
 disclosure-atlas export --out exports                     # gold tables as Parquet
+disclosure-atlas publish --out dist/open-data/local       # full open-data release folder (docs/open-data.md)
 ```
+
+## Open data
+
+Every release is one DuckLake snapshot of the gold tables, published as a
+[GitHub Release](https://github.com/Manuelma4/eu-disclosure-atlas/releases): Parquet files, a single DuckDB
+database, a Frictionless `datapackage.json` (schemas, sources, licences, snapshot id), a data-quality report and
+SHA-256 checksums. Natural persons appear only as pseudonyms; raw files are never included. Query it in one line:
+
+```bash
+duckdb -c "SELECT source, count(*) FROM 'https://github.com/Manuelma4/eu-disclosure-atlas/releases/latest/download/insider_transactions.parquet' GROUP BY 1"
+```
+
+Reuse follows each source's terms (FI and the Licence Ouverte allow it with attribution; AMF managers'
+transactions exclude commercial use). Contents, licensing per source and how releases are made:
+[docs/open-data.md](docs/open-data.md).
 
 ## Research agenda
 
