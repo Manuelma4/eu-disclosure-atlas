@@ -2,11 +2,16 @@
 # errors under 1%, live-stream connections that deliver events. Longer profiles run on demand.
 name: Load test
 on:
-  # Performance budgets are judged on main (shared runners make per-PR timings noisy), and on demand.
-  push:
-    branches: [main]
-    paths: ["src/**", "loadtests/**", "pyproject.toml"]
+  # Performance budgets are checked weekly and on demand (shared runners make per-commit timings noisy).
+  schedule:
+    - cron: "47 5 * * 1"
   workflow_dispatch:
+    inputs:
+      profile:
+        description: "k6 profile defined in loadtests/atlas.js"
+        type: choice
+        options: [smoke, load]
+        default: smoke
 
 jobs:
   k6:

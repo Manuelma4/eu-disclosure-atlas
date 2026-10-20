@@ -3,9 +3,10 @@ name: Images
 # GHCR as sha-<7 hex>. An image whose sources did not change is re-tagged from :main instead of rebuilt, so every
 # commit has a full, signed set of images (pull-request previews rely on it). Kyverno admits only these signatures.
 on:
+  # Images are built for release tags and on demand (there is no running environment to feed on every
+  # commit, and image builds are the most expensive jobs). Deploys promote a tag built here (deploy.yml).
   push:
-    branches: [main]
-  pull_request:
+    tags: ["v*"]
   workflow_dispatch:
 
 concurrency:

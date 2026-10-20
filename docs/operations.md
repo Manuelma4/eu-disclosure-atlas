@@ -240,7 +240,8 @@ cosign verify ghcr.io/manuelma4/atlas-python:sha-1a2b3c4 \
 
 Argo CD deploys what main says; nobody runs `helm` or `kubectl apply` against production.
 
-1. A pull request merges into main; `images.yml` builds and signs `sha-<commit>`.
+1. A release tag (`v*`) or a manual run of `images.yml` builds and signs the `sha-<commit>` images (image
+   builds are the costliest jobs, so they do not run on every push).
 2. The owner runs `deploy.yml` by hand (Actions → Deploy → Run workflow) with the `sha-<7 hex>` tag to deploy. It
    verifies the cosign signature of every
    image of that tag (identity: the images workflow on `refs/heads/main`) and opens a pull request that sets
