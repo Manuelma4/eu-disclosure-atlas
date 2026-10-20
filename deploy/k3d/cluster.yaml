@@ -1,5 +1,6 @@
-# Local cluster: one k3s server and one agent, Traefik on http://*.atlas.localhost:8080, the API server on 6550.
-# Created by deploy/k3d/atlas.sh (make k3d-up). *.localhost resolves to 127.0.0.1 in browsers and curl.
+# Local cluster: one k3s server and one agent. Created by deploy/k3d/atlas.sh (make k3d-up), which sets the
+# cluster name, the API port and the load-balancer ports (default atlas, 6550 and http://*.atlas.localhost:8080;
+# override with ATLAS_K3D_CLUSTER, ATLAS_K3D_API_PORT, ATLAS_K3D_HTTP_PORT and ATLAS_K3D_HTTPS_PORT).
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
@@ -7,24 +8,10 @@ metadata:
 servers: 1
 agents: 1
 image: rancher/k3s:v1.36.5-k3s1
-kubeAPI:
-  host: 127.0.0.1
-  hostIP: 127.0.0.1
-  hostPort: "6550"
-ports:
-  - port: 127.0.0.1:8080:80
-    nodeFilters: [loadbalancer]
-  - port: 127.0.0.1:8443:443
-    nodeFilters: [loadbalancer]
 options:
   k3d:
     wait: true
     timeout: 180s
-  k3s:
-    extraArgs:
-      # Lets containerised helm and kubectl on the k3d network reach the API through the load balancer.
-      - arg: --tls-san=k3d-atlas-serverlb
-        nodeFilters: [server:*]
   kubeconfig:
     updateDefaultKubeconfig: false
     switchCurrentContext: false

@@ -67,6 +67,10 @@ deploy/k3d/atlas.sh images && deploy/k3d/atlas.sh install   # rebuild and roll o
 make k3d-down
 ```
 
+Several clusters can share one Docker daemon: `ATLAS_K3D_CLUSTER` (default `atlas`), `ATLAS_K3D_API_PORT`
+(6550), `ATLAS_K3D_HTTP_PORT` (8080) and `ATLAS_K3D_HTTPS_PORT` (8443) choose the cluster name and host ports,
+for example `ATLAS_K3D_CLUSTER=atlas-p6 ATLAS_K3D_HTTP_PORT=8086 ATLAS_K3D_HTTPS_PORT=8446 make k3d-smoke`.
+
 The smoke test, also run in CI, installs only the API and the website (`values-ci.yaml`, no operators) and checks
 `/v1/health` and the home page through the ingress, which also proves the NetworkPolicies let traffic through:
 

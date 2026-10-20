@@ -11,11 +11,15 @@ set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../scripts/tools.sh"
 cd "$ATLAS_REPO_ROOT"
 
-CLUSTER=atlas
+CLUSTER="${ATLAS_K3D_CLUSTER:-atlas}"
+API_PORT="${ATLAS_K3D_API_PORT:-6550}"
+HTTP_PORT="${ATLAS_K3D_HTTP_PORT:-8080}"
+HTTPS_PORT="${ATLAS_K3D_HTTPS_PORT:-8443}"
+export ATLAS_DOCKER_NETWORK="k3d-$CLUSTER"
 NAMESPACE="${ATLAS_NAMESPACE:-atlas}"
 REGISTRY=ghcr.io/manuelma4
 TAG=dev
-PUBLIC_API_URL="${ATLAS_PUBLIC_API_URL:-http://api.atlas.localhost:8080}"
+PUBLIC_API_URL="${ATLAS_PUBLIC_API_URL:-http://api.atlas.localhost:$HTTP_PORT}"
 mkdir -p .k3d
 # Always this cluster, whatever the caller's KUBECONFIG points at.
 export KUBECONFIG="$ATLAS_REPO_ROOT/.k3d/kubeconfig-host"
@@ -27,11 +31,15 @@ create() {
     log "cluster $CLUSTER exists"
   else
     log "creating cluster $CLUSTER"
-    k3d cluster create --config deploy/k3d/cluster.yaml
+    # The --tls-san lets containerised helm and kubectl on the k3d network reach the API through the load balancer.
+    k3d cluster create "$CLUSTER" --config deploy/k3d/cluster.yaml \
+      --api-port "127.0.0.1:$API_PORT" \
+      --port "127.0.0.1:$HTTP_PORT:80@loadbalancer" --port "127.0.0.1:$HTTPS_PORT:443@loadbalancer" \
+      --k3s-arg "--tls-san=k3d-$CLUSTER-serverlb@server:*"
   fi
   # Two kubeconfigs: one for host binaries (127.0.0.1:6550), one for containers on the k3d network.
   k3d kubeconfig get "$CLUSTER" > .k3d/kubeconfig-host
-  sed -E 's#server: https://[^:]+:[0-9]+#server: https://k3d-atlas-serverlb:6443#' .k3d/kubeconfig-host > .k3d/kubeconfig
+  sed -E "s#server: https://[^:]+:[0-9]+#server: https://k3d-$CLUSTER-serverlb:6443#" .k3d/kubeconfig-host > .k3d/kubeconfig
   chmod 600 .k3d/kubeconfig .k3d/kubeconfig-host
   kubectl wait --for=condition=Ready nodes --all --timeout=120s >/dev/null
 }
@@ -77,21 +85,21 @@ install() {
   (cd deploy/helm && for c in query-api web ingestion extraction ai-service realtime-gateway alerts atlas; do
     helm dependency build "$c" >/dev/null; done)
   helm upgrade --install atlas deploy/helm/atlas -n "$NAMESPACE" -f "deploy/helm/atlas/values-$values.yaml" \
-    --set "global.image.tag=$TAG" --wait --timeout 10m
+    --set "global.image.tag=$TAG" --set "global.webUrl=http://atlas.localhost:$HTTP_PORT" --wait --timeout 10m
 }
 
 check() {
   log "checking the API and the website through the ingress"
   local health=""
   for _ in $(seq 1 30); do
-    health="$(curl -fsS -H 'Host: api.atlas.localhost' http://127.0.0.1:8080/v1/health 2>/dev/null)" && break
+    health="$(curl -fsS -H 'Host: api.atlas.localhost' "http://127.0.0.1:$HTTP_PORT/v1/health" 2>/dev/null)" && break
     sleep 2
   done
   [[ -n "$health" ]] || { echo "API health check failed" >&2; kubectl -n "$NAMESPACE" get pods -o wide >&2; exit 1; }
   echo "GET /v1/health -> $health"
   echo "$health" | grep -q '"status":"ok"'
   local code
-  code="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: atlas.localhost' http://127.0.0.1:8080/)"
+  code="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: atlas.localhost' "http://127.0.0.1:$HTTP_PORT/")"
   echo "GET / (website, server-side calls to query-api) -> $code"
   [[ "$code" == 200 ]]
   log "smoke test passed"
