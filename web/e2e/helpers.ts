@@ -6,6 +6,8 @@ export const ROBOTICS_LEI = "549300EXAMPLE0000073";
 
 /** WCAG 2.2 AA scan; fails on any serious or critical violation. */
 export async function expectAccessible(page: Page, exclude: string[] = []) {
+  // Dynamic routes stream their metadata (title included) after the HTML shell with Cache Components.
+  await expect(page).toHaveTitle(/.+/);
   let builder = new AxeBuilder({ page: page as never }) // axe types target a newer playwright-core
    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]);
   for (const selector of exclude) builder = builder.exclude(selector);
