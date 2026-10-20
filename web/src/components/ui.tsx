@@ -8,7 +8,7 @@ export function Card({ title, subtitle, action, children, className = "" }: {
   className?: string;
 }) {
   return (
-    <section className={`rounded-xl border border-hairline bg-surface ${className}`}>
+    <section className={`min-w-0 rounded-xl border border-hairline bg-surface ${className}`}>
       {(title || action) && (
         <header className="flex items-start justify-between gap-4 px-5 pt-4">
           <div>
@@ -33,21 +33,18 @@ export function StatTile({ label, value, note }: { label: string; value: ReactNo
   );
 }
 
-export function NatureBadge({ nature, direction }: { nature: string; direction: number }) {
+/** Nature of a transaction with its buy/sell color. `label` and `hint` (screen readers) come translated. */
+export function NatureBadge({ nature, label, hint }: { nature: string; label: string; hint?: string }) {
   const tone = nature === "buy" ? "var(--buy)" : nature === "sell" ? "var(--sell)" : "var(--baseline)";
-  const label =
-    nature === "internal_transfer" ? "Internal transfer" : nature.charAt(0).toUpperCase() + nature.slice(1);
   return (
     <span className="inline-flex items-center gap-1.5 text-ink-2">
       <span aria-hidden="true" className="size-2 rounded-[2px]" style={{ background: tone }} />
       {label}
-      {nature !== "buy" && nature !== "sell" && direction !== 0 && (
-        <span className="sr-only">{direction > 0 ? "(holding increases)" : "(holding decreases)"}</span>
-      )}
+      {hint && <span className="sr-only">{hint}</span>}
     </span>
   );
 }
 
 export function Skeleton({ className = "" }: { className?: string }) {
-  return <div className={`animate-pulse rounded-xl border border-hairline bg-surface ${className}`} />;
+  return <div aria-hidden="true" className={`animate-pulse rounded-xl border border-hairline bg-surface ${className}`} />;
 }

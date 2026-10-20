@@ -12,6 +12,26 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "web", "run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "api-fixture",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "ATLAS_PRICE_PROVIDER=synthetic",
+        "ATLAS_CORS_ORIGINS=http://localhost:3190,http://127.0.0.1:3190",
+        ".venv/bin/disclosure-atlas", "--lake", "web/e2e/.lake", "serve", "--port", "8790"
+      ],
+      "port": 8790
+    },
+    {
+      "name": "web-fixture",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "ATLAS_API_URL=http://127.0.0.1:8790",
+        "NEXT_PUBLIC_ATLAS_API_URL=http://127.0.0.1:8790",
+        "npm", "--prefix", "web", "run", "dev", "--", "--port", "3190"
+      ],
+      "port": 3190
     }
   ]
 }

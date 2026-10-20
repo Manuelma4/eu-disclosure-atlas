@@ -182,8 +182,16 @@ the regulator's business hours (measured per source and shown on the status page
 - **UI:** Tailwind CSS v4 and shadcn/ui; TanStack Query and Table; TradingView lightweight-charts for price
   and insider markers; Observable Plot for statistics.
 - **Explorer:** DuckDB-WASM plus Mosaic linked views query the published Parquet directly in the browser,
-  with millions of rows and no server cost.
-- **Languages:** English, French, Spanish and German (next-intl).
+  with millions of rows and no server cost. The API serves each gold table once per snapshot at
+  `/v1/exports/{table}.parquet` with HTTP range requests; DuckDB-WASM and its Parquet extension are self-hosted
+  (no third-party requests), and Mosaic pre-aggregates brushes (1.2 million rows: ready in about 3.5 s,
+  cross-filter updates in 0.1 to 0.35 s on a laptop).
+- **Prices:** `/v1/issuers/{lei}/prices` maps the issuer's share ISIN to a listing and returns daily bars with the
+  days its insiders traded, through a pluggable provider cached under `lake/reference/prices/` (see
+  [prices.md](prices.md)).
+- **Languages:** English, French, Spanish and German (next-intl, locale-prefixed routes, hreflang alternates).
+- **Quality gates:** Playwright end-to-end tests (axe accessibility checks in light and dark mode, keyboard flows)
+  and Lighthouse budgets run in CI against the real API over a synthetic lake.
 - **Accounts** (Better Auth with passkeys and magic links): watchlists, alert rules, API keys and webhook
   endpoints.
 

@@ -1,55 +1,70 @@
-const eurCompact = new Intl.NumberFormat("en-GB", {
-  style: "currency",
-  currency: "EUR",
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
-const integer = new Intl.NumberFormat("en-GB");
-const percent = new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 1 });
-const dateUtc = new Intl.DateTimeFormat("en-GB", { dateStyle: "medium", timeZone: "UTC" });
-const dateTimeUtc = new Intl.DateTimeFormat("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
-const monthUtc = new Intl.DateTimeFormat("en-GB", { month: "short", year: "2-digit", timeZone: "UTC" });
-const regions = new Intl.DisplayNames(["en"], { type: "region" });
+/**
+ * Locale-aware formatting of numbers, dates, countries and relative times. Formatters are built once per
+ * locale. Server components get them with `getFormat()` (lib/format-server.ts), client components with
+ * `useFormat()` (lib/use-format.ts). Dates are shown in UTC, like the regulators' publication times.
+ */
+import { INTL_LOCALE, type Locale } from "@/i18n/routing";
 
-export const formatEur = (value: number | null | undefined) => (value == null ? "–" : eurCompact.format(value));
+export type Format = ReturnType<typeof build>;
 
-export const formatSignedEur = (value: number | null | undefined) =>
-  value == null ? "–" : `${value > 0 ? "+" : value < 0 ? "−" : ""}${eurCompact.format(Math.abs(value))}`;
+const cache = new Map<string, Format>();
 
-export const formatInt = (value: number | null | undefined) => (value == null ? "–" : integer.format(value));
-
-export const formatPercent = (value: number | null | undefined) => (value == null ? "–" : percent.format(value));
-
-export const formatDate = (iso: string | null | undefined) => (iso ? dateUtc.format(new Date(iso)) : "–");
-
-export const formatDateTime = (iso: string | null | undefined) =>
-  iso ? `${dateTimeUtc.format(new Date(iso))} UTC` : "–";
-
-export const formatMonth = (iso: string) => monthUtc.format(new Date(iso));
-
-export const countryName = (code: string) => regions.of(code.toUpperCase()) ?? code;
-
-export function relativeTime(iso: string, now: number): string {
-  const seconds = Math.round((now - new Date(iso).getTime()) / 1000);
-  if (seconds < 45) return "just now";
-  const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes} min ago`;
-  const hours = Math.round(minutes / 60);
-  if (hours < 36) return `${hours} h ago`;
-  return `${Math.round(hours / 24)} d ago`;
+export function createFormat(locale: string): Format {
+  let format = cache.get(locale);
+  if (!format) {
+    format = build(locale);
+    cache.set(locale, format);
+  }
+  return format;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  ceo: "CEO",
-  cfo: "CFO",
-  chair: "Chair",
-  executive: "Executive",
-  board_member: "Board member",
-  other: "Other",
-  unknown: "Unknown",
-};
+function build(locale: string) {
+  const tag = INTL_LOCALE[locale as Locale] ?? locale;
+  const eurCompact = new Intl.NumberFormat(tag, {
+    style: "currency",
+    currency: "EUR",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  });
+  const integer = new Intl.NumberFormat(tag);
+  const decimal = new Intl.NumberFormat(tag, { maximumFractionDigits: 2 });
+  const oneDecimal = new Intl.NumberFormat(tag, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const percent = new Intl.NumberFormat(tag, { style: "percent", maximumFractionDigits: 1 });
+  const bytes = new Intl.NumberFormat(tag, { style: "unit", unit: "megabyte", maximumFractionDigits: 1 });
+  const dateUtc = new Intl.DateTimeFormat(tag, { dateStyle: "medium", timeZone: "UTC" });
+  const dateTimeUtc = new Intl.DateTimeFormat(tag, { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
+  const monthUtc = new Intl.DateTimeFormat(tag, { month: "short", year: "2-digit", timeZone: "UTC" });
+  const dayMonthUtc = new Intl.DateTimeFormat(tag, { day: "numeric", month: "short", timeZone: "UTC" });
+  const regions = new Intl.DisplayNames([tag], { type: "region" });
+  const relative = new Intl.RelativeTimeFormat(tag, { numeric: "auto", style: "short" });
 
-export const roleLabel = (role: string) => ROLE_LABELS[role] ?? role;
-
-export const natureLabel = (nature: string) =>
-  nature === "internal_transfer" ? "Internal transfer" : nature.charAt(0).toUpperCase() + nature.slice(1);
+  const eur = (value: number | null | undefined) => (value == null ? "–" : eurCompact.format(value));
+  return {
+    locale: tag,
+    eur,
+    signedEur: (value: number | null | undefined) =>
+      value == null ? "–" : `${value > 0 ? "+" : value < 0 ? "−" : ""}${eurCompact.format(Math.abs(value))}`,
+    /** Axis labels: compact euros with a typographic minus. */
+    eurAxis: (value: number) => (value === 0 ? eurCompact.format(0) : `${value < 0 ? "−" : ""}${eurCompact.format(Math.abs(value))}`),
+    int: (value: number | null | undefined) => (value == null ? "–" : integer.format(value)),
+    decimal: (value: number | null | undefined) => (value == null ? "–" : decimal.format(value)),
+    oneDecimal: (value: number) => oneDecimal.format(value),
+    percent: (value: number | null | undefined) => (value == null ? "–" : percent.format(value)),
+    megabytes: (value: number) => bytes.format(value / 1_000_000),
+    date: (iso: string | null | undefined) => (iso ? dateUtc.format(new Date(iso)) : "–"),
+    dateTime: (iso: string | null | undefined) => (iso ? `${dateTimeUtc.format(new Date(iso))} UTC` : "–"),
+    month: (iso: string) => monthUtc.format(new Date(iso)),
+    dayMonth: (iso: string) => dayMonthUtc.format(new Date(iso)),
+    country: (code: string) => regions.of(code.toUpperCase()) ?? code,
+    /** "5 min ago", "3 h ago", "2 d ago"; null for under 45 seconds (callers show "just now"). */
+    relative(iso: string, now: number): string | null {
+      const seconds = Math.round((now - new Date(iso).getTime()) / 1000);
+      if (seconds < 45) return null;
+      const minutes = Math.round(seconds / 60);
+      if (minutes < 60) return relative.format(-minutes, "minute");
+      const hours = Math.round(minutes / 60);
+      if (hours < 36) return relative.format(-hours, "hour");
+      return relative.format(-Math.round(hours / 24), "day");
+    },
+  };
+}

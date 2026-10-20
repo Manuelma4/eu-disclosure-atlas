@@ -40,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# self-hosted DuckDB-WASM bundles (scripts/copy-duckdb.mjs)
+/public/duckdb/
+
+# end-to-end and Lighthouse runs
+/test-results/
+/playwright-report/
+/e2e/.lake/
+/.next-e2e/
+/.lighthouseci/

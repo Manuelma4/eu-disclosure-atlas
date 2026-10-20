@@ -1,4 +1,10 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+
+import { Link } from "@/i18n/navigation";
+
+import { CommandPalette } from "./command-palette";
+import { LocaleSwitcher } from "./locale-switcher";
+import { NavLink } from "./nav-link";
 
 const API_DOCS = `${process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000"}/docs`;
 
@@ -13,48 +19,52 @@ export function Logo() {
   );
 }
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const t = await getTranslations("nav");
   return (
-    <header className="border-b border-hairline bg-surface/80 backdrop-blur supports-[backdrop-filter]:bg-surface/70 sticky top-0 z-20">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-ink">
+    <header className="sticky top-0 z-20 border-b border-hairline bg-surface/80 backdrop-blur supports-[backdrop-filter]:bg-surface/70">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:gap-5 sm:px-6">
+        <Link href="/" aria-label={t("home")} className="flex items-center gap-2 rounded-md font-semibold tracking-tight text-ink">
           <Logo />
-          <span>EU Disclosure Atlas</span>
+          <span className="hidden md:inline">EU Disclosure Atlas</span>
         </Link>
-        <nav aria-label="Main" className="ml-auto flex items-center gap-1 text-sm text-ink-2">
-          <Link className="rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink" href="/">
-            Overview
-          </Link>
-          <Link className="rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink" href="/filings">
-            Filings
-          </Link>
-          <Link className="rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink" href="/architecture">
-            Architecture
-          </Link>
-          <a className="hidden rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink sm:block" href={API_DOCS}>
-            API
+        <nav aria-label={t("main")} className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm text-ink-2">
+          <NavLink href="/">{t("overview")}</NavLink>
+          <NavLink href="/filings">{t("filings")}</NavLink>
+          <NavLink href="/explore">{t("explore")}</NavLink>
+          <NavLink href="/architecture" className="hidden sm:block">
+            {t("architecture")}
+          </NavLink>
+          <a className="hidden rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink lg:block" href={API_DOCS}>
+            {t("api")}
           </a>
         </nav>
+        <div className="ml-auto flex items-center gap-2">
+          <CommandPalette />
+          <LocaleSwitcher />
+        </div>
       </div>
     </header>
   );
 }
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const t = await getTranslations("footer");
   return (
     <footer className="mt-16 border-t border-hairline">
       <div className="mx-auto grid max-w-6xl gap-2 px-4 py-8 text-sm text-ink-3 sm:px-6">
         <p>
-          A research and transparency project. Natural persons appear only as pseudonymous ids.{" "}
-          <strong className="font-medium text-ink-2">Nothing here is investment advice.</strong>
+          {t("privacy")} <strong className="font-medium text-ink-2">{t("advice")}</strong>
         </p>
         <p>
-          Sources: Finansinspektionen (FI), data processed and re-used free of charge with attribution · ECB euro
-          reference rates. Built by{" "}
-          <a className="underline decoration-hairline underline-offset-2 hover:text-ink" href="https://manuelma4.github.io/">
-            Manuel David Maya Rosero
-          </a>
-          .
+          {t("sources")}{" "}
+          {t.rich("builtBy", {
+            link: (chunks) => (
+              <a className="underline decoration-hairline underline-offset-2 hover:text-ink" href="https://manuelma4.github.io/">
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </div>
     </footer>

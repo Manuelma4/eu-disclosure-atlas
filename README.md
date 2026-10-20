@@ -41,10 +41,10 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 
 | Surface | What it does | Status |
 |---|---|---|
-| **Website** | Live tape of new filings, insider flow, largest buys, company pages, filings explorer, architecture | Live (Next.js 16.4) |
+| **Website** | Live tape, insider flow, company pages with price charts and insider markers, filings search, an in-browser explorer (DuckDB-WASM + Mosaic), Ctrl/Cmd+K search; English, French, Spanish and German | Live (Next.js 16.4) |
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
-| **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
+| **Open data** | Gold tables as Parquet (`disclosure-atlas export`, `GET /v1/exports`), daily releases next | Partial |
 | **MCP server** | Tools and MCP Apps so AI agents can query the dataset | Planned (P4) |
 | **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
 
@@ -83,7 +83,7 @@ Status and source notes: [docs/sources/README.md](docs/sources/README.md). Plan:
 ```bash
 # Data and API (Python 3.14)
 python3.14 -m venv .venv && source .venv/bin/activate
-pip install -e '.[dev,api]'
+pip install -e '.[dev,api,prices]'                       # prices: yfinance for company charts (development)
 pytest                                                    # offline test suite
 disclosure-atlas reference fx                             # ECB euro reference rates
 disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
@@ -92,6 +92,7 @@ disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest 
 
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000
+cd web && npx playwright test                             # end-to-end tests against a fixture API
 ```
 
 Query the data directly:

@@ -1,37 +1,32 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { TransactionsTable } from "@/components/transactions-table";
 import { Card, Skeleton } from "@/components/ui";
+import { Link } from "@/i18n/navigation";
 import { getTransactions, type TransactionQuery } from "@/lib/api/data";
+import { getLabels } from "@/lib/format-server";
+import { alternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Filings",
-  description: "Search every managers' transaction in the Atlas by issuer, role, nature and date.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("filings");
+  return { title: t("title"), description: t("metaDescription"), alternates: await alternates("/filings") };
+}
 
 const NATURES = ["buy", "sell", "subscription", "grant", "exercise", "conversion", "exchange", "gift"];
-const ROLES = [
-  ["ceo", "CEO"],
-  ["cfo", "CFO"],
-  ["chair", "Chair"],
-  ["executive", "Executive"],
-  ["board_member", "Board member"],
-  ["other", "Other"],
-];
+const ROLES = ["ceo", "cfo", "chair", "executive", "board_member", "other"];
 
 type Search = Record<string, string | string[] | undefined>;
 const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value) || undefined;
 
-export default function FilingsPage({ searchParams }: PageProps<"/filings">) {
+export default async function FilingsPage({ searchParams }: PageProps<"/[locale]/filings">) {
+  const t = await getTranslations("filings");
   return (
     <div className="grid gap-6">
       <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Filings</h1>
-        <p className="mt-2 text-ink-2">
-          Every managers&rsquo; transaction in the Atlas, newest first. The same query runs on the public API.
-        </p>
+        <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
+        <p className="mt-2 text-ink-2">{t("lead")}</p>
       </header>
       <Suspense fallback={<Skeleton className="h-[36rem]" />}>
         <Results searchParams={searchParams} />
@@ -40,8 +35,11 @@ export default function FilingsPage({ searchParams }: PageProps<"/filings">) {
   );
 }
 
+const field = "rounded-md border border-hairline bg-page text-ink";
+
 async function Results({ searchParams }: { searchParams: Promise<Search> }) {
   const params = await searchParams;
+  const [t, tc, labels] = await Promise.all([getTranslations("filings"), getTranslations("common"), getLabels()]);
   const query: TransactionQuery = {
     q: first(params.q),
     nature: first(params.nature) ? [first(params.nature)!] : undefined,
@@ -61,52 +59,53 @@ async function Results({ searchParams }: { searchParams: Promise<Search> }) {
   return (
     <Card
       title={
-        <form className="flex flex-wrap items-end gap-3 text-sm" action="/filings">
+        <form role="search" aria-label={t("filters")} className="flex flex-wrap items-end gap-3 text-sm" action="">
           <label className="grid gap-1 font-normal text-ink-3">
-            Issuer
+            {t("issuer")}
             <input
               name="q"
+              type="search"
               defaultValue={query.q ?? ""}
-              placeholder="Name contains…"
-              className="w-56 rounded-md border border-hairline bg-page px-2.5 py-1.5 text-ink placeholder:text-ink-3"
+              placeholder={t("issuerPlaceholder")}
+              className={`w-56 px-2.5 py-1.5 placeholder:text-ink-3 ${field}`}
             />
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
-            Nature
-            <select name="nature" defaultValue={query.nature?.[0] ?? ""} className="rounded-md border border-hairline bg-page px-2 py-1.5 text-ink">
-              <option value="">All</option>
+            {t("nature")}
+            <select name="nature" defaultValue={query.nature?.[0] ?? ""} className={`px-2 py-1.5 ${field}`}>
+              <option value="">{t("all")}</option>
               {NATURES.map((n) => (
                 <option key={n} value={n}>
-                  {n.charAt(0).toUpperCase() + n.slice(1)}
+                  {labels.nature(n)}
                 </option>
               ))}
             </select>
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
-            Role
-            <select name="role" defaultValue={query.role?.[0] ?? ""} className="rounded-md border border-hairline bg-page px-2 py-1.5 text-ink">
-              <option value="">All</option>
-              {ROLES.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
+            {t("role")}
+            <select name="role" defaultValue={query.role?.[0] ?? ""} className={`px-2 py-1.5 ${field}`}>
+              <option value="">{t("all")}</option>
+              {ROLES.map((r) => (
+                <option key={r} value={r}>
+                  {labels.role(r)}
                 </option>
               ))}
             </select>
           </label>
           <label className="grid gap-1 font-normal text-ink-3">
-            Published since
-            <input type="date" name="since" defaultValue={query.since ?? ""} className="rounded-md border border-hairline bg-page px-2 py-1 text-ink" />
+            {t("since")}
+            <input type="date" name="since" defaultValue={query.since ?? ""} className={`px-2 py-1 ${field}`} />
           </label>
           <label className="flex items-center gap-2 pb-1.5 font-normal text-ink-2">
             <input type="checkbox" name="open_market" value="true" defaultChecked={query.open_market === true} />
-            Open market only
+            {t("openMarket")}
           </label>
           <button className="rounded-md bg-ink px-3 py-1.5 font-medium text-page hover:opacity-90" type="submit">
-            Apply
+            {t("apply")}
           </button>
           {Object.keys(params).length > 0 && (
             <Link href="/filings" className="pb-1.5 text-ink-3 hover:text-ink">
-              Reset
+              {t("reset")}
             </Link>
           )}
         </form>
@@ -115,11 +114,11 @@ async function Results({ searchParams }: { searchParams: Promise<Search> }) {
       <TransactionsTable items={page.items} />
       <div className="mt-4 flex items-center justify-between text-sm text-ink-3">
         <span>
-          Snapshot <code className="font-mono text-xs">{page.snapshot}</code>
+          {tc("snapshot")} <code className="font-mono text-xs">{page.snapshot}</code>
         </span>
         {page.next_cursor && (
           <Link href={`/filings?${next.toString()}`} className="rounded-md border border-hairline px-3 py-1.5 text-ink hover:bg-surface-2">
-            Next 50 →
+            {t("next")} <span aria-hidden="true">→</span>
           </Link>
         )}
       </div>

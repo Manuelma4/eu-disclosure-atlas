@@ -4,6 +4,69 @@
  */
 
 export interface paths {
+    "/v1/issuers/{lei}/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Issuer Prices
+         * @description Daily prices of the issuer's share, plus the days on which its insiders bought or sold on the market.
+         *
+         *     Prices come from a pluggable provider (yfinance in development) and are cached in the lake's reference
+         *     area. They are unadjusted closing prices of the listing on the issuer's home market. Not investment advice.
+         */
+        get: operations["issuer_prices_v1_issuers__lei__prices_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/exports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Exports
+         * @description Gold tables available as Parquet for the current data snapshot.
+         */
+        get: operations["list_exports_v1_exports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/exports/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Export
+         * @description One gold table as Parquet (zstd). Supports `Range` requests, so DuckDB reads it remotely.
+         */
+        get: operations["get_export_v1_exports__name__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/health": {
         parameters: {
             query?: never;
@@ -178,6 +241,27 @@ export interface components {
              */
             late_share: number | null;
         };
+        /** ExportFile */
+        ExportFile: {
+            /** Dataset */
+            dataset: string;
+            /**
+             * Path
+             * @description Relative URL of the Parquet file
+             */
+            path: string;
+            /** Rows */
+            rows: number;
+            /** Bytes */
+            bytes: number;
+            /** Snapshot */
+            snapshot: string;
+        };
+        /**
+         * ExportName
+         * @enum {string}
+         */
+        ExportName: "insider_transactions.parquet" | "net_short_positions.parquet";
         /** FlowPoint */
         FlowPoint: {
             /**
@@ -208,6 +292,33 @@ export interface components {
             snapshot: string;
             /** Records */
             records: number;
+        };
+        /** InsiderDay */
+        InsiderDay: {
+            /**
+             * Date
+             * Format: date
+             * @description Transaction date
+             */
+            date: string;
+            /**
+             * Buys
+             * @description Open-market purchases of shares
+             */
+            buys: number;
+            /**
+             * Sells
+             * @description Open-market sales of shares
+             */
+            sells: number;
+            /** Buy Eur */
+            buy_eur: number | null;
+            /** Sell Eur */
+            sell_eur: number | null;
+            /** Buy Volume */
+            buy_volume: number | null;
+            /** Sell Volume */
+            sell_volume: number | null;
         };
         /** IssuerDetail */
         IssuerDetail: {
@@ -312,6 +423,64 @@ export interface components {
              * @description Data version the page was read from
              */
             snapshot: string;
+        };
+        /** PriceBar */
+        PriceBar: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Open */
+            open: number | null;
+            /** High */
+            high: number | null;
+            /** Low */
+            low: number | null;
+            /** Close */
+            close: number;
+            /** Volume */
+            volume: number | null;
+        };
+        /** PriceSeries */
+        PriceSeries: {
+            /** Lei */
+            lei: string;
+            /**
+             * Isin
+             * @description Share ISIN used (the one most often traded by the issuer's insiders)
+             */
+            isin: string | null;
+            /**
+             * Ticker
+             * @description Listing the prices come from, as the provider names it
+             */
+            ticker: string | null;
+            /**
+             * Currency
+             * @description Trading currency of the listing
+             */
+            currency: string | null;
+            /**
+             * Provider
+             * @description Price provider: yfinance (development), synthetic or none
+             */
+            provider: string;
+            /**
+             * Fetched At
+             * @description When the provider was last queried for this ISIN
+             */
+            fetched_at: string | null;
+            /**
+             * Bars
+             * @description Daily bars, oldest first (unadjusted)
+             */
+            bars: components["schemas"]["PriceBar"][];
+            /**
+             * Insider
+             * @description Days with open-market insider trades in the window
+             */
+            insider: components["schemas"]["InsiderDay"][];
         };
         /** RoleStat */
         RoleStat: {
@@ -463,6 +632,93 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    issuer_prices_v1_issuers__lei__prices_get: {
+        parameters: {
+            query?: {
+                /** @description Calendar days of history */
+                days?: number;
+                /** @description Override the share ISIN */
+                isin?: string | null;
+            };
+            header?: never;
+            path: {
+                lei: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceSeries"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_exports_v1_exports_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExportFile"][];
+                };
+            };
+        };
+    };
+    get_export_v1_exports__name__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: components["schemas"]["ExportName"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Parquet file (supports Range requests) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.apache.parquet": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_v1_health_get: {
         parameters: {
             query?: never;

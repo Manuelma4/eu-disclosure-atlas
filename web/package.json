@@ -3,20 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/copy-duckdb.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/copy-duckdb.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "api:types": "openapi-typescript openapi.json -o src/lib/api/schema.d.ts"
+    "api:types": "openapi-typescript openapi.json -o src/lib/api/schema.d.ts",
+    "i18n:check": "node scripts/check-messages.mjs",
+    "e2e": "playwright test",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs"
   },
   "dependencies": {
+    "@duckdb/duckdb-wasm": "1.33.1-dev57.0",
+    "@uwdata/mosaic-core": "^0.33.0",
+    "@uwdata/mosaic-sql": "^0.33.0",
+    "@uwdata/vgplot": "^0.33.0",
+    "lightweight-charts": "^5.2.1",
     "next": "16.4.2",
+    "next-intl": "^4.14.9",
     "openapi-fetch": "^0.17.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.61.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

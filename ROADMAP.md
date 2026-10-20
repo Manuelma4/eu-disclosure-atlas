@@ -48,11 +48,20 @@ Owns: `src/disclosure_atlas/ai/`, `evals/ask/`.
 - Ask the Atlas: natural-language questions to guarded read-only SQL (sqlglot), answers with their SQL and a
   chart, gated by a golden question set.
 
-### P5 Website product `[ ]`
-Owns: `web/`.
-- Explorer with DuckDB-WASM and Mosaic over the published Parquet; company search; price chart with insider
-  markers; research pages; API reference (Scalar); English, French, Spanish and German; accessibility and
-  Lighthouse budgets; Playwright end-to-end tests.
+### P5 Website product `[x]`
+Owns: `web/`, `src/disclosure_atlas/api/{prices,exports}.py`, `src/disclosure_atlas/reference/prices.py`.
+- [x] Explorer (`/explore`): DuckDB-WASM (self-hosted, Parquet extension included) and Mosaic vgplot linked views
+  (filings by week, by role, amount distribution) over the gold Parquet served by `GET /v1/exports`; table view
+  per chart; benchmarked on 1.2 million rows
+- [x] Company search: Ctrl/Cmd+K command palette over `GET /v1/issuers?q=`
+- [x] Price chart with insider buy and sell markers (lightweight-charts), `GET /v1/issuers/{lei}/prices` with a
+  pluggable provider (yfinance in development, synthetic for tests), ISIN-to-ticker mapping, cache under
+  `lake/reference/prices/`
+- [x] English, French, Spanish and German (next-intl, locale-prefixed routes, hreflang); a CI check keeps the
+  four catalogues in sync
+- [x] Accessibility (keyboard paths for every chart, focus rings, skip link, reduced motion, axe in light and
+  dark mode), Lighthouse budgets, Playwright end-to-end tests against a fixture API, all in CI
+- [ ] Follow-ups: research pages (with WS6/WS7 results) and an API reference page (Scalar)
 
 ### P6 Kubernetes, GitOps and supply chain `[ ]`
 Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deploy). Design: decision 0012.
