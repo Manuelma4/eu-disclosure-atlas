@@ -36,8 +36,11 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
 
 ## Rules
 - English only: code, docs, commits, PRs.
-- Git: commits authored by `Manuelma4 <71296266+Manuelma4@users.noreply.github.com>`, with no Co-Authored-By
-  or Claude-Session trailers (the owner's explicit preference).
+- Git: the owner must be the **only contributor**. Commits are authored and committed by
+  `Manuelma4 <71296266+Manuelma4@users.noreply.github.com>`, with no Co-Authored-By or Claude-Session trailers,
+  and PR bodies carry no "Generated with" lines. No bot commits or bot PRs: no Renovate, no Dependabot version
+  updates, no release-please, and no GitHub Actions that push commits (dependency risk is covered by audits in
+  CI). Local hooks strip trailers and block foreign authors; the `Single contributor` workflow enforces it on PRs.
 - One branch per workstream (see ROADMAP.md), PR to `main`, CI green. Do not push to `main` directly unless
   the owner asks.
 - Stay in your lane: own your workstream's files. Changes to shared modules (`models.py`, `normalize.py`,
