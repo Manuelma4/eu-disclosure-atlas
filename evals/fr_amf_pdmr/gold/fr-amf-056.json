@@ -1,0 +1,102 @@
+{
+ "id": "fr-amf-056",
+ "sha256": "56f3c45100af30cc4698b6c1260876474cfd58a7d797ea1ac0056fc01f773f0a",
+ "notes": "closely associated legal person; 2 transactions; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 56 SYNTHETIC SAS",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Alex Exemple-56b",
+  "declarant_position": "Gérant",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "PATRIMOINE ET COMMERCE",
+  "issuer_lei": "969500C2C11L0PTGRH11",
+  "reference_isin": "FR0011027135",
+  "transactions": [
+   {
+    "transaction_date": "2026-10-09",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0011027135",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 23.2,
+      "volume": 1.0
+     },
+     {
+      "price": 23.4,
+      "volume": 5.0
+     },
+     {
+      "price": 23.6,
+      "volume": 2.0
+     },
+     {
+      "price": 23.7,
+      "volume": 1.0
+     }
+    ],
+    "aggregated_price": 23.4556,
+    "aggregated_volume": 9.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-10-12",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0011027135",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.4,
+      "volume": 4.0
+     },
+     {
+      "price": 22.6,
+      "volume": 2.0
+     },
+     {
+      "price": 22.7,
+      "volume": 1.0
+     },
+     {
+      "price": 22.8,
+      "volume": 1.0
+     },
+     {
+      "price": 23.8,
+      "volume": 1.0
+     },
+     {
+      "price": 23.7,
+      "volume": 2.0
+     }
+    ],
+    "aggregated_price": 22.8636,
+    "aggregated_volume": 11.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0011027135",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR0011027135"
+ },
+ "text": "2026DD9000056 13 octobre 2026\nFR0011027135 - DD900056\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 56 SYNTHETIC SAS personne morale liée à Alex Exemple-56b, Gérant\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : PATRIMOINE ET COMMERCE\nLEI : 969500C2C11L0PTGRH11\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 09 octobre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0011027135\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 23.2000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 23.4000 Euro\nVOLUME : 5.0000\nPRIX UNITAIRE : 23.6000 Euro\nVOLUME : 2.0000\nPRIX UNITAIRE : 23.7000 Euro\nVOLUME : 1.0000\nINFORMATIONS AGREGEES\n\n\nPRIX : 23.4556 Euro\nVOLUME : 9.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 12 octobre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0011027135\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 22.4000 Euro\nVOLUME : 4.0000\nPRIX UNITAIRE : 22.6000 Euro\nVOLUME : 2.0000\nPRIX UNITAIRE : 22.7000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 22.8000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 23.8000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 23.7000 Euro\nVOLUME : 2.0000\nINFORMATIONS AGREGEES\nPRIX : 22.8636 Euro\nVOLUME : 11.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 13 octobre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000056 13 October 2026\nFR0011027135 - DD900056\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 56 SYNTHETIC SAS legal person closely associated with Alex Exemple-56b, Gérant\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : PATRIMOINE ET COMMERCE\nLEI : 969500C2C11L0PTGRH11\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 09 October 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0011027135\nDETAILED OPERATION INFORMATION\nPRICE : 23.2000 Euro\nVOLUME : 1.0000\nPRICE : 23.4000 Euro\nVOLUME : 5.0000\nPRICE : 23.6000 Euro\nVOLUME : 2.0000\nPRICE : 23.7000 Euro\nVOLUME : 1.0000\nAGGREGATED INFORMATION\n\n\nPRICE : 23.4556 Euro\nAGGREGATED VOLUME : 9.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\nDATE OF THE TRANSACTION : 12 October 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0011027135\nDETAILED OPERATION INFORMATION\nPRICE : 22.4000 Euro\nVOLUME : 4.0000\nPRICE : 22.6000 Euro\nVOLUME : 2.0000\nPRICE : 22.7000 Euro\nVOLUME : 1.0000\nPRICE : 22.8000 Euro\nVOLUME : 1.0000\nPRICE : 23.8000 Euro\nVOLUME : 1.0000\nPRICE : 23.7000 Euro\nVOLUME : 2.0000\nAGGREGATED INFORMATION\nPRICE : 22.8636 Euro\nAGGREGATED VOLUME : 11.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 13 October 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

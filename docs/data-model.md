@@ -32,7 +32,8 @@ template (Commission Implementing Regulation (EU) 2016/523): 1 person, 2 reason,
 | `volume`, `price`, `currency`, `amount` | float, float, string, float | Template 4c; `amount = volume × price` in `currency` |
 | `venue`, `on_venue` | string, bool | Template 4f; `on_venue = false` for "outside a trading venue" |
 | `is_superseded`, `status_raw` | bool, string | Revised or cancelled at the source |
-| `fetched_at`, `parser` | timestamp, string | Provenance |
+| `fetched_at`, `parser` | timestamp, string | Provenance; `llm:<model>@<prompt-version>` when an LLM read the document |
+| `extraction_confidence` | float | Lowest model-reported field confidence (0 to 1) for LLM-read rows; null for rule-based parsers |
 | `is_open_market` | bool | Gold only: buy or sell of shares on a trading venue |
 
 ## `net_short_positions`

@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-001",
+ "sha256": "c84829db206d532d5f5cc38a7f089803016562f36eeb9db6fa00804940fb150d",
+ "notes": "closely associated legal person",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 01 SA",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Charlie Exemple-01b",
+  "declarant_position": "Président Directeur Général",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "VICAT S.A.",
+  "issuer_lei": "9695009YI1863TOVDP79",
+  "reference_isin": "FR0000031775",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-03",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 66.4,
+      "volume": 163.0
+     }
+    ],
+    "aggregated_price": 66.4,
+    "aggregated_volume": 163.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0000031775"
+ },
+ "text": "2026DD9000001 04 août 2026\nFR0000031775 - DD900001\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 01 SA personne morale liée à Charlie Exemple-01b, Président Directeur Général\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : VICAT S.A.\nLEI : 9695009YI1863TOVDP79\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 03 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 66.4000 Euro\nVOLUME : 163.0000\nINFORMATIONS AGREGEES\nPRIX : 66.4000 Euro\nVOLUME : 163.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 04 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000001 04 August 2026\nFR0000031775 - DD900001\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 01 SA legal person closely associated with Charlie Exemple-01b, Président Directeur Général\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : VICAT S.A.\nLEI : 9695009YI1863TOVDP79\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 03 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nDETAILED OPERATION INFORMATION\nPRICE : 66.4000 Euro\nVOLUME : 163.0000\nAGGREGATED INFORMATION\nPRICE : 66.4000 Euro\nAGGREGATED VOLUME : 163.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 04 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

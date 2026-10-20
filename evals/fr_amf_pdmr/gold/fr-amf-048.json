@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-048",
+ "sha256": "f6aca72bccb87f2b22147821f9270a761613f0d2961dd329f2ee594f09ecb8fa",
+ "notes": "closely associated legal person; non open-market nature",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 48 SYNTHETIC SYNTHETIC",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Morgan Exemple-48b",
+  "declarant_position": "Président du Conseil d'administration",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "TELEPERFORMANCE",
+  "issuer_lei": "9695004GI61FHFFNRG61",
+  "reference_isin": "FR0000051807",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-02",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Dénouement d’un contrat financier dérivé sur rendement total (Equity swap) – Nantissement",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 46.1687,
+      "volume": 236059.0
+     }
+    ],
+    "aggregated_price": 46.1687,
+    "aggregated_volume": 236059.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "chair",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "pledge",
+  "transactions[0].direction": 0,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0000051807"
+ },
+ "text": "2026DD9000048 07 septembre 2026\nFR0000051807 - DD900048\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 48 SYNTHETIC SYNTHETIC personne morale liée à Morgan Exemple-48b, Président du Conseil d'administration\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : TELEPERFORMANCE\nLEI : 9695004GI61FHFFNRG61\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 02 septembre 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Dénouement d’un contrat financier dérivé sur rendement total (Equity swap) – Nantissement\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 46.1687 Euro\nVOLUME : 236 059.0000\nINFORMATIONS AGREGEES\nPRIX : 46.1687 Euro\nVOLUME : 236 059.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 07 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000048 07 September 2026\nFR0000051807 - DD900048\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 48 SYNTHETIC SYNTHETIC legal person closely associated with Morgan Exemple-48b, Président du Conseil d'administration\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : TELEPERFORMANCE\nLEI : 9695004GI61FHFFNRG61\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 02 September 2026\nPLACE OF THE TRANSACTION : Outside a trading venue\nNATURE OF THE TRANSACTION : Dénouement d’un contrat financier dérivé sur rendement total (Equity swap) – Nantissement\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nDETAILED OPERATION INFORMATION\nPRICE : 46.1687 Euro\nVOLUME : 236 059.0000\nAGGREGATED INFORMATION\nPRICE : 46.1687 Euro\nAGGREGATED VOLUME : 236 059.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 07 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

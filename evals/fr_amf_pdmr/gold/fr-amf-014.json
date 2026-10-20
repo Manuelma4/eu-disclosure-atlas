@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-014",
+ "sha256": "498b390d6d6adaf166a01144ebd96c196276b33292a8decbee97bdca9c2bc664",
+ "notes": "",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 14 SE SE",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Membre du conseil d'administration",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "ABC ARBITRAGE",
+  "issuer_lei": "969500IZ7E6B3QVX2I11",
+  "reference_isin": "FR0004040608",
+  "transactions": [
+   {
+    "transaction_date": "2026-10-13",
+    "venue": "Euronext Paris",
+    "nature": "Cession",
+    "instrument": "Action",
+    "isin": "FR0004040608",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 5.6768,
+      "volume": 3865.0
+     }
+    ],
+    "aggregated_price": 5.6768,
+    "aggregated_volume": 3865.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "sell",
+  "transactions[0].direction": -1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0004040608"
+ },
+ "text": "2026DD9000014 14 octobre 2026\nFR0004040608 - DD900014\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 14 SE SE, Membre du conseil d'administration\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : ABC ARBITRAGE\nLEI : 969500IZ7E6B3QVX2I11\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 13 octobre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Cession\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0004040608\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 5.6768 Euro\nVOLUME : 3 865.0000\nINFORMATIONS AGREGEES\nPRIX : 5.6768 Euro\nVOLUME : 3 865.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 14 octobre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000014 14 October 2026\nFR0004040608 - DD900014\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 14 SE SE, Membre du conseil d'administration\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : ABC ARBITRAGE\nLEI : 969500IZ7E6B3QVX2I11\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 13 October 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Disposal\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0004040608\nDETAILED OPERATION INFORMATION\nPRICE : 5.6768 Euro\nVOLUME : 3 865.0000\nAGGREGATED INFORMATION\nPRICE : 5.6768 Euro\nAGGREGATED VOLUME : 3 865.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 14 October 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

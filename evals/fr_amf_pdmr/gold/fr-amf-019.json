@@ -1,0 +1,70 @@
+{
+ "id": "fr-amf-019",
+ "sha256": "c5bd882de76cd3d36882eac108487a4858e5578d760792f28a3aef258515d9ca",
+ "notes": "closely associated legal person; 2 transactions",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 19 CAPITAL Société par actions simplifiée",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Camille Exemple-19b",
+  "declarant_position": "Président de AF&Co Management, elle-même Gérant de Tikehau Capital",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "TIKEHAU CAPITAL",
+  "issuer_lei": "969500BY8TEU16U3SJ94",
+  "reference_isin": "FR0013230612",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-28",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0013230612",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 17.06,
+      "volume": 725.0
+     }
+    ],
+    "aggregated_price": 17.06,
+    "aggregated_volume": 725.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-31",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0013230612",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 16.87,
+      "volume": 2100.0
+     }
+    ],
+    "aggregated_price": 16.87,
+    "aggregated_volume": 2100.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0013230612",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR0013230612"
+ },
+ "text": "2026DD9000019 31 août 2026\nFR0013230612 - DD900019\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 19 CAPITAL Société par actions simplifiée personne morale liée à Camille Exemple-19b, Président de AF&Co Management, elle-même Gérant de Tikehau Capital\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : TIKEHAU CAPITAL\nLEI : 969500BY8TEU16U3SJ94\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 28 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013230612\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 17.0600 Euro\nVOLUME : 725.0000\nINFORMATIONS AGREGEES\nPRIX : 17.0600 Euro\nVOLUME : 725.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 31 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\n\n\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013230612\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 16.8700 Euro\nVOLUME : 2 100.0000\nINFORMATIONS AGREGEES\nPRIX : 16.8700 Euro\nVOLUME : 2 100.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 31 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000019 31 August 2026\nFR0013230612 - DD900019\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 19 CAPITAL Société par actions simplifiée legal person closely associated with Camille Exemple-19b, Président de AF&Co Management, elle-même Gérant de Tikehau Capital\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : TIKEHAU CAPITAL\nLEI : 969500BY8TEU16U3SJ94\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 28 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0013230612\nDETAILED OPERATION INFORMATION\nPRICE : 17.0600 Euro\nVOLUME : 725.0000\nAGGREGATED INFORMATION\nPRICE : 17.0600 Euro\nAGGREGATED VOLUME : 725.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\n\n\nDATE OF THE TRANSACTION : 31 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0013230612\nDETAILED OPERATION INFORMATION\nPRICE : 16.8700 Euro\nVOLUME : 2 100.0000\nAGGREGATED INFORMATION\nPRICE : 16.8700 Euro\nAGGREGATED VOLUME : 2 100.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 31 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

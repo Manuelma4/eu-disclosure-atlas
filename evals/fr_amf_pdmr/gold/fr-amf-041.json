@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-041",
+ "sha256": "efbf8a1400a860171e25b01d7baf5d134f44818b412d002b7be8e98979b5c45a",
+ "notes": "non open-market nature; non-share instrument",
+ "labels": {
+  "declarant_name": "Morgan Exemple-41",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Membre du Conseil de surveillance représentant les salariés",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "WENDEL",
+  "issuer_lei": "969500M98ZMIZYJD5O34",
+  "reference_isin": "FR0000121204",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-24",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Souscription",
+    "instrument": "Parts du FCPE \"Relais Wendel 2026\"",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 10.0,
+      "volume": 5541.247
+     }
+    ],
+    "aggregated_price": 10.0,
+    "aggregated_volume": 5541.247,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "subscription",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "other",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": null
+ },
+ "text": "2026DD9000041 24 juillet 2026\nFR0000121204 - DD900041\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nMorgan Exemple-41, Membre du Conseil de surveillance représentant les salariés\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : WENDEL\nLEI : 969500M98ZMIZYJD5O34\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 24 juillet 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Souscription\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Parts du FCPE \"Relais Wendel 2026\"\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 10.0000 Euro\nVOLUME : 5 541.2470\nINFORMATIONS AGREGEES\nPRIX : 10.0000 Euro\nVOLUME : 5 541.2470\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 24 juillet 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000041 24 July 2026\nFR0000121204 - DD900041\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nMorgan Exemple-41, Membre du Conseil de surveillance représentant les salariés\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : WENDEL\nLEI : 969500M98ZMIZYJD5O34\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 24 July 2026\nPLACE OF THE TRANSACTION : Hors plateforme de négociation\nNATURE OF THE TRANSACTION : Souscription\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Parts du FCPE \"Relais Wendel 2026\"\nDETAILED OPERATION INFORMATION\nPRICE : 10.0000 Euro\nVOLUME : 5 541.2470\nAGGREGATED INFORMATION\nPRICE : 10.0000 Euro\nAGGREGATED VOLUME : 5 541.2470\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 24 July 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

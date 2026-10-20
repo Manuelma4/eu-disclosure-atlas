@@ -1,0 +1,103 @@
+{
+ "id": "fr-amf-025",
+ "sha256": "d60fa1d1ccc73dc8b851de23319947cb018406ceb0b92b4844d12e4c7a6621a0",
+ "notes": "several price lines",
+ "labels": {
+  "declarant_name": "Alex Exemple-25",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "PRESIDENT D'HONNEUR DE DASSAULT SYSTEMES",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "DASSAULT SYSTEMES",
+  "issuer_lei": null,
+  "reference_isin": "FR0014003TT8",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-31",
+    "venue": "AQED, AQEU, BEUP, CEUD, EBLX, JNSI, LNEQ, TOWR, TQEM, TQEX, VFSI, XEQT, XPAE, XTXE",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0014003TT8 DSY",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.9487,
+      "volume": 1424.0
+     },
+     {
+      "price": 22.8285,
+      "volume": 6407.0
+     },
+     {
+      "price": 22.817,
+      "volume": 929.0
+     },
+     {
+      "price": 22.9715,
+      "volume": 10155.0
+     },
+     {
+      "price": 22.8148,
+      "volume": 12701.0
+     },
+     {
+      "price": 22.9592,
+      "volume": 5275.0
+     },
+     {
+      "price": 22.8103,
+      "volume": 4028.0
+     },
+     {
+      "price": 22.976,
+      "volume": 333.0
+     },
+     {
+      "price": 22.8726,
+      "volume": 1672.0
+     },
+     {
+      "price": 22.968,
+      "volume": 2500.0
+     },
+     {
+      "price": 22.8214,
+      "volume": 11047.0
+     },
+     {
+      "price": 22.8231,
+      "volume": 6500.0
+     },
+     {
+      "price": 22.8722,
+      "volume": 133.0
+     },
+     {
+      "price": 22.8791,
+      "volume": 82918.0
+     },
+     {
+      "price": 22.77,
+      "volume": 3000.0
+     }
+    ],
+    "aggregated_price": 22.8717,
+    "aggregated_volume": 149022.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "other",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0014003TT8"
+ },
+ "text": "2026DD9000025 01 septembre 2026\nFR0014003TT8 - DD900025\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nAlex Exemple-25, PRESIDENT D'HONNEUR DE DASSAULT SYSTEMES\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : DASSAULT SYSTEMES\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 31 août 2026\nLIEU DE LA TRANSACTION : AQED, AQEU, BEUP, CEUD, EBLX, JNSI, LNEQ, TOWR, TQEM, TQEX, VFSI, XEQT, XPAE,\nXTXE\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0014003TT8 DSY\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 22.9487 Euro\nVOLUME : 1 424.0000\nPRIX UNITAIRE : 22.8285 Euro\nVOLUME : 6 407.0000\nPRIX UNITAIRE : 22.8170 Euro\nVOLUME : 929.0000\nPRIX UNITAIRE : 22.9715 Euro\nVOLUME : 10 155.0000\nPRIX UNITAIRE : 22.8148 Euro\nVOLUME : 12 701.0000\n\n\nPRIX UNITAIRE : 22.9592 Euro\nVOLUME : 5 275.0000\nPRIX UNITAIRE : 22.8103 Euro\nVOLUME : 4 028.0000\nPRIX UNITAIRE : 22.9760 Euro\nVOLUME : 333.0000\nPRIX UNITAIRE : 22.8726 Euro\nVOLUME : 1 672.0000\nPRIX UNITAIRE : 22.9680 Euro\nVOLUME : 2 500.0000\nPRIX UNITAIRE : 22.8214 Euro\nVOLUME : 11 047.0000\nPRIX UNITAIRE : 22.8231 Euro\nVOLUME : 6 500.0000\nPRIX UNITAIRE : 22.8722 Euro\nVOLUME : 133.0000\nPRIX UNITAIRE : 22.8791 Euro\nVOLUME : 82 918.0000\nPRIX UNITAIRE : 22.7700 Euro\nVOLUME : 3 000.0000\nINFORMATIONS AGREGEES\nPRIX : 22.8717 Euro\nVOLUME : 149 022.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 01 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000025 01 September 2026\nFR0014003TT8 - DD900025\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nAlex Exemple-25, PRESIDENT D'HONNEUR DE DASSAULT SYSTEMES\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : DASSAULT SYSTEMES\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 31 August 2026\nPLACE OF THE TRANSACTION : AQED, AQEU, BEUP, CEUD, EBLX, JNSI, LNEQ, TOWR, TQEM, TQEX, VFSI, XEQT, XPAE,\nXTXE\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0014003TT8 DSY\nDETAILED OPERATION INFORMATION\nPRICE : 22.9487 Euro\nVOLUME : 1 424.0000\nPRICE : 22.8285 Euro\nVOLUME : 6 407.0000\nPRICE : 22.8170 Euro\nVOLUME : 929.0000\nPRICE : 22.9715 Euro\nVOLUME : 10 155.0000\nPRICE : 22.8148 Euro\n\n\nVOLUME : 12 701.0000\nPRICE : 22.9592 Euro\nVOLUME : 5 275.0000\nPRICE : 22.8103 Euro\nVOLUME : 4 028.0000\nPRICE : 22.9760 Euro\nVOLUME : 333.0000\nPRICE : 22.8726 Euro\nVOLUME : 1 672.0000\nPRICE : 22.9680 Euro\nVOLUME : 2 500.0000\nPRICE : 22.8214 Euro\nVOLUME : 11 047.0000\nPRICE : 22.8231 Euro\nVOLUME : 6 500.0000\nPRICE : 22.8722 Euro\nVOLUME : 133.0000\nPRICE : 22.8791 Euro\nVOLUME : 82 918.0000\nPRICE : 22.7700 Euro\nVOLUME : 3 000.0000\nAGGREGATED INFORMATION\nPRICE : 22.8717 Euro\nAGGREGATED VOLUME : 149 022.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 01 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-006",
+ "sha256": "4543b48a0e120b891b9261b87e0ed190b76906022076f2a3652ac58e379a6682",
+ "notes": "closely associated legal person",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 06 SAS Société par actions simplifiée",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Andrea Exemple-06b",
+  "declarant_position": "Administrateur de Louis Hachette Group",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "LOUIS HACHETTE GROUP S.A.",
+  "issuer_lei": "969500CV8XQ2XKU2DO25",
+  "reference_isin": "FR001400TL40",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-16",
+    "venue": "Multiplaces",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400TL40",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.746,
+      "volume": 9184.0
+     }
+    ],
+    "aggregated_price": 1.746,
+    "aggregated_volume": 9184.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400TL40"
+ },
+ "text": "2026DD9000006 21 septembre 2026\nFR001400TL40 - DD900006\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 06 SAS Société par actions simplifiée personne morale liée à Andrea Exemple-06b, Administrateur de Louis Hachette Group\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 16 septembre 2026\nLIEU DE LA TRANSACTION : Multiplaces\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400TL40\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.7460 Euro\nVOLUME : 9 184.0000\nINFORMATIONS AGREGEES\nPRIX : 1.7460 Euro\nVOLUME : 9 184.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 21 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000006 21 September 2026\nFR001400TL40 - DD900006\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 06 SAS Société par actions simplifiée legal person closely associated with Andrea Exemple-06b, Administrateur de Louis Hachette Group\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 16 September 2026\nPLACE OF THE TRANSACTION : Multiplaces\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400TL40\nDETAILED OPERATION INFORMATION\nPRICE : 1.7460 Euro\nVOLUME : 9 184.0000\nAGGREGATED INFORMATION\nPRICE : 1.7460 Euro\nAGGREGATED VOLUME : 9 184.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 21 September 2026\n\n\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

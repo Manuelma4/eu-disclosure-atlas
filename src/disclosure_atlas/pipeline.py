@@ -37,6 +37,8 @@ def ingest(connector: Connector, lake: Lake, start: date, end: date) -> IngestRe
         report.documents += 1
         report.records += len(records)
         report.superseded += sum(1 for r in records if r.is_superseded)
+        if warning := doc.meta.get("warning"):
+            report.warnings.append(str(warning))
         if doc.meta.get("truncated"):
             report.warnings.append(f"{doc.meta.get('window')} hit the source row cap; data may be incomplete")
     return report

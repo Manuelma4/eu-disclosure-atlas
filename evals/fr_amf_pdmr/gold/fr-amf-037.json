@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-037",
+ "sha256": "6ffb3cf7e0c3a1bba2c95dc5026d3346a5577253aaf844bc9fac6bc5f57c1b9c",
+ "notes": "non open-market nature",
+ "labels": {
+  "declarant_name": "Alex Exemple-37",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Administratrice représentant les salariés",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "EDENRED",
+  "issuer_lei": "9695006LOD5B2D7Y0N70",
+  "reference_isin": "FR0010908533",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-27",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Acquisition actions gratuites",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 0.0,
+      "volume": 1000.0
+     }
+    ],
+    "aggregated_price": 0.0,
+    "aggregated_volume": 1000.0,
+    "linked_to_share_option_programme": true,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "grant",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0010908533"
+ },
+ "text": "2026DD9000037 27 juillet 2026\nFR0010908533 - DD900037\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nAlex Exemple-37, Administratrice représentant les salariés\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : EDENRED\nLEI : 9695006LOD5B2D7Y0N70\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 27 juillet 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Acquisition actions gratuites\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 0.0000 Euro\nVOLUME : 1 000.0000\nINFORMATIONS AGREGEES\nPRIX : 0.0000 Euro\nVOLUME : 1 000.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : OUI\nDATE DE RECEPTION DE LA NOTIFICATION : 27 juillet 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000037 27 July 2026\nFR0010908533 - DD900037\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nAlex Exemple-37, Administratrice représentant les salariés\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : EDENRED\nLEI : 9695006LOD5B2D7Y0N70\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 27 July 2026\nPLACE OF THE TRANSACTION : Hors plateforme de négociation\nNATURE OF THE TRANSACTION : Acquisition actions gratuites\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nDETAILED OPERATION INFORMATION\nPRICE : 0.0000 Euro\nVOLUME : 1 000.0000\nAGGREGATED INFORMATION\nPRICE : 0.0000 Euro\nAGGREGATED VOLUME : 1 000.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : YES\nDATE OF RECEIPT OF THE NOTIFICATION : 27 July 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

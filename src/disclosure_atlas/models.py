@@ -108,6 +108,9 @@ class InsiderTransaction(_Record):
     status_raw: str | None = None
     fetched_at: datetime
     parser: str
+    # Lowest model-reported confidence (0 to 1) of the fields of this row when an LLM read the document;
+    # None for deterministic parsers.
+    extraction_confidence: float | None = None
 
 
 class NetShortPosition(_Record):

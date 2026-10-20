@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-053",
+ "sha256": "0aec8ac002c038c546b16936c190baac614ecfa092f155a9f915bc6acd325bb1",
+ "notes": "non-EUR",
+ "labels": {
+  "declarant_name": "Morgan Exemple-53",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Director of the Board of Directors",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "CELLECTIS",
+  "issuer_lei": "5493000KKX5VQ37Q2W83",
+  "reference_isin": "FR0010425595",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-17",
+    "venue": "Nasdaq Global Market",
+    "nature": "Acquisition",
+    "instrument": "American Depository Shares",
+    "isin": null,
+    "currency": "USD",
+    "lines": [
+     {
+      "price": 1.4877,
+      "volume": 30000.0
+     }
+    ],
+    "aggregated_price": 1.4877,
+    "aggregated_volume": 30000.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": null
+ },
+ "text": "2026DD9000053 21 septembre 2026\nFR0010425595 - DD900053\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nMorgan Exemple-53, Director of the Board of Directors\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : CELLECTIS\nLEI : 5493000KKX5VQ37Q2W83\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 17 septembre 2026\nLIEU DE LA TRANSACTION : Nasdaq Global Market\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : American Depository Shares\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.4877 Dollar des États-Unis (Même jour)\nVOLUME : 30 000.0000\nINFORMATIONS AGREGEES\nPRIX : 1.4877 Euro\nVOLUME : 30 000.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 21 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000053 21 September 2026\nFR0010425595 - DD900053\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nMorgan Exemple-53, Director of the Board of Directors\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : CELLECTIS\nLEI : 5493000KKX5VQ37Q2W83\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 17 September 2026\nPLACE OF THE TRANSACTION : Nasdaq Global Market\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : American Depository Shares\nDETAILED OPERATION INFORMATION\nPRICE : 1.4877 Dollar des États-Unis (Même jour)\nVOLUME : 30 000.0000\nAGGREGATED INFORMATION\nPRICE : 1.4877 Euro\nAGGREGATED VOLUME : 30 000.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 21 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

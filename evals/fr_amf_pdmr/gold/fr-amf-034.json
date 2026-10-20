@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-034",
+ "sha256": "8fa9791f784f7cbfbdb4e37e2fb1c37d891060ef39647d7f106a410a0a3bdece",
+ "notes": "non open-market nature",
+ "labels": {
+  "declarant_name": "Eden Exemple-34",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "directeur business performance - membre du comité exécutif",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "VEOLIA ENVIRONNEMENT",
+  "issuer_lei": "969500LENY69X51OOT31",
+  "reference_isin": "FR0000124141",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-15",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Souscription",
+    "instrument": "Action",
+    "isin": "FR0000124141",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 31.33,
+      "volume": 1891.0
+     }
+    ],
+    "aggregated_price": 31.33,
+    "aggregated_volume": 1891.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "executive",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "subscription",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0000124141"
+ },
+ "text": "2026DD9000034 30 septembre 2026\nFR0000124141 - DD900034\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nEden Exemple-34, directeur business performance - membre du comité exécutif\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : VEOLIA ENVIRONNEMENT\nLEI : 969500LENY69X51OOT31\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 15 septembre 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Souscription\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0000124141\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 31.3300 Euro\nVOLUME : 1 891.0000\nINFORMATIONS AGREGEES\nPRIX : 31.3300 Euro\nVOLUME : 1 891.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 30 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000034 30 September 2026\nFR0000124141 - DD900034\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nEden Exemple-34, directeur business performance - membre du comité exécutif\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : VEOLIA ENVIRONNEMENT\nLEI : 969500LENY69X51OOT31\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 15 September 2026\nPLACE OF THE TRANSACTION : Outside a trading venue\nNATURE OF THE TRANSACTION : Subscription\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0000124141\nDETAILED OPERATION INFORMATION\nPRICE : 31.3300 Euro\nVOLUME : 1 891.0000\nAGGREGATED INFORMATION\nPRICE : 31.3300 Euro\nAGGREGATED VOLUME : 1 891.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 30 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}
