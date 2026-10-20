@@ -25,6 +25,7 @@ from ..models import Dataset
 from ..pipeline import provenance
 from . import quality
 from .regulators import Regulator, regulator_for
+from .signals import signal_definitions
 from .snapshots import SnapshotCommitted, SnapshotPublisher, publisher_from_env
 
 POOL = "ducklake"
@@ -259,7 +260,10 @@ def build_definitions(lake_root: str | None = None) -> dg.Definitions:
         "sensors": [gold_automation],
         "resources": {"lake": LakeResource(root=root), "snapshot_publisher": SnapshotPublisherResource(lake_root=root)},
     }
-    return dg.Definitions.merge(*(source_definitions(cls) for cls in sources.values()), dg.Definitions(**shared))
+    return dg.Definitions.merge(
+        *(source_definitions(cls) for cls in sources.values()), signal_definitions(LakeResource),
+        dg.Definitions(**shared),
+    )
 
 
 defs = build_definitions()

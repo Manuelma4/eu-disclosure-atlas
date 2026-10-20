@@ -67,6 +67,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/signals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Signals
+         * @description Model scores of recent insider-trade events, newest first.
+         *
+         *     The `insider-signal` model (research/signals/MODEL_CARD.md) estimates, for each open-market buy or sell
+         *     event, the probability that the share beats the market over the next 20 sessions. Out of sample it is
+         *     barely better than a coin flip: read `model.metrics` before reading any score. Research output, not
+         *     investment advice.
+         */
+        get: operations["list_signals_v1_signals_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/health": {
         parameters: {
             query?: never;
@@ -558,6 +583,153 @@ export interface components {
             /** People */
             people: number;
         };
+        /** Signal */
+        Signal: {
+            /**
+             * Event Id
+             * @description <ISIN>:<buy|sell>:<publication day>
+             */
+            event_id: string;
+            /** Country */
+            country: string;
+            /** Isin */
+            isin: string;
+            /** Issuer Name */
+            issuer_name: string;
+            /** Issuer Lei */
+            issuer_lei: string | null;
+            /**
+             * Nature
+             * @description buy or sell (open-market share trades)
+             */
+            nature: string;
+            /**
+             * Publication Date
+             * Format: date
+             * @description Publication day in the authority's time zone
+             */
+            publication_date: string;
+            /**
+             * Published At
+             * Format: date-time
+             */
+            published_at: string;
+            /** Amount Eur */
+            amount_eur: number | null;
+            /**
+             * N Lines
+             * @description Transaction lines aggregated into the event
+             */
+            n_lines: number;
+            /**
+             * Score
+             * @description Estimated probability of a positive market-adjusted return over the 20 sessions after the publication-day close (calibrated)
+             */
+            score: number;
+            features: components["schemas"]["SignalFeatures"];
+        };
+        /** SignalDrift */
+        SignalDrift: {
+            /**
+             * Status
+             * @description stable, moderate, significant (PSI > 0.25) or insufficient_data
+             */
+            status: string;
+            /** Rows */
+            rows: number;
+            /**
+             * Features
+             * @description PSI, status and missing share per feature
+             */
+            features: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            };
+        };
+        /** SignalFeatures */
+        SignalFeatures: {
+            /** Is Buy */
+            is_buy: number;
+            /**
+             * Role Seniority
+             * @description 0 CEO, 1 CFO, 2 chair, 3 executive, 4 board member, 5 other
+             */
+            role_seniority: number;
+            /**
+             * Log Amount Eur
+             * @description log10(1 + total amount in EUR)
+             */
+            log_amount_eur: number | null;
+            /**
+             * N Insiders
+             * @description Distinct insiders in the event
+             */
+            n_insiders: number;
+            /**
+             * Cluster Insiders 30D
+             * @description Distinct insiders trading the same way in the last 30 days
+             */
+            cluster_insiders_30d: number;
+            /**
+             * Filing Lag Days
+             * @description Days from the latest trade to publication
+             */
+            filing_lag_days: number;
+            /**
+             * Log Traded Value 60D
+             * @description log10 median daily traded value, 60 sessions (size)
+             */
+            log_traded_value_60d: number | null;
+            /**
+             * Momentum 20D
+             * @description Share return over the 20 sessions before publication
+             */
+            momentum_20d: number | null;
+        };
+        /** SignalModel */
+        SignalModel: {
+            /** Name */
+            name: string;
+            /** Version */
+            version: string;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Trained Through
+             * @description Last publication day in the training data
+             */
+            trained_through: string | null;
+            /**
+             * Metrics
+             * @description Walk-forward, out-of-sample metrics (auc, brier, ...)
+             */
+            metrics: {
+                [key: string]: number | null;
+            };
+            /**
+             * Baseline Auc
+             * @description Out-of-sample AUC of the logistic-regression baseline
+             */
+            baseline_auc: number | null;
+        };
+        /** SignalsPage */
+        SignalsPage: {
+            /** Disclaimer */
+            disclaimer: string;
+            /** @description Null until a model has been trained and scored */
+            model: components["schemas"]["SignalModel"] | null;
+            /** Scored At */
+            scored_at: string | null;
+            /**
+             * Snapshot
+             * @description Lake snapshot the scores were computed from
+             */
+            snapshot: string | null;
+            drift: components["schemas"]["SignalDrift"] | null;
+            /** Items */
+            items: components["schemas"]["Signal"][];
+        };
         /** SourceStatus */
         SourceStatus: {
             /** Name */
@@ -773,6 +945,44 @@ export interface operations {
                 };
                 content: {
                     "application/vnd.apache.parquet": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_signals_v1_signals_get: {
+        parameters: {
+            query?: {
+                /** @description ISO country codes, repeatable */
+                country?: string[] | null;
+                isin?: string | null;
+                nature?: ("buy" | "sell") | null;
+                /** @description First publication day */
+                since?: string | null;
+                min_score?: number | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignalsPage"];
                 };
             };
             /** @description Validation Error */

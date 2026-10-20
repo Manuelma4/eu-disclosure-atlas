@@ -46,6 +46,7 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable; fanned out from Kafka by a Go gateway | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`, `GET /v1/exports`), daily releases next | Partial |
 | **MCP server `/mcp`** | Tools, a guarded `sql` tool and an MCP App so AI agents can query the dataset ([docs/ai.md](docs/ai.md)) | Live |
+| **Insider signals `/v1/signals`** | Scores from an MLflow-registered model, walk-forward validated, with drift monitoring and an honest [model card](research/signals/MODEL_CARD.md); research only | Live (needs the `ml` extra to score) |
 | **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
 | **Alerts and webhooks** | Sign-in (Keycloak, passkeys), watchlists, email and Standard Webhooks with retries (Go service on Kafka) | Live (local stack) |
 

@@ -96,10 +96,19 @@ Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`.
   npm audit, govulncheck, ZAP baseline (no update bots: the owner is the only contributor)
 - [x] k6 load tests with budgets and a CI smoke profile; Chaos Mesh experiments for the preview cluster
 
-### P8 MLOps: insider-signal model `[ ]`
+### P8 MLOps: insider-signal model `[x]`
 Owns: `src/disclosure_atlas/ml/`, `research/signals/`. Depends on WS6 (event study) features.
-- Features from gold (role, size, cluster buys, firm size, filing lag), walk-forward validation without
-  look-ahead, MLflow tracking and registry, batch scoring as a Dagster asset, model card, drift monitoring.
+- [x] Features from gold, known at publication: role, size in EUR, insiders per event, 30-day cluster count,
+  filing lag, firm size (60-session traded value) and 20-session momentum; labels from the WS6 outcomes
+  (market-adjusted CAR [+1,+20] > 0)
+- [x] Yearly expanding walk-forward with a 35-day embargo (no look-ahead); calibrated gradient boosting against a
+  base rate, a buy/sell base rate and a logistic regression
+- [x] MLflow tracking and registry (`ml` extra, local SQLite store and artifact folder under `lake/ml/`),
+  `insider-signal@champion`
+- [x] Batch scoring as the Dagster asset `ml/insider_signals` (daily) with a PSI drift check; `GET /v1/signals`
+  with a research-only disclaimer
+- [x] [Model card](research/signals/MODEL_CARD.md): on 27,090 Swedish events the model has no out-of-sample skill
+  (AUC 0.500 [0.486, 0.514]); the pipeline is the deliverable, a better label is future work
 
 ## M1 Insider trades across Europe
 

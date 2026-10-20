@@ -36,7 +36,8 @@ def test_definitions_load_with_one_chain_per_connector():
     assert {"bronze/se_fi_pdmr", "silver/se_fi_pdmr", "gold/insider_transactions"} <= keys
     assert {"se_fi_pdmr_business_hours", "se_fi_pdmr_nightly_settle"} <= {s.name for s in repo.schedule_defs}
     checks = {k.name for k in repo.asset_graph.asset_check_keys}
-    assert checks == {"freshness", "volume", "identifier_validity", "superseded_share"}
+    assert checks == {"freshness", "volume", "identifier_validity", "superseded_share", "feature_drift"}
+    assert "ml/insider_signals" in keys and "insider_signals_daily" in {s.name for s in repo.schedule_defs}
 
 
 def test_sweden_polls_every_five_minutes_in_stockholm_business_hours():

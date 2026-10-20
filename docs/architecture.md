@@ -269,7 +269,7 @@ Details: [0014](decisions/0014-observability-slos-and-mlops.md).
 - Data observability: Dagster asset checks and OpenLineage lineage. LLM observability: Langfuse traces with
   evaluation scores.
 - MLOps: an insider-trade informativeness model with MLflow tracking and registry, walk-forward validation,
-  batch scoring in Dagster, a model card and drift monitoring.
+  batch scoring in Dagster, a model card and drift monitoring ([research/signals](../research/signals/README.md)).
 - Resilience: k6 load tests with budgets, Chaos Mesh experiments in the preview cluster, and runbooks per alert.
 
 ## Delivery

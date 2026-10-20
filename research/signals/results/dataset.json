@@ -1,0 +1,83 @@
+{
+  "labeled_events": 27090,
+  "buys": 21463,
+  "sells": 5627,
+  "first_publication": "2016-07-08",
+  "last_publication": "2026-09-22",
+  "base_rate": 0.489,
+  "missing_share": {
+    "is_buy": 0.0,
+    "role_seniority": 0.0,
+    "log_amount_eur": 0.0026,
+    "n_insiders": 0.0,
+    "cluster_insiders_30d": 0.0,
+    "filing_lag_days": 0.0,
+    "log_traded_value_60d": 0.0,
+    "momentum_20d": 0.0
+  },
+  "folds": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "drift_last_fold_vs_history": {
+    "rows": 2765,
+    "reference_rows": 24325,
+    "status": "stable",
+    "features": {
+      "is_buy": {
+        "psi": 0.0621,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "role_seniority": {
+        "psi": 0.0291,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "log_amount_eur": {
+        "psi": 0.0167,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0029
+      },
+      "n_insiders": {
+        "psi": 0.0,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "cluster_insiders_30d": {
+        "psi": 0.0004,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "filing_lag_days": {
+        "psi": 0.0104,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "log_traded_value_60d": {
+        "psi": 0.0347,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      },
+      "momentum_20d": {
+        "psi": 0.0183,
+        "status": "stable",
+        "missing_share": 0.0,
+        "reference_missing_share": 0.0
+      }
+    }
+  }
+}
