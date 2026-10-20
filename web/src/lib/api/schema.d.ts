@@ -401,6 +401,26 @@ export interface components {
             last_published_at: string | null;
             /** Net Open Market Eur 365D */
             net_open_market_eur_365d: number | null;
+            /**
+             * Legal Name
+             * @description Official legal name from GLEIF (the filings carry `name`)
+             */
+            legal_name?: string | null;
+            /**
+             * Primary Ticker
+             * @description Ticker of the primary listing (OpenFIGI), e.g. TTE
+             */
+            primary_ticker?: string | null;
+            /**
+             * Primary Exchange
+             * @description Bloomberg exchange code of that listing, e.g. FP
+             */
+            primary_exchange?: string | null;
+            /**
+             * Tickers
+             * @description Primary listing of each of the issuer's ISINs, as "TICKER EXCH"
+             */
+            tickers?: string[];
             /** Distinct Buyers 90D */
             distinct_buyers_90d: number;
             /** Distinct Sellers 90D */
@@ -426,6 +446,26 @@ export interface components {
             last_published_at: string | null;
             /** Net Open Market Eur 365D */
             net_open_market_eur_365d: number | null;
+            /**
+             * Legal Name
+             * @description Official legal name from GLEIF (the filings carry `name`)
+             */
+            legal_name?: string | null;
+            /**
+             * Primary Ticker
+             * @description Ticker of the primary listing (OpenFIGI), e.g. TTE
+             */
+            primary_ticker?: string | null;
+            /**
+             * Primary Exchange
+             * @description Bloomberg exchange code of that listing, e.g. FP
+             */
+            primary_exchange?: string | null;
+            /**
+             * Tickers
+             * @description Primary listing of each of the issuer's ISINs, as "TICKER EXCH"
+             */
+            tickers?: string[];
         };
         /** MonthPoint */
         MonthPoint: {

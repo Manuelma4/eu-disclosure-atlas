@@ -88,6 +88,7 @@ python3.14 -m venv .venv && source .venv/bin/activate
 pip install -e '.[dev,api,prices]'                       # prices: yfinance for company charts (development)
 pytest                                                    # offline test suite
 disclosure-atlas reference fx                             # ECB euro reference rates
+disclosure-atlas reference lei|firds|figi                 # GLEIF names, FIRDS instruments, OpenFIGI tickers
 disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
 disclosure-atlas ingest fr_amf_pdmr --start 2026-07-22    # 90 days of French filings (PDF, about 20 minutes)
 disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs

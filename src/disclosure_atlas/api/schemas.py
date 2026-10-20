@@ -85,6 +85,12 @@ class IssuerSummary(BaseModel):
     transactions: int
     last_published_at: datetime | None
     net_open_market_eur_365d: float | None
+    legal_name: str | None = Field(None, description="Official legal name from GLEIF (the filings carry `name`)")
+    primary_ticker: str | None = Field(None, description="Ticker of the primary listing (OpenFIGI), e.g. TTE")
+    primary_exchange: str | None = Field(None, description="Bloomberg exchange code of that listing, e.g. FP")
+    tickers: list[str] = Field(
+        default_factory=list, description='Primary listing of each of the issuer\'s ISINs, as "TICKER EXCH"'
+    )
 
 
 class MonthPoint(BaseModel):

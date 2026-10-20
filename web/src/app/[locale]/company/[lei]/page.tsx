@@ -54,7 +54,16 @@ async function Company({ params }: { params: Promise<{ lei: string }> }) {
       <header>
         <h1 className="text-3xl font-semibold tracking-tight">{issuer.name}</h1>
         <p className="mt-2 text-sm text-ink-3">
-          LEI <code className="font-mono text-xs text-ink-2">{issuer.lei}</code> · {format.country(issuer.country)} ·{" "}
+          LEI <code className="font-mono text-xs text-ink-2">{issuer.lei}</code> ·{" "}
+          {issuer.primary_ticker ? (
+            <>
+              <code className="font-mono text-xs text-ink-2" title={issuer.tickers?.join(", ")}>
+                {issuer.primary_ticker} {issuer.primary_exchange}
+              </code>{" "}
+              ·{" "}
+            </>
+          ) : null}
+          {format.country(issuer.country)} ·{" "}
           {t("lastFiling", { date: format.date(issuer.last_published_at) })}
         </p>
       </header>

@@ -55,6 +55,8 @@ ISSUER_COLUMNS = """
     sum(direction * amount_eur) FILTER (WHERE is_open_market AND published_at >= now() - INTERVAL 365 DAY)
         AS net_open_market_eur_365d
 """
+ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce(e.tickers, []) AS tickers"
+"""Issuer reference data (GLEIF legal name, OpenFIGI tickers) joined from the gold ``issuers`` view."""
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
 IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
 AsOf = Annotated[
@@ -332,8 +334,10 @@ def create_app(
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             return snap.rows(
+                f"SELECT s.*, {ENRICHED_COLUMNS} FROM ("
                 f"SELECT {ISSUER_COLUMNS} FROM insider_transactions WHERE {' AND '.join(where)} "
-                "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?",
+                "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?"
+                ") s LEFT JOIN issuers e ON e.lei = s.lei ORDER BY s.last_published_at DESC NULLS LAST, s.lei",
                 [*params, limit],
             )
 
@@ -356,6 +360,7 @@ def create_app(
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
+            summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(
                 """
                 SELECT CAST(date_trunc('month', transaction_date) AS DATE) AS month,

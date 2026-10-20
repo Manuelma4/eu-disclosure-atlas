@@ -1244,6 +1244,50 @@
             ],
             "title": "Net Open Market Eur 365D"
           },
+          "legal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Name",
+            "description": "Official legal name from GLEIF (the filings carry `name`)"
+          },
+          "primary_ticker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Ticker",
+            "description": "Ticker of the primary listing (OpenFIGI), e.g. TTE"
+          },
+          "primary_exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Exchange",
+            "description": "Bloomberg exchange code of that listing, e.g. FP"
+          },
+          "tickers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tickers",
+            "description": "Primary listing of each of the issuer's ISINs, as \"TICKER EXCH\""
+          },
           "distinct_buyers_90d": {
             "type": "integer",
             "title": "Distinct Buyers 90D"
@@ -1330,6 +1374,50 @@
               }
             ],
             "title": "Net Open Market Eur 365D"
+          },
+          "legal_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Name",
+            "description": "Official legal name from GLEIF (the filings carry `name`)"
+          },
+          "primary_ticker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Ticker",
+            "description": "Ticker of the primary listing (OpenFIGI), e.g. TTE"
+          },
+          "primary_exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Exchange",
+            "description": "Bloomberg exchange code of that listing, e.g. FP"
+          },
+          "tickers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tickers",
+            "description": "Primary listing of each of the issuer's ISINs, as \"TICKER EXCH\""
           }
         },
         "type": "object",

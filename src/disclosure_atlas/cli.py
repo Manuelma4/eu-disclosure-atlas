@@ -110,9 +110,28 @@ def _cmd_contracts(args: argparse.Namespace) -> int:
 
 
 def _cmd_reference(args: argparse.Namespace) -> int:
-    from .reference.fx import refresh_ecb_rates
+    lake = Lake(args.lake)
+    ids = [i.strip().upper() for i in args.ids.split(",") if i.strip()] if args.ids else None
+    if args.name == "fx":
+        from .reference.fx import refresh_ecb_rates
 
-    print(f"ECB reference rates: {refresh_ecb_rates(Lake(args.lake))} rows")
+        print(f"ECB reference rates: {refresh_ecb_rates(lake)} rows")
+    elif args.name == "lei":
+        from .reference.gleif import refresh_lei
+
+        fetched, total = refresh_lei(lake, ids, refresh=args.refresh)
+        print(f"GLEIF: {fetched} LEI records fetched, {total} cached in {lake.reference_path('gleif_lei')}")
+    elif args.name == "firds":
+        from .reference.firds import refresh_firds
+
+        found, total = refresh_firds(lake, ids, keep_all=args.all)
+        print(f"FIRDS: {found} instruments found, {total} cached in {lake.reference_path('firds_instruments')}")
+    else:
+        from .reference.openfigi import refresh_figi
+
+        mapped, total = refresh_figi(lake, ids, refresh=args.refresh)
+        print(f"OpenFIGI: {mapped} ISINs mapped, {total} listings cached in "
+              f"{lake.reference_path('openfigi_listings')}")
     return 0
 
 
@@ -205,8 +224,11 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Kafka: without a checkpoint, publish all history instead of starting at the newest row")
     p.set_defaults(func=_cmd_publish)
 
-    p = sub.add_parser("reference", help="refresh reference data")
-    p.add_argument("name", choices=["fx"])
+    p = sub.add_parser("reference", help="refresh reference data (ECB FX, GLEIF LEI, ESMA FIRDS, OpenFIGI)")
+    p.add_argument("name", choices=["fx", "lei", "firds", "figi"])
+    p.add_argument("--ids", help="comma-separated LEIs or ISINs instead of those in the lake (lei, firds, figi)")
+    p.add_argument("--refresh", action="store_true", help="re-fetch identifiers already cached (lei, figi)")
+    p.add_argument("--all", action="store_true", help="firds: keep every equity instrument, not only the lake's")
     p.set_defaults(func=_cmd_reference)
 
     p = sub.add_parser("serve", help="run the REST API (FastAPI + uvicorn)")
