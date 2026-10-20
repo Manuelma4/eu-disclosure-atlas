@@ -1,0 +1,58 @@
+# SLOs for the public read API (/v1), decision 0014. Generated into ../prometheus/rules/ by Sloth:
+#   make -C deploy/observability slos   (or see README.md)
+# The SLI comes from OpenTelemetry's http.server.request.duration histogram, exported by the Collector.
+# `or on() vector(0)`: no 5xx series at all means zero errors, not an unknown SLI.
+# The long-lived /v1/stream connections are excluded: their duration is the session length, not latency.
+version: "prometheus/v1"
+service: "query-api"
+labels:
+  owner: "platform"
+  tier: "1"
+slos:
+  - name: "requests-availability"
+    objective: 99.9
+    description: "/v1 reads succeed (no 5xx) 99.9% of the time over 30 days."
+    sli:
+      events:
+        error_query: |
+          (sum(rate(http_server_request_duration_seconds_count{job="query-api", http_route=~"/v1/.+", http_route!="/v1/stream", http_response_status_code=~"5.."}[{{.window}}])) or on() vector(0))
+        total_query: |
+          sum(rate(http_server_request_duration_seconds_count{job="query-api", http_route=~"/v1/.+", http_route!="/v1/stream"}[{{.window}}]))
+    alerting:
+      name: "AtlasApiAvailabilityBudgetBurn"
+      labels:
+        category: "availability"
+      annotations:
+        summary: "The query API is burning its availability error budget."
+        runbook_url: "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/docs/runbooks/api-availability.md"
+      page_alert:
+        labels:
+          severity: "page"
+      ticket_alert:
+        labels:
+          severity: "ticket"
+
+  - name: "requests-latency"
+    objective: 95
+    description: "95% of /v1 reads complete within 200 ms (p95 under 200 ms) over 30 days."
+    sli:
+      events:
+        error_query: |
+          sum(rate(http_server_request_duration_seconds_count{job="query-api", http_route=~"/v1/.+", http_route!="/v1/stream"}[{{.window}}]))
+          -
+          sum(rate(http_server_request_duration_seconds_bucket{job="query-api", http_route=~"/v1/.+", http_route!="/v1/stream", le="0.2"}[{{.window}}]))
+        total_query: |
+          sum(rate(http_server_request_duration_seconds_count{job="query-api", http_route=~"/v1/.+", http_route!="/v1/stream"}[{{.window}}]))
+    alerting:
+      name: "AtlasApiLatencyBudgetBurn"
+      labels:
+        category: "latency"
+      annotations:
+        summary: "More than 5% of /v1 reads are slower than 200 ms."
+        runbook_url: "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/docs/runbooks/api-latency.md"
+      page_alert:
+        labels:
+          severity: "page"
+      ticket_alert:
+        labels:
+          severity: "ticket"

@@ -1,0 +1,20 @@
+# Chaos Mesh experiment for the preview cluster (decision 0014). Kills one query-api pod every 10 minutes for
+# an hour. Expected: the PodDisruptionBudget and readiness probes keep /v1 available; the availability SLO
+# burns less than 1% of its budget; AtlasApiAvailabilityBudgetBurn stays silent.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  name: query-api-pod-kill
+  namespace: atlas-preview
+spec:
+  schedule: "*/10 * * * *"
+  historyLimit: 6
+  concurrencyPolicy: Forbid
+  type: PodChaos
+  podChaos:
+    action: pod-kill
+    mode: one
+    selector:
+      namespaces: [atlas-preview]
+      labelSelectors:
+        app.kubernetes.io/name: query-api

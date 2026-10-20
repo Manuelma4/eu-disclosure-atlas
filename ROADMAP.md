@@ -71,13 +71,16 @@ Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deplo
 - CI: build, Trivy scan, Syft SBOM, cosign signature, push to GHCR; `helm lint` and kubeconform; a k3d smoke
   test.
 
-### P7 Observability, SLOs and security hardening `[ ]`
+### P7 Observability, SLOs and security hardening `[x]`
 Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`. Design: 0013, 0014.
-- OpenTelemetry in the Python, Go and Node.js services; Collector with tail sampling; Prometheus, Loki, Tempo
-  and Grafana dashboards as code; SLOs as code with burn-rate alerts and runbooks.
-- STRIDE threat model, security headers and CSP, CodeQL, pip-audit, npm audit, govulncheck, ZAP baseline
-  (no update bots: the owner is the only contributor).
-- k6 load tests with budgets in CI; Chaos Mesh experiments for the preview cluster.
+- [x] OpenTelemetry in the Python API (`otel` extra: FastAPI traces, RED metrics, DuckDB query spans, stream and
+  freshness metrics) and the website (`instrumentation.ts`); Go services follow the metric contract in
+  `deploy/observability/README.md` (P3)
+- [x] Collector with tail sampling and IP hashing; Prometheus, Loki, Tempo and Grafana dashboards as code in a
+  Compose override; SLOs as code (Sloth) with multi-window burn-rate alerts and a runbook for every alert
+- [x] STRIDE threat model, security headers and CSP (web and API), per-IP rate limiting, CodeQL, pip-audit,
+  npm audit, govulncheck, ZAP baseline (no update bots: the owner is the only contributor)
+- [x] k6 load tests with budgets and a CI smoke profile; Chaos Mesh experiments for the preview cluster
 
 ### P8 MLOps: insider-signal model `[ ]`
 Owns: `src/disclosure_atlas/ml/`, `research/signals/`. Depends on WS6 (event study) features.

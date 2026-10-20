@@ -26,6 +26,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .. import __version__, connectors
 from ..lake import Lake
+from . import telemetry
 from .readmodel import ReadModel, Snapshot
 from .schemas import (
     AskRequest,
@@ -42,6 +43,7 @@ from .schemas import (
     SourceStatus,
     Transaction,
 )
+from .security import RateLimitMiddleware, SecurityHeadersMiddleware, rate_limit_settings
 
 TX_COLUMNS = """
     record_id AS id, source, jurisdiction AS country, published_at, first_seen_at, transaction_date,
@@ -126,8 +128,14 @@ def _mount_mcp(app: FastAPI, lake: Lake) -> Any:
     return server.session_manager
 
 
-def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0, asker: Any = None) -> FastAPI:
-    """The API. `asker` overrides the Ask the Atlas model client (tests and evaluations)."""
+def create_app(
+    lake_root: str | None = None,
+    stream_poll_seconds: float = 5.0,
+    asker: Any = None,
+    rate_limit: tuple[int, int] | None = None,
+) -> FastAPI:
+    """The API. `asker` overrides the Ask the Atlas model client (tests and evaluations); `rate_limit` is
+    (requests per minute, burst) per client IP, defaulting to the environment settings."""
     lake = Lake(lake_root or os.environ.get("ATLAS_LAKE", "lake"))
     read_model = ReadModel(lake)
     mcp_sessions: Any = None
@@ -155,6 +163,10 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0, a
     )
     mcp_sessions = _mount_mcp(app, lake)
     ai_read_model: ReadModel | None = None
+    # Middleware runs outermost last-added: security headers, then CORS, then the per-IP rate limit.
+    per_minute, burst = rate_limit or rate_limit_settings()
+    if per_minute > 0:
+        app.add_middleware(RateLimitMiddleware, per_minute=per_minute, burst=burst)
     origins = os.environ.get("ATLAS_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
     app.add_middleware(
         CORSMiddleware,
@@ -163,6 +175,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0, a
         allow_headers=["*"],
         expose_headers=["ETag", "X-Atlas-Snapshot"],
     )
+    app.add_middleware(SecurityHeadersMiddleware)
 
     @app.exception_handler(StarletteHTTPException)
     async def http_problem(request: Request, exc: StarletteHTTPException) -> JSONResponse:
@@ -456,17 +469,22 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0, a
 
         async def events() -> Any:
             nonlocal position
-            yield "retry: 5000\n\n"
-            last_ping = time.monotonic()
-            while not await request.is_disconnected():
-                for row in await run_in_threadpool(new_filings, position):
-                    position = (row["first_seen_at"], row["id"])
-                    event_id = f"{row['first_seen_at'].isoformat()}|{row['id']}"
-                    yield f"id: {event_id}\nevent: filing\ndata: {Transaction(**row).model_dump_json()}\n\n"
-                if time.monotonic() - last_ping >= 15:
-                    yield ": ping\n\n"
-                    last_ping = time.monotonic()
-                await asyncio.sleep(stream_poll_seconds)
+            telemetry.stream_opened()
+            try:
+                yield "retry: 5000\n\n"
+                last_ping = time.monotonic()
+                while not await request.is_disconnected():
+                    for row in await run_in_threadpool(new_filings, position):
+                        position = (row["first_seen_at"], row["id"])
+                        event_id = f"{row['first_seen_at'].isoformat()}|{row['id']}"
+                        yield f"id: {event_id}\nevent: filing\ndata: {Transaction(**row).model_dump_json()}\n\n"
+                        telemetry.stream_event_sent(row["first_seen_at"])
+                    if time.monotonic() - last_ping >= 15:
+                        yield ": ping\n\n"
+                        last_ping = time.monotonic()
+                    await asyncio.sleep(stream_poll_seconds)
+            finally:
+                telemetry.stream_closed()
 
         return StreamingResponse(
             events(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
@@ -507,6 +525,11 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0, a
                 raise
             return AskResponse(**result.to_dict(), snapshot=snap.version)
 
+    def source_stats() -> list[dict[str, Any]]:
+        with read_model.snapshot() as snap:
+            return snap.rows(telemetry.SOURCE_STATS_SQL)
+
+    telemetry.configure(app, source_stats)
     return app
 
 

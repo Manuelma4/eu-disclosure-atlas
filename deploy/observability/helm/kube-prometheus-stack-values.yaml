@@ -1,0 +1,30 @@
+# Values snippet for prometheus-community/kube-prometheus-stack (P6 installs it). The SLO and alert rules in
+# ../prometheus/rules/ ship as PrometheusRule objects (the generated Sloth files wrap directly into PrometheusRule specs) or through
+# additionalPrometheusRulesMap; dashboards load from ConfigMaps labelled grafana_dashboard=1.
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true          # Tempo metrics generator
+    enableFeatures: [exemplar-storage]
+    ruleSelector:
+      matchLabels:
+        app.kubernetes.io/part-of: eu-disclosure-atlas
+    additionalScrapeConfigs:
+      - job_name: otel-collector
+        honor_labels: true
+        static_configs:
+          - targets: ["otel-collector.observability.svc:8889"]
+grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      folderAnnotation: grafana_folder
+  additionalDataSources:
+    - name: Tempo
+      uid: tempo
+      type: tempo
+      url: http://tempo.observability.svc:3200
+    - name: Loki
+      uid: loki
+      type: loki
+      url: http://loki-gateway.observability.svc
