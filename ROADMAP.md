@@ -94,17 +94,20 @@ Owns: `src/disclosure_atlas/ml/`, `research/signals/`. Depends on WS6 (event stu
 
 ## M1 Insider trades across Europe
 
-### WS1 France AMF: PDF filings + AI-assisted extraction `[ ]`
+### WS1 France AMF: PDF filings + AI-assisted extraction `[x]`
 Owns: `connectors/fr_amf_pdmr.py`, `src/disclosure_atlas/extraction/`, `evals/fr_amf_pdmr/`,
 `docs/sources/fr_amf_pdmr.md`, `tests/sources/test_fr_amf_pdmr.py`.
-- Discover the BDIF search and document endpoints for "Déclarations des dirigeants" (now published in French
-  and English); fetch the listing plus each PDF.
-- Deterministic parser (pdfplumber) for the standard notification template; an LLM fallback behind a
-  provider-agnostic interface (Claude API via `ANTHROPIC_API_KEY`, or local Ollama), with JSON-schema output
-  and per-field confidence. The pipeline must work with no LLM configured.
-- Evaluation: at least 50 hand-verified filings as a gold set (synthetic names), field-level precision and
-  recall, and a CI gate on the deterministic parser.
-- Done when: 90 days of AMF filings ingest end to end and the eval report is in `evals/fr_amf_pdmr/README.md`.
+- [x] BDIF JSON API for "Déclarations des dirigeants" (`/back/api/v1/informations?TypesInformation=DD`, 7-day
+  windows, 100 per page) plus one bilingual PDF per notification; history since February 2021.
+- [x] Deterministic template parser (pdfplumber) reading 1,003 of 1,003 filings over 90 days; one record per
+  price and volume line; closely associated entities linked to their manager's pseudonym; names scrubbed from
+  free text.
+- [x] LLM fallback behind a provider-agnostic interface (Claude API via `ANTHROPIC_API_KEY`, local Ollama),
+  JSON-schema output validated by Pydantic, per-field confidence, provenance `llm:<model>@<prompt-version>`,
+  stored in bronze so parsing stays pure. The pipeline runs with no LLM configured.
+- [x] Gold set of 60 hand-verified filings (synthetic names), field-level precision and recall, a baseline
+  and a CI gate on the deterministic parser: [evals/fr_amf_pdmr](evals/fr_amf_pdmr/README.md).
+- [x] 90 days of AMF filings ingest end to end.
 
 ### WS2 Germany BaFin and Netherlands AFM `[ ]`
 Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs and tests.

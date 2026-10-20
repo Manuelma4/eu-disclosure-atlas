@@ -96,11 +96,16 @@ def record_id(source: str, *parts: object) -> str:
 
 # --- Roles -------------------------------------------------------------------------------
 
-_DEPUTY = re.compile(r"\b(deputy|vice|adjoint|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-)\b", re.I)
+_DEPUTY = re.compile(
+    r"\b(deputy|vice|adjoint|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-|vicepr[ée]sident\w*)\b", re.I
+)
+_HONORARY = re.compile(r"\b(d.honneur|honorary|honoraire)\b", re.I)
 _OTHER_MEMBER = re.compile(r"\bother member of the company|\bautre membre\b", re.I)
 _CEO = re.compile(
     r"\b(ceo|chief executive|managing director\w*|verkst[äa]llande direkt[öo]r|vd|directeur g[ée]n[ée]ral|"
-    r"pdg|pr[ée]sident[- ]directeur|vorstandsvorsitz\w*|consejero delegado|amministratore delegato)\b",
+    r"pdg|pr[ée]sident[- ]directeur|vorstandsvorsitz\w*|consejero delegado|amministratore delegato|"
+    r"directrice g[ée]n[ée]rale|pr[ée]sidente?[- ]directrice|pr[ée]sidente? du directoire|g[ée]rante?s?|dg|"
+    r"general manager)\b",
     re.I,
 )
 _CFO = re.compile(
@@ -110,17 +115,21 @@ _CFO = re.compile(
 )
 _CHAIR = re.compile(
     r"\b(chair\w*|pr[ée]sident\w* du conseil|aufsichtsratsvorsitz\w*|presidente del consiglio|"
-    r"presidente del consejo|ordf[öo]rande|voorzitter)\b",
+    r"presidente del consejo|ordf[öo]rande|voorzitter|pr[ée]sidente?)\b",
     re.I,
 )
 _BOARD = re.compile(
     r"\b(board|administrat(eur|rice)|membre du conseil|aufsichtsrat\w*|verwaltungsrat\w*|consejer[oa]|"
-    r"consigliere|styrelse\w*|commissaris|supervisory)\b",
+    r"consigliere|styrelse\w*|commissaris|supervisory|"
+    r"adm(in|n|i)i?strat(eur|rice)s?|membres? d[eu] conseil|conseil ?d.administration|conseil de surv\w+|"
+    r"conseil de g[ée]rance|membres? du ca)\b",
     re.I,
 )
 _EXECUTIVE = re.compile(
     r"\b(executive|officer|director|directeur|directrice|dirigeant\w*|vorstand\w*|management|"
-    r"dirigente|ledande befattningshavare|directie)\b",
+    r"dirigente|ledande befattningshavare|directie|"
+    r"comit[ée] ex[ée]cutif|comit[ée] de direction|directoire|comex|codir|secr[ée]taire g[ée]n[ée]ral\w*|"
+    r"evp|svp|vp|coo|cto|cio|caio|drh|dga|head of|chief of staff)\b",
     re.I,
 )
 _ROLE_PRIORITY = [Role.CEO, Role.CFO, Role.CHAIR, Role.EXECUTIVE, Role.BOARD_MEMBER, Role.OTHER]
@@ -131,7 +140,7 @@ _MAR_BODY = re.compile(r"administrative,\s+management", re.I)
 def _role_of(part: str) -> Role:
     if _DEPUTY.search(part):
         return Role.BOARD_MEMBER if _BOARD.search(part) else Role.EXECUTIVE
-    if _OTHER_MEMBER.search(part):
+    if _OTHER_MEMBER.search(part) or _HONORARY.search(part):
         return Role.OTHER
     for role, pattern in ((Role.CEO, _CEO), (Role.CFO, _CFO), (Role.CHAIR, _CHAIR), (Role.BOARD_MEMBER, _BOARD),
                           (Role.EXECUTIVE, _EXECUTIVE)):
@@ -157,22 +166,26 @@ def _words(*alternatives: str) -> re.Pattern[str]:
 
 
 _INCREASE = _words("increase", "received", r"re[çc]u\w*", "augmentation", "erhalten", "zugang", r"recibid\w*",
-                   r"ricevut\w*")
-_DECREASE = _words("decrease", "given", r"donn[ée]\w*", "diminution", "abgang", "ceduto")
+                   r"ricevut\w*", "acquisition", r"r[ée]ception")
+_DECREASE = _words("decrease", "given", r"donn[ée]\w*", "diminution", "abgang", "ceduto", r"donation [àa]")
 _NEUTRAL = {Nature.LENDING, Nature.PLEDGE}
 _NATURE_RULES: list[tuple[Nature, re.Pattern[str], int]] = [
     (Nature.INTERNAL_TRANSFER, re.compile(r"\binternal transaction|transfert interne", re.I), 0),
     (Nature.LENDING, _words("loan", "lending", r"pr[êe]t", "leihe", r"pr[ée]stamo", "prestito", r"l[åa]n"), 0),
     (Nature.PLEDGE, _words(r"pledg\w*", "nantissement", r"verpf[äa]ndung", r"pignoraci[óo]n", "pegno",
                            r"pants[äa]ttning"), 0),
-    (Nature.GIFT, _words("gift", "donation", "schenkung", r"donaci[óo]n", r"g[åa]va"), 0),
+    (Nature.GIFT, _words("gift", r"donations?", "schenkung", r"donaci[óo]n", r"g[åa]va", r"pr[ée]sent d.usage"), 0),
     (Nature.INHERITANCE, _words("inheritance", "succession", "erbschaft", "herencia", "arv"), 1),
     (Nature.EXERCISE, _words("exercise", "exercice", r"aus[üu]bung", "ejercicio", "esercizio", r"l[öo]sen"), 0),
     (Nature.CONVERSION, _words("conversion", "umwandlung", "konvertering"), 0),
+    # A contribution in kind ("apport") hands the shares over, unless the text says they were received.
+    (Nature.EXCHANGE, _words("apport", "contribution in kind"), -1),
     (Nature.EXCHANGE, _words("exchange", r"[ée]change", "tausch", "byte"), 0),
     (Nature.MERGER, _words("merger", "fusion", "verschmelzung"), 0),
+    (Nature.GRANT, _words(r"actions? gratuites?", r"actions? de performance", r"free shares?",
+                          r"performance shares?", "livraison"), 1),
     (Nature.SUBSCRIPTION, _words("subscription", "souscription", "zeichnung", r"suscripci[óo]n", "sottoscrizione",
-                                 "teckning"), 1),
+                                 "teckning", "soucription"), 1),
     (Nature.GRANT, _words("allotment", r"grant\w*", "attribution", "zuteilung", r"asignaci[óo]n", "assegnazione",
                           "tilldelning"), 1),
     (Nature.BUY, _words("acquisition", "purchase", "buy", "achat", "acquisto", "erwerb", "kauf", "compra",
@@ -182,9 +195,13 @@ _NATURE_RULES: list[tuple[Nature, re.Pattern[str], int]] = [
 ]
 
 
+_WARRANT_NAME = re.compile(r"\bbons? de souscription\b", re.I)
+
+
 def normalize_nature(raw: str | None) -> tuple[Nature, int]:
     """Return (nature, direction) where direction is +1 (holding increases), -1 or 0 (neutral/unknown)."""
-    text = clean(raw) or ""
+    # "Acquisition de bons de souscription" buys warrants: the instrument name is not a subscription.
+    text = _WARRANT_NAME.sub("BSA", clean(raw) or "")
     for nature, pattern, default_direction in _NATURE_RULES:
         if pattern.search(text):
             direction = default_direction
@@ -204,16 +221,21 @@ def normalize_nature(raw: str | None) -> tuple[Nature, int]:
 # --- Instrument type ---------------------------------------------------------------------
 
 _INSTRUMENT_RULES: list[tuple[InstrumentType, re.Pattern[str]]] = [
-    (InstrumentType.CONVERTIBLE, _words("convertible", "wandelanleihe", r"obligations? convertibles?")),
+    # Units of employee savings funds and insurance contracts invested in the issuer's shares.
+    (InstrumentType.OTHER, _words(r"fcpe?", "fie", "fonds", r"unit[ée]s de compte", "actionnariat")),
+    (InstrumentType.CONVERTIBLE, _words("convertible", "wandelanleihe", r"obligations? convertibles?",
+                                        r"oranes?", r"ornanes?", r"oc[ée]anes?", r"ocas?",
+                                        r"obligations? remboursables?")),
     (InstrumentType.WARRANT, _words(r"warrant\w*", r"bons? de souscription", r"optionsschein\w*",
                                     r"teckningsoption\w*")),
     (InstrumentType.SUBSCRIPTION_RIGHT, _words("subscription right", "unit right", r"droits? pr[ée]f[ée]rentiels?",
                                                r"bezugsrecht\w*", r"tecknings?r[äa]tt\w*", r"unitr[äa]tt\w*")),
     (InstrumentType.OPTION, _words(r"option\w*", "call", "put", r"stock options?")),
     (InstrumentType.SWAP, _words("swap", "cfd", "contract for difference")),
-    (InstrumentType.BOND, _words("bond", "obligation", "anleihe", "bono", r"obbligazion\w*")),
+    (InstrumentType.BOND, _words("bond", "obligation", "anleihe", "bono", r"obbligazion\w*", r"titres? de cr[ée]ance")),
     (InstrumentType.SHARE, _words("share", "shares", "action", "actions", r"aktie\w*", r"acci[óo]n\w*", r"azion\w*",
-                                  r"aandel\w*", "bta", "btu", "interim share")),
+                                  r"aandel\w*", "bta", "btu", "interim share", r"depositary receipts?", "adrs?",
+                                  "ads")),
 ]
 
 

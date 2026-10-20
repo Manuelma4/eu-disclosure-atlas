@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-039",
+ "sha256": "9d15d4f62e129f8349590fcc92dde8df4fdff2859b68121956b2e011614e2aff",
+ "notes": "non open-market nature; non-share instrument; hand correction: 'Directeur Général des Fonctions Centrales' is a functional head on the management board, not the CEO.",
+ "labels": {
+  "declarant_name": "Claude Exemple-39",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Directeur Général des Fonctions Centrales et du Développement Durable et membre du Directoire",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "UNIBAIL-RODAMCO-WESTFIELD SE",
+  "issuer_lei": "969500SHQITWXSIS7N89",
+  "reference_isin": "FR0013326246",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-15",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Exercice",
+    "instrument": "Options de souscription",
+    "isin": "FR0013326246",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 51.93,
+      "volume": 3506.0
+     }
+    ],
+    "aggregated_price": 51.93,
+    "aggregated_volume": 3506.0,
+    "linked_to_share_option_programme": true,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "executive",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "exercise",
+  "transactions[0].direction": 0,
+  "transactions[0].instrument_type": "option",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0013326246"
+ },
+ "text": "2026DD9000039 17 septembre 2026\nFR0013326246 - DD900039\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nClaude Exemple-39, Directeur Général des Fonctions Centrales et du Développement Durable et membre du Directoire\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : UNIBAIL-RODAMCO-WESTFIELD SE\nLEI : 969500SHQITWXSIS7N89\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 15 septembre 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Exercice\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Options de souscription\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013326246\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 51.9300 Euro\nVOLUME : 3 506.0000\nINFORMATIONS AGREGEES\nPRIX : 51.9300 Euro\nVOLUME : 3 506.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : OUI\nDATE DE RECEPTION DE LA NOTIFICATION : 17 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000039 17 September 2026\nFR0013326246 - DD900039\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nClaude Exemple-39, Directeur Général des Fonctions Centrales et du Développement Durable et membre du Directoire\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : UNIBAIL-RODAMCO-WESTFIELD SE\nLEI : 969500SHQITWXSIS7N89\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 15 September 2026\nPLACE OF THE TRANSACTION : Outside a trading venue\nNATURE OF THE TRANSACTION : Exercise\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Options de souscription\nIDENTIFICATION CODE : FR0013326246\nDETAILED OPERATION INFORMATION\nPRICE : 51.9300 Euro\nVOLUME : 3 506.0000\nAGGREGATED INFORMATION\nPRICE : 51.9300 Euro\nAGGREGATED VOLUME : 3 506.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : YES\nDATE OF RECEIPT OF THE NOTIFICATION : 17 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

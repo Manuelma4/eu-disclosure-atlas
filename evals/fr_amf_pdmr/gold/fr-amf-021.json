@@ -1,0 +1,78 @@
+{
+ "id": "fr-amf-021",
+ "sha256": "425d160badea669419fc7e1827b58980b76f0fcf808ef1108158221c820bfa87",
+ "notes": "closely associated legal person; 2 transactions; several price lines; amendment",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 21 N.V. Société par actions simplifiée",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Dominique Exemple-21b",
+  "declarant_position": "Administrateur de Louis Hachette Group",
+  "is_amendment": true,
+  "amendment_details": "A la suite d’une erreur matérielle, l’acquisition des 20 868 actions LOUIS HACHETTE GROUP de la présente déclaration est à déclarer sur le site ONDE pour le compte de SYNTHETIC SAS au lieu et place de SYNTHETIC N.V.",
+  "issuer_name": "LOUIS HACHETTE GROUP S.A.",
+  "issuer_lei": "969500CV8XQ2XKU2DO25",
+  "reference_isin": "FR001400TL40",
+  "transactions": [
+   {
+    "transaction_date": "2026-06-11",
+    "venue": "Euronext Growth Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400TL40",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.748,
+      "volume": 2200.0
+     },
+     {
+      "price": 1.749,
+      "volume": 2194.0
+     },
+     {
+      "price": 1.75,
+      "volume": 11890.0
+     }
+    ],
+    "aggregated_price": 1.7496,
+    "aggregated_volume": 16284.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-06-11",
+    "venue": "Multiplaces",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400TL40",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.75,
+      "volume": 4584.0
+     }
+    ],
+    "aggregated_price": 1.75,
+    "aggregated_volume": 4584.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400TL40",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR001400TL40"
+ },
+ "text": "2026DD9000021 23 septembre 2026\nFR001400TL40 - DD900021\nINFORMATION\nCETTE INFORMATION ANNULE ET REMPLACE L’INFORMATION 1121208 PUBLIEE LE 17 juin 2026\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 21 N.V. Société par actions simplifiée personne morale liée à Dominique Exemple-21b, Administrateur de Louis Hachette Group\nNOTIFICATION INITIALE / MODIFICATION:\nA la suite d’une erreur matérielle, l’acquisition des 20 868 actions LOUIS HACHETTE GROUP de la présente déclaration est à\ndéclarer sur le site ONDE pour le compte de SYNTHETIC SAS au lieu et place de SYNTHETIC N.V.\nCOORDONNEES DE L’EMETTEUR\nNOM : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 11 juin 2026\nLIEU DE LA TRANSACTION : Euronext Growth Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400TL40\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.7480 Euro\nVOLUME : 2 200.0000\nPRIX UNITAIRE : 1.7490 Euro\nVOLUME : 2 194.0000\nPRIX UNITAIRE : 1.7500 Euro\nVOLUME : 11 890.0000\nINFORMATIONS AGREGEES\n\n\nPRIX : 1.7496 Euro\nVOLUME : 16 284.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 11 juin 2026\nLIEU DE LA TRANSACTION : Multiplaces\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400TL40\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.7500 Euro\nVOLUME : 4 584.0000\nINFORMATIONS AGREGEES\nPRIX : 1.7500 Euro\nVOLUME : 4 584.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 23 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000021 23 September 2026\nFR001400TL40 - DD900021\nINFORMATION\nTHIS INFORMATION CANCELS AND REPLACES THE INFORMATION 1121208 PUBLISHED ON 17 June 2026\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 21 N.V. Société par actions simplifiée legal person closely associated with Dominique Exemple-21b, Administrateur de Louis Hachette Group\nINITIAL NOTIFICATION / AMENDMENT:\nA la suite d’une erreur matérielle, l’acquisition des 20 868 actions LOUIS HACHETTE GROUP de la présente déclaration est à\ndéclarer sur le site ONDE pour le compte de SYNTHETIC SAS au lieu et place de SYNTHETIC N.V.\nDETAILS OF THE ISSUER\nNAME : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 11 June 2026\nPLACE OF THE TRANSACTION : Euronext Growth Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400TL40\nDETAILED OPERATION INFORMATION\nPRICE : 1.7480 Euro\nVOLUME : 2 200.0000\nPRICE : 1.7490 Euro\nVOLUME : 2 194.0000\nPRICE : 1.7500 Euro\nVOLUME : 11 890.0000\nAGGREGATED INFORMATION\n\n\nPRICE : 1.7496 Euro\nAGGREGATED VOLUME : 16 284.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\nDATE OF THE TRANSACTION : 11 June 2026\nPLACE OF THE TRANSACTION : Multiplaces\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400TL40\nDETAILED OPERATION INFORMATION\nPRICE : 1.7500 Euro\nVOLUME : 4 584.0000\nAGGREGATED INFORMATION\nPRICE : 1.7500 Euro\nAGGREGATED VOLUME : 4 584.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 23 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

@@ -1,0 +1,59 @@
+{
+ "id": "fr-amf-007",
+ "sha256": "fca49fd986fd5dac761d52aa88b2922d4b535f21c8c2aa7bfef51cc877b668dc",
+ "notes": "closely associated legal person; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 07 Société",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Camille Exemple-07b",
+  "declarant_position": "Administrateur et Président–Directeur général de Compagnie de l’Odet",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "COMPAGNIE DE L'ODET",
+  "issuer_lei": "9695005PEG4IL375U849",
+  "reference_isin": "FR0000062234",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-17",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0000062234",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1278.0,
+      "volume": 3.0
+     },
+     {
+      "price": 1280.0,
+      "volume": 101.0
+     },
+     {
+      "price": 1284.0,
+      "volume": 26.0
+     },
+     {
+      "price": 1286.0,
+      "volume": 72.0
+     }
+    ],
+    "aggregated_price": 1282.6238,
+    "aggregated_volume": 202.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0000062234"
+ },
+ "text": "2026DD9000007 22 septembre 2026\nFR0000062234 - DD900007\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 07 Société personne morale liée à Camille Exemple-07b, Administrateur et Président–Directeur général de Compagnie de l’Odet\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : COMPAGNIE DE L'ODET\nLEI : 9695005PEG4IL375U849\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 17 septembre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0000062234\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1 278.0000 Euro\nVOLUME : 3.0000\nPRIX UNITAIRE : 1 280.0000 Euro\nVOLUME : 101.0000\nPRIX UNITAIRE : 1 284.0000 Euro\nVOLUME : 26.0000\nPRIX UNITAIRE : 1 286.0000 Euro\nVOLUME : 72.0000\nINFORMATIONS AGREGEES\n\n\nPRIX : 1 282.6238 Euro\nVOLUME : 202.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 22 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000007 22 September 2026\nFR0000062234 - DD900007\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 07 Société legal person closely associated with Camille Exemple-07b, Administrateur et Président–Directeur général de Compagnie de l’Odet\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : COMPAGNIE DE L'ODET\nLEI : 9695005PEG4IL375U849\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 17 September 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0000062234\nDETAILED OPERATION INFORMATION\nPRICE : 1 278.0000 Euro\nVOLUME : 3.0000\nPRICE : 1 280.0000 Euro\nVOLUME : 101.0000\nPRICE : 1 284.0000 Euro\nVOLUME : 26.0000\nPRICE : 1 286.0000 Euro\nVOLUME : 72.0000\n\n\nAGGREGATED INFORMATION\nPRICE : 1 282.6238 Euro\nAGGREGATED VOLUME : 202.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 22 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

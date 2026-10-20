@@ -1,0 +1,124 @@
+{
+ "id": "fr-amf-047",
+ "sha256": "4b2c29e532e08316a82936b856360c311835a36e739f9a4f815f30094fe15787",
+ "notes": "4 transactions; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 47 SOCIETE SOCIETE",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Membre du conseil de surveillance",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "ROCHE BOBOIS SA",
+  "issuer_lei": "969500JZSD8O83SPU920",
+  "reference_isin": "FR0013344173",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-04",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0013344173",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.0333,
+      "volume": 207.0
+     }
+    ],
+    "aggregated_price": 22.0333,
+    "aggregated_volume": 207.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-05",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0013344173",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.4945,
+      "volume": 1294.0
+     },
+     {
+      "price": 22.0,
+      "volume": 1650.0
+     }
+    ],
+    "aggregated_price": 22.2174,
+    "aggregated_volume": 2944.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-06",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0013344173",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.65,
+      "volume": 2180.0
+     },
+     {
+      "price": 21.9534,
+      "volume": 176.0
+     }
+    ],
+    "aggregated_price": 22.598,
+    "aggregated_volume": 2356.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-07",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 22.4749,
+      "volume": 1164.0
+     }
+    ],
+    "aggregated_price": 22.4749,
+    "aggregated_volume": 1164.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0013344173",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR0013344173",
+  "transactions[2].nature": "buy",
+  "transactions[2].direction": 1,
+  "transactions[2].instrument_type": "share",
+  "transactions[2].on_venue": true,
+  "transactions[2].isin": "FR0013344173",
+  "transactions[3].nature": "buy",
+  "transactions[3].direction": 1,
+  "transactions[3].instrument_type": "share",
+  "transactions[3].on_venue": true,
+  "transactions[3].isin": "FR0013344173"
+ },
+ "text": "2026DD9000047 08 août 2026\nFR0013344173 - DD900047\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 47 SOCIETE SOCIETE, Membre du conseil de surveillance\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : ROCHE BOBOIS SA\nLEI : 969500JZSD8O83SPU920\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 04 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013344173\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 22.0333 Euro\nVOLUME : 207.0000\nINFORMATIONS AGREGEES\nPRIX : 22.0333 Euro\nVOLUME : 207.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 05 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\n\n\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013344173\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 22.4945 Euro\nVOLUME : 1 294.0000\nPRIX UNITAIRE : 22.0000 Euro\nVOLUME : 1 650.0000\nINFORMATIONS AGREGEES\nPRIX : 22.2174 Euro\nVOLUME : 2 944.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 3\nDATE DE LA TRANSACTION : 06 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0013344173\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 22.6500 Euro\nVOLUME : 2 180.0000\nPRIX UNITAIRE : 21.9534 Euro\nVOLUME : 176.0000\nINFORMATIONS AGREGEES\nPRIX : 22.5980 Euro\nVOLUME : 2 356.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 4\nDATE DE LA TRANSACTION : 07 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\n\n\nPRIX UNITAIRE : 22.4749 Euro\nVOLUME : 1 164.0000\nINFORMATIONS AGREGEES\nPRIX : 22.4749 Euro\nVOLUME : 1 164.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 08 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000047 08 August 2026\nFR0013344173 - DD900047\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 47 SOCIETE SOCIETE, Membre du conseil de surveillance\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : ROCHE BOBOIS SA\nLEI : 969500JZSD8O83SPU920\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 04 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0013344173\nDETAILED OPERATION INFORMATION\nPRICE : 22.0333 Euro\nVOLUME : 207.0000\nAGGREGATED INFORMATION\nPRICE : 22.0333 Euro\nAGGREGATED VOLUME : 207.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\nDATE OF THE TRANSACTION : 05 August 2026\n\n\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0013344173\nDETAILED OPERATION INFORMATION\nPRICE : 22.4945 Euro\nVOLUME : 1 294.0000\nPRICE : 22.0000 Euro\nVOLUME : 1 650.0000\nAGGREGATED INFORMATION\nPRICE : 22.2174 Euro\nAGGREGATED VOLUME : 2 944.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 3\nDATE OF THE TRANSACTION : 06 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0013344173\nDETAILED OPERATION INFORMATION\nPRICE : 22.6500 Euro\nVOLUME : 2 180.0000\nPRICE : 21.9534 Euro\nVOLUME : 176.0000\nAGGREGATED INFORMATION\nPRICE : 22.5980 Euro\nAGGREGATED VOLUME : 2 356.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 4\nDATE OF THE TRANSACTION : 07 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nDETAILED OPERATION INFORMATION\n\n\nPRICE : 22.4749 Euro\nVOLUME : 1 164.0000\nAGGREGATED INFORMATION\nPRICE : 22.4749 Euro\nAGGREGATED VOLUME : 1 164.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 08 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

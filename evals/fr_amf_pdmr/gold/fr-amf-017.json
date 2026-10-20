@@ -1,0 +1,187 @@
+{
+ "id": "fr-amf-017",
+ "sha256": "c4f9098f6de8301375a01d0fbd340fb97ca4c3f8b6aebc7aa0bfceb5aab525a3",
+ "notes": "closely associated legal person; 5 transactions; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 17 HOLDING",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Eden Exemple-17b",
+  "declarant_position": "administrateur de Clariane SE",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "CLARIANE SE",
+  "issuer_lei": "969500WEPS61H6TJM037",
+  "reference_isin": "FR0010386334",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-30",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0010386334",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 4.0,
+      "volume": 2033.0
+     }
+    ],
+    "aggregated_price": 4.0,
+    "aggregated_volume": 2033.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-07-30",
+    "venue": "BEUP, TQEX, CEUX",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0010386334",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 4.0,
+      "volume": 287.0
+     },
+     {
+      "price": 4.0,
+      "volume": 164.0
+     },
+     {
+      "price": 4.0,
+      "volume": 52.0
+     }
+    ],
+    "aggregated_price": 4.0,
+    "aggregated_volume": 503.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-07-31",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0010386334",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 3.9916,
+      "volume": 62443.0
+     }
+    ],
+    "aggregated_price": 3.9916,
+    "aggregated_volume": 62443.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-03",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0010386334",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 3.9769,
+      "volume": 20491.0
+     }
+    ],
+    "aggregated_price": 3.9769,
+    "aggregated_volume": 20491.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-08-03",
+    "venue": "BEUP, CEUD, CEUX, AQED, TQEX, TQEM, AQEA, TQEA, LNEQ, EBLX, XTXE",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0010386334",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 3.983,
+      "volume": 34956.0
+     },
+     {
+      "price": 3.9832,
+      "volume": 28291.0
+     },
+     {
+      "price": 3.9833,
+      "volume": 6853.0
+     },
+     {
+      "price": 3.9873,
+      "volume": 5603.0
+     },
+     {
+      "price": 3.983,
+      "volume": 4441.0
+     },
+     {
+      "price": 3.9839,
+      "volume": 4318.0
+     },
+     {
+      "price": 3.9896,
+      "volume": 2982.0
+     },
+     {
+      "price": 3.9893,
+      "volume": 2245.0
+     },
+     {
+      "price": 3.985,
+      "volume": 1377.0
+     },
+     {
+      "price": 3.9894,
+      "volume": 813.0
+     },
+     {
+      "price": 3.984,
+      "volume": 93.0
+     }
+    ],
+    "aggregated_price": 3.9838,
+    "aggregated_volume": 91972.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0010386334",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR0010386334",
+  "transactions[2].nature": "buy",
+  "transactions[2].direction": 1,
+  "transactions[2].instrument_type": "share",
+  "transactions[2].on_venue": true,
+  "transactions[2].isin": "FR0010386334",
+  "transactions[3].nature": "buy",
+  "transactions[3].direction": 1,
+  "transactions[3].instrument_type": "share",
+  "transactions[3].on_venue": true,
+  "transactions[3].isin": "FR0010386334",
+  "transactions[4].nature": "buy",
+  "transactions[4].direction": 1,
+  "transactions[4].instrument_type": "share",
+  "transactions[4].on_venue": true,
+  "transactions[4].isin": "FR0010386334"
+ },
+ "text": "2026DD9000017 04 août 2026\nFR0010386334 - DD900017\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 17 HOLDING personne morale liée à Eden Exemple-17b, administrateur de Clariane SE\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : CLARIANE SE\nLEI : 969500WEPS61H6TJM037\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 30 juillet 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0010386334\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 4.0000 Euro\nVOLUME : 2 033.0000\nINFORMATIONS AGREGEES\nPRIX : 4.0000 Euro\nVOLUME : 2 033.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 30 juillet 2026\nLIEU DE LA TRANSACTION : BEUP, TQEX, CEUX\n\n\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0010386334\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 4.0000 Euro\nVOLUME : 287.0000\nPRIX UNITAIRE : 4.0000 Euro\nVOLUME : 164.0000\nPRIX UNITAIRE : 4.0000 Euro\nVOLUME : 52.0000\nINFORMATIONS AGREGEES\nPRIX : 4.0000 Euro\nVOLUME : 503.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 3\nDATE DE LA TRANSACTION : 31 juillet 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0010386334\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 3.9916 Euro\nVOLUME : 62 443.0000\nINFORMATIONS AGREGEES\nPRIX : 3.9916 Euro\nVOLUME : 62 443.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 4\nDATE DE LA TRANSACTION : 03 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0010386334\nINFORMATION DETAILLEE PAR OPERATION\n\n\nPRIX UNITAIRE : 3.9769 Euro\nVOLUME : 20 491.0000\nINFORMATIONS AGREGEES\nPRIX : 3.9769 Euro\nVOLUME : 20 491.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 5\nDATE DE LA TRANSACTION : 03 août 2026\nLIEU DE LA TRANSACTION : BEUP, CEUD, CEUX, AQED, TQEX, TQEM, AQEA, TQEA, LNEQ, EBLX, XTXE\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0010386334\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 3.9830 Euro\nVOLUME : 34 956.0000\nPRIX UNITAIRE : 3.9832 Euro\nVOLUME : 28 291.0000\nPRIX UNITAIRE : 3.9833 Euro\nVOLUME : 6 853.0000\nPRIX UNITAIRE : 3.9873 Euro\nVOLUME : 5 603.0000\nPRIX UNITAIRE : 3.9830 Euro\nVOLUME : 4 441.0000\nPRIX UNITAIRE : 3.9839 Euro\nVOLUME : 4 318.0000\nPRIX UNITAIRE : 3.9896 Euro\nVOLUME : 2 982.0000\nPRIX UNITAIRE : 3.9893 Euro\nVOLUME : 2 245.0000\nPRIX UNITAIRE : 3.9850 Euro\nVOLUME : 1 377.0000\nPRIX UNITAIRE : 3.9894 Euro\nVOLUME : 813.0000\n\n\nPRIX UNITAIRE : 3.9840 Euro\nVOLUME : 93.0000\nINFORMATIONS AGREGEES\nPRIX : 3.9838 Euro\nVOLUME : 91 972.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 04 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000017 04 August 2026\nFR0010386334 - DD900017\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 17 HOLDING legal person closely associated with Eden Exemple-17b, administrateur de Clariane SE\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : CLARIANE SE\nLEI : 969500WEPS61H6TJM037\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 30 July 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0010386334\nDETAILED OPERATION INFORMATION\nPRICE : 4.0000 Euro\nVOLUME : 2 033.0000\nAGGREGATED INFORMATION\nPRICE : 4.0000 Euro\nAGGREGATED VOLUME : 2 033.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\n\n\nDATE OF THE TRANSACTION : 30 July 2026\nPLACE OF THE TRANSACTION : BEUP, TQEX, CEUX\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0010386334\nDETAILED OPERATION INFORMATION\nPRICE : 4.0000 Euro\nVOLUME : 287.0000\nPRICE : 4.0000 Euro\nVOLUME : 164.0000\nPRICE : 4.0000 Euro\nVOLUME : 52.0000\nAGGREGATED INFORMATION\nPRICE : 4.0000 Euro\nAGGREGATED VOLUME : 503.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 3\nDATE OF THE TRANSACTION : 31 July 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0010386334\nDETAILED OPERATION INFORMATION\nPRICE : 3.9916 Euro\nVOLUME : 62 443.0000\nAGGREGATED INFORMATION\nPRICE : 3.9916 Euro\nAGGREGATED VOLUME : 62 443.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 4\nDATE OF THE TRANSACTION : 03 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0010386334\n\n\nDETAILED OPERATION INFORMATION\nPRICE : 3.9769 Euro\nVOLUME : 20 491.0000\nAGGREGATED INFORMATION\nPRICE : 3.9769 Euro\nAGGREGATED VOLUME : 20 491.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 5\nDATE OF THE TRANSACTION : 03 August 2026\nPLACE OF THE TRANSACTION : BEUP, CEUD, CEUX, AQED, TQEX, TQEM, AQEA, TQEA, LNEQ, EBLX, XTXE\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0010386334\nDETAILED OPERATION INFORMATION\nPRICE : 3.9830 Euro\nVOLUME : 34 956.0000\nPRICE : 3.9832 Euro\nVOLUME : 28 291.0000\nPRICE : 3.9833 Euro\nVOLUME : 6 853.0000\nPRICE : 3.9873 Euro\nVOLUME : 5 603.0000\nPRICE : 3.9830 Euro\nVOLUME : 4 441.0000\nPRICE : 3.9839 Euro\nVOLUME : 4 318.0000\nPRICE : 3.9896 Euro\nVOLUME : 2 982.0000\nPRICE : 3.9893 Euro\nVOLUME : 2 245.0000\nPRICE : 3.9850 Euro\nVOLUME : 1 377.0000\n\n\nPRICE : 3.9894 Euro\nVOLUME : 813.0000\nPRICE : 3.9840 Euro\nVOLUME : 93.0000\nAGGREGATED INFORMATION\nPRICE : 3.9838 Euro\nAGGREGATED VOLUME : 91 972.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 04 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

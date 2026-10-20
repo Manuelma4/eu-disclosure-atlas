@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-003",
+ "sha256": "752ffb2f814e8a54160f89206ee9ff0c8e853a8466bd6afbccd2ed89fccc29a2",
+ "notes": "closely associated legal person",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 03",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Lou Exemple-03b",
+  "declarant_position": "Président Directeur Général",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "GL EVENTS",
+  "issuer_lei": null,
+  "reference_isin": "FR0000066672",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-13",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 30.4233,
+      "volume": 15704.0
+     }
+    ],
+    "aggregated_price": 30.4233,
+    "aggregated_volume": 15704.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0000066672"
+ },
+ "text": "2026DD9000003 13 août 2026\nFR0000066672 - DD900003\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 03 personne morale liée à Lou Exemple-03b, Président Directeur Général\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : GL EVENTS\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 13 août 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 30.4233 Euro\nVOLUME : 15 704.0000\nINFORMATIONS AGREGEES\nPRIX : 30.4233 Euro\nVOLUME : 15 704.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 13 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000003 13 August 2026\nFR0000066672 - DD900003\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 03 legal person closely associated with Lou Exemple-03b, Président Directeur Général\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : GL EVENTS\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 13 August 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nDETAILED OPERATION INFORMATION\nPRICE : 30.4233 Euro\nVOLUME : 15 704.0000\nAGGREGATED INFORMATION\nPRICE : 30.4233 Euro\nAGGREGATED VOLUME : 15 704.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 13 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-055",
+ "sha256": "df69bd7ceeb617c2c057b7c9a1565169e79ac2266c7111659de2053ffde32e38",
+ "notes": "closely associated legal person",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 55 SA",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Camille Exemple-55b",
+  "declarant_position": "ADMINISTRATEUR",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "ARVERNE GROUP S.A.",
+  "issuer_lei": null,
+  "reference_isin": "FR001400JWR8",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-24",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Acquisition",
+    "instrument": "actions de préférence de catégorie 4",
+    "isin": "QS0003705793",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 0.32,
+      "volume": 148018.0
+     }
+    ],
+    "aggregated_price": 0.32,
+    "aggregated_volume": 148018.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "QS0003705793"
+ },
+ "text": "2026DD9000055 28 juillet 2026\nFR001400JWR8 - DD900055\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 55 SA personne morale liée à Camille Exemple-55b, ADMINISTRATEUR\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : ARVERNE GROUP S.A.\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 24 juillet 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : actions de préférence de catégorie 4\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : QS0003705793\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 0.3200 Euro\nVOLUME : 148 018.0000\nINFORMATIONS AGREGEES\nPRIX : 0.3200 Euro\nVOLUME : 148 018.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 28 juillet 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000055 28 July 2026\nFR001400JWR8 - DD900055\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 55 SA legal person closely associated with Camille Exemple-55b, ADMINISTRATEUR\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : ARVERNE GROUP S.A.\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 24 July 2026\nPLACE OF THE TRANSACTION : Hors plateforme de négociation\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : actions de préférence de catégorie 4\nIDENTIFICATION CODE : QS0003705793\nDETAILED OPERATION INFORMATION\nPRICE : 0.3200 Euro\nVOLUME : 148 018.0000\nAGGREGATED INFORMATION\nPRICE : 0.3200 Euro\nAGGREGATED VOLUME : 148 018.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 28 July 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

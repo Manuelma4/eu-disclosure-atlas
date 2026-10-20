@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-029",
+ "sha256": "0bd09e8246a72d60def1d4b5cce6430034b64fd296738d91bca86b4ea2e5d695",
+ "notes": "closely associated legal person; non-EUR",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 29 SAS Société par actions simplifiée",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Eden Exemple-29b",
+  "declarant_position": "Président du Conseil de Surveillance de Canal+",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "CANAL+ SA",
+  "issuer_lei": "9695000537F9F73BXN18",
+  "reference_isin": null,
+  "transactions": [
+   {
+    "transaction_date": "2026-10-02",
+    "venue": "Multiplaces",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400T0D6",
+    "currency": "GBP",
+    "lines": [
+     {
+      "price": 2.1034,
+      "volume": 1013601.0
+     }
+    ],
+    "aggregated_price": 2.1034,
+    "aggregated_volume": 1013601.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "chair",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400T0D6"
+ },
+ "text": "2026DD9000029 07 octobre 2026\n- DD900029\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 29 SAS Société par actions simplifiée personne morale liée à Eden Exemple-29b, Président du Conseil de Surveillance de Canal+\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : CANAL+ SA\nLEI : 9695000537F9F73BXN18\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 02 octobre 2026\nLIEU DE LA TRANSACTION : Multiplaces\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400T0D6\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 2.1034 Livre Sterling\nVOLUME : 1 013 601.0000\nINFORMATIONS AGREGEES\nPRIX : 2.1034 Livre Sterling\nVOLUME : 1 013 601.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 07 octobre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000029 07 October 2026\n- DD900029\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 29 SAS Société par actions simplifiée legal person closely associated with Eden Exemple-29b, Président du Conseil de Surveillance de Canal+\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : CANAL+ SA\nLEI : 9695000537F9F73BXN18\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 02 October 2026\nPLACE OF THE TRANSACTION : Multiplaces\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400T0D6\nDETAILED OPERATION INFORMATION\nPRICE : 2.1034 Livre Sterling\nVOLUME : 1 013 601.0000\nAGGREGATED INFORMATION\nPRICE : 2.1034 Livre Sterling\nAGGREGATED VOLUME : 1 013 601.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 07 October 2026\n\n\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

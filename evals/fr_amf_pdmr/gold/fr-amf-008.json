@@ -1,0 +1,55 @@
+{
+ "id": "fr-amf-008",
+ "sha256": "2e6e80b3bd124812c76f2684c507f873cd36d302c1c748fcc39b3772bf663213",
+ "notes": "closely associated person; several price lines",
+ "labels": {
+  "declarant_name": "Lou Exemple-08",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": "Alex Exemple-08b",
+  "declarant_position": "PDG",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "ODYSSEE TECHNOLOGIES",
+  "issuer_lei": "969500MUMX7M6PBEL67",
+  "reference_isin": "FR001400U4P9",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-14",
+    "venue": "Euronext Growth Paris",
+    "nature": "Cession",
+    "instrument": "Action",
+    "isin": "FR001400U4P9",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 19.7245,
+      "volume": 170.0
+     },
+     {
+      "price": 19.5445,
+      "volume": 550.0
+     },
+     {
+      "price": 19.74,
+      "volume": 100.0
+     }
+    ],
+    "aggregated_price": 19.6057,
+    "aggregated_volume": 820.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "sell",
+  "transactions[0].direction": -1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400U4P9"
+ },
+ "text": "2026DD9000008 14 août 2026\nFR001400U4P9 - DD900008\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nLou Exemple-08 personne liée à Alex Exemple-08b, PDG\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : ODYSSEE TECHNOLOGIES\nLEI : 969500MUMX7M6PBEL67\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 14 août 2026\nLIEU DE LA TRANSACTION : Euronext Growth Paris\nNATURE DE LA TRANSACTION : Cession\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400U4P9\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 19.7245 Euro\nVOLUME : 170.0000\nPRIX UNITAIRE : 19.5445 Euro\nVOLUME : 550.0000\nPRIX UNITAIRE : 19.7400 Euro\nVOLUME : 100.0000\nINFORMATIONS AGREGEES\nPRIX : 19.6057 Euro\nVOLUME : 820.0000\n\n\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 14 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000008 14 August 2026\nFR001400U4P9 - DD900008\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nLou Exemple-08 person closely associated with Alex Exemple-08b, PDG\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : ODYSSEE TECHNOLOGIES\nLEI : 969500MUMX7M6PBEL67\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 14 August 2026\nPLACE OF THE TRANSACTION : Euronext Growth Paris\nNATURE OF THE TRANSACTION : Disposal\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400U4P9\nDETAILED OPERATION INFORMATION\nPRICE : 19.7245 Euro\nVOLUME : 170.0000\nPRICE : 19.5445 Euro\nVOLUME : 550.0000\nPRICE : 19.7400 Euro\nVOLUME : 100.0000\nAGGREGATED INFORMATION\nPRICE : 19.6057 Euro\nAGGREGATED VOLUME : 820.0000\n\n\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 14 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

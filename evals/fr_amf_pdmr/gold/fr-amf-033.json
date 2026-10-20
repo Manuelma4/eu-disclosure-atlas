@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-033",
+ "sha256": "de52be3ddce31eb1b0f2fb6484307a9315063eb4e873026171fe9d9aaf9071e9",
+ "notes": "non open-market nature",
+ "labels": {
+  "declarant_name": "Noa Exemple-33",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Membre du Comité Exécutif",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "TELEPERFORMANCE",
+  "issuer_lei": null,
+  "reference_isin": "FR0000051807",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-27",
+    "venue": "Hors plateforme de négociation",
+    "nature": "Attribution définitive d'actions de performance",
+    "instrument": "Action",
+    "isin": null,
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 0.0,
+      "volume": 11600.0
+     }
+    ],
+    "aggregated_price": 0.0,
+    "aggregated_volume": 11600.0,
+    "linked_to_share_option_programme": true,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "executive",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "grant",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0000051807"
+ },
+ "text": "2026DD9000033 28 juillet 2026\nFR0000051807 - DD900033\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nNoa Exemple-33, Membre du Comité Exécutif\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : TELEPERFORMANCE\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 27 juillet 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : Attribution définitive d'actions de performance\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 0.0000 Euro\nVOLUME : 11 600.0000\nINFORMATIONS AGREGEES\nPRIX : 0.0000 Euro\nVOLUME : 11 600.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : OUI\nDATE DE RECEPTION DE LA NOTIFICATION : 28 juillet 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000033 28 July 2026\nFR0000051807 - DD900033\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nNoa Exemple-33, Membre du Comité Exécutif\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : TELEPERFORMANCE\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 27 July 2026\nPLACE OF THE TRANSACTION : Hors plateforme de négociation\nNATURE OF THE TRANSACTION : Attribution définitive d'actions de performance\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nDETAILED OPERATION INFORMATION\nPRICE : 0.0000 Euro\nVOLUME : 11 600.0000\nAGGREGATED INFORMATION\nPRICE : 0.0000 Euro\nAGGREGATED VOLUME : 11 600.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : YES\nDATE OF RECEIPT OF THE NOTIFICATION : 28 July 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

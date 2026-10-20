@@ -1,0 +1,116 @@
+{
+ "fields": {
+  "amendment_details": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "declarant_is_legal_entity": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "declarant_name": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "declarant_position": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "is_amendment": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "issuer_lei": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "issuer_name": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "linked_pdmr_name": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.closely_associated": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.notifier_is_legal_entity": {
+   "precision": 0.9833333333333333,
+   "recall": 0.9833333333333333
+  },
+  "normalized.pdmr_role": {
+   "precision": 0.9666666666666667,
+   "recall": 0.9666666666666667
+  },
+  "normalized.transactions.direction": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.transactions.instrument_type": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.transactions.isin": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.transactions.nature": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "normalized.transactions.on_venue": {
+   "precision": 0.9875,
+   "recall": 0.9875
+  },
+  "reference_isin": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.aggregated_price": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.aggregated_volume": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.currency": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.instrument": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.isin": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.lines.price": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.lines.volume": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.linked_to_share_option_programme": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.nature": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.transaction_date": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "transactions.venue": {
+   "precision": 1.0,
+   "recall": 1.0
+  }
+ }
+}

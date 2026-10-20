@@ -6,7 +6,7 @@ has a note `docs/sources/<source>.md` covering endpoint, format, coverage, terms
 | Jurisdiction | Authority | Insider trades (MAR 19) | Net short positions (SSR 6) | Notes |
 |---|---|---|---|---|
 | SE | Finansinspektionen (FI) | **live**: [`se_fi_pdmr`](se_fi_pdmr.md) | **live**: [`se_fi_shorts`](se_fi_shorts.md) | Open data, CSV export, history since 3 July 2016 |
-| FR | AMF (BDIF) | planned (WS1) | **live**: [`fr_amf_shorts`](fr_amf_shorts.md) | Declarations published as documents, in French and English since 2026 |
+| FR | AMF (BDIF) | **live**: [`fr_amf_pdmr`](fr_amf_pdmr.md) | **live**: [`fr_amf_shorts`](fr_amf_shorts.md) | Insider trades: JSON listing + one PDF per notification (EU template, French and English since August 2026), history since February 2021, rule-based parser with an optional LLM fallback |
 | DE | BaFin | planned (WS2) | **live**: [`de_bafin_shorts`](de_bafin_shorts.md) | BaFin's managers' transactions database shows only the past year; primary storage is the company register |
 | NL | AFM | planned (WS2) | **live**: [`nl_afm_shorts`](nl_afm_shorts.md) | Public registers with export |
 | IE | Central Bank of Ireland | researching | **live**: [`ie_cbi_shorts`](ie_cbi_shorts.md) | Net short positions file includes a historical table |

@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-035",
+ "sha256": "72418a636cd4880bac01ab6e652eb087e48fe373b8d0d86185772d2a04e18a27",
+ "notes": "closely associated person; non open-market nature",
+ "labels": {
+  "declarant_name": "Andrea Exemple-35",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": "Sacha Exemple-35b",
+  "declarant_position": "PRESIDENT DU CONSEIL",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "GUILLEMOT CORPORATION",
+  "issuer_lei": "969500N24EZ7HPKJiV79",
+  "reference_isin": "FR0000066722",
+  "transactions": [
+   {
+    "transaction_date": "2026-10-09",
+    "venue": "Hors plateforme de négociation",
+    "nature": "APPORT DE TITRES GUILLEMOT CORPORATION",
+    "instrument": "Action",
+    "isin": "FR0000066722",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 3.9,
+      "volume": 45263.0
+     }
+    ],
+    "aggregated_price": 3.9,
+    "aggregated_volume": 45263.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "chair",
+  "closely_associated": true,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "exchange",
+  "transactions[0].direction": -1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": false,
+  "transactions[0].isin": "FR0000066722"
+ },
+ "text": "2026DD9000035 13 octobre 2026\nFR0000066722 - DD900035\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nAndrea Exemple-35 personne liée à Sacha Exemple-35b, PRESIDENT DU CONSEIL\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : GUILLEMOT CORPORATION\nLEI : 969500N24EZ7HPKJiV79\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 09 octobre 2026\nLIEU DE LA TRANSACTION : Hors plateforme de négociation\nNATURE DE LA TRANSACTION : APPORT DE TITRES GUILLEMOT CORPORATION\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0000066722\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 3.9000 Euro\nVOLUME : 45 263.0000\nINFORMATIONS AGREGEES\nPRIX : 3.9000 Euro\nVOLUME : 45 263.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 13 octobre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000035 13 October 2026\nFR0000066722 - DD900035\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nAndrea Exemple-35 person closely associated with Sacha Exemple-35b, PRESIDENT DU CONSEIL\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : GUILLEMOT CORPORATION\nLEI : 969500N24EZ7HPKJiV79\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 09 October 2026\nPLACE OF THE TRANSACTION : Outside a trading venue\nNATURE OF THE TRANSACTION : APPORT DE TITRES GUILLEMOT CORPORATION\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0000066722\nDETAILED OPERATION INFORMATION\nPRICE : 3.9000 Euro\nVOLUME : 45 263.0000\nAGGREGATED INFORMATION\nPRICE : 3.9000 Euro\nAGGREGATED VOLUME : 45 263.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 13 October 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

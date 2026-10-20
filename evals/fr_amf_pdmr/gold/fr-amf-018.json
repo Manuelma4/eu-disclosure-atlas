@@ -1,0 +1,82 @@
+{
+ "id": "fr-amf-018",
+ "sha256": "a491f32d0b5772cabca04ffe190fb93510fb7ef518e55516742ad6362b25c9a2",
+ "notes": "closely associated legal person; 2 transactions; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 18 SAS Société par actions simplifiée",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Andrea Exemple-18b",
+  "declarant_position": "Administrateur de Louis Hachette Group",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "LOUIS HACHETTE GROUP S.A.",
+  "issuer_lei": "969500CV8XQ2XKU2DO25",
+  "reference_isin": "FR001400TL40",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-14",
+    "venue": "Euronext Growth Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400TL40",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.731,
+      "volume": 216103.0
+     },
+     {
+      "price": 1.738,
+      "volume": 2000.0
+     },
+     {
+      "price": 1.739,
+      "volume": 1430.0
+     },
+     {
+      "price": 1.74,
+      "volume": 1571.0
+     }
+    ],
+    "aggregated_price": 1.7312,
+    "aggregated_volume": 221104.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-09-14",
+    "venue": "Multiplaces",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400TL40",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.7445,
+      "volume": 795555.0
+     }
+    ],
+    "aggregated_price": 1.7445,
+    "aggregated_volume": 795555.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400TL40",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR001400TL40"
+ },
+ "text": "2026DD9000018 17 septembre 2026\nFR001400TL40 - DD900018\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 18 SAS Société par actions simplifiée personne morale liée à Andrea Exemple-18b, Administrateur de Louis Hachette Group\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 14 septembre 2026\nLIEU DE LA TRANSACTION : Euronext Growth Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400TL40\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.7310 Euro\nVOLUME : 216 103.0000\nPRIX UNITAIRE : 1.7380 Euro\nVOLUME : 2 000.0000\nPRIX UNITAIRE : 1.7390 Euro\nVOLUME : 1 430.0000\nPRIX UNITAIRE : 1.7400 Euro\nVOLUME : 1 571.0000\nINFORMATIONS AGREGEES\n\n\nPRIX : 1.7312 Euro\nVOLUME : 221 104.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 14 septembre 2026\nLIEU DE LA TRANSACTION : Multiplaces\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400TL40\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.7445 Euro\nVOLUME : 795 555.0000\nINFORMATIONS AGREGEES\nPRIX : 1.7445 Euro\nVOLUME : 795 555.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 17 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000018 17 September 2026\nFR001400TL40 - DD900018\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 18 SAS Société par actions simplifiée legal person closely associated with Andrea Exemple-18b, Administrateur de Louis Hachette Group\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : LOUIS HACHETTE GROUP S.A.\nLEI : 969500CV8XQ2XKU2DO25\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 14 September 2026\nPLACE OF THE TRANSACTION : Euronext Growth Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400TL40\nDETAILED OPERATION INFORMATION\nPRICE : 1.7310 Euro\nVOLUME : 216 103.0000\nPRICE : 1.7380 Euro\nVOLUME : 2 000.0000\nPRICE : 1.7390 Euro\nVOLUME : 1 430.0000\nPRICE : 1.7400 Euro\nVOLUME : 1 571.0000\n\n\nAGGREGATED INFORMATION\nPRICE : 1.7312 Euro\nAGGREGATED VOLUME : 221 104.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\nDATE OF THE TRANSACTION : 14 September 2026\nPLACE OF THE TRANSACTION : Multiplaces\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400TL40\nDETAILED OPERATION INFORMATION\nPRICE : 1.7445 Euro\nVOLUME : 795 555.0000\nAGGREGATED INFORMATION\nPRICE : 1.7445 Euro\nAGGREGATED VOLUME : 795 555.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 17 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

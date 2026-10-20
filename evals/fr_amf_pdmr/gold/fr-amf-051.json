@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-051",
+ "sha256": "51a7aaace9603810323b2e98bcd632b15468d55ec09719af8128b476164ddb0b",
+ "notes": "closely associated legal person",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 51 SARL SOCIETE",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Lou Exemple-51b",
+  "declarant_position": "M. Sam Exemple-51c ET M. Lee Exemple-51d, MEMBRES DU CONSEILD'ADMINISTRATION DE ESSILORLUXOTTICA",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "ESSILORLUXOTTICA",
+  "issuer_lei": "549300M3VH1A3ER1TB49",
+  "reference_isin": "FR0000121667",
+  "transactions": [
+   {
+    "transaction_date": "2026-07-31",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0000121667",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 166.2442,
+      "volume": 47763.0
+     }
+    ],
+    "aggregated_price": 166.2442,
+    "aggregated_volume": 47763.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0000121667"
+ },
+ "text": "2026DD9000051 03 août 2026\nFR0000121667 - DD900051\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 51 SARL SOCIETE personne morale liée à Lou Exemple-51b, M. Sam Exemple-51c ET M. Lee Exemple-51d, MEMBRES DU CONSEILD'ADMINISTRATION DE ESSILORLUXOTTICA\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : ESSILORLUXOTTICA\nLEI : 549300M3VH1A3ER1TB49\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 31 juillet 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0000121667\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 166.2442 Euro\nVOLUME : 47 763.0000\nINFORMATIONS AGREGEES\nPRIX : 166.2442 Euro\nVOLUME : 47 763.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 03 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000051 03 August 2026\nFR0000121667 - DD900051\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 51 SARL SOCIETE legal person closely associated with Lou Exemple-51b, M. Sam Exemple-51c ET M. Lee Exemple-51d, MEMBRES DU CONSEILD'ADMINISTRATION DE ESSILORLUXOTTICA\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : ESSILORLUXOTTICA\nLEI : 549300M3VH1A3ER1TB49\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 31 July 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Action\nIDENTIFICATION CODE : FR0000121667\nDETAILED OPERATION INFORMATION\nPRICE : 166.2442 Euro\nVOLUME : 47 763.0000\nAGGREGATED INFORMATION\nPRICE : 166.2442 Euro\nAGGREGATED VOLUME : 47 763.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 03 August 2026\n\n\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

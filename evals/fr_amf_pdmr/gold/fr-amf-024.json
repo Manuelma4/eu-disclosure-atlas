@@ -1,0 +1,94 @@
+{
+ "id": "fr-amf-024",
+ "sha256": "3afa9e0720cd140a0b19db411c037216e2104d05d89c6bcff0e7cc58ee3a1fc5",
+ "notes": "closely associated legal person; 2 transactions; several price lines",
+ "labels": {
+  "declarant_name": "Synthetic Alpha 24 SYNTHETIC SAS",
+  "declarant_is_legal_entity": true,
+  "linked_pdmr_name": "Morgan Exemple-24b",
+  "declarant_position": "Gérant",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "PATRIMOINE ET COMMERCE",
+  "issuer_lei": "969500C2C11L0PTGRH11",
+  "reference_isin": "FR0011027135",
+  "transactions": [
+   {
+    "transaction_date": "2026-10-13",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0011027135",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 21.4,
+      "volume": 4.0
+     },
+     {
+      "price": 21.9,
+      "volume": 2.0
+     },
+     {
+      "price": 22.1,
+      "volume": 1.0
+     },
+     {
+      "price": 22.4,
+      "volume": 1.0
+     },
+     {
+      "price": 21.5,
+      "volume": 50.0
+     }
+    ],
+    "aggregated_price": 21.5328,
+    "aggregated_volume": 58.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-10-14",
+    "venue": "Euronext Paris",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR0011027135",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 20.7,
+      "volume": 1.0
+     },
+     {
+      "price": 21.0,
+      "volume": 1.0
+     },
+     {
+      "price": 21.7,
+      "volume": 1.0
+     }
+    ],
+    "aggregated_price": 21.1333,
+    "aggregated_volume": 3.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "ceo",
+  "closely_associated": true,
+  "notifier_is_legal_entity": true,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0011027135",
+  "transactions[1].nature": "buy",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "share",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "FR0011027135"
+ },
+ "text": "2026DD9000024 15 octobre 2026\nFR0011027135 - DD900024\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSynthetic Alpha 24 SYNTHETIC SAS personne morale liée à Morgan Exemple-24b, Gérant\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : PATRIMOINE ET COMMERCE\nLEI : 969500C2C11L0PTGRH11\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 13 octobre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0011027135\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 21.4000 Euro\nVOLUME : 4.0000\nPRIX UNITAIRE : 21.9000 Euro\nVOLUME : 2.0000\nPRIX UNITAIRE : 22.1000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 22.4000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 21.5000 Euro\nVOLUME : 50.0000\n\n\nINFORMATIONS AGREGEES\nPRIX : 21.5328 Euro\nVOLUME : 58.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 14 octobre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR0011027135\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 20.7000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 21.0000 Euro\nVOLUME : 1.0000\nPRIX UNITAIRE : 21.7000 Euro\nVOLUME : 1.0000\nINFORMATIONS AGREGEES\nPRIX : 21.1333 Euro\nVOLUME : 3.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 15 octobre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000024 15 October 2026\nFR0011027135 - DD900024\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSynthetic Alpha 24 SYNTHETIC SAS legal person closely associated with Morgan Exemple-24b, Gérant\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : PATRIMOINE ET COMMERCE\nLEI : 969500C2C11L0PTGRH11\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 13 October 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0011027135\nDETAILED OPERATION INFORMATION\nPRICE : 21.4000 Euro\nVOLUME : 4.0000\nPRICE : 21.9000 Euro\nVOLUME : 2.0000\nPRICE : 22.1000 Euro\nVOLUME : 1.0000\nPRICE : 22.4000 Euro\nVOLUME : 1.0000\nPRICE : 21.5000 Euro\n\n\nVOLUME : 50.0000\nAGGREGATED INFORMATION\nPRICE : 21.5328 Euro\nAGGREGATED VOLUME : 58.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\nDATE OF THE TRANSACTION : 14 October 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR0011027135\nDETAILED OPERATION INFORMATION\nPRICE : 20.7000 Euro\nVOLUME : 1.0000\nPRICE : 21.0000 Euro\nVOLUME : 1.0000\nPRICE : 21.7000 Euro\nVOLUME : 1.0000\nAGGREGATED INFORMATION\nPRICE : 21.1333 Euro\nAGGREGATED VOLUME : 3.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 15 October 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

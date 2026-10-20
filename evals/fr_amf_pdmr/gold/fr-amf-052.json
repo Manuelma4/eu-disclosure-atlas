@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-052",
+ "sha256": "8c47ffedff212b88cf68883207f7d787223194e860c2cd3ed975803f2e2ef03a",
+ "notes": "",
+ "labels": {
+  "declarant_name": "Sacha Exemple-52",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Administrateur",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "PRODWAYS GROUP",
+  "issuer_lei": "969500URB8KRQ9IDBK68",
+  "reference_isin": "FR0012613610",
+  "transactions": [
+   {
+    "transaction_date": "2026-08-06",
+    "venue": "Euronext Growth Paris",
+    "nature": "Cession",
+    "instrument": "Action",
+    "isin": "PWG",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 1.1,
+      "volume": 74805.0
+     }
+    ],
+    "aggregated_price": 0.0,
+    "aggregated_volume": 0.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "sell",
+  "transactions[0].direction": -1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR0012613610"
+ },
+ "text": "2026DD9000052 11 août 2026\nFR0012613610 - DD900052\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSacha Exemple-52, Administrateur\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : PRODWAYS GROUP\nLEI : 969500URB8KRQ9IDBK68\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 06 août 2026\nLIEU DE LA TRANSACTION : Euronext Growth Paris\nNATURE DE LA TRANSACTION : Cession\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : PWG\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 1.1000 Euro\nVOLUME : 74805\nINFORMATIONS AGREGEES\nPRIX : 0.0000 Euro\nVOLUME : 0.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 11 août 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000052 11 August 2026\nFR0012613610 - DD900052\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSacha Exemple-52, Administrateur\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : PRODWAYS GROUP\nLEI : 969500URB8KRQ9IDBK68\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 06 August 2026\nPLACE OF THE TRANSACTION : Euronext Growth Paris\nNATURE OF THE TRANSACTION : Disposal\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : PWG\nDETAILED OPERATION INFORMATION\nPRICE : 1.1000 Euro\nVOLUME : 74805\nAGGREGATED INFORMATION\nPRICE : 0.0000 Euro\nAGGREGATED VOLUME : 0.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 11 August 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

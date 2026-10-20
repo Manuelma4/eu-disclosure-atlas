@@ -1,0 +1,70 @@
+{
+ "id": "fr-amf-038",
+ "sha256": "55dfeb39b5b87e1f79ba9f24f75102f02cc72a6aaf3391d5a91ba69952c567e6",
+ "notes": "2 transactions; non open-market nature; non-share instrument",
+ "labels": {
+  "declarant_name": "Dominique Exemple-38",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Administrateur Représentant les Salariés Actionnaires",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "TOTALENERGIES SE",
+  "issuer_lei": "529900S21EQ1BO4ESM68",
+  "reference_isin": "FR0000120271",
+  "transactions": [
+   {
+    "transaction_date": "2026-09-04",
+    "venue": "Euronext Paris",
+    "nature": "Cession",
+    "instrument": "FIE - TOTALENERGIES ACTIONNARIAT FRANCE",
+    "isin": "QS0009101567",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 77.4685,
+      "volume": 1.6921
+     }
+    ],
+    "aggregated_price": 77.4685,
+    "aggregated_volume": 1.6921,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   },
+   {
+    "transaction_date": "2026-09-04",
+    "venue": "Euronext Paris",
+    "nature": "Souscription",
+    "instrument": "FIE - TOTALENERGIES ACTIONNARIAT FRANCE",
+    "isin": "QS0009101567",
+    "currency": "EUR",
+    "lines": [
+     {
+      "price": 77.61,
+      "volume": 1.689
+     }
+    ],
+    "aggregated_price": 77.61,
+    "aggregated_volume": 1.689,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "sell",
+  "transactions[0].direction": -1,
+  "transactions[0].instrument_type": "other",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "QS0009101567",
+  "transactions[1].nature": "subscription",
+  "transactions[1].direction": 1,
+  "transactions[1].instrument_type": "other",
+  "transactions[1].on_venue": true,
+  "transactions[1].isin": "QS0009101567"
+ },
+ "text": "2026DD9000038 07 septembre 2026\nFR0000120271 - DD900038\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nDominique Exemple-38, Administrateur Représentant les Salariés Actionnaires\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : TOTALENERGIES SE\nLEI : 529900S21EQ1BO4ESM68\nDETAIL DE LA TRANSACTION 1\nDATE DE LA TRANSACTION : 04 septembre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\nNATURE DE LA TRANSACTION : Cession\nDESCRIPTION DE L’INSTRUMENT FINANCIER : FIE - TOTALENERGIES ACTIONNARIAT FRANCE\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : QS0009101567\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 77.4685 Euro\nVOLUME : 1.6921\nINFORMATIONS AGREGEES\nPRIX : 77.4685 Euro\nVOLUME : 1.6921\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDETAIL DE LA TRANSACTION 2\nDATE DE LA TRANSACTION : 04 septembre 2026\nLIEU DE LA TRANSACTION : Euronext Paris\n\n\nNATURE DE LA TRANSACTION : Souscription\nDESCRIPTION DE L’INSTRUMENT FINANCIER : FIE - TOTALENERGIES ACTIONNARIAT FRANCE\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : QS0009101567\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 77.6100 Euro\nVOLUME : 1.6890\nINFORMATIONS AGREGEES\nPRIX : 77.6100 Euro\nVOLUME : 1.6890\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 07 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000038 07 September 2026\nFR0000120271 - DD900038\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nDominique Exemple-38, Administrateur Représentant les Salariés Actionnaires\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : TOTALENERGIES SE\nLEI : 529900S21EQ1BO4ESM68\nDETAIL OF THE TRANSACTION 1\nDATE OF THE TRANSACTION : 04 September 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Disposal\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : FIE - TOTALENERGIES ACTIONNARIAT\nFRANCE\nIDENTIFICATION CODE : QS0009101567\nDETAILED OPERATION INFORMATION\nPRICE : 77.4685 Euro\nVOLUME : 1.6921\nAGGREGATED INFORMATION\nPRICE : 77.4685 Euro\nAGGREGATED VOLUME : 1.6921\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDETAIL OF THE TRANSACTION 2\n\n\nDATE OF THE TRANSACTION : 04 September 2026\nPLACE OF THE TRANSACTION : Euronext Paris\nNATURE OF THE TRANSACTION : Subscription\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : FIE - TOTALENERGIES ACTIONNARIAT\nFRANCE\nIDENTIFICATION CODE : QS0009101567\nDETAILED OPERATION INFORMATION\nPRICE : 77.6100 Euro\nVOLUME : 1.6890\nAGGREGATED INFORMATION\nPRICE : 77.6100 Euro\nAGGREGATED VOLUME : 1.6890\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 07 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}

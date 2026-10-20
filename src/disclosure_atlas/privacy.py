@@ -28,7 +28,8 @@ _LEGAL_FORM = re.compile(
     r"s\.?p\.?a\.?|s\.?r\.?l\.?|s\.?a\.?p\.?a\.?|s\.?l\.?|s\.?l\.?u\.?|"
     r"sp\. z o\.o\.|s\.?k\.?a\.?|kft|zrt|nyrt|"
     r"holding|holdings|invest|investment|investments|capital|partners|fund|fonds|foundation|"
-    r"fondation|stiftelse|trust|management|ventures|family office|förvaltning|fastigheter"
+    r"fondation|stiftelse|trust|management|ventures|family office|förvaltning|fastigheter|"
+    r"soci[ée]t[ée]|sasu|selarl|scp|gie|fcpe|groupe"
     r")(?![\w-])",
     re.IGNORECASE,
 )

@@ -72,7 +72,7 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 | Jurisdiction | Authority | Insider trades (MAR 19) | Net short positions (SSR) |
 |---|---|---|---|
 | Sweden | Finansinspektionen | **Live** (`se_fi_pdmr`) | Planned |
-| France | AMF (BDIF) | In progress: PDF + AI extraction | Planned |
+| France | AMF (BDIF) | **Live** (`fr_amf_pdmr`): PDF parsing, LLM fallback, evaluated | Planned |
 | Germany | BaFin | Planned | Planned |
 | Netherlands | AFM | Planned | Planned |
 | Spain, Italy, Nordics, others | | Researching | Researching |
@@ -88,6 +88,7 @@ pip install -e '.[dev,api]'
 pytest                                                    # offline test suite
 disclosure-atlas reference fx                             # ECB euro reference rates
 disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
+disclosure-atlas ingest fr_amf_pdmr --start 2026-07-22    # 90 days of French filings (PDF, about 20 minutes)
 disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs
 disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest every 5 minutes
 pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server over stdio (docs/ai.md)

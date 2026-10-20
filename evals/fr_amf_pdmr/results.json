@@ -1,0 +1,3409 @@
+{
+ "deterministic": {
+  "documents": 60,
+  "unread": [],
+  "micro": {
+   "precision": 0.9979736575481256,
+   "recall": 0.9979736575481256
+  },
+  "fields": {
+   "amendment_details": {
+    "tp": 2,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "declarant_is_legal_entity": {
+    "tp": 22,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "declarant_name": {
+    "tp": 60,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "declarant_position": {
+    "tp": 60,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "is_amendment": {
+    "tp": 60,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "issuer_lei": {
+    "tp": 51,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "issuer_name": {
+    "tp": 60,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "linked_pdmr_name": {
+    "tp": 28,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.closely_associated": {
+    "tp": 60,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.notifier_is_legal_entity": {
+    "tp": 59,
+    "fp": 1,
+    "fn": 1,
+    "precision": 0.9833333333333333,
+    "recall": 0.9833333333333333
+   },
+   "normalized.pdmr_role": {
+    "tp": 58,
+    "fp": 2,
+    "fn": 2,
+    "precision": 0.9666666666666667,
+    "recall": 0.9666666666666667
+   },
+   "normalized.transactions.direction": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.transactions.instrument_type": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.transactions.isin": {
+    "tp": 77,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.transactions.nature": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "normalized.transactions.on_venue": {
+    "tp": 79,
+    "fp": 1,
+    "fn": 1,
+    "precision": 0.9875,
+    "recall": 0.9875
+   },
+   "reference_isin": {
+    "tp": 56,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.aggregated_price": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.aggregated_volume": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.currency": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.instrument": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.isin": {
+    "tp": 68,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.lines.price": {
+    "tp": 145,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.lines.volume": {
+    "tp": 145,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.linked_to_share_option_programme": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.nature": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.transaction_date": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   "transactions.venue": {
+    "tp": 80,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0
+   }
+  },
+  "errors": [
+   [
+    "fr-amf-009",
+    "normalized.transactions[0].on_venue",
+    false,
+    true
+   ],
+   [
+    "fr-amf-020",
+    "normalized.notifier_is_legal_entity",
+    true,
+    false
+   ],
+   [
+    "fr-amf-039",
+    "normalized.pdmr_role",
+    "executive",
+    "ceo"
+   ],
+   [
+    "fr-amf-049",
+    "normalized.pdmr_role",
+    "executive",
+    "ceo"
+   ]
+  ]
+ },
+ "llm": {
+  "parser": "llm:qwen3.5:9b@fr-amf-1",
+  "documents": 60,
+  "unread": [
+   "fr-amf-003",
+   "fr-amf-011",
+   "fr-amf-012",
+   "fr-amf-013",
+   "fr-amf-014",
+   "fr-amf-030",
+   "fr-amf-031",
+   "fr-amf-032",
+   "fr-amf-038",
+   "fr-amf-040",
+   "fr-amf-048",
+   "fr-amf-054",
+   "fr-amf-059"
+  ],
+  "micro": {
+   "precision": 0.923217550274223,
+   "recall": 0.7674772036474165
+  },
+  "fields": {
+   "amendment_details": {
+    "tp": 0,
+    "fp": 1,
+    "fn": 2,
+    "precision": 0.0,
+    "recall": 0.0
+   },
+   "declarant_is_legal_entity": {
+    "tp": 19,
+    "fp": 28,
+    "fn": 3,
+    "precision": 0.40425531914893614,
+    "recall": 0.8636363636363636
+   },
+   "declarant_name": {
+    "tp": 44,
+    "fp": 3,
+    "fn": 16,
+    "precision": 0.9361702127659575,
+    "recall": 0.7333333333333333
+   },
+   "declarant_position": {
+    "tp": 40,
+    "fp": 7,
+    "fn": 20,
+    "precision": 0.851063829787234,
+    "recall": 0.6666666666666666
+   },
+   "is_amendment": {
+    "tp": 47,
+    "fp": 0,
+    "fn": 13,
+    "precision": 1.0,
+    "recall": 0.7833333333333333
+   },
+   "issuer_lei": {
+    "tp": 41,
+    "fp": 0,
+    "fn": 10,
+    "precision": 1.0,
+    "recall": 0.803921568627451
+   },
+   "issuer_name": {
+    "tp": 47,
+    "fp": 0,
+    "fn": 13,
+    "precision": 1.0,
+    "recall": 0.7833333333333333
+   },
+   "linked_pdmr_name": {
+    "tp": 24,
+    "fp": 1,
+    "fn": 4,
+    "precision": 0.96,
+    "recall": 0.8571428571428571
+   },
+   "normalized.closely_associated": {
+    "tp": 47,
+    "fp": 0,
+    "fn": 13,
+    "precision": 1.0,
+    "recall": 0.7833333333333333
+   },
+   "normalized.notifier_is_legal_entity": {
+    "tp": 46,
+    "fp": 1,
+    "fn": 14,
+    "precision": 0.9787234042553191,
+    "recall": 0.7666666666666667
+   },
+   "normalized.pdmr_role": {
+    "tp": 45,
+    "fp": 2,
+    "fn": 15,
+    "precision": 0.9574468085106383,
+    "recall": 0.75
+   },
+   "normalized.transactions.direction": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "normalized.transactions.instrument_type": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "normalized.transactions.isin": {
+    "tp": 61,
+    "fp": 0,
+    "fn": 16,
+    "precision": 1.0,
+    "recall": 0.7922077922077922
+   },
+   "normalized.transactions.nature": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "normalized.transactions.on_venue": {
+    "tp": 65,
+    "fp": 1,
+    "fn": 15,
+    "precision": 0.9848484848484849,
+    "recall": 0.8125
+   },
+   "reference_isin": {
+    "tp": 25,
+    "fp": 0,
+    "fn": 31,
+    "precision": 1.0,
+    "recall": 0.44642857142857145
+   },
+   "transactions.aggregated_price": {
+    "tp": 65,
+    "fp": 0,
+    "fn": 15,
+    "precision": 1.0,
+    "recall": 0.8125
+   },
+   "transactions.aggregated_volume": {
+    "tp": 39,
+    "fp": 26,
+    "fn": 41,
+    "precision": 0.6,
+    "recall": 0.4875
+   },
+   "transactions.currency": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "transactions.instrument": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "transactions.isin": {
+    "tp": 55,
+    "fp": 7,
+    "fn": 13,
+    "precision": 0.8870967741935484,
+    "recall": 0.8088235294117647
+   },
+   "transactions.lines.price": {
+    "tp": 130,
+    "fp": 0,
+    "fn": 15,
+    "precision": 1.0,
+    "recall": 0.896551724137931
+   },
+   "transactions.lines.volume": {
+    "tp": 81,
+    "fp": 49,
+    "fn": 64,
+    "precision": 0.6230769230769231,
+    "recall": 0.5586206896551724
+   },
+   "transactions.linked_to_share_option_programme": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "transactions.nature": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "transactions.transaction_date": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   },
+   "transactions.venue": {
+    "tp": 66,
+    "fp": 0,
+    "fn": 14,
+    "precision": 1.0,
+    "recall": 0.825
+   }
+  },
+  "errors": [
+   [
+    "fr-amf-001",
+    "reference_isin",
+    "FR0000031775",
+    null
+   ],
+   [
+    "fr-amf-001",
+    "transactions[0].aggregated_volume",
+    163.0,
+    163000.0
+   ],
+   [
+    "fr-amf-001",
+    "transactions[0].isin",
+    null,
+    "FR0000031775"
+   ],
+   [
+    "fr-amf-001",
+    "transactions[0].lines[0].volume",
+    163.0,
+    163000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].aggregated_volume",
+    400.0,
+    400000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].isin",
+    null,
+    "FR0013344173"
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[0].volume",
+    46.0,
+    46000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[1].volume",
+    44.0,
+    44000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[2].volume",
+    68.0,
+    68000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[3].volume",
+    32.0,
+    32000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[4].volume",
+    110.0,
+    110000.0
+   ],
+   [
+    "fr-amf-002",
+    "transactions[0].lines[5].volume",
+    100.0,
+    100000.0
+   ],
+   [
+    "fr-amf-003",
+    "declarant_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "declarant_name",
+    "Synthetic Alpha 03",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "declarant_position",
+    "Pr\u00e9sident Directeur G\u00e9n\u00e9ral",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "issuer_name",
+    "GL EVENTS",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "linked_pdmr_name",
+    "Lou Exemple-03b",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.closely_associated",
+    true,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.pdmr_role",
+    "ceo",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.transactions[0].direction",
+    1,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.transactions[0].isin",
+    "FR0000066672",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.transactions[0].nature",
+    "buy",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "reference_isin",
+    "FR0000066672",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].aggregated_price",
+    30.4233,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].aggregated_volume",
+    15704.0,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].lines[0].price",
+    30.4233,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].lines[0].volume",
+    15704.0,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].nature",
+    "Acquisition",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].transaction_date",
+    "2026-08-13",
+    null
+   ],
+   [
+    "fr-amf-003",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-004",
+    "declarant_name",
+    "Synthetic Alpha 04 Soci\u00e9t\u00e9",
+    "Synthetic Alpha 04"
+   ],
+   [
+    "fr-amf-004",
+    "normalized.transactions[0].isin",
+    "FR0004027068",
+    null
+   ],
+   [
+    "fr-amf-004",
+    "reference_isin",
+    "FR0004027068",
+    null
+   ],
+   [
+    "fr-amf-004",
+    "transactions[0].aggregated_volume",
+    72.0,
+    72000.0
+   ],
+   [
+    "fr-amf-004",
+    "transactions[0].lines[0].volume",
+    72.0,
+    72000.0
+   ],
+   [
+    "fr-amf-005",
+    "transactions[0].aggregated_volume",
+    5024.0,
+    5024000.0
+   ],
+   [
+    "fr-amf-005",
+    "transactions[0].lines[0].volume",
+    5024.0,
+    5024000.0
+   ],
+   [
+    "fr-amf-005",
+    "transactions[1].aggregated_volume",
+    3730.0,
+    3730000.0
+   ],
+   [
+    "fr-amf-005",
+    "transactions[1].lines[0].volume",
+    3730.0,
+    3730000.0
+   ],
+   [
+    "fr-amf-007",
+    "declarant_position",
+    "Administrateur et Pr\u00e9sident\u2013Directeur g\u00e9n\u00e9ral de Compagnie de l\u2019Odet",
+    "Administrateur et Pr\u00e9sident\u2013Directeur g\u00e9n\u00e9ral de Compagnie de l'Odet"
+   ],
+   [
+    "fr-amf-007",
+    "reference_isin",
+    "FR0000062234",
+    null
+   ],
+   [
+    "fr-amf-008",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-008",
+    "declarant_position",
+    "PDG",
+    "personne li\u00e9e \u00e0 Alex Exemple-08b, PDG"
+   ],
+   [
+    "fr-amf-008",
+    "transactions[0].aggregated_volume",
+    820.0,
+    820000.0
+   ],
+   [
+    "fr-amf-008",
+    "transactions[0].lines[0].volume",
+    170.0,
+    170000.0
+   ],
+   [
+    "fr-amf-008",
+    "transactions[0].lines[1].volume",
+    550.0,
+    550000.0
+   ],
+   [
+    "fr-amf-008",
+    "transactions[0].lines[2].volume",
+    100.0,
+    100000.0
+   ],
+   [
+    "fr-amf-009",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-009",
+    "declarant_position",
+    "PDG",
+    "personne li\u00e9e \u00e0 Dominique Exemple-09b, PDG"
+   ],
+   [
+    "fr-amf-009",
+    "normalized.transactions[0].on_venue",
+    false,
+    true
+   ],
+   [
+    "fr-amf-010",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-010",
+    "declarant_position",
+    "PRESIDENT DU CONSEIL",
+    "personne li\u00e9e \u00e0 PRESIDENT DU CONSEIL"
+   ],
+   [
+    "fr-amf-010",
+    "reference_isin",
+    "FR0000066722",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "declarant_name",
+    "Synthetic Alpha 11 SE SE",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].aggregated_price",
+    5.1019,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].aggregated_volume",
+    2330.0,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].lines[0].price",
+    5.1019,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].lines[0].volume",
+    2330.0,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].transaction_date",
+    "2026-08-27",
+    null
+   ],
+   [
+    "fr-amf-011",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "declarant_name",
+    "Synthetic Alpha 12 SE SE",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "normalized.transactions[0].on_venue",
+    false,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].aggregated_price",
+    5.8069,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].aggregated_volume",
+    30000.0,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].lines[0].price",
+    5.8069,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].lines[0].volume",
+    30000.0,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].transaction_date",
+    "2026-09-23",
+    null
+   ],
+   [
+    "fr-amf-012",
+    "transactions[0].venue",
+    "Hors plateforme de n\u00e9gociation",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "declarant_name",
+    "Synthetic Alpha 13 SE SE",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].aggregated_price",
+    5.7296,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].aggregated_volume",
+    9439.0,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].lines[0].price",
+    5.7296,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].lines[0].volume",
+    9439.0,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].transaction_date",
+    "2026-09-22",
+    null
+   ],
+   [
+    "fr-amf-013",
+    "transactions[0].venue",
+    "MTF hors Dark Pools",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "declarant_name",
+    "Synthetic Alpha 14 SE SE",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].aggregated_price",
+    5.6768,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].aggregated_volume",
+    3865.0,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].lines[0].price",
+    5.6768,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].lines[0].volume",
+    3865.0,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].transaction_date",
+    "2026-10-13",
+    null
+   ],
+   [
+    "fr-amf-014",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-015",
+    "transactions[0].aggregated_volume",
+    5860.0,
+    5860000.0
+   ],
+   [
+    "fr-amf-015",
+    "transactions[0].lines[0].volume",
+    5860.0,
+    5860000.0
+   ],
+   [
+    "fr-amf-015",
+    "transactions[1].aggregated_volume",
+    4887.0,
+    4887000.0
+   ],
+   [
+    "fr-amf-015",
+    "transactions[1].lines[0].volume",
+    4887.0,
+    4887000.0
+   ],
+   [
+    "fr-amf-015",
+    "transactions[2].aggregated_volume",
+    2840.0,
+    2840000.0
+   ],
+   [
+    "fr-amf-015",
+    "transactions[2].lines[0].volume",
+    2840.0,
+    2840000.0
+   ],
+   [
+    "fr-amf-016",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-016",
+    "transactions[0].aggregated_volume",
+    919.0,
+    919000.0
+   ],
+   [
+    "fr-amf-016",
+    "transactions[0].lines[0].volume",
+    919.0,
+    919000.0
+   ],
+   [
+    "fr-amf-016",
+    "transactions[1].aggregated_volume",
+    1129.0,
+    1129000.0
+   ],
+   [
+    "fr-amf-016",
+    "transactions[1].lines[0].volume",
+    1129.0,
+    1129000.0
+   ],
+   [
+    "fr-amf-017",
+    "transactions[4].lines[10].price",
+    3.984,
+    null
+   ],
+   [
+    "fr-amf-017",
+    "transactions[4].lines[10].volume",
+    93.0,
+    null
+   ],
+   [
+    "fr-amf-019",
+    "transactions[0].aggregated_volume",
+    725.0,
+    725000.0
+   ],
+   [
+    "fr-amf-019",
+    "transactions[0].lines[0].volume",
+    725.0,
+    725000.0
+   ],
+   [
+    "fr-amf-019",
+    "transactions[1].aggregated_volume",
+    2100.0,
+    2100000.0
+   ],
+   [
+    "fr-amf-019",
+    "transactions[1].lines[0].volume",
+    2100.0,
+    2100000.0
+   ],
+   [
+    "fr-amf-020",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-020",
+    "normalized.notifier_is_legal_entity",
+    true,
+    false
+   ],
+   [
+    "fr-amf-021",
+    "amendment_details",
+    "A la suite d\u2019une erreur mat\u00e9rielle, l\u2019acquisition des 20 868 actions LOUIS HACHETTE GROUP de la pr\u00e9sente d\u00e9claration est \u00e0 d\u00e9clarer sur le site ONDE pour le compte de SYNTHETIC SAS au lieu et place de SYNTHETIC N.V.",
+    "A la suite d'une erreur mat\u00e9rielle, l'acquisition des 20 868 actions LOUIS HACHETTE GROUP de la pr\u00e9sente d\u00e9claration est \u00e0 d\u00e9clarer sur le site ONDE pour le compte de SYNTHETIC SAS au lieu et place de SYNTHETIC N.V."
+   ],
+   [
+    "fr-amf-021",
+    "declarant_name",
+    "Synthetic Alpha 21 N.V. Soci\u00e9t\u00e9 par actions simplifi\u00e9e",
+    "Synthetic Alpha 21 N.V."
+   ],
+   [
+    "fr-amf-021",
+    "reference_isin",
+    "FR001400TL40",
+    null
+   ],
+   [
+    "fr-amf-021",
+    "transactions[0].aggregated_volume",
+    16284.0,
+    16284000.0
+   ],
+   [
+    "fr-amf-021",
+    "transactions[0].lines[0].volume",
+    2200.0,
+    2200000.0
+   ],
+   [
+    "fr-amf-021",
+    "transactions[0].lines[1].volume",
+    2194.0,
+    2194000.0
+   ],
+   [
+    "fr-amf-021",
+    "transactions[0].lines[2].volume",
+    11890.0,
+    11890000.0
+   ],
+   [
+    "fr-amf-021",
+    "transactions[1].aggregated_volume",
+    4584.0,
+    4584000.0
+   ],
+   [
+    "fr-amf-021",
+    "transactions[1].lines[0].volume",
+    4584.0,
+    4584000.0
+   ],
+   [
+    "fr-amf-022",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-022",
+    "transactions[0].aggregated_volume",
+    4874.0,
+    4874000.0
+   ],
+   [
+    "fr-amf-022",
+    "transactions[0].lines[0].volume",
+    3525.0,
+    3525000.0
+   ],
+   [
+    "fr-amf-022",
+    "transactions[0].lines[1].volume",
+    1349.0,
+    1349000.0
+   ],
+   [
+    "fr-amf-023",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].aggregated_volume",
+    573.0,
+    573000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[0].volume",
+    50.0,
+    50000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[1].volume",
+    79.0,
+    79000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[2].volume",
+    270.0,
+    270000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[3].volume",
+    56.0,
+    56000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[4].volume",
+    5.0,
+    5000.0
+   ],
+   [
+    "fr-amf-023",
+    "transactions[0].lines[5].volume",
+    113.0,
+    113000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].aggregated_volume",
+    58.0,
+    58000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].lines[0].volume",
+    4.0,
+    4000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].lines[1].volume",
+    2.0,
+    2000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].lines[2].volume",
+    1.0,
+    1000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].lines[3].volume",
+    1.0,
+    1000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[0].lines[4].volume",
+    50.0,
+    50000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[1].aggregated_volume",
+    3.0,
+    3000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[1].lines[0].volume",
+    1.0,
+    1000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[1].lines[1].volume",
+    1.0,
+    1000.0
+   ],
+   [
+    "fr-amf-024",
+    "transactions[1].lines[2].volume",
+    1.0,
+    1000.0
+   ],
+   [
+    "fr-amf-025",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-026",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-026",
+    "transactions[0].aggregated_volume",
+    1250.0,
+    1250000.0
+   ],
+   [
+    "fr-amf-026",
+    "transactions[0].lines[0].volume",
+    1250.0,
+    1250000.0
+   ],
+   [
+    "fr-amf-027",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-028",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-030",
+    "amendment_details",
+    "Modification des places de cession : Euronext Paris / MTF hors Dark Paris / Dark Pools",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "declarant_name",
+    "Synthetic Alpha 30 SE SE",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "is_amendment",
+    true,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].aggregated_price",
+    5.7296,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].aggregated_volume",
+    20230.0,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].lines[0].price",
+    5.7296,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].lines[0].volume",
+    20230.0,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].transaction_date",
+    "2026-09-22",
+    null
+   ],
+   [
+    "fr-amf-030",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "declarant_name",
+    "Synthetic Alpha 31 SAS",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "declarant_position",
+    "Censeur",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "issuer_lei",
+    "9695005BNQGNY0ND5S19",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "issuer_name",
+    "VOYAGEURS DU MONDE",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.pdmr_role",
+    "other",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.transactions[0].isin",
+    "FR0004045847",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.transactions[0].nature",
+    "exchange",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "normalized.transactions[0].on_venue",
+    false,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "reference_isin",
+    "FR0004045847",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].aggregated_price",
+    180.0,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].aggregated_volume",
+    53985.0,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].isin",
+    "FR0004045847",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].lines[0].price",
+    180.0,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].lines[0].volume",
+    53985.0,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].nature",
+    "R\u00e9alisation de l'apport de 53 985 AO VOYAGEURS DU MONDE d\u00e9tenus par FIT 2 \u00e0 AVANTAGE",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].transaction_date",
+    "2026-07-24",
+    null
+   ],
+   [
+    "fr-amf-031",
+    "transactions[0].venue",
+    "Hors plateforme de n\u00e9gociation",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "declarant_name",
+    "Lou Exemple-32",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "declarant_position",
+    "Administrateur",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "issuer_name",
+    "THERACLION",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.notifier_is_legal_entity",
+    false,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.transactions[0].direction",
+    0,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.transactions[0].isin",
+    "FR0010120402",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.transactions[0].nature",
+    "conversion",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "reference_isin",
+    "FR0010120402",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].aggregated_price",
+    0.2,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].aggregated_volume",
+    266139.0,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].isin",
+    "FR0010120402 ALTHE",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].lines[0].price",
+    0.2,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].lines[0].volume",
+    266139.0,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].nature",
+    "Conversion",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].transaction_date",
+    "2027-08-26",
+    null
+   ],
+   [
+    "fr-amf-032",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-033",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-033",
+    "normalized.transactions[0].isin",
+    "FR0000051807",
+    null
+   ],
+   [
+    "fr-amf-033",
+    "reference_isin",
+    "FR0000051807",
+    null
+   ],
+   [
+    "fr-amf-034",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-034",
+    "reference_isin",
+    "FR0000124141",
+    null
+   ],
+   [
+    "fr-amf-035",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-035",
+    "declarant_position",
+    "PRESIDENT DU CONSEIL",
+    "personne li\u00e9e \u00e0 Sacha Exemple-35b, PRESIDENT DU CONSEIL"
+   ],
+   [
+    "fr-amf-035",
+    "reference_isin",
+    "FR0000066722",
+    null
+   ],
+   [
+    "fr-amf-036",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-036",
+    "transactions[0].aggregated_volume",
+    50.0,
+    50000.0
+   ],
+   [
+    "fr-amf-036",
+    "transactions[0].isin",
+    null,
+    "FR0000124141"
+   ],
+   [
+    "fr-amf-036",
+    "transactions[0].lines[0].volume",
+    50.0,
+    50000.0
+   ],
+   [
+    "fr-amf-037",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-037",
+    "transactions[0].aggregated_volume",
+    1000.0,
+    1000000.0
+   ],
+   [
+    "fr-amf-037",
+    "transactions[0].isin",
+    null,
+    "FR0010908533"
+   ],
+   [
+    "fr-amf-037",
+    "transactions[0].lines[0].volume",
+    1000.0,
+    1000000.0
+   ],
+   [
+    "fr-amf-038",
+    "declarant_name",
+    "Dominique Exemple-38",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "declarant_position",
+    "Administrateur Repr\u00e9sentant les Salari\u00e9s Actionnaires",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "issuer_lei",
+    "529900S21EQ1BO4ESM68",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "issuer_name",
+    "TOTALENERGIES SE",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.notifier_is_legal_entity",
+    false,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[0].instrument_type",
+    "other",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[0].isin",
+    "QS0009101567",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[1].direction",
+    1,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[1].instrument_type",
+    "other",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[1].isin",
+    "QS0009101567",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[1].nature",
+    "subscription",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "normalized.transactions[1].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "reference_isin",
+    "FR0000120271",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].aggregated_price",
+    77.4685,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].aggregated_volume",
+    1.6921,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].instrument",
+    "FIE - TOTALENERGIES ACTIONNARIAT FRANCE",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].isin",
+    "QS0009101567",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].lines[0].price",
+    77.4685,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].lines[0].volume",
+    1.6921,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].transaction_date",
+    "2026-09-04",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].aggregated_price",
+    77.61,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].aggregated_volume",
+    1.689,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].instrument",
+    "FIE - TOTALENERGIES ACTIONNARIAT FRANCE",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].isin",
+    "QS0009101567",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].lines[0].price",
+    77.61,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].lines[0].volume",
+    1.689,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].nature",
+    "Souscription",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].transaction_date",
+    "2026-09-04",
+    null
+   ],
+   [
+    "fr-amf-038",
+    "transactions[1].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-039",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-039",
+    "normalized.pdmr_role",
+    "executive",
+    "ceo"
+   ],
+   [
+    "fr-amf-039",
+    "reference_isin",
+    "FR0013326246",
+    null
+   ],
+   [
+    "fr-amf-039",
+    "transactions[0].aggregated_volume",
+    3506.0,
+    3506000.0
+   ],
+   [
+    "fr-amf-039",
+    "transactions[0].lines[0].volume",
+    3506.0,
+    3506000.0
+   ],
+   [
+    "fr-amf-040",
+    "declarant_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "declarant_name",
+    "Synthetic Alpha 40 SA",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "declarant_position",
+    "ADMINISTRATEUR",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "issuer_name",
+    "ARVERNE GROUP S.A.",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "linked_pdmr_name",
+    "Noa Exemple-40b",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.closely_associated",
+    true,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.transactions[0].direction",
+    1,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.transactions[0].instrument_type",
+    "convertible",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.transactions[0].nature",
+    "subscription",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "normalized.transactions[0].on_venue",
+    false,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "reference_isin",
+    "FR001400JWR8",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].aggregated_price",
+    100000.0,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].aggregated_volume",
+    200.0,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].instrument",
+    "ORANE",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].lines[0].price",
+    100000.0,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].lines[0].volume",
+    200.0,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].nature",
+    "Souscription",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].transaction_date",
+    "2026-07-24",
+    null
+   ],
+   [
+    "fr-amf-040",
+    "transactions[0].venue",
+    "Hors plateforme de n\u00e9gociation",
+    null
+   ],
+   [
+    "fr-amf-041",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-041",
+    "reference_isin",
+    "FR0000121204",
+    null
+   ],
+   [
+    "fr-amf-042",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-042",
+    "reference_isin",
+    "FR0000120271",
+    null
+   ],
+   [
+    "fr-amf-043",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-044",
+    "transactions[0].isin",
+    null,
+    "FR0000066672"
+   ],
+   [
+    "fr-amf-045",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-045",
+    "transactions[0].aggregated_volume",
+    8100.0,
+    8100000.0
+   ],
+   [
+    "fr-amf-045",
+    "transactions[0].isin",
+    "fr0011476928",
+    "FR0011476928"
+   ],
+   [
+    "fr-amf-045",
+    "transactions[0].lines[0].volume",
+    2900.0,
+    2900000.0
+   ],
+   [
+    "fr-amf-045",
+    "transactions[0].lines[1].volume",
+    2900.0,
+    2900000.0
+   ],
+   [
+    "fr-amf-045",
+    "transactions[0].lines[2].volume",
+    2300.0,
+    2300000.0
+   ],
+   [
+    "fr-amf-046",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-046",
+    "normalized.transactions[0].isin",
+    "FR0011033083",
+    null
+   ],
+   [
+    "fr-amf-046",
+    "reference_isin",
+    "FR0011033083",
+    null
+   ],
+   [
+    "fr-amf-046",
+    "transactions[0].aggregated_volume",
+    200.0,
+    200000.0
+   ],
+   [
+    "fr-amf-046",
+    "transactions[0].lines[0].volume",
+    200.0,
+    200000.0
+   ],
+   [
+    "fr-amf-047",
+    "declarant_is_legal_entity",
+    null,
+    true
+   ],
+   [
+    "fr-amf-048",
+    "declarant_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "declarant_name",
+    "Synthetic Alpha 48 SYNTHETIC SYNTHETIC",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "declarant_position",
+    "Pr\u00e9sident du Conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "issuer_lei",
+    "9695004GI61FHFFNRG61",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "issuer_name",
+    "TELEPERFORMANCE",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "linked_pdmr_name",
+    "Morgan Exemple-48b",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.closely_associated",
+    true,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.pdmr_role",
+    "chair",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.transactions[0].direction",
+    0,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.transactions[0].isin",
+    "FR0000051807",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.transactions[0].nature",
+    "pledge",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "normalized.transactions[0].on_venue",
+    false,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "reference_isin",
+    "FR0000051807",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].aggregated_price",
+    46.1687,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].aggregated_volume",
+    236059.0,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].lines[0].price",
+    46.1687,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].lines[0].volume",
+    236059.0,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].nature",
+    "D\u00e9nouement d\u2019un contrat financier d\u00e9riv\u00e9 sur rendement total (Equity swap) \u2013 Nantissement",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].transaction_date",
+    "2026-09-02",
+    null
+   ],
+   [
+    "fr-amf-048",
+    "transactions[0].venue",
+    "Hors plateforme de n\u00e9gociation",
+    null
+   ],
+   [
+    "fr-amf-049",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-049",
+    "normalized.pdmr_role",
+    "executive",
+    "ceo"
+   ],
+   [
+    "fr-amf-049",
+    "reference_isin",
+    "FR0000120503",
+    null
+   ],
+   [
+    "fr-amf-050",
+    "reference_isin",
+    "FR00140048X2",
+    null
+   ],
+   [
+    "fr-amf-051",
+    "declarant_name",
+    "Synthetic Alpha 51 SARL SOCIETE",
+    "Synthetic Alpha 51 SARL"
+   ],
+   [
+    "fr-amf-051",
+    "declarant_position",
+    "M. Sam Exemple-51c ET M. Lee Exemple-51d, MEMBRES DU CONSEILD'ADMINISTRATION DE ESSILORLUXOTTICA",
+    "MEMBRES DU CONSEILD'ADMINISTRATION DE ESSILORLUXOTTICA"
+   ],
+   [
+    "fr-amf-051",
+    "linked_pdmr_name",
+    "Lou Exemple-51b",
+    "Lou Exemple-51b, M. Sam Exemple-51c ET M. Lee Exemple-51d"
+   ],
+   [
+    "fr-amf-051",
+    "reference_isin",
+    "FR0000121667",
+    null
+   ],
+   [
+    "fr-amf-052",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-052",
+    "reference_isin",
+    "FR0012613610",
+    null
+   ],
+   [
+    "fr-amf-052",
+    "transactions[0].aggregated_price",
+    0.0,
+    null
+   ],
+   [
+    "fr-amf-052",
+    "transactions[0].aggregated_volume",
+    0.0,
+    null
+   ],
+   [
+    "fr-amf-052",
+    "transactions[0].isin",
+    "PWG",
+    "FR0012613610"
+   ],
+   [
+    "fr-amf-053",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-054",
+    "declarant_name",
+    "Synthetic Alpha 54 SE SE",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].aggregated_price",
+    5.1639,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].aggregated_volume",
+    1245.0,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].lines[0].price",
+    5.1639,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].lines[0].volume",
+    1245.0,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].transaction_date",
+    "2026-08-24",
+    null
+   ],
+   [
+    "fr-amf-054",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-057",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-057",
+    "declarant_position",
+    "members of the Board of Directors",
+    "personne li\u00e9e \u00e0 Dominique Exemple-57b, members of the Board of Directors"
+   ],
+   [
+    "fr-amf-057",
+    "reference_isin",
+    "FR0004024222",
+    null
+   ],
+   [
+    "fr-amf-058",
+    "declarant_is_legal_entity",
+    null,
+    false
+   ],
+   [
+    "fr-amf-058",
+    "reference_isin",
+    "FR0000120644",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "declarant_name",
+    "Synthetic Alpha 59 SE SE",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "declarant_position",
+    "Membre du conseil d'administration",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "is_amendment",
+    false,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "issuer_lei",
+    "969500IZ7E6B3QVX2I11",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "issuer_name",
+    "ABC ARBITRAGE",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.closely_associated",
+    false,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.notifier_is_legal_entity",
+    true,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.pdmr_role",
+    "board_member",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.transactions[0].direction",
+    -1,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.transactions[0].instrument_type",
+    "share",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.transactions[0].nature",
+    "sell",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "normalized.transactions[0].on_venue",
+    true,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "reference_isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].aggregated_price",
+    5.034,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].aggregated_volume",
+    1873.0,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].currency",
+    "EUR",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].instrument",
+    "Action",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].isin",
+    "FR0004040608",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].lines[0].price",
+    5.034,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].lines[0].volume",
+    1873.0,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].linked_to_share_option_programme",
+    false,
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].nature",
+    "Cession",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].transaction_date",
+    "2026-07-24",
+    null
+   ],
+   [
+    "fr-amf-059",
+    "transactions[0].venue",
+    "Euronext Paris",
+    null
+   ],
+   [
+    "fr-amf-060",
+    "transactions[0].aggregated_volume",
+    999.0,
+    999000.0
+   ],
+   [
+    "fr-amf-060",
+    "transactions[0].lines[0].volume",
+    999.0,
+    999000.0
+   ]
+  ]
+ }
+}

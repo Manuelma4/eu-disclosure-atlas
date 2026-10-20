@@ -1,0 +1,47 @@
+{
+ "id": "fr-amf-028",
+ "sha256": "a44e7d6ae0360fff5b2ec8e631c3067eedcd80c0ffd5557a06177d969a31c48e",
+ "notes": "non-EUR",
+ "labels": {
+  "declarant_name": "Sacha Exemple-28",
+  "declarant_is_legal_entity": null,
+  "linked_pdmr_name": null,
+  "declarant_position": "Membre du Conseil de surveillance",
+  "is_amendment": false,
+  "amendment_details": null,
+  "issuer_name": "CANAL+ SA",
+  "issuer_lei": "9695000537F9F73BXN18",
+  "reference_isin": null,
+  "transactions": [
+   {
+    "transaction_date": "2025-10-16",
+    "venue": "London Stock Exchange",
+    "nature": "Acquisition",
+    "instrument": "Action",
+    "isin": "FR001400T0D6",
+    "currency": "GBP",
+    "lines": [
+     {
+      "price": 2.4191,
+      "volume": 10900.0
+     }
+    ],
+    "aggregated_price": 2.4191,
+    "aggregated_volume": 10900.0,
+    "linked_to_share_option_programme": false,
+    "confidence": null
+   }
+  ]
+ },
+ "normalized": {
+  "pdmr_role": "board_member",
+  "closely_associated": false,
+  "notifier_is_legal_entity": false,
+  "transactions[0].nature": "buy",
+  "transactions[0].direction": 1,
+  "transactions[0].instrument_type": "share",
+  "transactions[0].on_venue": true,
+  "transactions[0].isin": "FR001400T0D6"
+ },
+ "text": "2026DD9000028 18 septembre 2026\n- DD900028\nINFORMATION\nDéclaration individuelle relative aux opérations des personnes\nmentionnées à l’article L.621-18-2 du Code monétaire et financier sur les titres de la société\nLA PRESENTE NOTIFICATION N’A PAS FAIT L’OBJET D’UN CONTROLE DE L’AMF ET EST ETABLIE\nSOUS LA RESPONSABILITE EXCLUSIVE DU DECLARANT.\nNOM /FONCTION DE LA PERSONNE EXERCANT DES RESPONSABILITES DIRIGEANTES OU DE LA\nPERSONNE ETROITEMENT LIEE :\nSacha Exemple-28, Membre du Conseil de surveillance\nNOTIFICATION INITIALE / MODIFICATION:\nNotification initiale\nCOORDONNEES DE L’EMETTEUR\nNOM : CANAL+ SA\nLEI : 9695000537F9F73BXN18\nDETAIL DE LA TRANSACTION\nDATE DE LA TRANSACTION : 16 octobre 2025\nLIEU DE LA TRANSACTION : London Stock Exchange\nNATURE DE LA TRANSACTION : Acquisition\nDESCRIPTION DE L’INSTRUMENT FINANCIER : Action\nCODE D’IDENTIFICATION DE L’INSTRUMENT FINANCIER : FR001400T0D6\nINFORMATION DETAILLEE PAR OPERATION\nPRIX UNITAIRE : 2.4191 Livre Sterling\nVOLUME : 10 900.0000\nINFORMATIONS AGREGEES\nPRIX : 2.4191 Livre Sterling\nVOLUME : 10 900.0000\nTRANSACTION LIEE A L’EXERCICE DE PROGRAMMES D’OPTIONS SUR ACTIONS OU SUR UNE ATTRIBUTION\nD’ACTIONS GRATUITES OU DE PERFORMANCES : NON\nDATE DE RECEPTION DE LA NOTIFICATION : 18 septembre 2026\nCOMMENTAIRES :\n[commentaire supprimé]\n\"Les données à caractère personnel collectées par le biais de ce formulaire font l’objet d’un traitement informatique réservé à l’usage exclusif de [...]\"\n2026DD9000028 18 September 2026\n- DD900028\nINFORMATION\nIndividual notification relating to transactions by persons referred to in Article L.621-18-2 of the Monetary and\nFinancial Code on the securities of the company\nTHIS NOTIFICATION HAS NOT BEEN REVIEWED BY THE AUTORITÉ DES MARCHÉS\nFINANCIERS (AMF), AND IS MADE UNDER THE SOLE RESPONSIBILITY OF THE\nNOTIFYING PERSON.\nNAME / POSITION – STATUS OF THE PERSON DISCHARGING MANAGERIAL RESPONSABILITIES /\nPERSON CLOSELY ASSOCIATED:\nSacha Exemple-28, Membre du Conseil de surveillance\nINITIAL NOTIFICATION / AMENDMENT:\nInitial notification\nDETAILS OF THE ISSUER\nNAME : CANAL+ SA\nLEI : 9695000537F9F73BXN18\nDETAIL OF THE TRANSACTION\nDATE OF THE TRANSACTION : 16 October 2025\nPLACE OF THE TRANSACTION : London Stock Exchange\nNATURE OF THE TRANSACTION : Acquisition\nDESCRIPTION OF THE FINANCIAL INSTRUMENT, TYPE OF INSTRUMENT : Share\nIDENTIFICATION CODE : FR001400T0D6\nDETAILED OPERATION INFORMATION\nPRICE : 2.4191 Livre Sterling\nVOLUME : 10 900.0000\nAGGREGATED INFORMATION\nPRICE : 2.4191 Livre Sterling\nAGGREGATED VOLUME : 10 900.0000\nTRANSACTION LINKED TO THE EXERCISE OF A SHARE OPTION PROGRAM OR AN ALLOCATION OF BONUS\nOR PERFORMANCE SHARES : NO\nDATE OF RECEIPT OF THE NOTIFICATION : 18 September 2026\nCOMMENTS :\n[comment removed]\n\"Personal data collected through this form is processed automatically and used exclusively by the AMF for the fulfilment of its statutory missions. [...]\"\n"
+}
