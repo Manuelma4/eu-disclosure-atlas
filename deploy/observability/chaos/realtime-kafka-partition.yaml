@@ -1,0 +1,23 @@
+# Cuts the realtime-gateway off from Kafka for 5 minutes. Expected: consumer lag grows
+# (AtlasKafkaConsumerLagHigh after 10 minutes if not recovered), live clients see no events, and on recovery
+# the gateway resumes from its committed offsets without loss; AtlasLiveEventDelayBudgetBurn may ticket.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: realtime-kafka-partition
+  namespace: atlas-preview
+spec:
+  action: partition
+  mode: all
+  selector:
+    namespaces: [atlas-preview]
+    labelSelectors:
+      app.kubernetes.io/name: realtime-gateway
+  direction: both
+  target:
+    mode: all
+    selector:
+      namespaces: [kafka]
+      labelSelectors:
+        strimzi.io/kind: Kafka
+  duration: 5m

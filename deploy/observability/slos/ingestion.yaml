@@ -1,0 +1,33 @@
+# Filing freshness per source, decision 0014: filings visible within 15 minutes of publication, 95% target.
+# The SLI counts filings (an event-based SLI). Regulators publish during their business hours, so counting
+# filings measures freshness over business hours without a calendar in PromQL; quiet nights and weekends
+# neither earn nor burn budget. Filings that became visible more than a day late are backfills (history
+# loaded later) and are excluded (timeliness="backfill"). The query API computes the counts from gold.
+version: "prometheus/v1"
+service: "ingestion"
+labels:
+  owner: "data"
+  tier: "1"
+slos:
+  - name: "filing-freshness"
+    objective: 95
+    description: "95% of filings are visible within 15 minutes of publication, per source."
+    sli:
+      events:
+        error_query: |
+          sum by (source) (rate(atlas_source_filings_total{timeliness="late"}[{{.window}}]))
+        total_query: |
+          sum by (source) (rate(atlas_source_filings_total{timeliness=~"on_time|late"}[{{.window}}]))
+    alerting:
+      name: "AtlasFilingFreshnessBudgetBurn"
+      labels:
+        category: "freshness"
+      annotations:
+        summary: "Filings from {{$labels.source}} take longer than 15 minutes to become visible."
+        runbook_url: "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/docs/runbooks/filing-freshness.md"
+      page_alert:
+        labels:
+          severity: "page"
+      ticket_alert:
+        labels:
+          severity: "ticket"

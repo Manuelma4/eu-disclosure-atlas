@@ -1,4 +1,4 @@
-"""Command line: disclosure-atlas {sources,ingest,watch,publish,query,stats,export,reference,serve,openapi,...}."""
+"""Command line: disclosure-atlas {sources,ingest,watch,publish,query,stats,export,serve,openapi,mcp,...}."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import os
 import sys
 import time
 from datetime import date, timedelta
+from pathlib import Path
 
 from . import connectors
 from .lake import Lake
@@ -112,6 +113,16 @@ def _cmd_openapi(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_mcp(args: argparse.Namespace) -> int:
+    """MCP server over stdio (for Claude Desktop and other local hosts); logs go to stderr."""
+    from .ai.guard import SandboxedLake
+    from .ai.mcp_server import build_server
+    from .api.readmodel import ReadModel
+
+    build_server(ReadModel(SandboxedLake(Lake(Path(args.lake).resolve())))).run("stdio")
+    return 0
+
+
 def _cmd_query(args: argparse.Namespace) -> int:
     Lake(args.lake).connect().sql(args.sql).show(max_rows=args.max_rows, max_width=10_000)
     return 0
@@ -170,6 +181,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--out", default="contracts/events")
     p.add_argument("--check", action="store_true", help="fail if the committed schemas differ from the code")
     p.set_defaults(func=_cmd_contracts)
+
+    sub.add_parser("mcp", help="run the MCP server over stdio (needs the ai extra)").set_defaults(func=_cmd_mcp)
 
     p = sub.add_parser("query", help="run SQL against the gold views")
     p.add_argument("sql")
