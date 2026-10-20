@@ -56,7 +56,8 @@ func ParsePosition(value string) (Position, error) {
 // Event is one filing as delivered to browsers: its position and the JSON payload (the API's Transaction).
 type Event struct {
 	Position
-	Data []byte
+	Data     []byte
+	Produced time.Time // Kafka record timestamp, for the live-event delay metric (zero when unknown)
 }
 
 // ID is the SSE event id.

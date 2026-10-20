@@ -62,7 +62,7 @@ func run(log *slog.Logger) error {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	shutdownTracing, err := telemetry.Tracing(ctx, service, version)
+	shutdownTracing, err := telemetry.Setup(ctx, service, version)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func run(log *slog.Logger) error {
 	}, h, metrics, log)
 
 	kafka, err := consumer.New(consumer.Config{
-		Brokers:  split(env("ATLAS_KAFKA_BOOTSTRAP", "localhost:19092")),
+		Brokers:  split(env("ATLAS_KAFKA_BOOTSTRAP", env("KAFKA_BROKERS", "localhost:19092"))),
 		Topic:    env("ATLAS_FILINGS_TOPIC", "atlas.filings.v1"),
 		Backfill: int64(envInt("ATLAS_GATEWAY_BACKFILL", 200)),
 		ClientID: service,
@@ -92,7 +92,7 @@ func run(log *slog.Logger) error {
 		return true
 	}))
 	httpServer := &http.Server{
-		Addr:              env("ATLAS_GATEWAY_ADDR", ":8090"),
+		Addr:              env("ATLAS_GATEWAY_ADDR", ":8080"),
 		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 		IdleTimeout:       120 * time.Second,

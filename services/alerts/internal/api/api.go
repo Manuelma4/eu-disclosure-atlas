@@ -41,7 +41,9 @@ func New(cfg Config, s *store.Store, v *auth.Verifier, log *slog.Logger) *API {
 
 // Routes registers the /v1 endpoints on mux.
 func (a *API) Routes(mux *http.ServeMux) {
-	read := func(h http.HandlerFunc) http.Handler { return a.auth.Require(Problem, h, "alerts:read", "alerts:write") }
+	read := func(h http.HandlerFunc) http.Handler {
+		return a.auth.Require(Problem, h, "alerts:read", "alerts:write")
+	}
 	write := func(h http.HandlerFunc) http.Handler { return a.auth.Require(Problem, h, "alerts:write") }
 
 	mux.Handle("GET /v1/watchlists", read(a.listWatchlists))

@@ -11,6 +11,7 @@ import (
 	"mime"
 	"net"
 	"net/http"
+	"net/mail"
 	"net/smtp"
 	"strings"
 	"time"
@@ -86,8 +87,12 @@ func (s *SMTP) Send(ctx context.Context, m Message) error {
 		host, _, _ := net.SplitHostPort(s.cfg.SMTPAddr)
 		auth = smtp.PlainAuth("", s.cfg.SMTPUser, s.cfg.SMTPPassword, host)
 	}
+	envelope, err := mail.ParseAddress(s.cfg.From) // From may be "Name <address>"
+	if err != nil {
+		return fmt.Errorf("invalid ATLAS_EMAIL_FROM: %w", err)
+	}
 	done := make(chan error, 1)
-	go func() { done <- smtp.SendMail(s.cfg.SMTPAddr, auth, s.cfg.From, []string{m.To}, body.Bytes()) }()
+	go func() { done <- smtp.SendMail(s.cfg.SMTPAddr, auth, envelope.Address, []string{m.To}, body.Bytes()) }()
 	select {
 	case err := <-done:
 		return err

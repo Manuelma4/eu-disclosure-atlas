@@ -88,6 +88,7 @@ func (c *Consumer) handle(record *kgo.Record) {
 		c.log.Warn("skipping record", "partition", record.Partition, "offset", record.Offset, "err", err)
 		return
 	}
+	event.Produced = record.Timestamp
 	if !c.hub.Publish(event) {
 		c.metrics.Duplicates.Inc()
 	}

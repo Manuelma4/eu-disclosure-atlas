@@ -71,13 +71,13 @@ func main() {
 func run(log *slog.Logger) error {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
-	shutdownTracing, err := telemetry.Tracing(ctx, service, version)
+	shutdownTracing, err := telemetry.Setup(ctx, service, version)
 	if err != nil {
 		return err
 	}
 
 	roles := split(env("ATLAS_ALERTS_ROLES", "api,evaluator,delivery"))
-	brokers := split(env("ATLAS_KAFKA_BOOTSTRAP", "localhost:19092"))
+	brokers := split(env("ATLAS_KAFKA_BOOTSTRAP", env("KAFKA_BROKERS", "localhost:19092")))
 	topics := delivery.DefaultTopics(env("ATLAS_NOTIFICATIONS_TOPIC", "atlas.notifications.v1"))
 	allowPrivate := env("ATLAS_ALERTS_ALLOW_PRIVATE_WEBHOOKS", "") == "true" // local development only
 
@@ -176,7 +176,7 @@ func run(log *slog.Logger) error {
 		handler = a.CORS(mux)
 	}
 	httpServer := &http.Server{
-		Addr: env("ATLAS_ALERTS_ADDR", ":8091"),
+		Addr: env("ATLAS_ALERTS_ADDR", ":8080"),
 		Handler: otelhttp.NewHandler(handler, service, otelhttp.WithFilter(func(r *http.Request) bool {
 			return !slices.Contains([]string{"/healthz", "/readyz", "/metrics"}, r.URL.Path)
 		})),

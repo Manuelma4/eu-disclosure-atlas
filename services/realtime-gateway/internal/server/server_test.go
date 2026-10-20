@@ -102,7 +102,7 @@ func TestStreamDeliversLiveEventsAndHeartbeats(t *testing.T) {
 	reader := bufio.NewReader(resp.Body)
 	waitFor(t, func() bool { return h.Subscribers() == 1 })
 	h.Publish(hub.Event{Position: hub.Position{Seen: time.Now().Add(time.Second), Record: "new"},
-		Data: []byte(`{"id":"new"}`)})
+		Data: []byte(`{"id":"new"}`), Produced: time.Now()})
 	ids, raw := readEvents(t, reader, 1)
 	if len(ids) != 1 || !strings.HasSuffix(ids[0], "|new") {
 		t.Fatalf("ids = %v\n%s", ids, raw)
@@ -111,7 +111,7 @@ func TestStreamDeliversLiveEventsAndHeartbeats(t *testing.T) {
 	for !strings.HasPrefix(line, ": ping") {
 		line, _ = reader.ReadString('\n')
 	}
-	if got := testutilValue(t, s, "atlas_gateway_clients"); got != "1" {
+	if got := testutilValue(t, s, "atlas_stream_clients"); got != "1" {
 		t.Fatalf("clients gauge = %s", got)
 	}
 }
@@ -149,7 +149,7 @@ func TestProbesMetricsAndCORS(t *testing.T) {
 		t.Fatalf("readyz %d", r.StatusCode)
 	}
 	body, _ := io.ReadAll(get(t, ts.URL+"/metrics", nil).Body)
-	for _, name := range []string{"atlas_gateway_clients", "atlas_gateway_events_sent_total", "go_goroutines"} {
+	for _, name := range []string{"atlas_stream_clients", "atlas_stream_events_total", "atlas_stream_event_delay_seconds", "go_goroutines"} {
 		if !strings.Contains(string(body), name) {
 			t.Fatalf("metrics missing %s", name)
 		}

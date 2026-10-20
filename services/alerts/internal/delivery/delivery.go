@@ -176,14 +176,14 @@ func Tiers(t Topics, retry5m, retry1h time.Duration) []Tier {
 
 // Deliverer sends notifications.
 type Deliverer struct {
-	Store       *store.Store
-	Producer    Producer
-	Webhooks    *webhook.Sender
-	Mailer      email.Mailer
-	WebsiteURL  string
-	Metrics     *Metrics
-	Log         *slog.Logger
-	sleepFn     func(ctx context.Context, d time.Duration) error
+	Store      *store.Store
+	Producer   Producer
+	Webhooks   *webhook.Sender
+	Mailer     email.Mailer
+	WebsiteURL string
+	Metrics    *Metrics
+	Log        *slog.Logger
+	sleepFn    func(ctx context.Context, d time.Duration) error
 }
 
 // WaitUntilDue blocks until a record produced at `produced` has spent the tier's delay in its topic.

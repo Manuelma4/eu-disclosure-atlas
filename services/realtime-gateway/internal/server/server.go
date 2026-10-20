@@ -18,10 +18,13 @@ import (
 )
 
 // Metrics are the gateway's Prometheus series.
+// Clients, EventsSent and Delay follow the metric contract of deploy/observability (P7), shared with the
+// Python API's stream, so the real-time dashboard and the live-event SLO cover both.
 type Metrics struct {
 	Clients        prometheus.Gauge
 	EventsConsumed prometheus.Counter
 	EventsSent     prometheus.Counter
+	Delay          prometheus.Histogram
 	Duplicates     prometheus.Counter
 	DecodeErrors   prometheus.Counter
 	Lag            *prometheus.GaugeVec
@@ -33,11 +36,15 @@ func NewMetrics() *Metrics {
 	reg := prometheus.NewRegistry()
 	m := &Metrics{
 		Clients: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: "atlas_gateway_clients", Help: "Connected SSE clients."}),
+			Name: "atlas_stream_clients", Help: "Connected SSE clients."}),
 		EventsConsumed: prometheus.NewCounter(prometheus.CounterOpts{
 			Name: "atlas_gateway_events_consumed_total", Help: "Filing events read from Kafka."}),
 		EventsSent: prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "atlas_gateway_events_sent_total", Help: "Filing events written to SSE clients."}),
+			Name: "atlas_stream_events_total", Help: "Filing events written to SSE clients."}),
+		Delay: prometheus.NewHistogram(prometheus.HistogramOpts{
+			Name:    "atlas_stream_event_delay_seconds",
+			Help:    "Delay from the Kafka record timestamp to the SSE write, for live events.",
+			Buckets: []float64{0.5, 1, 2, 5, 10, 30, 60, 300, 900}}),
 		Duplicates: prometheus.NewCounter(prometheus.CounterOpts{
 			Name: "atlas_gateway_events_duplicate_total", Help: "Events dropped as duplicates (same record id)."}),
 		DecodeErrors: prometheus.NewCounter(prometheus.CounterOpts{
@@ -47,7 +54,7 @@ func NewMetrics() *Metrics {
 			[]string{"topic", "partition"}),
 		Registry: reg,
 	}
-	reg.MustRegister(m.Clients, m.EventsConsumed, m.EventsSent, m.Duplicates, m.DecodeErrors, m.Lag,
+	reg.MustRegister(m.Clients, m.EventsConsumed, m.EventsSent, m.Delay, m.Duplicates, m.DecodeErrors, m.Lag,
 		prometheus.NewGoCollector(), prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
 	return m
 }
@@ -189,6 +196,9 @@ func (s *Server) stream(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			flusher.Flush()
+			if !e.Produced.IsZero() {
+				s.metrics.Delay.Observe(time.Since(e.Produced).Seconds())
+			}
 		case <-heartbeat.C:
 			if _, err := w.Write([]byte(": ping\n\n")); err != nil {
 				return

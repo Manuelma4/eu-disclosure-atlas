@@ -70,7 +70,7 @@ func Consume(ctx context.Context, client *kgo.Client, log *slog.Logger, handle f
 					break
 				}
 				if ctx.Err() != nil {
-							return nil
+					return nil
 				}
 				log.Warn("handler failed, retrying", "topic", record.Topic, "offset", record.Offset, "err", err)
 				select {
