@@ -1,0 +1,21 @@
+{
+  "open_market_lines": 88086,
+  "events": 44099,
+  "first_publication": "2016-07-05",
+  "last_publication": "2026-10-20",
+  "isins": 2540,
+  "isins_mapped": 923,
+  "events_mapped": 29591,
+  "tickers_with_prices": 796,
+  "isins_price_checked": 765,
+  "isins_price_mismatch_dropped": 30,
+  "events_price_mismatch_dropped": 678,
+  "events_untyped_instrument": 7285,
+  "events_untyped_instrument_kept": 3489,
+  "events_with_estimation_window": 27261,
+  "events_usable_[0,+5]": 27230,
+  "events_usable_[0,+20]": 27090,
+  "events_usable_[0,+60]": 26544,
+  "coverage_share_[0,+20]": 0.6143,
+  "sample_until": "2026-10-20"
+}
