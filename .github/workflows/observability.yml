@@ -1,0 +1,47 @@
+# Observability as code stays valid and generated files stay in sync (P7).
+name: Observability
+on:
+  pull_request:
+    paths:
+      - "deploy/observability/**"
+      - "src/disclosure_atlas/api/telemetry.py"
+      - ".github/workflows/observability.yml"
+  push:
+    branches: [main]
+    paths:
+      - "deploy/observability/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: deploy/observability
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: SLO rules match the Sloth specs
+        run: |
+          docker run --rm -v "$PWD":/w -w /w ghcr.io/slok/sloth:v0.12.0 validate -i slos
+          docker run --rm -v "$PWD":/w -w /w ghcr.io/slok/sloth:v0.12.0 generate -i slos -o /w/.generated
+          for f in slos/*.yaml; do diff -u "prometheus/rules/$(basename "$f")" ".generated/$(basename "$f")"; done
+      - name: Prometheus configuration and rules
+        run: |
+          docker run --rm -v "$PWD/prometheus":/etc/prometheus --entrypoint promtool prom/prometheus:v3.5.0 \
+            check config /etc/prometheus/prometheus.yml
+      - name: Collector configuration
+        run: |
+          docker run --rm -v "$PWD/otel-collector.yaml":/cfg.yaml otel/opentelemetry-collector-contrib:0.130.0 \
+            validate --config=/cfg.yaml
+      - name: Dashboards match their generator
+        run: |
+          python grafana/dashboards.py
+          git diff --exit-code -- grafana/dashboards
+      - name: Compose override resolves
+        working-directory: .
+        run: docker compose -f infra/compose.yaml -f deploy/observability/compose.yaml --profile app config -q

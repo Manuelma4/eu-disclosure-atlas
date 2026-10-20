@@ -1,0 +1,6 @@
+# Values snippet for the web chart (P6): traces from Next.js (src/instrumentation.ts) to the Collector.
+env:
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: http://otel-collector.observability.svc:4318
+  - name: OTEL_SERVICE_NAME
+    value: web
