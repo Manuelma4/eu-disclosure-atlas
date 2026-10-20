@@ -73,7 +73,7 @@ Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`.
 - [x] Collector with tail sampling and IP hashing; Prometheus, Loki, Tempo and Grafana dashboards as code in a
   Compose override; SLOs as code (Sloth) with multi-window burn-rate alerts and a runbook for every alert
 - [x] STRIDE threat model, security headers and CSP (web and API), per-IP rate limiting, CodeQL, pip-audit,
-  npm audit, govulncheck, ZAP baseline, Renovate
+  npm audit, govulncheck, ZAP baseline (no update bots: the owner is the only contributor)
 - [x] k6 load tests with budgets and a CI smoke profile; Chaos Mesh experiments for the preview cluster
 
 ### P8 MLOps: insider-signal model `[ ]`

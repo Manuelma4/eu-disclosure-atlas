@@ -125,7 +125,7 @@ payloads; until then, XSS defense rests on React escaping and the other directiv
 | STRIDE | Threat | Mitigation | Status | Owner |
 |---|---|---|---|---|
 | S | Unsigned or substituted images | cosign keyless signatures; Kyverno verifies signatures at admission | planned | P6 |
-| T | Vulnerable or malicious dependencies | Renovate updates with lockfiles; pip-audit, npm audit, govulncheck and CodeQL on every PR; Trivy on images; SBOM with Syft | done (scans, Renovate), planned (Trivy, SBOM) | P7, P6 |
+| T | Vulnerable or malicious dependencies | Pinned versions and lockfiles upgraded by the owner (no update bots, single-contributor policy); pip-audit, npm audit, govulncheck and CodeQL on every PR plus a weekly scheduled run; Trivy on images; SBOM with Syft | done (scans), planned (Trivy, SBOM) | P7, P6 |
 | T | Workflow injection from PR titles or branches | Workflows avoid interpolating untrusted context into `run:`; default `permissions: contents: read` | done | P7 |
 | R | Who deployed what | GitOps: every change is a commit; Argo CD history | planned | P6 |
 | E | Over-privileged CI tokens | Least-privilege `permissions` per job; OIDC to registries instead of long-lived secrets | done (security workflows) | P7, P6 |
@@ -147,5 +147,5 @@ payloads; until then, XSS defense rests on React escaping and the other directiv
 | pip-audit, npm audit, govulncheck | `.github/workflows/security.yml` |
 | OWASP ZAP baseline against the Compose-started API | `.github/workflows/security.yml` (`zap-baseline`) |
 | Security headers and rate limiting | `tests/test_api_hardening.py` |
-| Dependency updates | `renovate.json` |
+| Dependency advisories between changes | weekly scheduled run of `.github/workflows/security.yml` |
 | Load and latency budgets | `loadtests/`, `.github/workflows/loadtest.yml` |
