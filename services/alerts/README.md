@@ -17,7 +17,8 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   `filing.published.v1` event against enabled rules (watchlist issuers, natures, roles, countries, open-market
   only, minimum EUR amount), ignores events first seen more than `ATLAS_ALERTS_MAX_EVENT_AGE` ago (replays),
   records a pending delivery and produces one notification per channel, keyed by owner.
-- **Delivery** (group `atlas-alerts-delivery`): one consumer per tier. A retry tier waits until a record has
+- **Delivery** (groups `atlas-alerts-delivery`, `-retry-5m`, `-retry-1h`, starting at the beginning of their
+  topics): one consumer group per tier. A retry tier waits until a record has
   spent its delay in the topic, then retries; failures move on to the next tier and finally to the dead-letter
   topic, with the attempt count and last error. Offsets are committed after handling (at-least-once).
 - **Idempotence:** the notification id is a UUIDv5 of rule × filing × channel; it is the deliveries primary

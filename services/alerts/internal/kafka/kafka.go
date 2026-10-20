@@ -33,15 +33,20 @@ func (p *Producer) Produce(ctx context.Context, topic, key string, value []byte)
 	return p.Client.ProduceSync(ctx, &kgo.Record{Topic: topic, Key: []byte(key), Value: value}).FirstErr()
 }
 
-// NewGroupConsumer joins group on topic. A new group starts at the end of the topic: alerts are about new
-// filings, not history.
-func NewGroupConsumer(brokers []string, clientID, group, topic string) (*kgo.Client, error) {
+// NewGroupConsumer joins group on topic. fromStart decides where a group without committed offsets begins:
+// at the end for filings (alerts are about new filings, not history), at the start for notification and
+// retry topics, whose every record must be handled (redeliveries are deduplicated).
+func NewGroupConsumer(brokers []string, clientID, group, topic string, fromStart bool) (*kgo.Client, error) {
+	start := kgo.NewOffset().AtEnd()
+	if fromStart {
+		start = kgo.NewOffset().AtStart()
+	}
 	return kgo.NewClient(
 		kgo.SeedBrokers(brokers...),
 		kgo.ClientID(clientID),
 		kgo.ConsumerGroup(group),
 		kgo.ConsumeTopics(topic),
-		kgo.ConsumeResetOffset(kgo.NewOffset().AtEnd()),
+		kgo.ConsumeResetOffset(start),
 		kgo.DisableAutoCommit(),
 		tracing(),
 	)

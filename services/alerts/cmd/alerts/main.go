@@ -100,8 +100,8 @@ func run(log *slog.Logger) error {
 	}
 
 	var workers sync.WaitGroup
-	startConsumer := func(group, topic string, handle func(context.Context, *kgo.Record) error) error {
-		client, err := kafka.NewGroupConsumer(brokers, service, group, topic)
+	startConsumer := func(group, topic string, fromStart bool, handle func(context.Context, *kgo.Record) error) error {
+		client, err := kafka.NewGroupConsumer(brokers, service, group, topic, fromStart)
 		if err != nil {
 			return err
 		}
@@ -115,7 +115,7 @@ func run(log *slog.Logger) error {
 	if slices.Contains(roles, "evaluator") {
 		evaluator := &delivery.Evaluator{Store: db, Producer: producer, Topics: topics,
 			MaxAge: duration("ATLAS_ALERTS_MAX_EVENT_AGE", 24*time.Hour), Metrics: metrics, Log: log}
-		if err := startConsumer("atlas-alerts-evaluator", env("ATLAS_FILINGS_TOPIC", "atlas.filings.v1"),
+		if err := startConsumer("atlas-alerts-evaluator", env("ATLAS_FILINGS_TOPIC", "atlas.filings.v1"), false,
 			func(ctx context.Context, r *kgo.Record) error { return evaluator.Handle(ctx, r.Value) }); err != nil {
 			return err
 		}
@@ -141,7 +141,7 @@ func run(log *slog.Logger) error {
 			return err
 		}
 		for _, tier := range delivery.Tiers(topics, first, second) {
-			if err := startConsumer("atlas-alerts-delivery", tier.Topic, func(ctx context.Context, r *kgo.Record) error {
+			if err := startConsumer(tier.Group, tier.Topic, true, func(ctx context.Context, r *kgo.Record) error {
 				if err := deliverer.WaitUntilDue(ctx, tier, r.Timestamp); err != nil {
 					return err
 				}

@@ -26,7 +26,7 @@ func TestConsumeRetriesThenCommits(t *testing.T) {
 	defer cancel()
 	log := slog.New(slog.NewTextHandler(io.Discard, nil))
 
-	consumer, err := NewGroupConsumer(brokers, "test", "g", "in")
+	consumer, err := NewGroupConsumer(brokers, "test", "g", "in", false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestConsumeRetriesThenCommits(t *testing.T) {
 	if err := producer.Produce(ctx, "in", "k", []byte("c")); err != nil {
 		t.Fatal(err)
 	}
-	again, err := NewGroupConsumer(brokers, "test", "g", "in")
+	again, err := NewGroupConsumer(brokers, "test", "g", "in", false)
 	if err != nil {
 		t.Fatal(err)
 	}

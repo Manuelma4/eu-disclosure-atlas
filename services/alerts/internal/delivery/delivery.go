@@ -159,6 +159,7 @@ func (e *Evaluator) now() time.Time {
 
 // Tier is one stage of delivery: the topic it reads, how long records wait there, and where failures go.
 type Tier struct {
+	Group string // consumer group, one per tier so a long wait in one tier never stalls another
 	Topic string
 	Delay time.Duration
 	Next  string // the next retry topic, or the dead-letter topic for the last tier
@@ -168,9 +169,9 @@ type Tier struct {
 // Tiers returns main → retry.5m → retry.1h → dlq with the given delays.
 func Tiers(t Topics, retry5m, retry1h time.Duration) []Tier {
 	return []Tier{
-		{Topic: t.Notifications, Next: t.Retry5m},
-		{Topic: t.Retry5m, Delay: retry5m, Next: t.Retry1h},
-		{Topic: t.Retry1h, Delay: retry1h, Next: t.DLQ, Last: true},
+		{Group: "atlas-alerts-delivery", Topic: t.Notifications, Next: t.Retry5m},
+		{Group: "atlas-alerts-delivery-retry-5m", Topic: t.Retry5m, Delay: retry5m, Next: t.Retry1h},
+		{Group: "atlas-alerts-delivery-retry-1h", Topic: t.Retry1h, Delay: retry1h, Next: t.DLQ, Last: true},
 	}
 }
 
