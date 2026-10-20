@@ -18,7 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian12:nonroot AS runtime
+FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian13:nonroot AS runtime
 LABEL org.opencontainers.image.source="https://github.com/Manuelma4/eu-disclosure-atlas" \
       org.opencontainers.image.description="EU Disclosure Atlas website (Next.js standalone)" \
       org.opencontainers.image.licenses="Apache-2.0"

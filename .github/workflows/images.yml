@@ -132,6 +132,9 @@ jobs:
           TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         with:
           image-ref: ${{ env.IMAGE }}@${{ steps.build.outputs.digest }}
+          # Vulnerabilities only: the secret scanner flags example strings in third-party SDK docstrings, and
+          # repository secrets are scanned by the security workflow.
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: "0"
@@ -147,6 +150,7 @@ jobs:
           TRIVY_SKIP_DB_UPDATE: "true"
         with:
           image-ref: ${{ env.IMAGE }}@${{ steps.build.outputs.digest }}
+          scanners: vuln
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: "1"
