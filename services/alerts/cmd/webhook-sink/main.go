@@ -1,6 +1,6 @@
 // Command webhook-sink is a development receiver for alert webhooks: it verifies the Standard Webhooks
-// signature with WEBHOOK_SECRET (when set) and logs each delivery as JSON. GET /deliveries lists the last
-// 100 received, so end-to-end tests can assert on them.
+// signature with WEBHOOK_SECRET (comma-separated secrets, when set) and logs each delivery as JSON.
+// GET /deliveries lists the last 100 received, so end-to-end tests can assert on them.
 package main
 
 import (
@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -25,7 +26,12 @@ type received struct {
 
 func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	secret := os.Getenv("WEBHOOK_SECRET")
+	var secrets []string
+	for _, s := range strings.Split(os.Getenv("WEBHOOK_SECRET"), ",") {
+		if s = strings.TrimSpace(s); s != "" {
+			secrets = append(secrets, s)
+		}
+	}
 	var mu sync.Mutex
 	var last []received
 
@@ -37,12 +43,13 @@ func main() {
 			return
 		}
 		rec := received{ID: r.Header.Get("webhook-id"), Body: body, At: time.Now().UTC()}
-		if secret != "" {
-			if err := webhook.Verify(secret, r.Header, body, time.Now()); err != nil {
-				rec.Error = err.Error()
-			} else {
-				rec.Verified = true
+		for _, secret := range secrets {
+			err := webhook.Verify(secret, r.Header, body, time.Now())
+			if rec.Verified = err == nil; rec.Verified {
+				rec.Error = ""
+				break
 			}
+			rec.Error = err.Error()
 		}
 		if !json.Valid(body) {
 			rec.Body = nil
@@ -54,7 +61,7 @@ func main() {
 			last = last[1:]
 		}
 		mu.Unlock()
-		if secret != "" && !rec.Verified {
+		if len(secrets) > 0 && !rec.Verified {
 			http.Error(w, "invalid signature", http.StatusUnauthorized)
 			return
 		}

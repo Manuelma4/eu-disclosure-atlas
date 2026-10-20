@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { AccountMenu } from "./account/account-menu";
+
 const API_DOCS = `${process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000"}/docs`;
 
 export function Logo() {
@@ -34,6 +36,7 @@ export function SiteHeader() {
           <a className="hidden rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink sm:block" href={API_DOCS}>
             API
           </a>
+          <AccountMenu />
         </nav>
       </div>
     </header>

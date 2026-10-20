@@ -88,7 +88,7 @@ services:
     image: atlas/realtime-gateway:dev
     environment:
       ATLAS_KAFKA_BOOTSTRAP: kafka:9092
-      ATLAS_CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      ATLAS_CORS_ORIGINS: ${ATLAS_WEB_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
     ports: ["8090:8080"]
     depends_on:
       kafka-init: { condition: service_completed_successfully }
@@ -102,7 +102,7 @@ services:
       ATLAS_KAFKA_BOOTSTRAP: kafka:9092
       ATLAS_OIDC_ISSUER: http://localhost:8180/realms/atlas
       ATLAS_OIDC_JWKS_URL: http://keycloak:8080/realms/atlas/protocol/openid-connect/certs
-      ATLAS_CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      ATLAS_CORS_ORIGINS: ${ATLAS_WEB_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
       ATLAS_ALERTS_ALLOW_PRIVATE_WEBHOOKS: "true" # lets the webhook sink below receive deliveries
       ATLAS_EMAIL_PROVIDER: smtp
       ATLAS_EMAIL_FROM: EU Disclosure Atlas <alerts@atlas.localhost>
