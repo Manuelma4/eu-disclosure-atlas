@@ -138,11 +138,15 @@ Owns: `src/disclosure_atlas/reference/`, gold enrichment views, `docs/reference-
 
 ## M4 Research `[ ]`
 
-### WS6 Do European insiders beat the market? `[ ]`
+### WS6 Do European insiders beat the market? `[x]` (Sweden)
 Owns: `research/insider_event_study/`.
-- Event study of open-market purchases and sales (CAR at +5, +20 and +60 days; calendar-time portfolios),
-  split by role, size, cluster buys and country. Prices via the `research` extra.
-- Done when: a reproducible notebook and a short paper-style write-up with honest limitations.
+- [x] Event study of open-market purchases and sales (CAR at +5, +20 and +60 days; calendar-time portfolios),
+  split by role, size, cluster buys and period. Prices via the `research` extra.
+- [x] Sweden, July 2016 to October 2026: 44,099 events, 61% with usable prices; one-command pipeline
+  (`python research/insider_event_study/run.py --backfill`) and a paper-style write-up with limitations in
+  [research/insider_event_study/README.md](research/insider_event_study/README.md).
+- [ ] Next: other countries as their connectors land; routine versus opportunistic insiders (Cohen, Malloy
+  and Pomorski, 2012); delisted-firm prices to close the survivorship gap.
 
 ### WS7 Thresholds and regulation `[ ]`
 Owns: `research/thresholds/`.

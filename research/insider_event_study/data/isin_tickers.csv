@@ -1,0 +1,2541 @@
+isin,yahoo_ticker,method,figi_type
+CA00829Q1019,,none,Common Stock
+CA00830W1059,,none,Common Stock
+CA09251U1003,,none,not found
+CA2548481043,,none,Common Stock
+CA29786T1057,,none,Common Stock
+CA31729R1055,,none,Common Stock
+CA31730E1016,,none,Common Stock
+CA33583M1077,,none,not found
+CA46016U1084,IPCO.ST,openfigi,
+CA48086P1009,,none,Common Stock
+CA52171T1003,,none,Common Stock
+CA54928Q1081,,none,Common Stock
+CA5503711080,LUG.ST,openfigi,
+CA5503721063,LUMI.ST,openfigi,
+CA5889141019,MER.ST,openfigi,Common Stock
+CA65339B1004,,none,Common Stock
+CA8193201024,,none,Common Stock
+CH0012221716,ABB.ST,openfigi,Common Stock
+CH0136071542,,none,Common Stock
+CH0242214887,FOI-B.ST,yahoo_search,
+CH0246292343,,none,Common Stock
+CH0256424794,,none,Common Stock
+CH0322161768,TALK.ST,yahoo_search,
+DE000CK0A1C3,,none,DOMESTIC
+DE000CN04ND3,,none,DOMESTIC
+DE000PF13FL1,,none,not found
+DE000TT3ZGW7,,none,not found
+DK0060823516,,none,Common Stock
+EE3500110244,,none,Closed-End Fund
+EZ029HL7JJP2,,none,not found
+EZ054MN6V2R2,,none,not found
+EZCSD9JNN387,,none,not found
+FI0009902530,,none,not found
+FI4000383898,,none,not found
+GB0009895292,AZN.ST,openfigi,Common Stock
+GB0033163287,,none,Common Stock
+GB00B635TG28,,none,Common Stock
+GB00BK80TJ35,PTRK.ST,yahoo_search,
+GB00BL041X81,,none,DOMESTIC
+GB00BL04XP41,,none,DOMESTIC
+GB00BVMN1558,VSURE.ST,yahoo_search,
+GB00BZ1MDB19,FLEXM.ST,yahoo_search,
+JE00BLD8Y945,,none,Common Stock
+MT0000780107,KAMBI.ST,yahoo_search,
+MT0001000109,CTM.ST,yahoo_search,
+MT0001390104,RAKE.ST,yahoo_search,
+NO0010721277,,none,Common Stock
+NO9900311297,,none,not found
+NO9900708211,,none,not found
+SE0000101032,,none,not found
+SE0000101297,,none,not found
+SE0000101362,BERG-B.ST,yahoo_search,
+SE0000102295,,none,not found
+SE0000102378,,none,not found
+SE0000102824,,none,Common Stock
+SE0000102840,,none,Common Stock
+SE0000102857,SLOTT-B.ST,yahoo_search,
+SE0000103699,HEXA-B.ST,yahoo_search,
+SE0000103814,,none,Common Stock
+SE0000105116,,none,not found
+SE0000105199,,none,Common Stock
+SE0000105397,GOTL-B.ST,yahoo_search,
+SE0000106205,PEAB-B.ST,yahoo_search,
+SE0000106270,HM-B.ST,yahoo_search,
+SE0000106320,,none,not found
+SE0000107203,INDU-C.ST,yahoo_search,
+SE0000107401,INVE-A.ST,yahoo_search,
+SE0000107419,,none,Common Stock
+SE0000107724,KABE-B.ST,yahoo_search,
+SE0000108227,SKF-B.ST,yahoo_search,
+SE0000108649,ERIC-A.ST,yahoo_search,
+SE0000108656,ERIC-B.ST,yahoo_search,
+SE0000108847,LUND-B.ST,yahoo_search,
+SE0000109290,,none,not found
+SE0000109811,NOLA-B.ST,yahoo_search,
+SE0000110116,,none,not found
+SE0000111940,RATO-B.ST,yahoo_search,
+SE0000112252,RROS.ST,yahoo_search,
+SE0000112385,,none,Common Stock
+SE0000112724,SCA-B.ST,yahoo_search,
+SE0000112906,,none,Common Stock
+SE0000113250,SKA-B.ST,yahoo_search,
+SE0000114837,TREL-B.ST,yahoo_search,
+SE0000115008,,none,not found
+SE0000115107,VBG-B.ST,yahoo_search,
+SE0000115420,VOLV-A.ST,openfigi,
+SE0000115446,VOLV-B.ST,yahoo_search,
+SE0000115578,,none,not found
+SE0000115610,,none,not found
+SE0000117970,NCC-B.ST,openfigi,
+SE0000119299,ELAN-B.ST,yahoo_search,
+SE0000120669,SSAB-B.ST,yahoo_search,
+SE0000120776,,none,Common Stock
+SE0000122111,,none,DOMESTIC
+SE0000122467,,none,not found
+SE0000122657,HAKI-A.ST,yahoo_search,
+SE0000122673,HAKI-B.ST,yahoo_search,
+SE0000123085,ORTI-B.ST,yahoo_search,
+SE0000123671,REJL-B.ST,yahoo_search,
+SE0000135287,,none,not found
+SE0000135485,RAY-B.ST,yahoo_search,
+SE0000141137,PRCO-B.ST,yahoo_search,
+SE0000143521,,none,not found
+SE0000148884,SEB-A.ST,yahoo_search,
+SE0000152084,,none,not found
+SE0000163594,SECU-B.ST,yahoo_search,
+SE0000163628,EKTA-B.ST,yahoo_search,
+SE0000164626,,none,not found
+SE0000166639,,none,not found
+SE0000170110,,none,not found
+SE0000170375,HUFV-A.ST,yahoo_search,
+SE0000171100,SSAB-A.ST,yahoo_search,
+SE0000171696,,none,not found
+SE0000171886,SCA-A.ST,yahoo_search,
+SE0000182123,,none,not found
+SE0000188500,CAT-A.ST,yahoo_search,
+SE0000188518,CAT-B.ST,yahoo_search,
+SE0000188930,ORTI-A.ST,yahoo_search,
+SE0000190126,INDU-A.ST,yahoo_search,
+SE0000190134,,none,not found
+SE0000191090,RATO-A.ST,yahoo_search,
+SE0000191827,ATRLJ-B.ST,yahoo_search,
+SE0000193120,,none,not found
+SE0000193252,,none,not found
+SE0000195570,,none,Common Stock
+SE0000195810,BURE.ST,yahoo_search,
+SE0000201253,SIVI.ST,yahoo_search,
+SE0000202624,GETI-B.ST,yahoo_search,
+SE0000205940,,none,not found
+SE0000215493,,none,Common Stock
+SE0000224446,,none,not found
+SE0000233934,PRIC-B.ST,yahoo_search,
+SE0000236382,CNCJO-B.ST,yahoo_search,
+SE0000236515,HEBA-B.ST,yahoo_search,
+SE0000241614,,none,not found
+SE0000242455,SWED-A.ST,yahoo_search,
+SE0000255648,,none,not found
+SE0000273294,,none,not found
+SE0000308298,,none,not found
+SE0000310336,,none,Common Stock
+SE0000312068,NFO.ST,yahoo_search,
+SE0000314312,,none,not found
+SE0000323297,,none,not found
+SE0000323305,SOF-B.ST,yahoo_search,
+SE0000325839,,none,not found
+SE0000331225,,none,not found
+SE0000331266,DURC-B.ST,yahoo_search,
+SE0000353898,,none,Common Stock
+SE0000356008,PREV-B.ST,yahoo_search,
+SE0000366098,NETI-B.ST,yahoo_search,
+SE0000371239,,none,Common Stock
+SE0000371296,,none,not found
+SE0000373128,,none,not found
+SE0000375115,MYCR.ST,yahoo_search,
+SE0000375545,,none,not found
+SE0000379190,CAST.ST,yahoo_search,
+SE0000379497,,none,Common Stock
+SE0000379844,,none,not found
+SE0000381840,,none,Common Stock
+SE0000382335,,none,not found
+SE0000386138,LAMM-B.ST,yahoo_search,
+SE0000390296,,none,not found
+SE0000391716,TRAC-B.ST,yahoo_search,
+SE0000393860,PROF-B.ST,yahoo_search,
+SE0000395105,,none,not found
+SE0000395428,FIRE.ST,yahoo_search,
+SE0000396061,BONG.ST,yahoo_search,
+SE0000396822,,none,Common Stock
+SE0000402448,,none,not found
+SE0000407991,SVED-B.ST,yahoo_search,
+SE0000408189,,none,not found
+SE0000412371,MTG-B.ST,yahoo_search,
+SE0000412991,PACT.ST,yahoo_search,
+SE0000418402,,none,not found
+SE0000418873,LOVI.ST,yahoo_search,
+SE0000418923,CTT.ST,yahoo_search,
+SE0000421273,KNOW.ST,yahoo_search,
+SE0000422107,,none,not found
+SE0000426546,NEWA-B.ST,yahoo_search,
+SE0000427361,,none,not found
+SE0000429615,,none,Common Stock
+SE0000437402,,none,not found
+SE0000454746,,none,Common Stock
+SE0000455057,BALD-B.ST,yahoo_search,
+SE0000461709,,none,not found
+SE0000470395,BIOG-B.ST,yahoo_search,
+SE0000472268,ANOD-B.ST,yahoo_search,
+SE0000483943,SPACEN-B.ST,yahoo_search,
+SE0000488744,,none,Common Stock
+SE0000489080,SWEC-A.ST,yahoo_search,
+SE0000489098,SWEC-B.ST,yahoo_search,
+SE0000500779,,none,Common Stock
+SE0000507659,MEAB-B.ST,yahoo_search,
+SE0000514374,,none,not found
+SE0000514408,TAGM-B.ST,yahoo_search,
+SE0000514630,,none,not found
+SE0000514705,,none,Common Stock
+SE0000520785,,none,not found
+SE0000524530,,none,Common Stock
+SE0000526626,MSAB-B.ST,yahoo_search,
+SE0000540163,ALM.ST,yahoo_search,
+SE0000547929,,none,not found
+SE0000548281,,none,not found
+SE0000549412,,none,Common Stock
+SE0000556292,,none,not found
+SE0000565210,MSON-A.ST,yahoo_search,
+SE0000565228,MSON-B.ST,yahoo_search,
+SE0000567539,PION-B.ST,yahoo_search,
+SE0000567729,,none,not found
+SE0000567752,NTEK-B.ST,yahoo_search,
+SE0000584948,CLAS-B.ST,yahoo_search,
+SE0000598278,,none,Common Stock
+SE0000616716,DUNI.ST,yahoo_search,
+SE0000619371,,none,Common Stock
+SE0000622656,,none,not found
+SE0000635401,,none,not found
+SE0000648669,,none,Common Stock
+SE0000652216,,none,Common Stock
+SE0000653230,SVIK.ST,yahoo_search,
+SE0000661613,,none,Common Stock
+SE0000667891,SAND.ST,yahoo_search,
+SE0000667925,TELIA.ST,yahoo_search,
+SE0000671711,EPEN.ST,yahoo_search,
+SE0000671745,AVEN.ST,yahoo_search,
+SE0000672115,,none,not found
+SE0000672354,,none,Common Stock
+SE0000680902,,none,Common Stock
+SE0000680969,,none,not found
+SE0000680977,,none,not found
+SE0000683484,CEVI.ST,yahoo_search,
+SE0000695876,ALFA.ST,yahoo_search,
+SE0000697948,ARCT.ST,yahoo_search,
+SE0000718017,,none,not found
+SE0000722365,,none,Common Stock
+SE0000725624,JLT.ST,yahoo_search,
+SE0000731747,,none,Common Stock
+SE0000736415,ORX.ST,yahoo_search,
+SE0000767188,ATORX.ST,yahoo_search,
+SE0000772956,AQ.ST,yahoo_search,
+SE0000778474,,none,not found
+SE0000789711,BINV.ST,yahoo_search,
+SE0000805426,BTS-B.ST,yahoo_search,
+SE0000805574,,none,not found
+SE0000806994,JM.ST,yahoo_search,
+SE0000808370,,none,not found
+SE0000808396,,none,not found
+SE0000816043,,none,not found
+SE0000819054,,none,not found
+SE0000825820,ORRON.ST,yahoo_search,
+SE0000849523,,none,not found
+SE0000857369,,none,Common Stock
+SE0000862997,BILL.ST,yahoo_search,
+SE0000869646,,none,not found
+SE0000872095,SOBI.ST,yahoo_search,
+SE0000885501,,none,Common Stock
+SE0000936478,INTRUM.ST,yahoo_search,
+SE0000949331,NOBI.ST,yahoo_search,
+SE0000950636,,none,not found
+SE0000950982,SINT.ST,yahoo_search,
+SE0000998650,STIL.ST,yahoo_search,
+SE0001057910,,none,Common Stock
+SE0001075102,STRD-B.ST,yahoo_search,
+SE0001104209,,none,not found
+SE0001105487,,none,not found
+SE0001105511,,none,Common Stock
+SE0001106469,,none,Common Stock
+SE0001116021,FMM-B.ST,yahoo_search,
+SE0001121617,MCAP.ST,yahoo_search,
+SE0001136532,,none,not found
+SE0001137985,,none,Common Stock
+SE0001159344,,none,not found
+SE0001161654,NOTE.ST,yahoo_search,
+SE0001162462,,none,not found
+SE0001175746,,none,Open-End Fund
+SE0001176298,,none,not found
+SE0001183732,,none,not found
+SE0001198714,,none,not found
+SE0001200015,IVSO.ST,yahoo_search,
+SE0001233289,,none,not found
+SE0001279142,IMPC.ST,yahoo_search,
+SE0001280355,,none,Common Stock
+SE0001283607,,none,not found
+SE0001289190,,none,not found
+SE0001296542,,none,Common Stock
+SE0001306119,,none,Common Stock
+SE0001321761,,none,Common Stock
+SE0001338039,,none,Common Stock
+SE0001356932,AMH2-B.ST,yahoo_search,
+SE0001384850,,none,Common Stock
+SE0001413600,,none,not found
+SE0001426131,HOME-B.ST,yahoo_search,
+SE0001449075,,none,not found
+SE0001449380,MANG.ST,yahoo_search,
+SE0001493776,,none,not found
+SE0001515552,INDT.ST,yahoo_search,
+SE0001552357,NYOR.ST,yahoo_search,
+SE0001572520,ELON.ST,yahoo_search,
+SE0001606906,,none,Common Stock
+SE0001625534,,none,not found
+SE0001629288,,none,not found
+SE0001630880,,none,not found
+SE0001634262,DIOS.ST,yahoo_search,
+SE0001662222,HUSQ-A.ST,yahoo_search,
+SE0001662230,HUSQ-B.ST,yahoo_search,
+SE0001662594,,none,not found
+SE0001664707,CATE.ST,yahoo_search,
+SE0001666553,,none,Common Stock
+SE0001696683,,none,Common Stock
+SE0001717323,MIR.ST,yahoo_search,
+SE0001718032,,none,not found
+SE0001733841,,none,not found
+SE0001770702,DRIL.ST,yahoo_search,
+SE0001785270,,none,not found
+SE0001789793,,none,Common Stock
+SE0001790346,,none,Common Stock
+SE0001790791,GENI.ST,yahoo_search,
+SE0001799636,,none,Common Stock
+SE0001801440,,none,not found
+SE0001822495,,none,not found
+SE0001823303,PREC.ST,yahoo_search,
+SE0001823352,,none,Common Stock
+SE0001824004,G5EN.ST,yahoo_search,
+SE0001824103,,none,not found
+SE0001834821,UTG.ST,yahoo_search,
+SE0001838038,NNH.ST,yahoo_search,
+SE0001839069,,none,Common Stock
+SE0001852211,,none,not found
+SE0001852419,LIAB.ST,yahoo_search,
+SE0001857533,,none,not found
+SE0001860511,SERV.ST,yahoo_search,
+SE0001863291,ACROUD.ST,yahoo_search,
+SE0001882291,,none,SDR
+SE0001907783,,none,not found
+SE0001915190,,none,not found
+SE0001920760,,none,Common Stock
+SE0001940461,,none,Common Stock
+SE0001958612,,none,Common Stock
+SE0001960949,OBAB.ST,yahoo_search,
+SE0001965369,NAXS.ST,yahoo_search,
+SE0001966656,,none,Common Stock
+SE0001989252,,none,not found
+SE0001989260,NOVU.ST,yahoo_search,
+SE0001994658,NFGAB.ST,yahoo_search,
+SE0002000083,,none,not found
+SE0002016261,,none,Closed-End Fund
+SE0002016352,CRAD-B.ST,yahoo_search,
+SE0002017657,,none,not found
+SE0002017707,,none,not found
+SE0002039222,EASY-B.ST,yahoo_search,
+SE0002053876,,none,not found
+SE0002060863,,none,not found
+SE0002067421,SUSG.ST,yahoo_search,
+SE0002069633,,none,Common Stock
+SE0002081166,,none,Common Stock
+SE0002095604,,none,Common Stock
+SE0002105601,,none,not found
+SE0002108001,,none,Common Stock
+SE0002109330,,none,not found
+SE0002110064,MEKO.ST,yahoo_search,
+SE0002133975,SYSR.ST,yahoo_search,
+SE0002136242,,none,not found
+SE0002148817,HNSA.ST,yahoo_search,
+SE0002149369,STVA-B.ST,yahoo_search,
+SE0002158568,,none,Common Stock
+SE0002169292,WPAY.ST,yahoo_search,
+SE0002180539,,none,not found
+SE0002190926,KDV-B.ST,yahoo_search,
+SE0002205286,SAFE.ST,yahoo_search,
+SE0002209155,,none,Common Stock
+SE0002214528,,none,Common Stock
+SE0002216713,,none,not found
+SE0002222596,,none,Common Stock
+SE0002245548,,none,Common Stock
+SE0002252296,BAHN-B.ST,yahoo_search,
+SE0002316810,BINERO.ST,yahoo_search,
+SE0002367797,HTRO.ST,yahoo_search,
+SE0002372318,,none,Common Stock
+SE0002392886,,none,Common Stock
+SE0002402701,EWRK.ST,yahoo_search,
+SE0002452623,,none,not found
+SE0002478776,SEZI.ST,yahoo_search,
+SE0002480442,ZZ-B.ST,yahoo_search,
+SE0002485979,GENO.ST,yahoo_search,
+SE0002571539,,none,not found
+SE0002575340,,none,Common Stock
+SE0002579912,,none,Common Stock
+SE0002591248,WTG.ST,yahoo_search,
+SE0002591420,TOBII.ST,openfigi,
+SE0002626861,CLA-B.ST,yahoo_search,
+SE0002627141,,none,not found
+SE0002658278,TRAN-B.ST,yahoo_search,
+SE0002683557,,none,Common Stock
+SE0002685958,,none,Common Stock
+SE0002692871,,none,not found
+SE0002756130,,none,not found
+SE0002801290,,none,Open-End Fund
+SE0002802314,,none,not found
+SE0002829226,TRAN-A.ST,yahoo_search,
+SE0002834507,MPOS.ST,yahoo_search,
+SE0002837781,,none,not found
+SE0002837955,,none,not found
+SE0002853135,,none,not found
+SE0002869719,,none,Common Stock
+SE0002897793,,none,not found
+SE0002939892,BOTX.ST,yahoo_search,
+SE0002941799,,none,not found
+SE0003036821,,none,Common Stock
+SE0003037456,,none,Common Stock
+SE0003086214,META.ST,yahoo_search,
+SE0003088541,,none,Common Stock
+SE0003172089,,none,Common Stock
+SE0003175660,,none,Common Stock
+SE0003175850,,none,not found
+SE0003176122,,none,not found
+SE0003204908,,none,Common Stock
+SE0003208792,,none,not found
+SE0003210590,,none,Common Stock
+SE0003212117,,none,not found
+SE0003272202,TRUE-B.ST,yahoo_search,
+SE0003273531,ECO-B.ST,yahoo_search,
+SE0003303460,,none,not found
+SE0003303627,BMAX.ST,yahoo_search,
+SE0003329994,,none,Common Stock
+SE0003359710,,none,Common Stock
+SE0003365717,,none,not found
+SE0003366871,,none,Common Stock
+SE0003491562,EPIS-B.ST,yahoo_search,
+SE0003495431,,none,not found
+SE0003553130,,none,Common Stock
+SE0003613090,MOB.ST,yahoo_search,
+SE0003617075,,none,Common Stock
+SE0003618230,,none,Common Stock
+SE0003620947,,none,not found
+SE0003622265,,none,not found
+SE0003623560,,none,not found
+SE0003652163,,none,Common Stock
+SE0003656834,IZAFE-B.ST,yahoo_search,
+SE0003756758,SDIP-B.ST,yahoo_search,
+SE0003787555,FXI.ST,yahoo_search,
+SE0003815604,EGTX.ST,yahoo_search,
+SE0003848613,HIGHCO-B.ST,yahoo_search,
+SE0003849223,BULTEN.ST,yahoo_search,
+SE0003850130,,none,not found
+SE0003883008,,none,Common Stock
+SE0003883362,,none,not found
+SE0003883800,DIST.ST,yahoo_search,
+SE0003883990,IDLDX.ST,yahoo_search,
+SE0003909282,DEDI.ST,yahoo_search,
+SE0003917798,SIVE.ST,yahoo_search,
+SE0003943620,ENZY.ST,yahoo_search,
+SE0003949510,,none,not found
+SE0003949973,,none,not found
+SE0003950591,,none,not found
+SE0003950864,,none,Common Stock
+SE0004019545,,none,Common Stock
+SE0004020097,,none,Common Stock
+SE0004020931,NANOC-B.ST,yahoo_search,
+SE0004051969,,none,Common Stock
+SE0004109627,ALM-PREF.ST,yahoo_search,
+SE0004168524,,none,EURO MTN
+SE0004168532,,none,EURO MTN
+SE0004210854,,none,Common Stock
+SE0004236727,,none,EURO MTN
+SE0004269397,,none,EURO MTN
+SE0004270445,AVT-B.ST,yahoo_search,
+SE0004297802,,none,EURO MTN
+SE0004390037,,none,not found
+SE0004390516,CRED-A.ST,yahoo_search,
+SE0004479046,,none,Common Stock
+SE0004492049,,none,not found
+SE0004576346,GJAB.ST,yahoo_search,
+SE0004635878,SAGA-A.ST,yahoo_search,
+SE0004777241,,none,Common Stock
+SE0004810240,,none,EURO NON-DOLLAR
+SE0004840718,XVIVO.ST,yahoo_search,
+SE0004868651,,none,DOMESTIC
+SE0004869808,RECY-B.ST,yahoo_search,
+SE0004870640,,none,EURO NON-DOLLAR
+SE0004898799,HEXI.ST,yahoo_search,
+SE0004899474,SPAGO.ST,yahoo_search,
+SE0004948867,,none,not found
+SE0004977445,,none,not found
+SE0004977452,,none,Common Stock
+SE0004977692,PLAZ-B.ST,yahoo_search,
+SE0005003217,,none,Common Stock
+SE0005003654,IMMU.ST,yahoo_search,
+SE0005034550,NEOBO.ST,yahoo_search,
+SE0005034576,,none,not found
+SE0005095601,,none,Common Stock
+SE0005096369,,none,not found
+SE0005100757,KENH.ST,yahoo_search,
+SE0005101003,NEXAM.ST,yahoo_search,
+SE0005126125,,none,not found
+SE0005127818,SAGA-B.ST,openfigi,
+SE0005130747,,none,EURO NON-DOLLAR
+SE0005132511,,none,not found
+SE0005162880,DMYD-B.ST,yahoo_search,
+SE0005190238,TEL2-B.ST,yahoo_search,
+SE0005190725,,none,Common Stock
+SE0005191426,,none,not found
+SE0005217320,,none,not found
+SE0005222841,,none,not found
+SE0005223542,EXALT.ST,yahoo_search,
+SE0005223674,,none,not found
+SE0005249570,BINERO.ST,yahoo_search,
+SE0005250719,AXIC-A.ST,yahoo_search,
+SE0005280492,,none,DOMESTIC MTN
+SE0005281086,,none,DOMESTIC MTN
+SE0005306982,,none,DOMESTIC MTN
+SE0005307048,,none,not found
+SE0005308541,SALT-B.ST,yahoo_search,
+SE0005308558,CLAV.ST,yahoo_search,
+SE0005308632,SAFE.ST,yahoo_search,
+SE0005337920,,none,Common Stock
+SE0005365095,SERT.ST,yahoo_search,
+SE0005365681,IRIS.ST,yahoo_search,
+SE0005392537,SOLT.ST,yahoo_search,
+SE0005397106,,none,not found
+SE0005424314,,none,DOMESTIC MTN
+SE0005454865,SYNT.ST,yahoo_search,
+SE0005454873,NICA.ST,yahoo_search,
+SE0005465853,,none,DOMESTIC MTN
+SE0005465929,,none,not found
+SE0005468717,FNM.ST,yahoo_search,
+SE0005497732,EQL.ST,yahoo_search,
+SE0005498714,,none,DOMESTIC MTN
+SE0005504164,,none,not found
+SE0005504347,,none,Common Stock
+SE0005504636,,none,Common Stock
+SE0005504669,CLEM.ST,yahoo_search,
+SE0005505054,,none,not found
+SE0005505880,,none,not found
+SE0005505898,,none,Common Stock
+SE0005506185,NICO.ST,yahoo_search,
+SE0005562014,GGEO.ST,yahoo_search,
+SE0005568136,ADDT-B.ST,yahoo_search,
+SE0005568482,TOURN.ST,yahoo_search,
+SE0005569100,,none,not found
+SE0005569290,,none,Common Stock
+SE0005594728,,none,Common Stock
+SE0005594801,,none,Common Stock
+SE0005620408,,none,Common Stock
+SE0005624756,DOXA.ST,yahoo_search,
+SE0005624848,,none,not found
+SE0005676103,,none,Common Stock
+SE0005676160,,none,not found
+SE0005676277,,none,not found
+SE0005677135,,none,Common Stock
+SE0005677804,,none,Common Stock
+SE0005704053,,none,not found
+SE0005704079,KAPIAB.ST,yahoo_search,
+SE0005704095,ENVI-B.ST,yahoo_search,
+SE0005731171,,none,not found
+SE0005731833,BRAIN.ST,yahoo_search,
+SE0005757267,,none,Common Stock
+SE0005768124,SDOS.ST,yahoo_search,
+SE0005794617,SANION.ST,yahoo_search,
+SE0005798725,,none,DOMESTIC
+SE0005798923,,none,Common Stock
+SE0005799046,AGES-B.ST,yahoo_search,
+SE0005799186,,none,DOMESTIC
+SE0005849205,,none,Common Stock
+SE0005851706,,none,Common Stock
+SE0005876828,,none,not found
+SE0005876968,OEM-B.ST,yahoo_search,
+SE0005877560,SES.ST,yahoo_search,
+SE0005878543,HANZA.ST,yahoo_search,
+SE0005878741,BACTI-B.ST,yahoo_search,
+SE0005881554,GREAT.ST,yahoo_search,
+SE0005881786,OPTI.ST,yahoo_search,
+SE0005932605,,none,not found
+SE0005932795,,none,not found
+SE0005933082,,none,Common Stock
+SE0005933322,,none,Preference
+SE0005933900,,none,not found
+SE0005933934,,none,not found
+SE0005934452,,none,Common Stock
+SE0005935558,,none,not found
+SE0005936010,,none,EURO MTN
+SE0005936077,,none,EURO MTN
+SE0005936226,,none,not found
+SE0005936234,,none,DOMESTIC MTN
+SE0005937117,FLOWS.ST,yahoo_search,
+SE0005962206,PMED.ST,yahoo_search,
+SE0005962214,,none,DOMESTIC
+SE0005962362,BLICK.ST,yahoo_search,
+SE0005991411,,none,Common Stock
+SE0005991601,,none,Common Stock
+SE0005991981,,none,Common Stock
+SE0005992419,,none,not found
+SE0005992567,,none,not found
+SE0005992831,STAR-B.ST,yahoo_search,
+SE0005999497,,none,not found
+SE0005999760,SCST.ST,yahoo_search,
+SE0005999778,,none,Common Stock
+SE0005999802,,none,DOMESTIC MTN
+SE0005999828,,none,not found
+SE0005999836,AFRY.ST,yahoo_search,
+SE0006024956,,none,not found
+SE0006026985,,none,not found
+SE0006027546,,none,Common Stock
+SE0006028577,WTG.ST,yahoo_search,
+SE0006085841,,none,EURO MTN
+SE0006085858,,none,EURO MTN
+SE0006086682,,none,EURO MTN
+SE0006091476,ABI.ST,yahoo_search,
+SE0006091724,PCOM-B.ST,yahoo_search,
+SE0006091997,IMMNOV.ST,yahoo_search,
+SE0006117297,SFTR.ST,yahoo_search,
+SE0006117487,,none,not found
+SE0006143129,BERNER-B.ST,yahoo_search,
+SE0006168316,,none,not found
+SE0006219176,ARCOMA.ST,yahoo_search,
+SE0006219473,ADVE.ST,yahoo_search,
+SE0006220018,INWI.ST,yahoo_search,
+SE0006245460,,none,DOMESTIC
+SE0006256558,ABSO.ST,yahoo_search,
+SE0006256798,HEART.ST,yahoo_search,
+SE0006259834,,none,not found
+SE0006260865,SNX.ST,yahoo_search,
+SE0006261038,,none,not found
+SE0006261046,HUMBLE.ST,yahoo_search,
+SE0006262218,,none,EURO MTN
+SE0006288015,GRNG.ST,yahoo_search,
+SE0006288189,,none,not found
+SE0006288270,,none,not found
+SE0006342333,NP3.ST,yahoo_search,
+SE0006343745,SPRINT.ST,yahoo_search,
+SE0006343950,FREJA.ST,yahoo_search,
+SE0006343984,ZENI.ST,yahoo_search,
+SE0006345195,UMIDA-B.ST,yahoo_search,
+SE0006370730,LIFCO-B.ST,yahoo_search,
+SE0006371126,CANTA.ST,yahoo_search,
+SE0006371258,,none,not found
+SE0006421871,IS.ST,yahoo_search,
+SE0006422309,STUDBO.ST,yahoo_search,
+SE0006422390,THULE.ST,yahoo_search,
+SE0006425401,,none,not found
+SE0006425419,,none,not found
+SE0006425484,,none,Common Stock
+SE0006425815,PCELL.ST,yahoo_search,
+SE0006426508,,none,Common Stock
+SE0006451613,,none,not found
+SE0006451753,,none,not found
+SE0006504163,,none,Common Stock
+SE0006504353,,none,Common Stock
+SE0006504593,,none,not found
+SE0006509949,ELTEL.ST,yahoo_search,
+SE0006510210,,none,DOMESTIC
+SE0006510335,ORGC.ST,yahoo_search,
+SE0006510491,,none,Common Stock
+SE0006510640,,none,Common Stock
+SE0006543328,,none,DOMESTIC MTN
+SE0006543344,STEF-B.ST,yahoo_search,
+SE0006543450,APTA.ST,yahoo_search,
+SE0006593901,,none,Common Stock
+SE0006593919,,none,Common Stock
+SE0006593927,,none,Preference
+SE0006625471,DUST.ST,yahoo_search,
+SE0006731691,,none,not found
+SE0006732020,,none,not found
+SE0006732392,TROAX.ST,yahoo_search,
+SE0006758231,,none,Common Stock
+SE0006758348,,none,Preference
+SE0006758587,TRANS.ST,yahoo_search,
+SE0006763744,,none,not found
+SE0006800439,,none,Common Stock
+SE0006826046,EVO.ST,yahoo_search,
+SE0006852075,K2A-PREF.ST,yahoo_search,
+SE0006852125,VSD-B.ST,yahoo_search,
+SE0006877700,,none,Common Stock
+SE0006886750,,none,not found
+SE0006886768,,none,not found
+SE0006886917,,none,Common Stock
+SE0006887063,HOFI.ST,yahoo_search,
+SE0006887147,,none,DOMESTIC MTN
+SE0006887386,,none,Common Stock
+SE0006887394,,none,not found
+SE0006887451,CLBIO.ST,yahoo_search,
+SE0006913497,,none,Common Stock
+SE0006963682,,none,not found
+SE0006964847,,none,not found
+SE0006965158,REDS.ST,yahoo_search,
+SE0006965216,,none,Common Stock
+SE0006966115,,none,Common Stock
+SE0006992335,,none,Preference
+SE0006993770,AXFO.ST,yahoo_search,
+SE0006993804,,none,Common Stock
+SE0006994448,SPEONE.ST,yahoo_search,
+SE0006994539,NOSA.ST,yahoo_search,
+SE0006994943,INSP.ST,yahoo_search,
+SE0007045406,,none,Common Stock
+SE0007045414,,none,Common Stock
+SE0007047717,,none,not found
+SE0007048020,,none,Common Stock
+SE0007074166,NANEXA.ST,yahoo_search,
+SE0007074281,HPOL-B.ST,yahoo_search,
+SE0007074505,,none,Common Stock
+SE0007074828,,none,not found
+SE0007074844,WALL-B.ST,yahoo_search,
+SE0007075056,EOLU-B.ST,yahoo_search,
+SE0007075247,KONT.ST,yahoo_search,
+SE0007075262,,none,Common Stock
+SE0007100342,,none,Common Stock
+SE0007100359,PNDX-B.ST,yahoo_search,
+SE0007100532,NAVIGO-STAM.ST,yahoo_search,
+SE0007100540,NAVIGO-PREF.ST,yahoo_search,
+SE0007100581,ASSA-B.ST,yahoo_search,
+SE0007100599,SHB-A.ST,yahoo_search,
+SE0007100607,SHB-B.ST,yahoo_search,
+SE0007100615,GCOR.ST,yahoo_search,
+SE0007126115,,none,Common Stock
+SE0007126123,,none,Preference
+SE0007131883,,none,DOMESTIC
+SE0007131990,INISS-B.ST,yahoo_search,
+SE0007157409,,none,Common Stock
+SE0007157763,,none,not found
+SE0007157953,BONAS.ST,yahoo_search,
+SE0007158118,SPEC.ST,yahoo_search,
+SE0007158456,,none,not found
+SE0007158829,COOR.ST,yahoo_search,
+SE0007158902,,none,Common Stock
+SE0007158910,ALIG.ST,yahoo_search,
+SE0007158928,STAR-A.ST,yahoo_search,
+SE0007184189,GPG.ST,yahoo_search,
+SE0007185418,,none,Common Stock
+SE0007185681,,none,not found
+SE0007186176,,none,Preference
+SE0007186283,,none,not found
+SE0007192018,,none,SDR
+SE0007227673,,none,not found
+SE0007277876,WISE.ST,yahoo_search,
+SE0007278429,,none,DOMESTIC MTN
+SE0007278726,QBNK.ST,yahoo_search,
+SE0007278841,,none,Common Stock
+SE0007278965,,none,not found
+SE0007280326,KLAR.ST,yahoo_search,
+SE0007280482,,none,Common Stock
+SE0007306162,,none,not found
+SE0007331608,,none,Common Stock
+SE0007387022,,none,Common Stock
+SE0007387089,BIOWKS.ST,yahoo_search,
+SE0007387246,LITI.ST,yahoo_search,
+SE0007387345,,none,not found
+SE0007412374,PEXA-B.ST,yahoo_search,
+SE0007413455,ALZ.ST,yahoo_search,
+SE0007438577,,none,Common Stock
+SE0007439112,SINCH.ST,yahoo_search,
+SE0007439435,,none,not found
+SE0007439443,STORY-B.ST,yahoo_search,
+SE0007439633,VIMAB.ST,yahoo_search,
+SE0007464862,,none,Common Stock
+SE0007464888,,none,Common Stock
+SE0007465208,,none,not found
+SE0007491105,,none,Common Stock
+SE0007491303,BRAV.ST,yahoo_search,
+SE0007526132,,none,Preference
+SE0007577077,WAYS.ST,yahoo_search,
+SE0007577895,VICO.ST,yahoo_search,
+SE0007578026,FASTAT.ST,yahoo_search,
+SE0007578141,MINEST.ST,yahoo_search,
+SE0007578158,,none,not found
+SE0007603170,,none,Common Stock
+SE0007603402,IMS.ST,yahoo_search,
+SE0007603493,LAGR-B.ST,yahoo_search,
+SE0007604061,,none,Common Stock
+SE0007604103,,none,DOMESTIC MTN
+SE0007604160,,none,not found
+SE0007614722,K33.ST,yahoo_search,
+SE0007640156,SHOT.ST,yahoo_search,
+SE0007640297,,none,not found
+SE0007640321,,none,Common Stock
+SE0007665823,,none,Common Stock
+SE0007666110,ATT.ST,yahoo_search,
+SE0007691498,ZENZIP-B.ST,yahoo_search,
+SE0007691613,DOM.ST,yahoo_search,
+SE0007691761,SLEEP.ST,yahoo_search,
+SE0007692124,VIDH.ST,yahoo_search,
+SE0007692157,POLYG.ST,yahoo_search,
+SE0007692850,CAMX.ST,yahoo_search,
+SE0007692884,PREBON.ST,yahoo_search,
+SE0007698121,,none,Common Stock
+SE0007702949,NILS.ST,yahoo_search,
+SE0007704788,SF.ST,yahoo_search,
+SE0007730510,,none,not found
+SE0007731427,,none,EURO MTN
+SE0007756903,XINT.ST,yahoo_search,
+SE0007783055,,none,not found
+SE0007784319,CHOSA.ST,yahoo_search,
+SE0007789409,,none,Common Stock
+SE0007789417,GRANGX.ST,yahoo_search,
+SE0007815113,HEGR.ST,yahoo_search,
+SE0007815386,,none,Common Stock
+SE0007815428,,none,Common Stock
+SE0007870928,,none,not found
+SE0007871363,VIT-B.ST,yahoo_search,
+SE0007871645,,none,SDR
+SE0007897079,ACAD.ST,yahoo_search,
+SE0007897251,,none,not found
+SE0007897384,,none,not found
+SE0007897764,SCC-B.ST,yahoo_search,
+SE0007922885,,none,not found
+SE0007922893,,none,not found
+SE0007953922,,none,DOMESTIC
+SE0007980362,LIGR.ST,yahoo_search,
+SE0007982806,,none,not found
+SE0007982814,ALIF-B.ST,yahoo_search,
+SE0008008171,,none,EURO MTN
+SE0008008254,,none,not found
+SE0008008262,GARO.ST,yahoo_search,
+SE0008014476,PLEJD.ST,yahoo_search,
+SE0008015259,IBT-B.ST,yahoo_search,
+SE0008040653,HUM.ST,yahoo_search,
+SE0008066302,NEPA.ST,yahoo_search,
+SE0008091573,BONAV-A.ST,yahoo_search,
+SE0008091581,BONAV-B.ST,yahoo_search,
+SE0008091664,SIMRIS-B.ST,yahoo_search,
+SE0008091904,,none,Common Stock
+SE0008092563,,none,not found
+SE0008129134,,none,EURO MTN
+SE0008129787,,none,not found
+SE0008135610,,none,not found
+SE0008186886,,none,DOMESTIC
+SE0008212161,AERO.ST,yahoo_search,
+SE0008212195,,none,Common Stock
+SE0008212518,,none,not found
+SE0008212849,,none,not found
+SE0008212971,,none,not found
+SE0008213326,,none,not found
+SE0008216303,CLEMO.ST,yahoo_search,
+SE0008216329,ERMA.ST,yahoo_search,
+SE0008241491,SYNACT.ST,yahoo_search,
+SE0008241558,CRNO-B.ST,yahoo_search,
+SE0008242358,,none,not found
+SE0008293591,,none,not found
+SE0008293617,,none,Common Stock
+SE0008293674,,none,not found
+SE0008294078,SECARE.ST,yahoo_search,
+SE0008294102,,none,Common Stock
+SE0008294334,,none,not found
+SE0008294789,,none,not found
+SE0008294813,,none,not found
+SE0008294953,PDX.ST,yahoo_search,
+SE0008321202,,none,Common Stock
+SE0008321293,NIBE-B.ST,yahoo_search,
+SE0008321418,PROVIT.ST,yahoo_search,
+SE0008321608,ORES.ST,yahoo_search,
+SE0008321921,BEGR.ST,yahoo_search,
+SE0008322150,,none,not found
+SE0008347462,,none,not found
+SE0008347652,BRIN-B.ST,yahoo_search,
+SE0008347660,B3.ST,yahoo_search,
+SE0008347967,,none,not found
+SE0008348072,,none,Common Stock
+SE0008348171,,none,not found
+SE0008348262,EXPRS2.ST,yahoo_search,
+SE0008348304,GOMX.ST,yahoo_search,
+SE0008348320,,none,not found
+SE0008348395,,none,not found
+SE0008348767,,none,Common Stock
+SE0008373880,,none,Equity WRT
+SE0008373906,KINV-B.ST,yahoo_search,
+SE0008374003,,none,Common Stock
+SE0008374250,,none,Common Stock
+SE0008374383,KEOC.ST,yahoo_search,
+SE0008374425,,none,EURO NON-DOLLAR
+SE0008375117,,none,Common Stock
+SE0008375331,,none,not found
+SE0008406151,OGUN-B.ST,yahoo_search,
+SE0008406334,,none,not found
+SE0008406417,,none,Common Stock
+SE0008432215,,none,not found
+SE0008434880,,none,DOMESTIC
+SE0008435044,,none,Common Stock
+SE0008435051,,none,Common Stock
+SE0008585525,,none,Common Stock
+SE0008587117,,none,Common Stock
+SE0008588131,,none,Common Stock
+SE0008588354,AGTIRA-B.ST,yahoo_search,
+SE0008613483,,none,not found
+SE0008613731,BIOVIC-B.ST,yahoo_search,
+SE0008613970,,none,not found
+SE0008705255,VO2.ST,yahoo_search,
+SE0008732218,ALCA.ST,yahoo_search,
+SE0008937411,,none,Common Stock
+SE0008963151,,none,Common Stock
+SE0008963433,,none,not found
+SE0008963888,,none,Common Stock
+SE0008964076,,none,not found
+SE0008964266,,none,Common Stock
+SE0008964589,,none,not found
+SE0008966014,SAXG.ST,yahoo_search,
+SE0008966048,,none,not found
+SE0008966279,,none,not found
+SE0008966295,FLERIE.ST,yahoo_search,
+SE0008991582,,none,not found
+SE0008991590,,none,not found
+SE0008991608,,none,not found
+SE0008991624,GPX.ST,yahoo_search,
+SE0008991988,,none,Right
+SE0009143639,,none,not found
+SE0009143662,VOLO.ST,yahoo_search,
+SE0009143670,VOLO-PREF.ST,yahoo_search,
+SE0009143993,,none,Common Stock
+SE0009146319,,none,EURO MTN
+SE0009146343,,none,EURO MTN
+SE0009155005,,none,not found
+SE0009155211,SOLNA.ST,yahoo_search,
+SE0009155443,,none,not found
+SE0009155450,,none,not found
+SE0009155518,GAPW-B.ST,yahoo_search,
+SE0009155526,,none,not found
+SE0009160872,MCAP.ST,yahoo_search,
+SE0009160922,,none,Common Stock
+SE0009161052,SAGA-D.ST,openfigi,
+SE0009161078,,none,not found
+SE0009161185,,none,not found
+SE0009161615,,none,DOMESTIC MTN
+SE0009163579,,none,not found
+SE0009163660,,none,not found
+SE0009164031,,none,not found
+SE0009189442,FINE.ST,yahoo_search,
+SE0009189608,ACOU.ST,yahoo_search,
+SE0009189962,,none,not found
+SE0009190127,,none,not found
+SE0009190135,,none,not found
+SE0009190192,CFISH.ST,yahoo_search,
+SE0009190366,,none,not found
+SE0009190390,,none,DOMESTIC MTN
+SE0009190572,,none,Common Stock
+SE0009190788,UMIDA-B.ST,yahoo_search,
+SE0009216278,MIPS.ST,yahoo_search,
+SE0009241706,EMBRAC-B.ST,yahoo_search,
+SE0009242027,,none,Common Stock
+SE0009242175,STW.ST,yahoo_search,
+SE0009242225,IRLAB-A.ST,yahoo_search,
+SE0009242266,,none,Right
+SE0009242274,,none,Common Stock
+SE0009242324,BYGGP.ST,yahoo_search,
+SE0009242464,,none,Common Stock
+SE0009242555,AINO.ST,yahoo_search,
+SE0009242654,NEEMS-B.ST,yahoo_search,
+SE0009242720,,none,not found
+SE0009267834,,none,Common Stock
+SE0009267909,,none,not found
+SE0009267974,,none,not found
+SE0009267990,,none,not found
+SE0009268154,AAC.ST,yahoo_search,
+SE0009268279,SEYE.ST,yahoo_search,
+SE0009268329,,none,not found
+SE0009268360,,none,Common Stock
+SE0009268618,,none,not found
+SE0009268717,ACARIX.ST,yahoo_search,
+SE0009269467,ATIC.ST,yahoo_search,
+SE0009294853,,none,not found
+SE0009295124,,none,not found
+SE0009320278,,none,Common Stock
+SE0009320286,CARE.ST,yahoo_search,
+SE0009320294,,none,Common Stock
+SE0009320344,,none,Right
+SE0009346109,,none,Common Stock
+SE0009346299,AERW-B.ST,yahoo_search,
+SE0009346513,,none,not found
+SE0009346521,,none,not found
+SE0009356652,,none,not found
+SE0009357429,,none,not found
+SE0009357536,,none,Preference
+SE0009382906,,none,not found
+SE0009383169,,none,Right
+SE0009383177,,none,Preference
+SE0009414303,AXOLOT.ST,yahoo_search,
+SE0009414576,ONCO.ST,yahoo_search,
+SE0009470271,,none,not found
+SE0009495559,,none,not found
+SE0009496094,,none,not found
+SE0009496250,,none,not found
+SE0009496268,,none,Common Stock
+SE0009496482,,none,Common Stock
+SE0009522451,TESSIN.ST,yahoo_search,
+SE0009522568,,none,not found
+SE0009548332,,none,EURO NON-DOLLAR
+SE0009548597,EATG.ST,yahoo_search,
+SE0009554447,,none,not found
+SE0009554454,SBB-B.ST,yahoo_search,
+SE0009554546,,none,EURO MTN
+SE0009580079,,none,not found
+SE0009580426,,none,not found
+SE0009580517,SONE.ST,yahoo_search,
+SE0009580608,,none,not found
+SE0009580756,,none,Common Stock
+SE0009580780,,none,not found
+SE0009581028,,none,not found
+SE0009581051,ISOFOL.ST,yahoo_search,
+SE0009581192,,none,not found
+SE0009606593,OURLIV.ST,yahoo_search,
+SE0009606809,UNIBAP.ST,yahoo_search,
+SE0009606866,,none,Right
+SE0009606874,,none,Common Stock
+SE0009607252,IVACC.ST,yahoo_search,
+SE0009662554,,none,Common Stock
+SE0009662620,,none,not found
+SE0009662638,,none,not found
+SE0009663263,,none,not found
+SE0009663271,,none,not found
+SE0009663289,,none,not found
+SE0009663339,MANTEX.ST,yahoo_search,
+SE0009663511,,none,Common Stock
+SE0009663693,,none,not found
+SE0009663800,,none,not found
+SE0009663826,AMBEA.ST,yahoo_search,
+SE0009663834,,none,Common Stock
+SE0009664154,ANNX.ST,yahoo_search,
+SE0009664188,XMR.ST,yahoo_search,
+SE0009664253,,none,Common Stock
+SE0009664303,,none,Common Stock
+SE0009664436,,none,Common Stock
+SE0009690126,,none,not found
+SE0009690811,,none,Common Stock
+SE0009695927,ACUC.ST,yahoo_search,
+SE0009696487,,none,Common Stock
+SE0009696735,,none,not found
+SE0009696792,,none,Common Stock
+SE0009696883,,none,not found
+SE0009697204,BOHO.ST,yahoo_search,
+SE0009697212,BOHO-PREF.ST,yahoo_search,
+SE0009697220,ENEA.ST,yahoo_search,
+SE0009697303,,none,Right
+SE0009697329,,none,not found
+SE0009722465,ZAPLOX.ST,yahoo_search,
+SE0009722788,,none,not found
+SE0009723125,NXTCL.ST,yahoo_search,
+SE0009773237,,none,not found
+SE0009773633,,none,not found
+SE0009773641,,none,not found
+SE0009778848,MCOV-B.ST,yahoo_search,
+SE0009779085,,none,Common Stock
+SE0009779291,,none,DOMESTIC
+SE0009779796,SEAF.ST,yahoo_search,
+SE0009805401,,none,Common Stock
+SE0009806045,BLINC-B.ST,yahoo_search,
+SE0009806177,,none,Common Stock
+SE0009806219,,none,not found
+SE0009806284,PAX.ST,yahoo_search,
+SE0009806607,MTRS.ST,yahoo_search,
+SE0009806896,,none,not found
+SE0009807266,INTEG-B.ST,yahoo_search,
+SE0009832595,INCOAX.ST,yahoo_search,
+SE0009858152,BONEX.ST,yahoo_search,
+SE0009888506,,none,Common Stock
+SE0009888613,OXE.ST,yahoo_search,
+SE0009888639,,none,not found
+SE0009888738,BOOZT.ST,yahoo_search,
+SE0009888795,,none,not found
+SE0009889157,,none,Common Stock
+SE0009889363,,none,not found
+SE0009889405,,none,not found
+SE0009889488,,none,Common Stock
+SE0009889595,,none,Common Stock
+SE0009889678,INISS-B.ST,yahoo_search,
+SE0009889934,,none,Common Stock
+SE0009890015,,none,not found
+SE0009895386,,none,Common Stock
+SE0009895618,,none,not found
+SE0009895626,,none,not found
+SE0009895634,,none,not found
+SE0009895642,,none,not found
+SE0009920994,REALFI.ST,yahoo_search,
+SE0009921034,,none,Common Stock
+SE0009921109,,none,not found
+SE0009921232,,none,not found
+SE0009921471,TRIAN-B.ST,yahoo_search,
+SE0009921588,BILI-A.ST,yahoo_search,
+SE0009921976,,none,Common Stock
+SE0009922156,ESSITY-A.ST,yahoo_search,
+SE0009922164,ESSITY-B.ST,yahoo_search,
+SE0009922297,,none,not found
+SE0009922305,ALLIGO-B.ST,yahoo_search,
+SE0009947534,SEDANA.ST,yahoo_search,
+SE0009947708,,none,Common Stock
+SE0009947740,,none,Common Stock
+SE0009947948,SUS.ST,yahoo_search,
+SE0009973274,,none,not found
+SE0009973290,,none,not found
+SE0009973308,,none,not found
+SE0009973357,,none,Common Stock
+SE0009973365,,none,Preference
+SE0009973548,CLIME-B.ST,yahoo_search,
+SE0009973563,XSPRAY.ST,yahoo_search,
+SE0009983695,,none,not found
+SE0009983893,ISAB.ST,yahoo_search,
+SE0009984057,,none,not found
+SE0009984073,,none,not found
+SE0009984099,,none,not found
+SE0009994429,FASTAT.ST,yahoo_search,
+SE0009994445,,none,Common Stock
+SE0009994833,,none,not found
+SE0009997018,HMS.ST,yahoo_search,
+SE0009997331,,none,Common Stock
+SE0010022558,,none,Right
+SE0010022566,,none,not found
+SE0010023184,,none,DOMESTIC MTN
+SE0010023432,,none,Common Stock
+SE0010023556,,none,not found
+SE0010048884,FAG.ST,yahoo_search,
+SE0010100958,LATO-B.ST,yahoo_search,
+SE0010101188,,none,not found
+SE0010101824,,none,Common Stock
+SE0010102095,BIBB.ST,yahoo_search,
+SE0010133256,,none,not found
+SE0010133470,,none,DOMESTIC MTN
+SE0010133785,ALZCUR.ST,yahoo_search,
+SE0010133819,,none,not found
+SE0010169516,,none,not found
+SE0010219626,SENZA.ST,yahoo_search,
+SE0010219758,,none,Right
+SE0010219766,,none,Common Stock
+SE0010219774,,none,not found
+SE0010245373,QIIWI.ST,yahoo_search,
+SE0010270793,GBK.ST,yahoo_search,
+SE0010296269,FRAM-B.ST,yahoo_search,
+SE0010297283,,none,DOMESTIC
+SE0010297507,,none,Common Stock
+SE0010297523,,none,not found
+SE0010298109,,none,Common Stock
+SE0010323311,BIOA-B.ST,yahoo_search,
+SE0010323451,,none,Common Stock
+SE0010323998,BALCO.ST,yahoo_search,
+SE0010353136,,none,not found
+SE0010413658,ZENZIP-B.ST,yahoo_search,
+SE0010414136,,none,not found
+SE0010414144,,none,not found
+SE0010414250,,none,Common Stock
+SE0010414268,,none,Right
+SE0010414425,,none,DOMESTIC MTN
+SE0010414482,TOUCH.ST,yahoo_search,
+SE0010414573,,none,Common Stock
+SE0010414615,,none,Common Stock
+SE0010415281,INQ.ST,yahoo_search,
+SE0010440834,,none,not found
+SE0010440859,,none,not found
+SE0010441139,RAIL.ST,yahoo_search,
+SE0010441584,,none,Common Stock
+SE0010441675,,none,not found
+SE0010442038,,none,not found
+SE0010442418,BAHN-B.ST,yahoo_search,
+SE0010442640,,none,not found
+SE0010442962,,none,Common Stock
+SE0010468116,ARJO-B.ST,yahoo_search,
+SE0010468124,,none,Common Stock
+SE0010468918,LYKO-A.ST,yahoo_search,
+SE0010469221,TSEC.ST,yahoo_search,
+SE0010494609,,none,not found
+SE0010494708,BOTX.ST,yahoo_search,
+SE0010494856,,none,not found
+SE0010494864,,none,not found
+SE0010520106,EG7.ST,yahoo_search,
+SE0010520155,,none,Common Stock
+SE0010520205,,none,not found
+SE0010520221,,none,not found
+SE0010520254,K2A-B.ST,yahoo_search,
+SE0010520270,,none,Right
+SE0010520429,,none,not found
+SE0010520437,,none,not found
+SE0010520478,,none,Right
+SE0010520486,,none,not found
+SE0010520585,,none,Right
+SE0010520593,,none,not found
+SE0010520908,MAGI.ST,yahoo_search,
+SE0010520981,,none,Common Stock
+SE0010521120,,none,not found
+SE0010521153,,none,Common Stock
+SE0010546242,ACCON.ST,yahoo_search,
+SE0010546622,DEVP-B.ST,yahoo_search,
+SE0010546739,,none,not found
+SE0010546838,,none,not found
+SE0010546911,DONE.ST,yahoo_search,
+SE0010547042,,none,EURO NON-DOLLAR
+SE0010547075,FLEXQ.ST,yahoo_search,
+SE0010547273,,none,Common Stock
+SE0010547786,BESQAB.ST,yahoo_search,
+SE0010573113,ACE.ST,yahoo_search,
+SE0010598250,,none,not found
+SE0010598292,,none,not found
+SE0010598573,,none,Common Stock
+SE0010598623,,none,not found
+SE0010599704,,none,not found
+SE0010600106,INFREA.ST,yahoo_search,
+SE0010600122,,none,not found
+SE0010600304,,none,not found
+SE0010600411,,none,not found
+SE0010600429,TRIBO-B.ST,yahoo_search,
+SE0010600528,,none,not found
+SE0010600544,,none,not found
+SE0010600551,,none,not found
+SE0010636233,,none,not found
+SE0010636381,,none,Common Stock
+SE0010636449,,none,not found
+SE0010636704,,none,Common Stock
+SE0010662585,,none,Common Stock
+SE0010663021,,none,Right
+SE0010663161,VPAB-B.ST,yahoo_search,
+SE0010663302,SVOL-A.ST,yahoo_search,
+SE0010663310,SVOL-B.ST,yahoo_search,
+SE0010713834,,none,not found
+SE0010713941,,none,not found
+SE0010713958,,none,not found
+SE0010714279,CORE-A.ST,yahoo_search,
+SE0010714287,CORE-B.ST,yahoo_search,
+SE0010714311,CORE-PREF.ST,yahoo_search,
+SE0010739821,,none,not found
+SE0010739979,,none,not found
+SE0010740076,,none,not found
+SE0010740308,,none,not found
+SE0010740738,,none,not found
+SE0010766105,,none,DOMESTIC
+SE0010769182,SAFETY-B.ST,yahoo_search,
+SE0010769356,,none,Common Stock
+SE0010769380,,none,not found
+SE0010820191,,none,Common Stock
+SE0010820381,SMOL.ST,yahoo_search,
+SE0010820498,,none,not found
+SE0010820514,NP3-PREF.ST,yahoo_search,
+SE0010820613,VSSAB-B.ST,yahoo_search,
+SE0010831321,FLUI.ST,yahoo_search,
+SE0010831628,,none,Common Stock
+SE0010832204,CIBUS.ST,yahoo_search,
+SE0010832253,,none,Right
+SE0010832261,,none,not found
+SE0010832287,,none,Common Stock
+SE0010832527,,none,not found
+SE0010832717,,none,DOMESTIC MTN
+SE0010833178,,none,not found
+SE0010868943,ICO.ST,yahoo_search,
+SE0010869487,,none,Common Stock
+SE0010869552,GABA.ST,yahoo_search,
+SE0010869875,,none,not found
+SE0010920827,,none,not found
+SE0010920868,,none,not found
+SE0010947036,,none,not found
+SE0010947093,,none,not found
+SE0010948372,,none,not found
+SE0010948588,BHG.ST,yahoo_search,
+SE0010948711,OVZON.ST,yahoo_search,
+SE0010949388,,none,Right
+SE0010949396,,none,not found
+SE0010985028,GREEN.ST,yahoo_search,
+SE0010985598,,none,not found
+SE0011036326,,none,not found
+SE0011036540,,none,not found
+SE0011036821,BORG.ST,yahoo_search,
+SE0011062595,,none,not found
+SE0011062710,,none,not found
+SE0011062728,,none,not found
+SE0011088624,,none,not found
+SE0011088665,BOL.ST,yahoo_search,
+SE0011088780,,none,DOMESTIC MTN
+SE0011088996,,none,Right
+SE0011089200,,none,not found
+SE0011089234,,none,Common Stock
+SE0011089259,,none,not found
+SE0011089663,,none,Common Stock
+SE0011089697,,none,not found
+SE0011089820,,none,not found
+SE0011089838,,none,not found
+SE0011089929,STHLM.ST,yahoo_search,
+SE0011090000,HOLM-A.ST,yahoo_search,
+SE0011090018,HOLM-B.ST,yahoo_search,
+SE0011090547,BEIA-B.ST,yahoo_search,
+SE0011115963,,none,SDR
+SE0011115971,,none,not found
+SE0011115989,,none,not found
+SE0011116508,,none,Common Stock
+SE0011116524,,none,not found
+SE0011166610,ATCO-A.ST,yahoo_search,
+SE0011166628,,none,not found
+SE0011166636,,none,not found
+SE0011166768,,none,not found
+SE0011166776,,none,not found
+SE0011166933,,none,Common Stock
+SE0011166941,,none,not found
+SE0011166974,FABG.ST,yahoo_search,
+SE0011167089,,none,not found
+SE0011167170,FREEM.ST,yahoo_search,
+SE0011167451,,none,not found
+SE0011167535,GOMERO.ST,yahoo_search,
+SE0011167725,ITECH.ST,yahoo_search,
+SE0011167956,NCAB.ST,yahoo_search,
+SE0011178193,,none,not found
+SE0011178201,RPLAN.ST,yahoo_search,
+SE0011178375,,none,not found
+SE0011178383,,none,not found
+SE0011178391,,none,not found
+SE0011178458,DICOT.ST,yahoo_search,
+SE0011178763,,none,not found
+SE0011204486,,none,not found
+SE0011204510,NMAN.ST,yahoo_search,
+SE0011204809,,none,not found
+SE0011204858,,none,Common Stock
+SE0011205194,WIHL.ST,yahoo_search,
+SE0011205202,VITR.ST,yahoo_search,
+SE0011205301,,none,not found
+SE0011205335,,none,not found
+SE0011205343,,none,not found
+SE0011205541,,none,not found
+SE0011230937,,none,not found
+SE0011231158,BOUL.ST,yahoo_search,
+SE0011256312,,none,Common Stock
+SE0011256353,,none,not found
+SE0011281757,MIDS.ST,yahoo_search,
+SE0011281823,,none,Common Stock
+SE0011281849,,none,not found
+SE0011282391,,none,not found
+SE0011282409,,none,not found
+SE0011282573,,none,not found
+SE0011282755,,none,not found
+SE0011282805,,none,not found
+SE0011282847,,none,Common Stock
+SE0011307883,,none,not found
+SE0011308279,,none,not found
+SE0011308287,,none,not found
+SE0011308311,,none,not found
+SE0011309236,,none,Preference
+SE0011310093,,none,not found
+SE0011310101,,none,not found
+SE0011310127,,none,not found
+SE0011310283,,none,not found
+SE0011310655,,none,not found
+SE0011310671,,none,not found
+SE0011310721,,none,not found
+SE0011310879,,none,not found
+SE0011311554,DIVIO-B.ST,yahoo_search,
+SE0011337096,,none,not found
+SE0011337625,,none,Right
+SE0011337666,,none,Common Stock
+SE0011337708,AAK.ST,yahoo_search,
+SE0011414283,,none,Common Stock
+SE0011415249,HOODIN.ST,yahoo_search,
+SE0011415595,,none,Common Stock
+SE0011415710,,none,Common Stock
+SE0011426428,ALTRA.ST,yahoo_search,
+SE0011451921,,none,Common Stock
+SE0011452036,,none,not found
+SE0011452234,SECT-B.ST,yahoo_search,
+SE0011452523,,none,not found
+SE0011527845,QLINEA.ST,yahoo_search,
+SE0011528017,NIO.ST,yahoo_search,
+SE0011528082,,none,Common Stock
+SE0011563295,,none,not found
+SE0011563410,,none,not found
+SE0011614379,,none,not found
+SE0011614965,BEYOND.ST,yahoo_search,
+SE0011616036,,none,not found
+SE0011616382,,none,not found
+SE0011641794,,none,Common Stock
+SE0011642727,,none,not found
+SE0011643410,,none,Common Stock
+SE0011643980,,none,Common Stock
+SE0011644079,,none,not found
+SE0011644087,,none,not found
+SE0011644376,BIM.ST,yahoo_search,
+SE0011644392,,none,not found
+SE0011670025,POLAR.ST,yahoo_search,
+SE0011670223,,none,not found
+SE0011721356,,none,not found
+SE0011724889,,none,Common Stock
+SE0011725084,S2M.ST,yahoo_search,
+SE0011725506,MAXENT-B.ST,yahoo_search,
+SE0011750744,,none,not found
+SE0011751213,,none,not found
+SE0011751866,MOBA.ST,yahoo_search,
+SE0011751916,,none,not found
+SE0011762517,,none,Common Stock
+SE0011788504,,none,not found
+SE0011844091,SBB-D.ST,yahoo_search,
+SE0011844174,,none,not found
+SE0011844430,,none,not found
+SE0011844539,,none,not found
+SE0011844547,,none,not found
+SE0011870195,LIME.ST,yahoo_search,
+SE0011870344,,none,not found
+SE0011870419,,none,not found
+SE0011870443,,none,not found
+SE0011870757,,none,Common Stock
+SE0011895952,,none,not found
+SE0011896042,,none,not found
+SE0011896059,,none,not found
+SE0011896265,,none,not found
+SE0011896356,,none,not found
+SE0011896562,,none,not found
+SE0011896661,,none,not found
+SE0011896679,,none,not found
+SE0011896695,,none,not found
+SE0011896786,,none,not found
+SE0011923341,CAG.ST,yahoo_search,
+SE0011923382,,none,not found
+SE0011973544,,none,not found
+SE0011973833,,none,not found
+SE0011973940,,none,Common Stock
+SE0011974302,,none,not found
+SE0011985027,,none,not found
+SE0011985043,,none,not found
+SE0011985068,,none,not found
+SE0011985514,UPSALE.ST,yahoo_search,
+SE0012010932,,none,not found
+SE0012011153,,none,not found
+SE0012011831,,none,not found
+SE0012012235,,none,not found
+SE0012012268,,none,Common Stock
+SE0012012482,,none,not found
+SE0012012508,,none,Common Stock
+SE0012040459,,none,Common Stock
+SE0012065589,CX.ST,yahoo_search,
+SE0012116267,,none,not found
+SE0012116275,,none,not found
+SE0012116390,VPLAY-B.ST,yahoo_search,
+SE0012116416,,none,not found
+SE0012116580,,none,not found
+SE0012141687,SKIS-B.ST,yahoo_search,
+SE0012193340,,none,Common Stock
+SE0012194462,,none,not found
+SE0012229920,FERRO.ST,yahoo_search,
+SE0012230431,,none,not found
+SE0012230472,,none,not found
+SE0012230720,,none,not found
+SE0012231074,,none,SDR
+SE0012257970,STWK.ST,yahoo_search,
+SE0012308088,TEQ.ST,yahoo_search,
+SE0012313302,LEVEL.ST,yahoo_search,
+SE0012323715,KAR.ST,yahoo_search,
+SE0012323756,,none,not found
+SE0012324226,VPLAY-A.ST,yahoo_search,
+SE0012325272,,none,not found
+SE0012351740,,none,not found
+SE0012351799,,none,not found
+SE0012377000,,none,Common Stock
+SE0012377802,,none,not found
+SE0012428019,,none,not found
+SE0012428167,,none,not found
+SE0012428175,,none,not found
+SE0012428233,,none,not found
+SE0012428357,,none,not found
+SE0012453686,,none,not found
+SE0012453785,,none,not found
+SE0012453983,,none,not found
+SE0012454072,AZA.ST,yahoo_search,
+SE0012454205,,none,not found
+SE0012454379,BETS-B.ST,yahoo_search,
+SE0012454395,,none,not found
+SE0012454619,,none,Common Stock
+SE0012455012,,none,not found
+SE0012455202,,none,not found
+SE0012455210,,none,not found
+SE0012455277,,none,not found
+SE0012455335,,none,not found
+SE0012455350,BORG.ST,yahoo_search,
+SE0012455525,,none,Common Stock
+SE0012455533,,none,Common Stock
+SE0012455616,,none,not found
+SE0012455673,BOL.ST,yahoo_search,
+SE0012480937,,none,not found
+SE0012481133,VERT-B.ST,yahoo_search,
+SE0012481364,JOMA.ST,yahoo_search,
+SE0012481505,,none,not found
+SE0012481570,,none,Common Stock
+SE0012507614,,none,not found
+SE0012533222,,none,not found
+SE0012533370,,none,not found
+SE0012558617,,none,Common Stock
+SE0012558864,,none,not found
+SE0012558880,,none,not found
+SE0012569531,,none,Common Stock
+SE0012569663,,none,Common Stock
+SE0012569853,,none,Common Stock
+SE0012570208,,none,Common Stock
+SE0012570323,,none,not found
+SE0012570422,POLAR.ST,yahoo_search,
+SE0012570448,OSSD.ST,yahoo_search,
+SE0012595791,,none,not found
+SE0012596120,MOFAST.ST,yahoo_search,
+SE0012596484,,none,Common Stock
+SE0012596518,SOLT-BTA.ST,yahoo_search,
+SE0012621811,,none,not found
+SE0012622207,,none,not found
+SE0012622785,,none,not found
+SE0012623080,,none,not found
+SE0012673267,EVO.ST,yahoo_search,
+SE0012673291,MNTC.ST,yahoo_search,
+SE0012673424,,none,not found
+SE0012673531,,none,not found
+SE0012673747,,none,not found
+SE0012674091,,none,not found
+SE0012674307,,none,not found
+SE0012674521,,none,not found
+SE0012675361,IRLAB-A.ST,yahoo_search,
+SE0012675718,,none,not found
+SE0012676336,HEBA-B.ST,yahoo_search,
+SE0012702744,,none,not found
+SE0012703072,,none,not found
+SE0012703452,,none,not found
+SE0012729366,TROAX.ST,yahoo_search,
+SE0012729937,,none,Common Stock
+SE0012729994,,none,not found
+SE0012740017,,none,not found
+SE0012740074,ZOOM.ST,yahoo_search,
+SE0012740199,,none,not found
+SE0012740256,,none,not found
+SE0012740280,,none,Common Stock
+SE0012740553,,none,not found
+SE0012816510,,none,not found
+SE0012827822,,none,not found
+SE0012853455,EQT.ST,yahoo_search,
+SE0012853661,SECT-B.ST,yahoo_search,
+SE0012904779,TRAIN-B.ST,yahoo_search,
+SE0012904803,KEBNI-B.ST,yahoo_search,
+SE0012930105,,none,Common Stock
+SE0012955276,,none,Common Stock
+SE0012990646,,none,not found
+SE0013016128,,none,Common Stock
+SE0013041837,,none,not found
+SE0013042108,AMIDO.ST,yahoo_search,
+SE0013042561,FLMNG.ST,yahoo_search,
+SE0013050606,,none,Common Stock
+SE0013050747,,none,Common Stock
+SE0013101128,,none,Common Stock
+SE0013101193,,none,not found
+SE0013102456,,none,not found
+SE0013102472,,none,Common Stock
+SE0013108867,,none,Common Stock
+SE0013109832,,none,not found
+SE0013110046,,none,not found
+SE0013110129,,none,Common Stock
+SE0013110186,,none,Common Stock
+SE0013110418,,none,not found
+SE0013110442,,none,not found
+SE0013110749,,none,not found
+SE0013121340,,none,not found
+SE0013121589,EMBRAC-B.ST,yahoo_search,
+SE0013122017,,none,not found
+SE0013147113,,none,Common Stock
+SE0013222304,,none,not found
+SE0013256682,KINV-B.ST,yahoo_search,
+SE0013256708,,none,Common Stock
+SE0013281854,,none,not found
+SE0013281979,,none,Common Stock
+SE0013282746,,none,not found
+SE0013358298,,none,not found
+SE0013358710,,none,Common Stock
+SE0013359106,,none,not found
+SE0013382041,,none,Common Stock
+SE0013382066,QAIR.ST,yahoo_search,
+SE0013382355,KFAST-B.ST,yahoo_search,
+SE0013382439,,none,not found
+SE0013382546,,none,Common Stock
+SE0013409273,,none,Common Stock
+SE0013409760,ODI.ST,yahoo_search,
+SE0013460201,,none,not found
+SE0013460276,,none,not found
+SE0013460375,,none,Common Stock
+SE0013460714,,none,Common Stock
+SE0013460771,,none,not found
+SE0013460888,,none,Right
+SE0013460896,,none,not found
+SE0013486099,,none,Preference
+SE0013486214,,none,not found
+SE0013486255,,none,Common Stock
+SE0013486552,QLIFE.ST,yahoo_search,
+SE0013511722,,none,Common Stock
+SE0013511946,,none,not found
+SE0013512035,,none,not found
+SE0013512266,,none,not found
+SE0013512282,MONI.ST,yahoo_search,
+SE0013512464,IDUN-B.ST,yahoo_search,
+SE0013512506,FPAR-A.ST,yahoo_search,
+SE0013512514,FPAR-D.ST,yahoo_search,
+SE0013512522,,none,not found
+SE0013512530,,none,not found
+SE0013513058,,none,not found
+SE0013513652,,none,Common Stock
+SE0013513991,,none,not found
+SE0013514007,,none,not found
+SE0013545506,,none,not found
+SE0013646924,,none,not found
+SE0013647054,,none,not found
+SE0013647369,,none,Common Stock
+SE0013647385,BICO.ST,yahoo_search,
+SE0013647658,,none,not found
+SE0013647880,,none,not found
+SE0013668233,,none,not found
+SE0013719077,QLIRO.ST,yahoo_search,
+SE0013719333,,none,not found
+SE0013719788,,none,DOMESTIC MTN
+SE0013745668,,none,not found
+SE0013747870,EPRO-B.ST,yahoo_search,
+SE0013748324,,none,Right
+SE0013748332,,none,Common Stock
+SE0013748894,,none,not found
+SE0013774619,,none,not found
+SE0013774668,,none,Common Stock
+SE0013774825,,none,not found
+SE0013775541,,none,not found
+SE0013775665,,none,not found
+SE0013775970,,none,not found
+SE0013877404,,none,Right
+SE0013877412,,none,not found
+SE0013883337,,none,DOMESTIC MTN
+SE0013883675,,none,DOMESTIC MTN
+SE0013884160,,none,DOMESTIC MTN
+SE0013888245,,none,Common Stock
+SE0013888443,BIOEX.ST,yahoo_search,
+SE0013888831,EMBELL.ST,yahoo_search,
+SE0013888963,HUNTER.ST,yahoo_search,
+SE0013914157,,none,not found
+SE0013914249,,none,Common Stock
+SE0013914744,,none,not found
+SE0013914819,CDMIL.ST,yahoo_search,
+SE0014035747,,none,not found
+SE0014035762,EXS.ST,yahoo_search,
+SE0014036125,,none,not found
+SE0014186557,,none,Common Stock
+SE0014186615,,none,not found
+SE0014186623,,none,Common Stock
+SE0014262077,,none,Common Stock
+SE0014262218,,none,not found
+SE0014262549,,none,Common Stock
+SE0014262887,BIOF.ST,yahoo_search,
+SE0014262929,,none,not found
+SE0014263091,,none,not found
+SE0014398913,,none,not found
+SE0014399002,,none,not found
+SE0014399283,,none,not found
+SE0014399390,,none,not found
+SE0014399424,,none,not found
+SE0014399432,,none,Common Stock
+SE0014401014,MAGLE.ST,yahoo_search,
+SE0014401063,,none,not found
+SE0014401121,,none,Common Stock
+SE0014401329,KLIMAT.ST,yahoo_search,
+SE0014401378,ALIF-B.ST,yahoo_search,
+SE0014401907,,none,not found
+SE0014402061,,none,not found
+SE0014402400,,none,Common Stock
+SE0014402558,,none,not found
+SE0014428157,,none,not found
+SE0014428447,ESGR-B.ST,yahoo_search,
+SE0014428512,SUS.ST,yahoo_search,
+SE0014428587,,none,not found
+SE0014428595,,none,not found
+SE0014428728,,none,not found
+SE0014428777,,none,not found
+SE0014428801,,none,not found
+SE0014428835,VNV.ST,yahoo_search,
+SE0014429007,,none,Common Stock
+SE0014429064,,none,not found
+SE0014429114,,none,not found
+SE0014452538,,none,not found
+SE0014452942,,none,not found
+SE0014453247,,none,not found
+SE0014453874,WBGR-B.ST,yahoo_search,
+SE0014478988,,none,not found
+SE0014504619,,none,not found
+SE0014504718,,none,not found
+SE0014504817,LOOMIS.ST,yahoo_search,
+SE0014555066,,none,not found
+SE0014555629,,none,not found
+SE0014556718,,none,not found
+SE0014557617,,none,not found
+SE0014583332,BOMILL.ST,yahoo_search,
+SE0014608915,FNOVA-B.ST,yahoo_search,
+SE0014609061,SECT-B.ST,yahoo_search,
+SE0014609087,,none,not found
+SE0014609194,,none,Common Stock
+SE0014684528,,none,not found
+SE0014684569,PROGEN.ST,yahoo_search,
+SE0014694691,GCOR.ST,yahoo_search,
+SE0014704763,SPGR.ST,yahoo_search,
+SE0014730123,,none,not found
+SE0014730347,,none,Common Stock
+SE0014730719,,none,not found
+SE0014730982,,none,not found
+SE0014731089,,none,Common Stock
+SE0014731121,,none,not found
+SE0014731154,,none,Common Stock
+SE0014781795,ADDT-B.ST,yahoo_search,
+SE0014782926,,none,not found
+SE0014808838,,none,Common Stock
+SE0014808853,,none,Common Stock
+SE0014808978,RECY-B.ST,yahoo_search,
+SE0014829255,NEOLA.ST,yahoo_search,
+SE0014829271,,none,Common Stock
+SE0014829321,,none,not found
+SE0014829495,,none,Common Stock
+SE0014829644,,none,not found
+SE0014855292,,none,Common Stock
+SE0014956306,,none,not found
+SE0014956637,,none,not found
+SE0014956819,SFAST.ST,yahoo_search,
+SE0014956991,,none,not found
+SE0014957049,,none,not found
+SE0014957114,,none,not found
+SE0014957320,,none,Preference
+SE0014957379,,none,not found
+SE0014957536,,none,not found
+SE0014960365,SWEC-A.ST,yahoo_search,
+SE0014960373,SWEC-B.ST,yahoo_search,
+SE0014960431,,none,Common Stock
+SE0014965604,,none,Common Stock
+SE0014965687,,none,not found
+SE0014965760,,none,not found
+SE0014990966,LAGR-B.ST,yahoo_search,
+SE0014991246,,none,not found
+SE0015191739,,none,Common Stock
+SE0015191911,CDON.ST,yahoo_search,
+SE0015192067,SAVE.ST,yahoo_search,
+SE0015192075,LXB.ST,yahoo_search,
+SE0015192828,,none,Common Stock
+SE0015193016,,none,Common Stock
+SE0015193206,,none,not found
+SE0015193248,,none,not found
+SE0015193289,,none,not found
+SE0015193305,,none,Common Stock
+SE0015193412,,none,Common Stock
+SE0015193438,,none,not found
+SE0015193529,CIRCHE.ST,yahoo_search,
+SE0015193586,,none,not found
+SE0015193719,,none,not found
+SE0015193800,NFO.ST,yahoo_search,
+SE0015194659,,none,Common Stock
+SE0015194709,,none,not found
+SE0015194717,,none,not found
+SE0015194832,,none,Common Stock
+SE0015195326,,none,not found
+SE0015195334,,none,not found
+SE0015195482,,none,not found
+SE0015195706,BESQAB-PREF-B.ST,yahoo_search,
+SE0015195771,FG.ST,yahoo_search,
+SE0015195847,,none,DOMESTIC MTN
+SE0015195888,,none,Common Stock
+SE0015221221,,none,not found
+SE0015221312,,none,not found
+SE0015221619,,none,Common Stock
+SE0015221668,,none,not found
+SE0015221684,ANNE-B.ST,yahoo_search,
+SE0015221908,TRAN-A.ST,yahoo_search,
+SE0015221916,TRAN-B.ST,yahoo_search,
+SE0015221932,,none,not found
+SE0015222054,,none,Common Stock
+SE0015222088,,none,DOMESTIC
+SE0015222377,,none,not found
+SE0015222450,,none,not found
+SE0015222583,,none,not found
+SE0015242896,,none,Common Stock
+SE0015242961,,none,not found
+SE0015243035,,none,not found
+SE0015243407,,none,Common Stock
+SE0015243605,,none,not found
+SE0015243712,,none,not found
+SE0015243761,,none,not found
+SE0015244116,,none,not found
+SE0015244132,AQUAT.ST,yahoo_search,
+SE0015244462,,none,not found
+SE0015244470,,none,Common Stock
+SE0015244520,BINV.ST,yahoo_search,
+SE0015244884,NEWBRY.ST,yahoo_search,
+SE0015245097,ABERA.ST,yahoo_search,
+SE0015245535,NELLY.ST,yahoo_search,
+SE0015245592,,none,not found
+SE0015245758,,none,DOMESTIC
+SE0015345897,,none,Common Stock
+SE0015346135,SF.ST,yahoo_search,
+SE0015346424,SPERM.ST,yahoo_search,
+SE0015346507,,none,not found
+SE0015346770,,none,not found
+SE0015346812,,none,Common Stock
+SE0015346895,SFL.ST,yahoo_search,
+SE0015356944,,none,Common Stock
+SE0015382007,,none,not found
+SE0015382023,,none,Right
+SE0015382072,,none,Common Stock
+SE0015382080,ELIC.ST,yahoo_search,
+SE0015382148,,none,Common Stock
+SE0015407275,,none,not found
+SE0015407382,FASTAT.ST,yahoo_search,
+SE0015407390,BOAT.ST,yahoo_search,
+SE0015407432,,none,not found
+SE0015482732,,none,Right
+SE0015482740,,none,not found
+SE0015483185,,none,not found
+SE0015483276,,none,Common Stock
+SE0015503388,,none,Common Stock
+SE0015504097,ONCOZ.ST,yahoo_search,
+SE0015504477,FRACTL.ST,yahoo_search,
+SE0015504519,TELLUS.ST,yahoo_search,
+SE0015504626,,none,Common Stock
+SE0015530670,,none,not found
+SE0015530779,,none,not found
+SE0015556873,CHEF.ST,yahoo_search,
+SE0015556907,,none,Common Stock
+SE0015557053,,none,Common Stock
+SE0015657622,,none,not found
+SE0015657663,,none,not found
+SE0015657697,STUDBO.ST,yahoo_search,
+SE0015657788,YUBICO.ST,yahoo_search,
+SE0015657820,MIR.ST,yahoo_search,
+SE0015657853,DSNO.ST,yahoo_search,
+SE0015657895,KRONA.ST,yahoo_search,
+SE0015658091,,none,not found
+SE0015658109,EPI-A.ST,yahoo_search,
+SE0015658117,EPI-B.ST,openfigi,Common Stock
+SE0015658364,PIERCE.ST,yahoo_search,
+SE0015658380,DLAB.ST,yahoo_search,
+SE0015658570,,none,Common Stock
+SE0015659206,,none,not found
+SE0015659834,RUG.ST,yahoo_search,
+SE0015659941,,none,Common Stock
+SE0015660014,ACRI-A.ST,yahoo_search,
+SE0015660030,ACRI-B.ST,openfigi,Common Stock
+SE0015660287,BUY.ST,yahoo_search,
+SE0015660840,,none,Common Stock
+SE0015660899,,none,Common Stock
+SE0015661152,HAMLET-B.ST,yahoo_search,
+SE0015661236,CRED-A.ST,yahoo_search,
+SE0015671995,HEM.ST,yahoo_search,
+SE0015672266,,none,Common Stock
+SE0015672282,BETS-B.ST,yahoo_search,
+SE0015797352,,none,Common Stock
+SE0015797600,,none,Common Stock
+SE0015797873,EMB.ST,yahoo_search,
+SE0015809967,ODIN.ST,yahoo_search,
+SE0015810007,ATIN.ST,yahoo_search,
+SE0015810247,,none,Common Stock
+SE0015810502,CHECK.ST,yahoo_search,
+SE0015810577,OEM-B.ST,yahoo_search,
+SE0015810700,,none,not found
+SE0015810817,ARPL.ST,yahoo_search,
+SE0015811377,EDYOU.ST,yahoo_search,
+SE0015811559,BOL.ST,yahoo_search,
+SE0015811625,BRILL.ST,yahoo_search,
+SE0015811674,,none,not found
+SE0015811682,,none,not found
+SE0015811807,BORG.ST,yahoo_search,
+SE0015811955,INVE-A.ST,yahoo_search,
+SE0015811963,INVE-B.ST,yahoo_search,
+SE0015812128,NORB-B.ST,yahoo_search,
+SE0015812201,,none,not found
+SE0015812391,,none,Common Stock
+SE0015812417,GARO.ST,yahoo_search,
+SE0015812508,,none,not found
+SE0015812516,WYLD.ST,yahoo_search,
+SE0015812524,,none,Common Stock
+SE0015812540,,none,not found
+SE0015812573,,none,Common Stock
+SE0015837752,,none,Common Stock
+SE0015948591,,none,Common Stock
+SE0015949037,HEIM-PREF.ST,yahoo_search,
+SE0015949201,LIFCO-B.ST,yahoo_search,
+SE0015949334,,none,Common Stock
+SE0015949383,,none,not found
+SE0015949433,LINC.ST,yahoo_search,
+SE0015949482,,none,Common Stock
+SE0015949540,,none,not found
+SE0015949748,BEIJ-B.ST,yahoo_search,
+SE0015949771,USWE.ST,yahoo_search,
+SE0015949847,,none,not found
+SE0015949854,,none,not found
+SE0015949946,CEDER.ST,yahoo_search,
+SE0015950001,,none,Common Stock
+SE0015950308,FREJA.ST,yahoo_search,
+SE0015950324,,none,not found
+SE0015950399,TAGM-B.ST,yahoo_search,
+SE0015960711,,none,Common Stock
+SE0015960778,,none,Common Stock
+SE0015960935,ACAST.ST,yahoo_search,
+SE0015961016,,none,Common Stock
+SE0015961024,YIELD.ST,yahoo_search,
+SE0015961107,,none,not found
+SE0015961180,MAVEN.ST,yahoo_search,
+SE0015961222,PACT.ST,yahoo_search,
+SE0015961404,SLEEP.ST,yahoo_search,
+SE0015961594,CORE-D.ST,yahoo_search,
+SE0015961826,,none,Common Stock
+SE0015961909,HEXA-B.ST,yahoo_search,
+SE0015961982,VIMIAN.ST,yahoo_search,
+SE0015962048,,none,Common Stock
+SE0015962097,ITAB.ST,yahoo_search,
+SE0015962105,,none,Common Stock
+SE0015962147,PRFO.ST,yahoo_search,
+SE0015962444,,none,not found
+SE0015962477,NOLA-B.ST,yahoo_search,
+SE0015962485,RVRC.ST,yahoo_search,
+SE0015987565,EFFH.ST,yahoo_search,
+SE0015987714,,none,not found
+SE0015987904,MODTX.ST,yahoo_search,
+SE0015987946,SYNT.ST,yahoo_search,
+SE0015988019,NIBE-B.ST,yahoo_search,
+SE0015988100,MBBAB.ST,yahoo_search,
+SE0015988134,,none,Common Stock
+SE0015988167,SECARE.ST,yahoo_search,
+SE0015988274,PILA.ST,yahoo_search,
+SE0015988373,SEDANA.ST,yahoo_search,
+SE0016038608,,none,not found
+SE0016074124,,none,Common Stock
+SE0016074249,MILDEF.ST,yahoo_search,
+SE0016074256,BOKUS.ST,yahoo_search,
+SE0016074629,,none,not found
+SE0016075063,,none,Common Stock
+SE0016075246,WTW-A.ST,yahoo_search,
+SE0016075337,,none,Common Stock
+SE0016075451,FIRST-B.ST,yahoo_search,
+SE0016075691,,none,Common Stock
+SE0016076285,,none,Right
+SE0016076293,,none,not found
+SE0016101521,GIGA.ST,yahoo_search,
+SE0016101679,KFAST-B.ST,yahoo_search,
+SE0016101760,,none,Common Stock
+SE0016101844,SINCH.ST,yahoo_search,
+SE0016101935,LARK.ST,yahoo_search,
+SE0016101992,,none,not found
+SE0016127716,,none,not found
+SE0016127831,,none,Common Stock
+SE0016128151,VEFAB.ST,yahoo_search,
+SE0016128169,,none,Common Stock
+SE0016273734,,none,not found
+SE0016275051,,none,not found
+SE0016275069,INISS-B.ST,yahoo_search,
+SE0016275333,,none,Common Stock
+SE0016275663,,none,not found
+SE0016275895,,none,not found
+SE0016276539,SODER.ST,yahoo_search,
+SE0016276752,BIOEX.ST,yahoo_search,
+SE0016276851,AGROUP.ST,yahoo_search,
+SE0016278139,WRV.ST,yahoo_search,
+SE0016278154,HILB-B.ST,yahoo_search,
+SE0016278196,,none,not found
+SE0016278212,,none,not found
+SE0016288476,BBROOM.ST,yahoo_search,
+SE0016288591,,none,not found
+SE0016288641,FSPORT.ST,yahoo_search,
+SE0016588867,DVYSR.ST,yahoo_search,
+SE0016589063,SOUND.ST,yahoo_search,
+SE0016589113,,none,not found
+SE0016589188,ELUX-B.ST,yahoo_search,
+SE0016609333,COLLAX.ST,yahoo_search,
+SE0016609358,,none,not found
+SE0016609499,SYSR.ST,yahoo_search,
+SE0016609671,,none,Common Stock
+SE0016609804,,none,not found
+SE0016609846,FLAT-B.ST,yahoo_search,
+SE0016609911,,none,Common Stock
+SE0016610083,,none,Common Stock
+SE0016610216,,none,not found
+SE0016785364,,none,not found
+SE0016785406,SOLT-BTA.ST,yahoo_search,
+SE0016785513,,none,not found
+SE0016785778,,none,not found
+SE0016785786,EMIL-B.ST,yahoo_search,
+SE0016785794,EMIL-PREF.ST,yahoo_search,
+SE0016786040,W5.ST,yahoo_search,
+SE0016786545,,none,not found
+SE0016787006,,none,not found
+SE0016787071,TRUE-B.ST,yahoo_search,
+SE0016787279,XPC.ST,yahoo_search,
+SE0016797591,KJELL.ST,yahoo_search,
+SE0016797732,STOR-B.ST,yahoo_search,
+SE0016797773,CANDLE-B.ST,yahoo_search,
+SE0016797971,SOLIDX.ST,yahoo_search,
+SE0016797989,ALBERT.ST,yahoo_search,
+SE0016798045,KAV.ST,yahoo_search,
+SE0016798417,NETEL.ST,yahoo_search,
+SE0016798490,,none,not found
+SE0016798581,,none,Common Stock
+SE0016798763,CTEK.ST,yahoo_search,
+SE0016799001,,none,Common Stock
+SE0016799068,BEAMMW-B.ST,yahoo_search,
+SE0016802797,VO2.ST,yahoo_search,
+SE0016828511,,none,Common Stock
+SE0016828719,,none,not found
+SE0016829352,,none,not found
+SE0016829469,HAYPP.ST,yahoo_search,
+SE0016829501,OPTER.ST,yahoo_search,
+SE0016829709,SYNSAM.ST,yahoo_search,
+SE0016829824,QCORE.ST,yahoo_search,
+SE0016829899,,none,not found
+SE0016830038,NEO-B.ST,yahoo_search,
+SE0016830335,,none,Common Stock
+SE0016830517,,none,Common Stock
+SE0016831044,,none,not found
+SE0016833149,ADTR.ST,yahoo_search,
+SE0016843247,,none,not found
+SE0016843486,NOTEK.ST,yahoo_search,
+SE0016843734,,none,not found
+SE0016843809,SHT-B.ST,yahoo_search,
+SE0016844468,COMPDM.ST,yahoo_search,
+SE0016844831,,none,Common Stock
+SE0016845325,,none,not found
+SE0016845655,ALPCOT-B.ST,yahoo_search,
+SE0017070865,,none,not found
+SE0017070907,,none,not found
+SE0017071020,,none,Common Stock
+SE0017072259,INTEA-B.ST,yahoo_search,
+SE0017072267,INTEA-D.ST,yahoo_search,
+SE0017082506,PADEL.ST,yahoo_search,
+SE0017082514,CASE.ST,yahoo_search,
+SE0017082548,SFAB.ST,yahoo_search,
+SE0017083082,,none,not found
+SE0017083207,LOGI-B.ST,yahoo_search,
+SE0017083272,NIVI-B.ST,yahoo_search,
+SE0017083355,TURA.ST,yahoo_search,
+SE0017083454,,none,not found
+SE0017083694,,none,Common Stock
+SE0017083710,,none,not found
+SE0017083835,CHARGE.ST,yahoo_search,
+SE0017083983,,none,Common Stock
+SE0017084288,,none,not found
+SE0017084346,,none,not found
+SE0017084361,,none,Common Stock
+SE0017084759,,none,Common Stock
+SE0017085020,,none,Common Stock
+SE0017085129,,none,not found
+SE0017085145,,none,Common Stock
+SE0017105539,MTI.ST,yahoo_search,
+SE0017105620,DYVOX.ST,yahoo_search,
+SE0017130826,BPCINS.ST,yahoo_search,
+SE0017131030,,none,not found
+SE0017131071,,none,Common Stock
+SE0017131220,,none,Common Stock
+SE0017131329,,none,Common Stock
+SE0017131337,LOGI-B.ST,yahoo_search,
+SE0017131824,CARE.ST,yahoo_search,
+SE0017131865,WEG.ST,yahoo_search,
+SE0017132038,,none,not found
+SE0017132129,TITA-B.ST,yahoo_search,
+SE0017133531,,none,not found
+SE0017133820,,none,not found
+SE0017133838,OBAB.ST,yahoo_search,
+SE0017134125,,none,Common Stock
+SE0017160575,LYGRD.ST,yahoo_search,
+SE0017160773,NCAB.ST,yahoo_search,
+SE0017161243,,none,Common Stock
+SE0017161441,SVOL-A.ST,yahoo_search,
+SE0017161458,SVOL-B.ST,openfigi,Common Stock
+SE0017231913,,none,not found
+SE0017232671,,none,not found
+SE0017232838,VUXEN.ST,yahoo_search,
+SE0017483159,MYBEAT.ST,yahoo_search,
+SE0017483175,,none,Common Stock
+SE0017483365,,none,not found
+SE0017483506,INSTAL.ST,yahoo_search,
+SE0017484876,,none,not found
+SE0017485014,,none,not found
+SE0017485865,,none,not found
+SE0017486103,,none,Common Stock
+SE0017486426,,none,not found
+SE0017486889,ATCO-A.ST,yahoo_search,
+SE0017486897,ATCO-B.ST,openfigi,Common Stock
+SE0017487242,PRO.ST,yahoo_search,
+SE0017487408,,none,not found
+SE0017487424,BAWAT.ST,yahoo_search,
+SE0017562523,MMGR-B.ST,yahoo_search,
+SE0017563208,,none,not found
+SE0017564271,,none,Common Stock
+SE0017564354,,none,Common Stock
+SE0017564461,ONEF.ST,yahoo_search,
+SE0017564800,CALVIK.ST,yahoo_search,
+SE0017564982,,none,Common Stock
+SE0017565211,,none,not found
+SE0017565476,SLP-B.ST,yahoo_search,
+SE0017615628,,none,not found
+SE0017615644,ALLEI.ST,yahoo_search,
+SE0017615784,SKOLON.ST,yahoo_search,
+SE0017616006,C100.ST,yahoo_search,
+SE0017616030,,none,not found
+SE0017766488,,none,not found
+SE0017766520,BORG.ST,yahoo_search,
+SE0017766843,OEM-B.ST,yahoo_search,
+SE0017767031,VH.ST,yahoo_search,
+SE0017767494,HERNO-B.ST,yahoo_search,
+SE0017767536,,none,Right
+SE0017767742,BETS-B.ST,yahoo_search,
+SE0017767759,,none,not found
+SE0017767767,,none,Common Stock
+SE0017768658,XER.ST,yahoo_search,
+SE0017768716,,none,not found
+SE0017768815,,none,not found
+SE0017768963,,none,not found
+SE0017769383,,none,not found
+SE0017769847,ENGCON-B.ST,yahoo_search,
+SE0017769995,BIOG-B.ST,yahoo_search,
+SE0017770027,,none,not found
+SE0017780133,WALL-B.ST,yahoo_search,
+SE0017780687,,none,not found
+SE0017830789,,none,Common Stock
+SE0017831514,,none,not found
+SE0017831795,NORION.ST,yahoo_search,
+SE0017832173,KARNEL-B.ST,yahoo_search,
+SE0017832488,BALD-B.ST,yahoo_search,
+SE0017832835,,none,not found
+SE0017833171,ACUVI.ST,yahoo_search,
+SE0017859028,,none,not found
+SE0017859085,,none,not found
+SE0017859259,,none,not found
+SE0017859267,,none,Common Stock
+SE0017859333,,none,not found
+SE0017885098,,none,not found
+SE0017885338,SKMO.ST,yahoo_search,
+SE0017885379,CI.ST,yahoo_search,
+SE0017885767,ANOD-B.ST,yahoo_search,
+SE0017911233,TRAN-A.ST,yahoo_search,
+SE0017911241,TRAN-B.ST,yahoo_search,
+SE0017911258,,none,not found
+SE0017911266,,none,not found
+SE0017911407,,none,Unit
+SE0017911472,,none,not found
+SE0017911480,HEBA-B.ST,yahoo_search,
+SE0017911506,,none,Common Stock
+SE0017911613,,none,not found
+SE0017911704,OBSE.ST,yahoo_search,
+SE0017936891,4C.ST,yahoo_search,
+SE0017937048,,none,not found
+SE0017937279,BRIGHT.ST,yahoo_search,
+SE0018012411,SLOTT-B.ST,yahoo_search,
+SE0018012445,,none,not found
+SE0018012486,MTG-A.ST,yahoo_search,
+SE0018012494,MTG-B.ST,yahoo_search,
+SE0018012528,,none,Common Stock
+SE0018012635,WIHL.ST,yahoo_search,
+SE0018012932,,none,Common Stock
+SE0018013658,TRIAN-B.ST,yahoo_search,
+SE0018013674,,none,not found
+SE0018013849,PREC.ST,yahoo_search,
+SE0018013922,FABLE.ST,yahoo_search,
+SE0018014060,ATIN.ST,yahoo_search,
+SE0018014110,MEDS.ST,yahoo_search,
+SE0018014243,GRANGX.ST,yahoo_search,
+SE0018015414,,none,DOMESTIC
+SE0018040677,HTRO.ST,yahoo_search,
+SE0018040727,TINGS-PREF.ST,yahoo_search,
+SE0018040735,,none,not found
+SE0018040784,,none,Common Stock
+SE0018040883,FMM-B.ST,yahoo_search,
+SE0018041097,,none,not found
+SE0018041477,,none,not found
+SE0018041519,,none,not found
+SE0018041717,,none,not found
+SE0018042046,FLOWS.ST,yahoo_search,
+SE0018068140,,none,not found
+SE0018168288,,none,not found
+SE0018169013,,none,Common Stock
+SE0018169195,,none,Common Stock
+SE0018219826,,none,Common Stock
+SE0018245425,,none,Unit
+SE0018396947,ABSL-B.ST,yahoo_search,
+SE0018397184,TENEO.ST,yahoo_search,
+SE0018397572,,none,Common Stock
+SE0018397622,,none,not found
+SE0018397648,LOVE-B.ST,yahoo_search,
+SE0018408247,,none,not found
+SE0018408387,,none,not found
+SE0018534471,TINGS-A.ST,yahoo_search,
+SE0018534497,TINGS-B.ST,yahoo_search,
+SE0018535684,,none,Common Stock
+SE0018535692,,none,not found
+SE0018535700,,none,Common Stock
+SE0018535841,,none,not found
+SE0018536401,UPGRAD.ST,yahoo_search,
+SE0018536724,,none,not found
+SE0018537342,SOLT-BTA.ST,yahoo_search,
+SE0018537987,,none,not found
+SE0018538068,,none,Common Stock
+SE0018538134,,none,not found
+SE0018588659,ABAS.ST,yahoo_search,
+SE0018689051,,none,Common Stock
+SE0018689374,,none,not found
+SE0018690349,,none,Common Stock
+SE0018690596,,none,not found
+SE0018690687,,none,not found
+SE0018716086,,none,not found
+SE0018716318,,none,not found
+SE0018716458,,none,not found
+SE0018716581,,none,Unit
+SE0018767782,,none,not found
+SE0018768210,,none,Common Stock
+SE0019018946,,none,not found
+SE0019018979,,none,not found
+SE0019019027,,none,not found
+SE0019070335,,none,not found
+SE0019070434,FRILAN.ST,yahoo_search,
+SE0019070509,,none,not found
+SE0019070624,,none,Common Stock
+SE0019070749,,none,Common Stock
+SE0019071127,,none,Right
+SE0019071135,,none,Unit
+SE0019071325,,none,not found
+SE0019071523,,none,Common Stock
+SE0019071564,,none,not found
+SE0019071697,,none,not found
+SE0019071812,,none,Common Stock
+SE0019072158,LUMEN.ST,yahoo_search,
+SE0019072554,,none,not found
+SE0019172628,,none,not found
+SE0019173162,,none,Common Stock
+SE0019173758,,none,not found
+SE0019174087,,none,not found
+SE0019174194,XOM-B.ST,yahoo_search,
+SE0019175084,,none,not found
+SE0019175274,,none,Common Stock
+SE0019175381,,none,not found
+SE0019176066,,none,Common Stock
+SE0019352550,,none,not found
+SE0019354051,,none,not found
+SE0019354127,,none,not found
+SE0019354358,,none,Common Stock
+SE0019761024,,none,not found
+SE0019761271,,none,Right
+SE0019761289,,none,not found
+SE0019761529,,none,Unit
+SE0019762147,,none,Common Stock
+SE0019762170,,none,not found
+SE0019763509,,none,Common Stock
+SE0019763764,,none,not found
+SE0019763988,,none,Common Stock
+SE0019764531,,none,not found
+SE0019890294,,none,not found
+SE0019890963,,none,not found
+SE0019892027,,none,Common Stock
+SE0019892175,,none,not found
+SE0019892183,,none,Common Stock
+SE0019912783,,none,not found
+SE0019913203,,none,Common Stock
+SE0019913278,,none,not found
+SE0019913559,,none,not found
+SE0019914276,,none,Common Stock
+SE0019914813,,none,not found
+SE0019925017,,none,not found
+SE0020050193,,none,not found
+SE0020050359,SIBEK.ST,yahoo_search,
+SE0020050417,BOL.ST,yahoo_search,
+SE0020050805,BORG.ST,yahoo_search,
+SE0020050896,,none,Common Stock
+SE0020051100,,none,not found
+SE0020051225,,none,Right
+SE0020051233,,none,not found
+SE0020052017,,none,not found
+SE0020053569,,none,not found
+SE0020053718,,none,not found
+SE0020179158,GBK.ST,yahoo_search,
+SE0020179182,,none,not found
+SE0020179430,,none,not found
+SE0020179646,,none,not found
+SE0020179679,,none,not found
+SE0020180925,,none,Common Stock
+SE0020181014,MVIR.ST,yahoo_search,
+SE0020181709,,none,Unit
+SE0020202539,,none,not found
+SE0020202851,,none,not found
+SE0020203016,,none,not found
+SE0020203263,,none,not found
+SE0020203271,WPTG-B.ST,yahoo_search,
+SE0020353597,,none,not found
+SE0020353621,,none,not found
+SE0020353928,MOB.ST,yahoo_search,
+SE0020354389,ZAPLOX.ST,yahoo_search,
+SE0020354710,,none,Common Stock
+SE0020354843,,none,not found
+SE0020355188,,none,Common Stock
+SE0020355667,,none,Unit
+SE0020355774,,none,not found
+SE0020356210,,none,not found
+SE0020356244,SGG.ST,yahoo_search,
+SE0020356970,NEWA-B.ST,yahoo_search,
+SE0020357457,,none,not found
+SE0020357663,,none,not found
+SE0020357739,,none,not found
+SE0020358281,,none,Common Stock
+SE0020358471,,none,not found
+SE0020358521,,none,not found
+SE0020388577,CINPHA.ST,yahoo_search,
+SE0020388932,MOMENT.ST,yahoo_search,
+SE0020539195,,none,not found
+SE0020539310,,none,Common Stock
+SE0020539468,,none,not found
+SE0020539526,,none,not found
+SE0020540888,,none,not found
+SE0020540987,,none,Common Stock
+SE0020541324,,none,Common Stock
+SE0020541563,,none,Unit
+SE0020552248,,none,not found
+SE0020552578,,none,not found
+SE0020552735,,none,not found
+SE0020678779,,none,Common Stock
+SE0020679025,,none,Common Stock
+SE0020699296,OODA.ST,yahoo_search,
+SE0020845014,BETS-B.ST,yahoo_search,
+SE0020845030,,none,not found
+SE0020845048,,none,Common Stock
+SE0020845071,GOSOL.ST,yahoo_search,
+SE0020845220,,none,Right
+SE0020846392,,none,Common Stock
+SE0020847457,,none,Common Stock
+SE0020848356,RUSTA.ST,yahoo_search,
+SE0020850162,,none,Common Stock
+SE0020975415,,none,not found
+SE0020975720,,none,not found
+SE0020997427,,none,not found
+SE0020998508,,none,not found
+SE0020998771,,none,not found
+SE0020999035,,none,not found
+SE0021020583,,none,Unit
+SE0021020716,AAC.ST,yahoo_search,
+SE0021021391,,none,Common Stock
+SE0021021656,VETT.ST,yahoo_search,
+SE0021021854,,none,Unit
+SE0021146982,,none,not found
+SE0021148152,,none,not found
+SE0021148160,VISC.ST,yahoo_search,
+SE0021148970,,none,Right
+SE0021148988,,none,not found
+SE0021149309,,none,not found
+SE0021150224,,none,not found
+SE0021150414,,none,Unit
+SE0021151107,,none,not found
+SE0021181559,DPHA.ST,yahoo_search,
+SE0021308962,,none,not found
+SE0021309937,VIDH.ST,yahoo_search,
+SE0021310554,,none,not found
+SE0021513108,,none,Common Stock
+SE0021513413,,none,Unit
+SE0021513645,,none,Common Stock
+SE0021515004,,none,Common Stock
+SE0021515111,,none,Unit
+SE0021626165,,none,not found
+SE0021626710,,none,not found
+SE0021626777,BETS-B.ST,yahoo_search,
+SE0021626793,,none,not found
+SE0021627353,GBK.ST,yahoo_search,
+SE0021628799,,none,not found
+SE0021628898,VOLCAR-B.ST,yahoo_search,
+SE0021628914,,none,Common Stock
+SE0021629532,,none,not found
+SE0021630241,,none,Common Stock
+SE0021630274,,none,Right
+SE0021630340,,none,Common Stock
+SE0021630431,,none,Common Stock
+SE0021921269,SAAB-B.ST,yahoo_search,
+SE0021921327,BORG.ST,yahoo_search,
+SE0021921723,,none,Common Stock
+SE0021921822,BRAVE.ST,yahoo_search,
+SE0021921863,,none,not found
+SE0021921897,,none,not found
+SE0021922424,,none,Common Stock
+SE0021922549,,none,not found
+SE0021922598,,none,Common Stock
+SE0021923067,,none,not found
+SE0021923745,,none,not found
+SE0021923869,,none,not found
+SE0021924719,,none,Common Stock
+SE0022049920,CLS-B.ST,yahoo_search,
+SE0022050183,EAST.ST,yahoo_search,
+SE0022060521,KINV-B.ST,yahoo_search,
+SE0022060794,,none,Right
+SE0022061222,,none,Right
+SE0022061230,,none,Unit
+SE0022062055,PRISMA.ST,yahoo_search,
+SE0022062196,AQ.ST,yahoo_search,
+SE0022087375,,none,not found
+SE0022087649,HUNTER.ST,yahoo_search,
+SE0022087680,,none,Common Stock
+SE0022088191,,none,Unit
+SE0022088217,NREST.ST,yahoo_search,
+SE0022088282,,none,Common Stock
+SE0022239133,,none,Common Stock
+SE0022239901,OPSYH.ST,yahoo_search,
+SE0022239950,IMMU.ST,yahoo_search,
+SE0022240867,,none,Unit
+SE0022241162,,none,Common Stock
+SE0022241469,,none,not found
+SE0022241626,,none,Common Stock
+SE0022242384,,none,Unit
+SE0022242434,NYAB.ST,yahoo_search,
+SE0022242681,,none,Common Stock
+SE0022243432,,none,Common Stock
+SE0022243812,,none,not found
+SE0022419784,SECT-B.ST,yahoo_search,
+SE0022421038,,none,Unit
+SE0022421467,FLERIE.ST,yahoo_search,
+SE0022447207,LGOLD-B.ST,yahoo_search,
+SE0022447348,FLERIE.ST,yahoo_search,
+SE0022600219,RAMSH.ST,yahoo_search,
+SE0022726139,,none,Common Stock
+SE0022726311,PERP-B.ST,yahoo_search,
+SE0022726402,,none,not found
+SE0022726469,,none,Common Stock
+SE0022726485,BETS-B.ST,yahoo_search,
+SE0022757860,BMC.ST,yahoo_search,
+SE0022760229,GIG-SDB.ST,yahoo_search,
+SE0023112917,,none,Unit
+SE0023113113,,none,Unit
+SE0023113154,,none,Common Stock
+SE0023113758,,none,Unit
+SE0023114012,QBEN.ST,yahoo_search,
+SE0023134895,ENVAR.ST,yahoo_search,
+SE0023134945,,none,not found
+SE0023135298,NOBA.ST,yahoo_search,
+SE0023261045,,none,Right
+SE0023261292,EXPRS2.ST,yahoo_search,
+SE0023261300,LEA.ST,yahoo_search,
+SE0023261326,,none,Common Stock
+SE0023261532,PROGEN.ST,yahoo_search,
+SE0023261599,CARA.ST,yahoo_search,
+SE0023261623,MRSELL.ST,yahoo_search,
+SE0023286950,,none,DOMESTIC MTN
+SE0023287347,FRAG.ST,yahoo_search,
+SE0023312731,,none,not found
+SE0023313762,APOTEA.ST,yahoo_search,
+SE0023439500,SAXG.ST,yahoo_search,
+SE0023441928,,none,not found
+SE0023467451,MANTEX.ST,yahoo_search,
+SE0023467980,,none,not found
+SE0023468954,,none,Common Stock
+SE0023595459,FLUI.ST,yahoo_search,
+SE0023615638,ASMDEE-B.ST,yahoo_search,
+SE0023615885,EMBRAC-B.ST,yahoo_search,
+SE0023641154,,none,Unit
+SE0023837091,QSYS.ST,yahoo_search,
+SE0023847983,,none,Unit
+SE0023848619,,none,not found
+SE0023848635,,none,not found
+SE0023848908,,none,Common Stock
+SE0023849583,,none,Common Stock
+SE0023950795,ROKO-B.ST,yahoo_search,
+SE0024171458,ASKER.ST,yahoo_search,
+SE0024172779,ARCT.ST,yahoo_search,
+SE0024173017,,none,not found
+SE0024173306,,none,not found
+SE0024173728,PADEL.ST,yahoo_search,
+SE0024194369,,none,not found
+SE0024219968,,none,not found
+SE0024320832,ATRLJ-B.ST,yahoo_search,
+SE0024467914,,none,not found
+SE0024517981,,none,not found
+SE0024668081,,none,not found
+SE0024668198,,none,not found
+SE0024738496,,none,Common Stock
+SE0024990071,,none,Right
+SE0024990089,,none,not found
+SE0025010671,BUFAB.ST,yahoo_search,
+SE0025010887,CCC.ST,yahoo_search,
+SE0025011075,,none,Common Stock
+SE0025011331,,none,Common Stock
+SE0025011554,ENITY.ST,yahoo_search,
+SE0025012321,,none,not found
+SE0025138357,HACK.ST,yahoo_search,
+SE0025158629,MYCR.ST,yahoo_search,
+SE0025158678,NORDEN.ST,yahoo_search,
+SE0025159023,TERNOR.ST,yahoo_search,
+SE0025159528,,none,not found
+SE0025196835,,none,not found
+SE0025197619,LOGIST-A.ST,yahoo_search,
+SE0025197627,LOGIST-B.ST,yahoo_search,
+SE0025198344,,none,not found
+SE0025198542,BTC-B.ST,yahoo_search,
+SE0025198567,,none,not found
+SE0025399199,OPSYH.ST,yahoo_search,
+SE0025420714,QLINEA.ST,yahoo_search,
+SE0025666969,AVARDA.ST,yahoo_search,
+SE0025937873,,none,not found
+SE0026140865,,none,Common Stock
+SE0026142085,,none,not found
+SE0026143109,,none,not found
+SE0026143125,,none,not found
+SE0026526352,HCRTO1.ST,yahoo_search,
+SE0026526386,HCRTO2.ST,yahoo_search,
+SE0026577538,,none,not found
+SE0026598583,XBRANE.ST,yahoo_search,
+SE0026599557,COFFEE-B.ST,yahoo_search,
+SE0026820540,,none,Common Stock
+SE0026820854,SUBGEN.ST,yahoo_search,
+SE0026821076,ARFA.ST,yahoo_search,
+SE0026852725,MORROW.ST,yahoo_search,
+SE0026852808,GAD.ST,yahoo_search,
+SE0026853335,WSG.ST,yahoo_search,
+SE0026853517,,none,Unit
+SE0026875809,,none,Common Stock
+SE0026875825,,none,not found
+SE0026875932,,none,Common Stock
+SE0026876476,AJA-B.ST,yahoo_search,
+SE0027076902,,none,not found
+SE0027098534,,none,Common Stock
+SE0027099060,APRTEC.ST,yahoo_search,
+SE0027301375,SCIB-BTA.ST,yahoo_search,
+SE0027597691,SMCRT.ST,yahoo_search,
+SE0027597956,,none,Common Stock
+SE0027598145,TESSIN.ST,yahoo_search,
+SE0027620469,,none,not found
+SE0027666355,,none,not found
+SE0027767724,PRPORT.ST,yahoo_search,
+SE0027999608,,none,Common Stock
+SE0028000190,SILEX.ST,yahoo_search,
+SE0028000224,,none,Right
+SE0028026997,,none,Preference
+SE0028329540,SALIX.ST,yahoo_search,
+SE0028354936,KJELL.ST,yahoo_search,
+SE0028355073,,none,Common Stock
+SE0028355099,,none,Common Stock
+SE0028450502,,none,Common Stock
+SE0028501155,,none,Unit
+SE0028526434,,none,Common Stock
+SE0028778084,,none,Right
+SE0028778092,,none,Unit
+SE0028799429,ELLOS.ST,yahoo_search,
+SE0029278985,TANGEN-B.ST,yahoo_search,
+SE0029279066,,none,Common Stock
+SE0029300664,,none,Common Stock
+SE0029300953,SVEVIK.ST,yahoo_search,
+SE0029301431,,none,not found
+SE0029301639,,none,Common Stock
+SE0029530138,MBBAB.ST,yahoo_search,
+SE0029605500,,none,Unit
+SE0029605690,C100.ST,yahoo_search,
+SE0029856053,SVEAF-B.ST,yahoo_search,
+SE0030052304,,none,not found
+SE0030252664,ECRTO1.ST,yahoo_search,
+SE0030262788,,none,Common Stock
+SE0030263315,NRDAMP.ST,yahoo_search,
+SE0030263596,,none,Common Stock
+SE0030264628,,none,Common Stock
+SE0030336202,,none,not found
+SE0030588513,,none,Unit
+SE2221958612,,none,not found
+SEOOO8613483,,none,not found
+US0528001094,,none,Common Stock
+US2948216088,,none,ADR
+US36467X1072,,none,not found
+US36467X2062,G2M.ST,yahoo_search,
+US65557DAX93,,none,EURO-DOLLAR
+US68616W1027,,none,ADR
+US8305612058,,none,ADR
+US86959C1036,,none,ADR
+US87960M2052,,none,ADR
+US92336X1090,,none,Common Stock
+US9288541082,,none,ADR
