@@ -32,8 +32,14 @@ async function startEngine() {
     eh: { mainModule: `${origin}/duckdb/duckdb-eh.wasm`, mainWorker: `${origin}/duckdb/duckdb-browser-eh.worker.js` },
   });
   const worker = new Worker(bundle.mainWorker!);
+  // A worker that cannot load (missing bundle, CSP) only fires "error": fail instead of waiting forever.
+  const workerFailed = new Promise<never>((_, reject) =>
+    worker.addEventListener("error", () => reject(new Error(`DuckDB-WASM could not start (${bundle.mainWorker})`)), {
+      once: true,
+    }),
+  );
   const db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), worker);
-  await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+  await Promise.race([db.instantiate(bundle.mainModule, bundle.pthreadWorker), workerFailed]);
   await db.open({ query: { castBigIntToDouble: true } });
   const connection = await db.connect();
   // Extensions (Parquet) come from our own origin, never from a third-party host (scripts/copy-duckdb.mjs).
@@ -42,7 +48,12 @@ async function startEngine() {
 }
 
 export function getEngine() {
-  engine ??= startEngine();
+  if (!engine) {
+    engine = startEngine();
+    engine.catch(() => {
+      engine = null; // let "Try again" start from scratch
+    });
+  }
   return engine;
 }
 
