@@ -11,6 +11,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # The PR head, not GitHub's synthetic merge commit (which GitHub authors with the account's email).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Check commit authors and trailers
         env:
           EXPECTED: 71296266+Manuelma4@users.noreply.github.com
