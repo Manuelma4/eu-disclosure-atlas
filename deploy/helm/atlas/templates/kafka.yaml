@@ -43,7 +43,9 @@ spec:
       min.insync.replicas: {{ min 2 $k.replicas }}
       auto.create.topics.enable: false
   entityOperator:
-    topicOperator: {}
+    topicOperator:
+      resources:
+        {{- toYaml $k.topicOperatorResources | nindent 8 }}
 ---
 # Kafka clients reach the brokers on 9092 only from Atlas pods; the Strimzi operators reach their own ports.
 apiVersion: networking.k8s.io/v1

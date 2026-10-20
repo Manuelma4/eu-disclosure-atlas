@@ -14,7 +14,8 @@ global:
     clusterIssuer: ""
     tls: false
   kafka:
-    bootstrapServers: atlas-kafka-bootstrap:9092
+    # Empty means the Strimzi cluster below: atlas-kafka-bootstrap.<namespace>.svc:9092.
+    bootstrapServers: ""
 
 # Namespace-wide default deny (ingress and egress); each service chart adds its own allow-list.
 networkPolicy:
@@ -37,6 +38,9 @@ kafka:
   resources:
     requests: {cpu: 250m, memory: 1Gi}
     limits: {cpu: "1", memory: 1536Mi}
+  topicOperatorResources:
+    requests: {cpu: 50m, memory: 256Mi}
+    limits: {cpu: 500m, memory: 512Mi}
   topics:
     - {name: atlas.filings.v1, partitions: 6, retentionMs: 2592000000}
     - {name: atlas.snapshots.v1, partitions: 1, retentionMs: 2592000000}

@@ -22,8 +22,8 @@ ingestion:
 query-api:
   autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
   replicaCount: 1
-  pdb: {enabled: true, maxUnavailable: 1}
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}
 web:
   autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
   replicaCount: 1
-  pdb: {enabled: true, maxUnavailable: 1}
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}

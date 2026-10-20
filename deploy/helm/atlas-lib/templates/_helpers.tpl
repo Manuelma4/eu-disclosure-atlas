@@ -46,10 +46,13 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" }}
 {{- .Values.image.pullPolicy | default $global.pullPolicy | default "IfNotPresent" -}}
 {{- end -}}
 
-{{/* Kafka bootstrap servers: the service's own value, else the platform-wide one. */}}
+{{/*
+Kafka bootstrap servers: the service's own value, else the platform-wide one, else the Strimzi cluster `atlas`
+in the release namespace. Fully qualified, because KEDA resolves it from its own namespace.
+*/}}
 {{- define "atlas-lib.kafkaBootstrap" -}}
 {{- $global := (.Values.global | default dict).kafka | default dict -}}
-{{- .Values.kafka.bootstrapServers | default $global.bootstrapServers | default "atlas-kafka-bootstrap:9092" -}}
+{{- .Values.kafka.bootstrapServers | default $global.bootstrapServers | default (printf "atlas-kafka-bootstrap.%s.svc:9092" .Release.Namespace) -}}
 {{- end -}}
 
 {{/* Renders every resource of a service chart. Each service chart's templates/all.yaml is just this include. */}}

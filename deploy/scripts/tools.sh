@@ -9,8 +9,12 @@ K3D_IMAGE="${K3D_IMAGE:-ghcr.io/k3d-io/k3d:5.9.0}"
 KUBECONFORM_IMAGE="${KUBECONFORM_IMAGE:-ghcr.io/yannh/kubeconform:v0.8.0}"
 TOFU_IMAGE="${TOFU_IMAGE:-ghcr.io/opentofu/opentofu:1.13.1-minimal}"
 KUBECTL_IMAGE="${KUBECTL_IMAGE:-registry.k8s.io/kubectl:v1.36.5}"
-# Kubeconfig used by the containerised helm and kubectl (k3d writes one that reaches the API from its network).
+# Kubeconfigs written by deploy/k3d/atlas.sh: containers reach the API through the k3d network, host binaries
+# through 127.0.0.1. An explicit KUBECONFIG wins for host binaries.
 ATLAS_KUBECONFIG="${ATLAS_KUBECONFIG:-$ATLAS_REPO_ROOT/.k3d/kubeconfig}"
+if [[ -z "${KUBECONFIG:-}" && -f "$ATLAS_REPO_ROOT/.k3d/kubeconfig-host" ]]; then
+  export KUBECONFIG="$ATLAS_REPO_ROOT/.k3d/kubeconfig-host"
+fi
 ATLAS_DOCKER_NETWORK="${ATLAS_DOCKER_NETWORK:-k3d-atlas}"
 
 _workdir() {
@@ -37,13 +41,7 @@ helm() { if _has helm; then command helm "$@"; else _run "$HELM_IMAGE" "$@"; fi;
 kubeconform() { if _has kubeconform; then command kubeconform "$@"; else _run "$KUBECONFORM_IMAGE" "$@"; fi; }
 tofu() { if _has tofu; then command tofu "$@"; else _run "$TOFU_IMAGE" "$@"; fi; }
 
-kubectl() {
-  if _has kubectl && [[ "${ATLAS_HOST_KUBECONFIG:-}" != "" ]]; then
-    KUBECONFIG="$ATLAS_HOST_KUBECONFIG" command kubectl "$@"
-  else
-    _run "$KUBECTL_IMAGE" "$@"
-  fi
-}
+kubectl() { if _has kubectl; then command kubectl "$@"; else _run "$KUBECTL_IMAGE" "$@"; fi; }
 
 k3d() {
   if _has k3d; then command k3d "$@"; return; fi
