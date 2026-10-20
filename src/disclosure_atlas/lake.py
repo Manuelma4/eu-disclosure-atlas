@@ -226,7 +226,9 @@ class _Engine:
 
 class Lake:
     def __init__(self, root: Path | str = "lake", *, catalog: str | None = None, data_path: str | None = None) -> None:
-        self.root = Path(root)
+        # Absolute, so the DATA_PATH stored in a DuckDB-file catalog is the same whichever working directory or
+        # relative spelling opened it (DuckLake refuses to attach a catalog with a different DATA_PATH).
+        self.root = Path(root).expanduser().resolve()
         self.bronze = self.root / "bronze"
         self.silver = self.root / "silver"  # Parquet silver of the pre-DuckLake layout, read by migrate()
         self.catalog = catalog or os.environ.get("ATLAS_CATALOG") or str(self.root / "catalog.ducklake")

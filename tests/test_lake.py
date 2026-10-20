@@ -109,3 +109,14 @@ def test_lake_location_comes_from_the_environment(tmp_path, monkeypatch):
     lake = Lake(tmp_path / "lake")
     assert lake.version() == str(lake.current_snapshot())
     assert (tmp_path / "elsewhere.ducklake").exists() and (tmp_path / "files").is_dir()
+
+
+def test_relative_and_absolute_roots_open_the_same_catalog(tmp_path, monkeypatch, ctx):
+    """Regression: a catalog created through a relative root must open through the absolute one (and back)."""
+    monkeypatch.chdir(tmp_path)
+    relative = Lake("lake")
+    load(relative, fi_doc([fi_row()]), ctx)
+    relative.close()
+    absolute = Lake(tmp_path / "lake")
+    assert absolute.root == relative.root
+    assert absolute.connect().execute("SELECT count(*) FROM insider_transactions").fetchone()[0] == 1
