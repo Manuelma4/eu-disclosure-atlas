@@ -31,3 +31,6 @@ infra/tofu/**/.terraform/
 infra/tofu/**/*.tfstate*
 infra/tofu/**/*.tfplan
 infra/tofu/modules/*/.terraform.lock.hcl
+
+# Evaluation run reports (regenerated; summarize notable runs in evals/*/README.md)
+evals/*/results/

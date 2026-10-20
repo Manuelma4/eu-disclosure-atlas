@@ -1,0 +1,33 @@
+# Live-event delay, decision 0014: events delivered to live clients within 5 seconds. Every emitter of
+# atlas_stream_event_delay_seconds counts: the realtime-gateway (Go, measured from the Kafka record
+# timestamp, P3) and the query API's polling stream (measured from first ingestion).
+version: "prometheus/v1"
+service: "realtime"
+labels:
+  owner: "platform"
+  tier: "2"
+slos:
+  - name: "event-delay"
+    objective: 99
+    description: "99% of live events reach clients within 5 seconds."
+    sli:
+      events:
+        error_query: |
+          sum(rate(atlas_stream_event_delay_seconds_count[{{.window}}]))
+          -
+          sum(rate(atlas_stream_event_delay_seconds_bucket{le="5.0"}[{{.window}}]))
+        total_query: |
+          sum(rate(atlas_stream_event_delay_seconds_count[{{.window}}]))
+    alerting:
+      name: "AtlasLiveEventDelayBudgetBurn"
+      labels:
+        category: "latency"
+      annotations:
+        summary: "Live events take longer than 5 seconds to reach clients."
+        runbook_url: "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/docs/runbooks/live-event-delay.md"
+      page_alert:
+        labels:
+          severity: "page"
+      ticket_alert:
+        labels:
+          severity: "ticket"

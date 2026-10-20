@@ -50,6 +50,9 @@ networkPolicy:
   ingressControllerNamespace: kube-system
   allowMonitoring: false
   monitoringNamespace: monitoring
+  # OTLP traces and metrics to the OpenTelemetry Collector (deploy/observability, P7).
+  egressOtlp: false
+  otlpNamespace: observability
   ingressFrom: []
   allowIngressController: false
   egressTo: []

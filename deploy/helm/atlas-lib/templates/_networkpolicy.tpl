@@ -81,6 +81,17 @@ spec:
             matchLabels:
               cnpg.io/podRole: instance
     {{- end }}
+    {{- if $np.egressOtlp }}
+    - ports:
+        - port: 4317
+          protocol: TCP
+        - port: 4318
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ $np.otlpNamespace | default "observability" }}
+    {{- end }}
     {{- if $np.egressInternet }}
     - ports:
         - port: 443

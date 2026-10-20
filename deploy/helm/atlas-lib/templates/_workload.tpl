@@ -79,7 +79,12 @@ spec:
           env:
             {{- range $name, $value := .Values.env }}
             - name: {{ $name }}
+              {{- if kindIs "map" $value }}
+              valueFrom:
+                {{- toYaml $value | nindent 16 }}
+              {{- else }}
               value: {{ tpl (toString $value) $ | quote }}
+              {{- end }}
             {{- end }}
           {{- end }}
           {{- if .Values.envFromSecret }}

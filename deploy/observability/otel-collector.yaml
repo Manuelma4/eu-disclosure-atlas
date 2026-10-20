@@ -1,0 +1,98 @@
+# OpenTelemetry Collector (contrib): one pipeline per signal, decision 0014.
+# Services export OTLP here; metrics go to Prometheus (scraped), traces to Tempo (tail-sampled), logs to Loki.
+# In Kubernetes, run a load-balancing tier (loadbalancingexporter keyed by trace id) in front of the
+# tail-sampling tier so every span of a trace reaches the same Collector; see helm/otel-collector-values.yaml.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+        cors:
+          allowed_origins: ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 20
+  # Privacy by design: client IP addresses are personal data, so traces and logs keep a hash only;
+  # credentials never leave the service.
+  attributes/redact:
+    actions:
+      - key: client.address
+        action: hash
+      - key: http.request.header.authorization
+        action: delete
+      - key: http.request.header.cookie
+        action: delete
+      - key: http.request.header.x-api-key
+        action: delete
+  resource/env:
+    attributes:
+      - key: deployment.environment.name
+        value: local
+        action: insert
+  # Keep every error and every trace slower than the 200 ms latency objective; sample 10% of the rest.
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 50000
+    expected_new_traces_per_sec: 100
+    policies:
+      - name: errors
+        type: status_code
+        status_code:
+          status_codes: [ERROR]
+      - name: slow
+        type: latency
+        latency:
+          threshold_ms: 200
+      - name: baseline
+        type: probabilistic
+        probabilistic:
+          sampling_percentage: 10
+  batch:
+    send_batch_size: 8192
+    timeout: 5s
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    enable_open_metrics: true  # exemplars link metric points to traces in Tempo
+    resource_to_telemetry_conversion:
+      enabled: false
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  otlphttp/loki:
+    endpoint: http://loki:3100/otlp
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [health_check]
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/redact, resource/env, tail_sampling, batch]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource/env, batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/redact, resource/env, batch]
+      exporters: [otlphttp/loki]

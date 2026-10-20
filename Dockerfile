@@ -13,11 +13,11 @@ WORKDIR /src
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-dev --extra api --extra pdf --extra llm --no-install-project
+    uv sync --frozen --no-dev --extra api --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-install-project
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev --extra api --extra pdf --extra llm --no-editable
+    uv sync --frozen --no-dev --extra api --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-editable
 
 FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
 LABEL org.opencontainers.image.source="https://github.com/Manuelma4/eu-disclosure-atlas" \

@@ -41,12 +41,18 @@ Owns: `src/disclosure_atlas/events/`, `contracts/events/`, `services/realtime-ga
 - Keycloak realm (passkeys, website client with PKCE, partner client credentials) and API keys; the website
   gets sign-in and a watchlist page.
 
-### P4 AI layer `[ ]`
-Owns: `src/disclosure_atlas/ai/`, `evals/ask/`.
-- Stateless MCP server (spec 2026-07-28): `search_issuers`, `insider_activity`, `short_interest`,
-  `cluster_buys`, `filing_lag_stats`, read-only `sql`, and an MCP App rendering an issuer timeline.
-- Ask the Atlas: natural-language questions to guarded read-only SQL (sqlglot), answers with their SQL and a
-  chart, gated by a golden question set.
+### P4 AI layer `[x]`
+Owns: `src/disclosure_atlas/ai/`, `evals/ask/`, `docs/ai.md`. Details: [docs/ai.md](docs/ai.md).
+- [x] Stateless MCP server (spec 2026-07-28, `mcp` 2.3): `search_issuers`, `insider_activity`,
+  `largest_insider_buys`, `cluster_buys`, `short_interest`, `filing_lag_stats`, read-only `sql`, an
+  `atlas://schema` resource and an MCP App rendering an issuer's monthly insider flow; mounted at `/mcp` on the
+  API and available over stdio (`disclosure-atlas mcp`).
+- [x] SQL guard: sqlglot static checks (one SELECT, allowlisted gold views, no file or network functions, enforced
+  LIMIT) plus a locked-down DuckDB sandbox with a query timeout.
+- [x] Ask the Atlas: `POST /v1/ask`, Claude writes guarded read-only SQL from the gold schema, answers come with
+  their SQL and rows; versioned prompts; 503 problem+json without a key.
+- [x] Golden set of 35 questions on a synthetic lake, execution-accuracy runner with a gate, offline guard tests.
+- [ ] Next: a chart spec in `/v1/ask` responses for the website, Langfuse traces, the filing explainer.
 
 ### P5 Website product `[ ]`
 Owns: `web/`.
@@ -65,12 +71,16 @@ Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deplo
 - CI: build, Trivy scan, Syft SBOM, cosign signature, push to GHCR; `helm lint` and kubeconform; a k3d smoke
   test.
 
-### P7 Observability, SLOs and security hardening `[ ]`
+### P7 Observability, SLOs and security hardening `[x]`
 Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`. Design: 0013, 0014.
-- OpenTelemetry in the Python, Go and Node.js services; Collector with tail sampling; Prometheus, Loki, Tempo
-  and Grafana dashboards as code; SLOs as code with burn-rate alerts and runbooks.
-- STRIDE threat model, security headers and CSP, CodeQL, pip-audit, npm audit, govulncheck, ZAP baseline.
-- k6 load tests with budgets in CI; Chaos Mesh experiments for the preview cluster.
+- [x] OpenTelemetry in the Python API (`otel` extra: FastAPI traces, RED metrics, DuckDB query spans, stream and
+  freshness metrics) and the website (`instrumentation.ts`); Go services follow the metric contract in
+  `deploy/observability/README.md` (P3)
+- [x] Collector with tail sampling and IP hashing; Prometheus, Loki, Tempo and Grafana dashboards as code in a
+  Compose override; SLOs as code (Sloth) with multi-window burn-rate alerts and a runbook for every alert
+- [x] STRIDE threat model, security headers and CSP (web and API), per-IP rate limiting, CodeQL, pip-audit,
+  npm audit, govulncheck, ZAP baseline (no update bots: the owner is the only contributor)
+- [x] k6 load tests with budgets and a CI smoke profile; Chaos Mesh experiments for the preview cluster
 
 ### P8 MLOps: insider-signal model `[ ]`
 Owns: `src/disclosure_atlas/ml/`, `research/signals/`. Depends on WS6 (event study) features.
@@ -103,11 +113,14 @@ Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs 
 
 ## M2 Short positions `[ ]`
 
-### WS4 Net short positions (SSR) `[ ]`
+### WS4 Net short positions (SSR) `[x]`
 Owns: `connectors/*_shorts.py`, their docs and tests.
 - Current and historic public net short positions from FR, DE, NL, ES, IT, IE, SE, then others.
 - Holder names are legal entities (funds); keep them. Map issuers to LEI/ISIN where the source provides them.
 - Done when: five jurisdictions ingest full available history into `net_short_positions`.
+- Done: `fr_amf_shorts`, `de_bafin_shorts`, `nl_afm_shorts`, `es_cnmv_shorts`, `ie_cbi_shorts`, `se_fi_shorts`
+  (about 177,000 positions since November 2012). Italy (Consob) is blocked by a CAPTCHA. Next: DK, FI, NO, BE, AT,
+  PT and others.
 
 ## M3 Reference data and enrichment `[ ]`
 

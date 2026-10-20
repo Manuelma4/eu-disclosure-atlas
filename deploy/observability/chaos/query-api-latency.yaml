@@ -1,0 +1,22 @@
+# Adds 250 ms of network latency to half of the query-api pods for 15 minutes. Expected: p95 crosses 200 ms,
+# AtlasApiLatencyBudgetBurn (page, 1h/5m windows) fires within minutes and links to docs/runbooks/api-latency.md;
+# tail sampling keeps the slow traces. Use it to rehearse the runbook, then let it expire.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: query-api-latency
+  namespace: atlas-preview
+spec:
+  action: delay
+  mode: fixed-percent
+  value: "50"
+  selector:
+    namespaces: [atlas-preview]
+    labelSelectors:
+      app.kubernetes.io/name: query-api
+  delay:
+    latency: 250ms
+    jitter: 25ms
+    correlation: "50"
+  direction: to
+  duration: 15m

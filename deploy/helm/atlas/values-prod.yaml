@@ -46,12 +46,32 @@ externalSecrets:
     - name: atlas-alerts
       data: [{secretKey: SMTP_PASSWORD, remoteKey: "name:atlas-smtp-password"}]
 
+# OpenTelemetry, rate limits and proxy trust from P7 (deploy/observability/helm/*-values.yaml).
 query-api:
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+    OTEL_SERVICE_NAME: query-api
+    OTEL_RESOURCE_ATTRIBUTES: service.namespace=atlas,k8s.cluster.name=atlas-prod
+    ATLAS_ENVIRONMENT: {fieldRef: {fieldPath: metadata.namespace}}
+    # Per replica; global quotas are enforced at the gateway.
+    ATLAS_RATE_LIMIT_PER_MINUTE: "600"
+    ATLAS_RATE_LIMIT_BURST: "100"
+    # Trust X-Forwarded-For only from in-cluster proxies (Kapsule Cilium pod range); never "*".
+    FORWARDED_ALLOW_IPS: 100.64.0.0/15
+    ATLAS_CORS_ORIGINS: https://atlas.example.org
+  networkPolicy:
+    egressOtlp: true
   autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 10, targetCPUUtilizationPercentage: 65}
   resources:
     requests: {cpu: 250m, memory: 512Mi}
     limits: {cpu: "2", memory: 2Gi}
 web:
+  env:
+    ATLAS_API_URL: http://query-api:8000
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability.svc:4318
+    OTEL_SERVICE_NAME: web
+  networkPolicy:
+    egressOtlp: true
   autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 8, targetCPUUtilizationPercentage: 65}
 extraction:
   enabled: false
