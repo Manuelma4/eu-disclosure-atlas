@@ -12,6 +12,12 @@ dist/
 lake/
 *.duckdb
 *.duckdb.wal
+*.ducklake
+*.ducklake.wal
+
+# Dagster local state (dagster dev)
+.dagster/
+.tmp_dagster_home_*/
 exports/
 
 # Secrets

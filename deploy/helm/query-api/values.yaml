@@ -51,10 +51,12 @@ keda:
   minReplicas: 0
   maxReplicas: 1
   topics: []
+# Writable: the DuckLake engine creates the catalog and data folder on first start when the catalog is a local
+# file (no PostgreSQL); with a PostgreSQL catalog it only reads Parquet data files from here.
 lake:
   enabled: true
   claimName: atlas-lake
-  readOnly: true
+  readOnly: false
 networkPolicy:
   enabled: true
   ingressControllerNamespace: kube-system

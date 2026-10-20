@@ -49,8 +49,8 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 | **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
 | **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
 
-Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
-models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
+Under the hood: connectors per regulator → a medallion lakehouse on DuckLake (bronze, silver, gold) orchestrated
+by Dagster → snapshot-pinned read models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
 PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](docs/architecture.md), decisions:
 [docs/decisions/](docs/decisions/), running it on Kubernetes (k3d locally, GitOps in production):
 [docs/operations.md](docs/operations.md).
@@ -59,8 +59,8 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 |---|---|
 | Website | Next.js 16.4 (React 19.3, Cache Components), TypeScript, Tailwind CSS v4, typed client generated from OpenAPI |
 | API | Python 3.14, FastAPI, Pydantic v2, OpenAPI 3.1, SSE, RFC 9457 errors |
-| Data | DuckDB 1.5 on Parquet today, DuckLake 1.0 (PostgreSQL 18 catalog, Cloudflare R2) next |
-| Pipeline | Connector plugins today, Dagster 1.13 assets, sensors and checks next |
+| Data | DuckLake 1.0 on DuckDB 1.5: PostgreSQL 18 catalog, Parquet on local disk or Cloudflare R2, snapshot time travel |
+| Pipeline | Connector plugins orchestrated by Dagster 1.13: partitioned assets, business-hours schedules, asset checks |
 | Services | Python (ingestion, extraction, query-api, ai-service), Go (realtime-gateway, alerts), TypeScript (web) |
 | Events | Apache Kafka 4 (KRaft) with a schema registry, CloudEvents contracts, retry and dead-letter topics |
 | Platform | Kubernetes, Helm, Argo CD (GitOps), KEDA, Strimzi, CloudNativePG, OpenTofu on Scaleway (EU) |
@@ -92,6 +92,7 @@ disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedis
 disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs
 disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest every 5 minutes
 pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server over stdio (docs/ai.md)
+# or orchestrate every source with Dagster (schedules, backfills, checks): see docs/operations.md
 
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000

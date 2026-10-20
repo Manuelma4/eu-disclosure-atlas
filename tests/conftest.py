@@ -91,3 +91,6 @@ def ctx() -> ParseContext:
 @pytest.fixture(autouse=True)
 def _no_env_key(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("ATLAS_PSEUDONYM_KEY", raising=False)
+    # Tests always use a local DuckDB-file DuckLake catalog under their tmp folder, whatever the shell sets.
+    monkeypatch.delenv("ATLAS_CATALOG", raising=False)
+    monkeypatch.delenv("ATLAS_DATA_PATH", raising=False)

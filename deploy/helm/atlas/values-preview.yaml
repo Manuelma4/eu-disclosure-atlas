@@ -20,6 +20,12 @@ ingestion:
   # Previews read the synthetic lake seeded by the smoke data job, not live regulators.
   enabled: false
 query-api:
+  env:
+    # DuckLake catalog in CloudNativePG (a DuckDB-file catalog cannot be shared by several pods).
+    ATLAS_CATALOG: "postgres:host=atlas-pg-rw dbname=atlas user=atlas"
+    PGPASSWORD: {secretKeyRef: {name: atlas-pg-app, key: password}}
+  networkPolicy:
+    egressPostgres: true
   autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 1, targetCPUUtilizationPercentage: 70}
   replicaCount: 1
   pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}

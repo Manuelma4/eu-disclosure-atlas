@@ -20,12 +20,15 @@ Design: [docs/architecture.md](docs/architecture.md) and decision records 0004 t
   explorer, architecture page; typed client generated from OpenAPI; revalidation endpoint
 - [x] `watch` command for near-real-time ingestion; Compose file with PostgreSQL 18 and NATS 2.14 for P2/P3
 
-### P2 Lakehouse and orchestration `[ ]`
+### P2 Lakehouse and orchestration `[x]`
 Owns: `src/disclosure_atlas/lake.py` (migration), `src/disclosure_atlas/orchestration/`, `infra/`.
-- Migrate the lake to DuckLake 1.0 (PostgreSQL catalog, local disk in dev, R2 in prod) without changing gold
-  schemas; snapshot ids become the API version; `?as_of=` time travel on the API.
-- Dagster 1.13: partitioned assets per source and day, sensors during each regulator's business hours,
-  backfills, asset checks (freshness, volume, checksums), and a `snapshot.committed` hook.
+- [x] Migrate the lake to DuckLake 1.0 (PostgreSQL catalog or local DuckDB-file catalog, local disk in dev, S3/R2
+  in prod) without changing gold schemas; one commit per document; snapshot ids become the API version;
+  `?as_of=` time travel on the transaction and issuer endpoints; `disclosure-atlas migrate-lake` and `snapshots`.
+- [x] Dagster 1.13: partitioned assets per source and day, schedules during each regulator's business hours plus
+  a nightly settle run, backfills, asset checks (freshness, volume, ISIN/LEI validity, superseded share), gold
+  automation, weekly maintenance, and a `snapshot.committed` hook behind a `SnapshotPublisher` interface.
+  Operations guide: [docs/operations.md](docs/operations.md).
 
 ### P3 Event streaming, real-time and alerts (Kafka, Go) `[ ]`
 Owns: `src/disclosure_atlas/events/`, `contracts/events/`, `services/realtime-gateway/`, `services/alerts/`,

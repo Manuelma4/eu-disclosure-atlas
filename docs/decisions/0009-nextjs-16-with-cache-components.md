@@ -21,4 +21,5 @@ published Parquet. TanStack Query and Table are still used inside the app.
 
 ## Consequences
 - Static-fast pages with fresh data and no polling.
-- Deployable on Vercel, or self-hosted with the Node adapter if needed.
+- Shipped as a standalone Node.js container and deployed on Kubernetes with the rest of the platform
+  (decision 0012). No hosted front-end platform: the whole stack is self-hosted and reproducible.

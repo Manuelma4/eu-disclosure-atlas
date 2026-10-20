@@ -8,7 +8,9 @@ markets, plus reproducible research on top of it. Read README.md first, then ROA
 - Checks (run before every commit): `ruff check . && pytest -q`
 - Live checks (hit real endpoints, opt-in): `pytest -m network -q`
 - CLI: `disclosure-atlas sources | ingest <source> --start YYYY-MM-DD | watch <source> | reference fx | serve |
-  openapi | mcp | stats | query "<SQL>" | export`
+  openapi | mcp | stats | query "<SQL>" | export | migrate-lake | snapshots`
+- Orchestration: `pip install -e '.[orchestration]'` then `dagster dev` (see docs/operations.md; the DuckLake
+  catalog and data path come from `ATLAS_CATALOG` and `ATLAS_DATA_PATH`).
 - API contract: after changing `src/disclosure_atlas/api/`, run
   `disclosure-atlas --lake /tmp/empty-lake openapi > web/openapi.json && (cd web && npm run api:types)`
   (CI fails if `web/openapi.json` drifts from the code).
@@ -25,7 +27,9 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
   discoverable. Connectors implement `fetch(start, end)` (network) and `parse(doc, ctx)` (pure).
 - `src/disclosure_atlas/normalize.py`: shared parsing and multilingual vocabularies (roles, natures, instruments).
 - `src/disclosure_atlas/privacy.py`: pseudonyms for natural persons; legal-entity detection.
-- `src/disclosure_atlas/lake.py`: bronze (raw) -> silver (Parquet) -> gold (DuckDB views).
+- `src/disclosure_atlas/lake.py`: bronze (raw files) -> silver (DuckLake tables, one commit per document) -> gold
+  (DuckDB views pinned to a snapshot).
+- `src/disclosure_atlas/orchestration/`: Dagster assets, schedules, checks and the snapshot hook.
 - `src/disclosure_atlas/api/`: FastAPI app (REST `/v1`, SSE `/v1/stream`), read model pinned to the lake version.
 - `src/disclosure_atlas/ai/`: SQL guard, MCP server (`/mcp`, stdio) and Ask the Atlas (`/v1/ask`); evals in
   `evals/ask/`; see docs/ai.md.
