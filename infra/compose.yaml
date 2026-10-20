@@ -1,5 +1,6 @@
 # Local infrastructure for the next workstreams (P2: DuckLake + Dagster, P3: Kafka events, alerts, identity).
-# The current API and website only need the files in ./lake. Start with: docker compose -f infra/compose.yaml up -d
+# PostgreSQL holds the DuckLake catalog (ATLAS_CATALOG, see docs/operations.md); without it the lake falls back to a
+# local DuckDB-file catalog. Start with: docker compose -p atlas-<workstream> -f infra/compose.yaml up -d postgres
 name: disclosure-atlas
 
 services:
@@ -9,7 +10,8 @@ services:
       POSTGRES_USER: atlas
       POSTGRES_PASSWORD: atlas-dev-only
       POSTGRES_DB: atlas
-    ports: ["5432:5432"]
+    # Host port configurable when a local PostgreSQL already uses 5432: ATLAS_PG_PORT=55432 docker compose ...
+    ports: ["${ATLAS_PG_PORT:-5432}:5432"]
     volumes: [postgres:/var/lib/postgresql]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]

@@ -1,10 +1,12 @@
-"""Command line: disclosure-atlas {sources,ingest,watch,query,stats,export,reference,serve,openapi}."""
+"""Command line: disclosure-atlas {sources,ingest,watch,query,stats,export,reference,serve,openapi,migrate-lake,
+snapshots}."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import date, timedelta
@@ -89,6 +91,23 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_migrate_lake(args: argparse.Namespace) -> int:
+    lake = Lake(args.lake)
+    loaded = lake.migrate()
+    for dataset, rows in loaded.items():
+        print(f"{dataset}: {rows} rows loaded from {lake.silver / dataset}")
+    catalog = re.sub(r"password=\S+", "password=***", lake.catalog)
+    print(f"DuckLake catalog {catalog}, data in {lake.data_path}, snapshot {lake.version()}")
+    return 0
+
+
+def _cmd_snapshots(args: argparse.Namespace) -> int:
+    for snap in Lake(args.lake).snapshots()[-args.last:]:
+        time = snap["snapshot_time"].isoformat(timespec="seconds") if snap["snapshot_time"] else "-"
+        print(f"{snap['snapshot_id']:>8}  {time}  {snap['commit_message'] or json.dumps(snap['changes'], default=str)}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="disclosure-atlas", description=__doc__)
     parser.add_argument("--lake", default="lake", help="lake root folder (default: ./lake)")
@@ -131,6 +150,14 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("export", help="write gold tables to Parquet")
     p.add_argument("--out", default="exports")
     p.set_defaults(func=_cmd_export)
+
+    sub.add_parser(
+        "migrate-lake", help="load Parquet silver files (pre-DuckLake layout) into the DuckLake catalog; idempotent"
+    ).set_defaults(func=_cmd_migrate_lake)
+
+    p = sub.add_parser("snapshots", help="list DuckLake snapshots (ids usable as ?as_of= in the API)")
+    p.add_argument("--last", type=int, default=20)
+    p.set_defaults(func=_cmd_snapshots)
     return parser
 
 

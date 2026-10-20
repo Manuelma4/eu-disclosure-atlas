@@ -1,0 +1,13 @@
+# Dagster instance settings for local development (copy into $DAGSTER_HOME; see docs/operations.md).
+# Production runs Dagster with PostgreSQL storage (dagster-postgres) on Kubernetes (workstream P6).
+
+# Every step that opens the DuckLake catalog runs in the "ducklake" pool. A DuckDB-file catalog can be opened by
+# one process at a time, so keep the limit at 1 with it; with the PostgreSQL catalog it can be raised.
+concurrency:
+  pools:
+    default_limit: 1
+  runs:
+    max_concurrent_runs: 4
+
+telemetry:
+  enabled: false

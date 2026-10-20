@@ -24,7 +24,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .. import __version__, connectors
-from ..lake import Lake
+from ..lake import Lake, UnknownSnapshot
 from .readmodel import ReadModel, Snapshot
 from .schemas import (
     CountryStat,
@@ -54,10 +54,16 @@ ISSUER_COLUMNS = """
         AS net_open_market_eur_365d
 """
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
+IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+AsOf = Annotated[
+    int | None,
+    Query(ge=0, description="Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"),
+]
 DESCRIPTION = """
 Open, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European
 markets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,
-exposed in the `ETag` and `X-Atlas-Snapshot` headers. Not investment advice.
+exposed in the `ETag` and `X-Atlas-Snapshot` headers. Transaction and issuer endpoints accept `?as_of=<snapshot>`
+to answer from an earlier snapshot, so published figures stay reproducible. Not investment advice.
 """
 
 
@@ -85,7 +91,8 @@ def _parse_event_id(event_id: str) -> tuple[datetime, str]:
 def _conditional(request: Request, response: Response, snapshot: Snapshot) -> Response | None:
     """Set ETag and caching headers; return a 304 response when the client already has this version."""
     etag = f'W/"{snapshot.version}-{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"'
-    headers = {"ETag": etag, "Cache-Control": CACHE_CONTROL, "X-Atlas-Snapshot": snapshot.version}
+    cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
+    headers = {"ETag": etag, "Cache-Control": cache, "X-Atlas-Snapshot": snapshot.version}
     if request.headers.get("if-none-match") == etag:
         return Response(status_code=HTTPStatus.NOT_MODIFIED, headers=headers)
     response.headers.update(headers)
@@ -126,6 +133,10 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
     @app.exception_handler(StarletteHTTPException)
     async def http_problem(request: Request, exc: StarletteHTTPException) -> JSONResponse:
         return _problem(request, exc.status_code, exc.detail)
+
+    @app.exception_handler(UnknownSnapshot)
+    async def unknown_snapshot(request: Request, exc: UnknownSnapshot) -> JSONResponse:
+        return _problem(request, HTTPStatus.NOT_FOUND, str(exc))
 
     @app.exception_handler(RequestValidationError)
     async def validation_problem(request: Request, exc: RequestValidationError) -> JSONResponse:
@@ -177,6 +188,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         q: Annotated[str | None, Query(description="Issuer name contains")] = None,
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
         cursor: str | None = None,
+        as_of: AsOf = None,
     ) -> Any:
         where: list[str] = []
         params: list[Any] = []
@@ -221,7 +233,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
                 )
                 params += [published, published, record]
         clause = f"WHERE {' AND '.join(where)}" if where else ""
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             rows = snap.rows(
@@ -235,8 +247,8 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
             return Page[Transaction](items=items, next_cursor=next_cursor, snapshot=snap.version)
 
     @app.get("/v1/insider-transactions/{record_id}", response_model=Transaction, tags=["insider-transactions"])
-    def get_transaction(record_id: str, request: Request, response: Response) -> Any:
-        with read_model.snapshot() as snap:
+    def get_transaction(record_id: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             row = snap.one(f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE record_id = ?", [record_id])
@@ -251,6 +263,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         q: Annotated[str | None, Query(description="Name contains, or exact LEI")] = None,
         country: str | None = None,
         limit: Annotated[int, Query(ge=1, le=500)] = 50,
+        as_of: AsOf = None,
     ) -> Any:
         where, params = ["issuer_lei IS NOT NULL"], []
         if q:
@@ -259,7 +272,7 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
         if country:
             where.append("jurisdiction = ?")
             params.append(country.upper())
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             return snap.rows(
@@ -269,9 +282,9 @@ def create_app(lake_root: str | None = None, stream_poll_seconds: float = 5.0) -
             )
 
     @app.get("/v1/issuers/{lei}", response_model=IssuerDetail, tags=["issuers"])
-    def get_issuer(lei: str, request: Request, response: Response) -> Any:
+    def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         lei = lei.upper()
-        with read_model.snapshot() as snap:
+        with read_model.snapshot(as_of) as snap:
             if not_modified := _conditional(request, response, snap):
                 return not_modified
             summary = snap.one(
