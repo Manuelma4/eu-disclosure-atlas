@@ -11,9 +11,18 @@ RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
 FROM node:${NODE_VERSION}-bookworm-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-# The public API URL is inlined into client code at build time; server-side calls read ATLAS_API_URL at runtime.
-ARG NEXT_PUBLIC_ATLAS_API_URL=http://localhost:8000
-ENV NEXT_PUBLIC_ATLAS_API_URL=${NEXT_PUBLIC_ATLAS_API_URL}
+# Browser-facing URLs are inlined into client code at build time (defaults match the code's local defaults);
+# server-side calls read ATLAS_API_URL at runtime.
+ARG NEXT_PUBLIC_ATLAS_API_URL=http://127.0.0.1:8000
+ARG NEXT_PUBLIC_ATLAS_STREAM_URL=http://127.0.0.1:8000
+ARG NEXT_PUBLIC_ATLAS_ALERTS_URL=http://localhost:8091
+ARG NEXT_PUBLIC_ATLAS_OIDC_ISSUER=http://localhost:8180/realms/atlas
+ARG NEXT_PUBLIC_ATLAS_OIDC_CLIENT_ID=atlas-web
+ENV NEXT_PUBLIC_ATLAS_API_URL=${NEXT_PUBLIC_ATLAS_API_URL} \
+    NEXT_PUBLIC_ATLAS_STREAM_URL=${NEXT_PUBLIC_ATLAS_STREAM_URL} \
+    NEXT_PUBLIC_ATLAS_ALERTS_URL=${NEXT_PUBLIC_ATLAS_ALERTS_URL} \
+    NEXT_PUBLIC_ATLAS_OIDC_ISSUER=${NEXT_PUBLIC_ATLAS_OIDC_ISSUER} \
+    NEXT_PUBLIC_ATLAS_OIDC_CLIENT_ID=${NEXT_PUBLIC_ATLAS_OIDC_CLIENT_ID}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

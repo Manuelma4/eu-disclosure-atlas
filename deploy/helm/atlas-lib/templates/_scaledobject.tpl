@@ -15,14 +15,19 @@ spec:
   pollingInterval: {{ .Values.keda.pollingInterval | default 15 }}
   cooldownPeriod: {{ .Values.keda.cooldownPeriod | default 300 }}
   triggers:
+    {{- /* keda.triggers: [{topic, consumerGroup, offsetResetPolicy}]; keda.topics: topics of one group. */}}
+    {{- $triggers := .Values.keda.triggers | default list }}
     {{- range .Values.keda.topics }}
+    {{- $triggers = append $triggers (dict "topic" .) }}
+    {{- end }}
+    {{- range $triggers }}
     - type: kafka
       metadata:
         bootstrapServers: {{ include "atlas-lib.kafkaBootstrap" $ }}
-        consumerGroup: {{ $.Values.keda.consumerGroup | default (include "atlas-lib.name" $) }}
-        topic: {{ . }}
+        consumerGroup: {{ .consumerGroup | default $.Values.keda.consumerGroup | default (include "atlas-lib.name" $) }}
+        topic: {{ .topic }}
         lagThreshold: {{ $.Values.keda.lagThreshold | default 50 | quote }}
-        offsetResetPolicy: earliest
+        offsetResetPolicy: {{ .offsetResetPolicy | default "earliest" }}
     {{- end }}
 ---
 {{- end }}

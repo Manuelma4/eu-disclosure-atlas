@@ -17,6 +17,12 @@ service:
   port: 8080
 env:
   KAFKA_BROKERS: '{{ include "atlas-lib.kafkaBootstrap" . }}'
+  # The CloudNativePG cluster atlas-pg writes its application connection URI to this Secret.
+  ATLAS_DATABASE_URL: {secretKeyRef: {name: atlas-pg-app, key: uri}}
+  ATLAS_CORS_ORIGINS: '{{ .Values.global.webUrl | default "http://atlas.localhost:8080" }}'
+  ATLAS_WEBSITE_URL: '{{ .Values.global.webUrl | default "http://atlas.localhost:8080" }}'
+  ATLAS_OIDC_ISSUER: 'https://auth.{{ .Values.global.domain | default "atlas.localhost" }}/realms/atlas'
+  ATLAS_OIDC_AUDIENCE: atlas-alerts
 envFromSecret: "atlas-alerts"
 kafka:
   bootstrapServers: ""
@@ -40,13 +46,18 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 1
   targetCPUUtilizationPercentage: 80
+# One consumer group per role and delivery tier (services/alerts/README.md); KEDA scales on the largest lag.
 keda:
   enabled: true
   minReplicas: 1
   maxReplicas: 6
-  consumerGroup: alerts
-  topics: [atlas.filings.v1, atlas.signals.v1, atlas.notifications.v1]
   lagThreshold: 100
+  topics: []
+  triggers:
+    - {topic: atlas.filings.v1, consumerGroup: atlas-alerts-evaluator, offsetResetPolicy: latest}
+    - {topic: atlas.notifications.v1, consumerGroup: atlas-alerts-delivery}
+    - {topic: atlas.notifications.v1.retry.5m, consumerGroup: atlas-alerts-delivery-retry-5m}
+    - {topic: atlas.notifications.v1.retry.1h, consumerGroup: atlas-alerts-delivery-retry-1h}
 lake:
   enabled: false
   claimName: atlas-lake
@@ -60,15 +71,16 @@ networkPolicy:
   egressOtlp: false
   otlpNamespace: observability
   ingressFrom: [web]
-  allowIngressController: false
+  allowIngressController: true
   egressTo: []
   egressKafka: true
   egressPostgres: true
   # Webhook endpoints, email and Web Push services.
   egressInternet: true
+# The browser calls the alerts API directly with a Keycloak access token.
 ingress:
-  enabled: false
-  host: ""
+  enabled: true
+  host: "alerts.{{ .Values.global.domain | default \"atlas.localhost\" }}"
   annotations: {}
 global: {}
 

@@ -29,8 +29,17 @@ web:
   pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}
 ingestion:
   env:
+    # Publish the change feed (atlas.filings.v1) after each run.
+    ATLAS_KAFKA_BOOTSTRAP: '{{ include "atlas-lib.kafkaBootstrap" . }}'
     # DuckLake catalog in CloudNativePG (a DuckDB-file catalog cannot be shared by several pods).
     ATLAS_CATALOG: "postgres:host=atlas-pg-rw dbname=atlas user=atlas"
     PGPASSWORD: {secretKeyRef: {name: atlas-pg-app, key: password}}
   networkPolicy:
     egressPostgres: true
+realtime-gateway:
+  enabled: true
+  replicaCount: 1
+  pdb: {enabled: true, minAvailable: null, maxUnavailable: 1}
+alerts:
+  enabled: true
+  keda: {minReplicas: 1, maxReplicas: 2}

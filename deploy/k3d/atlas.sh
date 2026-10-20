@@ -47,7 +47,10 @@ create() {
 images() {
   log "building images (tag $TAG)"
   docker build -q -t "$REGISTRY/atlas-python:$TAG" . >/dev/null
-  docker build -q -t "$REGISTRY/atlas-web:$TAG" --build-arg "NEXT_PUBLIC_ATLAS_API_URL=$PUBLIC_API_URL" web >/dev/null
+  docker build -q -t "$REGISTRY/atlas-web:$TAG" web \
+    --build-arg "NEXT_PUBLIC_ATLAS_API_URL=$PUBLIC_API_URL" \
+    --build-arg "NEXT_PUBLIC_ATLAS_STREAM_URL=http://stream.atlas.localhost:$HTTP_PORT" \
+    --build-arg "NEXT_PUBLIC_ATLAS_ALERTS_URL=http://alerts.atlas.localhost:$HTTP_PORT" >/dev/null
   local extra=()
   for svc in realtime-gateway alerts; do
     if [[ -f "services/$svc/Dockerfile" ]]; then

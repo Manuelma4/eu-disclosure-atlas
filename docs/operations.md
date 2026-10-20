@@ -129,7 +129,8 @@ production, how to roll back and how pull-request previews work. Design: [decisi
 
 | Path | Contents |
 |---|---|
-| `Dockerfile` | One Python image (`atlas-python`) for query-api, ingestion and extraction; uv with `uv.lock`, non-root (uid 10001) |
+| `Dockerfile` | One Python image (`atlas-python`) for query-api, ingestion, extraction and ai-service (extras api, ai, events, orchestration, otel, pdf, shorts, llm; DuckDB extensions preinstalled); uv with `uv.lock`, non-root (uid 10001) |
+| `services/<name>/Dockerfile` | Go images `atlas-realtime-gateway` and `atlas-alerts` (P3), distroless, uid 65532; built, scanned and signed by the same workflow |
 | `web/Dockerfile` | Next.js standalone build on distroless Node.js 24 (`atlas-web`, uid 65532) |
 | `deploy/helm/atlas-lib` | Library chart: workload, service, probes, PDB, NetworkPolicy, HPA, KEDA ScaledObject, ingress |
 | `deploy/helm/<service>` | One chart per service: query-api, web, ingestion, extraction, ai-service, realtime-gateway, alerts |
@@ -175,6 +176,7 @@ This creates the cluster `atlas` (one server, one agent, k3s 1.36), builds `atla
 and imports them, installs the operators at the versions in `deploy/platform/operators.env` (Strimzi,
 CloudNativePG, cert-manager, KEDA, Kyverno, External Secrets) and the Kyverno policies (signature checks in
 Audit mode, since local images are unsigned), then the umbrella chart with `values-dev.yaml`: query-api, web,
+realtime-gateway, alerts (KEDA on the lag of its four consumer groups, database URL from CloudNativePG),
 ingestion (live Sweden FI connector), a single-node Kafka 4 with the Atlas topics and a PostgreSQL 18 cluster.
 ingestion and query-api share the DuckLake catalog in that PostgreSQL cluster (`ATLAS_CATALOG`, password from
 the CloudNativePG `atlas-pg-app` Secret) and the Parquet data files on the lake volume; the smoke test, without
@@ -185,6 +187,8 @@ because pods have a read-only root filesystem and no internet egress.
 |---|---|
 | http://atlas.localhost:8080 | Website |
 | http://api.atlas.localhost:8080/v1/health | API (`/docs` for OpenAPI) |
+| http://stream.atlas.localhost:8080/v1/stream | Live filings (realtime-gateway) |
+| http://alerts.atlas.localhost:8080/v1 | Alerts API (Keycloak tokens) |
 
 ```bash
 export KUBECONFIG="$PWD/.k3d/kubeconfig-host"   # the cluster's kubeconfig; atlas.sh never touches ~/.kube
