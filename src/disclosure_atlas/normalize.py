@@ -97,20 +97,21 @@ def record_id(source: str, *parts: object) -> str:
 # --- Roles -------------------------------------------------------------------------------
 
 _DEPUTY = re.compile(
-    r"\b(deputy|vice|adjoint|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-|vicepr[ée]sident\w*)\b", re.I
+    r"\b(deputy|vice|adjoint|adjunt[oa]|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-|vicepr[ée]sident\w*)\b", re.I
 )
 _HONORARY = re.compile(r"\b(d.honneur|honorary|honoraire)\b", re.I)
 _OTHER_MEMBER = re.compile(r"\bother member of the company|\bautre membre\b", re.I)
 _CEO = re.compile(
     r"\b(ceo|chief executive|managing director\w*|verkst[äa]llande direkt[öo]r|vd|directeur g[ée]n[ée]ral|"
-    r"pdg|pr[ée]sident[- ]directeur|vorstandsvorsitz\w*|consejero delegado|amministratore delegato|"
+    r"pdg|pr[ée]sident[- ]directeur|vorstandsvorsitz\w*|consejer[oa] delegad[oa]|amministratore delegato|"
     r"directrice g[ée]n[ée]rale|pr[ée]sidente?[- ]directrice|pr[ée]sidente? du directoire|g[ée]rante?s?|dg|"
     r"general manager)\b",
     re.I,
 )
 _CFO = re.compile(
     r"\b(cfo|chief financial|finance director|directeur financier|directrice financi[èe]re|"
-    r"finanzvorstand|director financiero|direttore finanziario|ekonomichef|finanschef)\b",
+    r"finanzvorstand|director financiero|direttore finanziario|ekonomichef|finanschef|"
+    r"director[a]? (general )?(econ[óo]mico[- ])?financier[oa])\b",
     re.I,
 )
 _CHAIR = re.compile(
@@ -122,14 +123,15 @@ _BOARD = re.compile(
     r"\b(board|administrat(eur|rice)|membre du conseil|aufsichtsrat\w*|verwaltungsrat\w*|consejer[oa]|"
     r"consigliere|styrelse\w*|commissaris|supervisory|"
     r"adm(in|n|i)i?strat(eur|rice)s?|membres? d[eu] conseil|conseil ?d.administration|conseil de surv\w+|"
-    r"conseil de g[ée]rance|membres? du ca)\b",
+    r"conseil de g[ée]rance|membres? du ca|miembro del consejo|administrador\w*)\b",
     re.I,
 )
 _EXECUTIVE = re.compile(
     r"\b(executive|officer|director|directeur|directrice|dirigeant\w*|vorstand\w*|management|"
     r"dirigente|ledande befattningshavare|directie|"
     r"comit[ée] ex[ée]cutif|comit[ée] de direction|directoire|comex|codir|secr[ée]taire g[ée]n[ée]ral\w*|"
-    r"evp|svp|vp|coo|cto|cio|caio|drh|dga|head of|chief of staff)\b",
+    r"evp|svp|vp|coo|cto|cio|caio|drh|dga|head of|chief of staff|directora|directiv[oa]s?|"
+    r"comit[ée] de direcci[óo]n|d\.g)\b",
     re.I,
 )
 _ROLE_PRIORITY = [Role.CEO, Role.CFO, Role.CHAIR, Role.EXECUTIVE, Role.BOARD_MEMBER, Role.OTHER]
@@ -229,8 +231,10 @@ _INSTRUMENT_RULES: list[tuple[InstrumentType, re.Pattern[str]]] = [
     (InstrumentType.WARRANT, _words(r"warrant\w*", r"bons? de souscription", r"optionsschein\w*",
                                     r"teckningsoption\w*")),
     (InstrumentType.SUBSCRIPTION_RIGHT, _words("subscription right", "unit right", r"droits? pr[ée]f[ée]rentiels?",
-                                               r"bezugsrecht\w*", r"tecknings?r[äa]tt\w*", r"unitr[äa]tt\w*")),
-    (InstrumentType.OPTION, _words(r"option\w*", "call", "put", r"stock options?")),
+                                               r"bezugsrecht\w*", r"tecknings?r[äa]tt\w*", r"unitr[äa]tt\w*",
+                                               r"derechos? de suscripci[óo]n", r"tegningsrett\w*")),
+    (InstrumentType.OPTION, _words(r"option\w*", "call", "put", r"stock options?", r"opci[óo]n\w*",
+                                   r"opsjon\w*")),
     (InstrumentType.SWAP, _words("swap", "cfd", "contract for difference")),
     (InstrumentType.BOND, _words("bond", "obligation", "anleihe", "bono", r"obbligazion\w*", r"titres? de cr[ée]ance")),
     (InstrumentType.SHARE, _words("share", "shares", "action", "actions", r"aktie\w*", r"acci[óo]n\w*", r"azion\w*",
