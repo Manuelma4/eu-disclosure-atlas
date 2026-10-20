@@ -74,8 +74,8 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 |---|---|---|---|
 | Sweden | Finansinspektionen | **Live** (`se_fi_pdmr`) | Planned |
 | France | AMF (BDIF) | **Live** (`fr_amf_pdmr`): PDF parsing, LLM fallback, evaluated | Planned |
-| Germany | BaFin | Planned | Planned |
-| Netherlands | AFM | Planned | Planned |
+| Germany | BaFin | Blocked: the database host disallows crawling (robots.txt) | Planned |
+| Netherlands | AFM | **Live** (`nl_afm_pdmr`) | Planned |
 | Spain, Italy, Nordics, others | | Researching | Researching |
 
 Status and source notes: [docs/sources/README.md](docs/sources/README.md). Plan: [ROADMAP.md](ROADMAP.md).
