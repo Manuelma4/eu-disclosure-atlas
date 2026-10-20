@@ -27,12 +27,19 @@ Owns: `src/disclosure_atlas/lake.py` (migration), `src/disclosure_atlas/orchestr
 - Dagster 1.13: partitioned assets per source and day, sensors during each regulator's business hours,
   backfills, asset checks (freshness, volume, checksums), and a `snapshot.committed` hook.
 
-### P3 Events, alerts and accounts `[ ]`
-Owns: `src/disclosure_atlas/events/`, `src/disclosure_atlas/notifier/`, web account pages.
-- NATS JetStream `EVENTS` and `JOBS` streams; publish `snapshot.committed` and `filing.published` from the
-  DuckLake change feed; the API stream and the website revalidation subscribe to them.
-- Accounts (Better Auth: passkeys, magic links), watchlists, alert rules, API keys with rate limits,
-  Standard Webhooks with retries and a delivery log, email and Web Push.
+### P3 Event streaming, real-time and alerts (Kafka, Go) `[ ]`
+Owns: `src/disclosure_atlas/events/`, `contracts/events/`, `services/realtime-gateway/`, `services/alerts/`,
+`infra/compose.yaml` (Kafka, Keycloak), web account pages. Design: decisions 0010, 0011, 0013.
+- Kafka 4 topics and CloudEvents contracts: JSON Schemas generated from the Pydantic models, committed in
+  `contracts/events/`, registered with BACKWARD compatibility, drift-checked in CI.
+- Change-feed publisher in Python (new gold rows → `atlas.filings.v1`, commits → `atlas.snapshots.v1`) with a
+  checkpoint after publish; idempotent producer.
+- `realtime-gateway` (Go): Kafka consumer → SSE fan-out with resume, Prometheus metrics, OpenTelemetry,
+  graceful shutdown; the website's live tape switches to it.
+- `alerts` (Go): watchlists and alert rules in PostgreSQL, rule evaluation on `atlas.filings.v1`, delivery by
+  email, Web Push and Standard Webhooks through retry topics and a dead-letter topic.
+- Keycloak realm (passkeys, website client with PKCE, partner client credentials) and API keys; the website
+  gets sign-in and a watchlist page.
 
 ### P4 AI layer `[ ]`
 Owns: `src/disclosure_atlas/ai/`, `evals/ask/`.
@@ -47,10 +54,28 @@ Owns: `web/`.
   markers; research pages; API reference (Scalar); English, French, Spanish and German; accessibility and
   Lighthouse budgets; Playwright end-to-end tests.
 
-### P6 Production and operations `[ ]`
-Owns: `infra/`, `.github/workflows/deploy.yml`.
-- Container images, Kamal 2 deploys to a small VM, the website on Vercel, Cloudflare CDN, DNS and R2;
-  OpenTelemetry traces and metrics, error tracking, public status page with per-source freshness.
+### P6 Kubernetes, GitOps and supply chain `[ ]`
+Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deploy). Design: decision 0012.
+- Dockerfiles for every service (non-root, distroless or slim), Helm charts (probes, resources, PDBs,
+  NetworkPolicies, HPA or KEDA ScaledObjects), an umbrella chart, and a k3d cluster that runs everything.
+- Argo CD app-of-apps and an ApplicationSet pull-request generator for preview namespaces.
+- Operators: Strimzi, CloudNativePG, cert-manager, External Secrets (SOPS), KEDA, Kyverno.
+- OpenTofu modules for Scaleway Kapsule, object storage and DNS (plan only until the owner provides
+  credentials).
+- CI: build, Trivy scan, Syft SBOM, cosign signature, push to GHCR; `helm lint` and kubeconform; a k3d smoke
+  test.
+
+### P7 Observability, SLOs and security hardening `[ ]`
+Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`. Design: 0013, 0014.
+- OpenTelemetry in the Python, Go and Node.js services; Collector with tail sampling; Prometheus, Loki, Tempo
+  and Grafana dashboards as code; SLOs as code with burn-rate alerts and runbooks.
+- STRIDE threat model, security headers and CSP, CodeQL, pip-audit, npm audit, govulncheck, ZAP baseline.
+- k6 load tests with budgets in CI; Chaos Mesh experiments for the preview cluster.
+
+### P8 MLOps: insider-signal model `[ ]`
+Owns: `src/disclosure_atlas/ml/`, `research/signals/`. Depends on WS6 (event study) features.
+- Features from gold (role, size, cluster buys, firm size, filing lag), walk-forward validation without
+  look-ahead, MLflow tracking and registry, batch scoring as a Dagster asset, model card, drift monitoring.
 
 ## M1 Insider trades across Europe
 

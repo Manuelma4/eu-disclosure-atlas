@@ -1,6 +1,6 @@
 # 0004: Python for data and API, TypeScript for the web, one codebase per language
 
-Status: accepted (2026-10-20)
+Status: accepted (2026-10-20); amended by [0010](0010-microservices-by-bounded-context.md)
 
 ## Context
 The platform needs connectors, PDF and LLM extraction, a lakehouse, econometrics, a public API and a

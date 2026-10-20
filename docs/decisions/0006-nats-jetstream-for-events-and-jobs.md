@@ -1,6 +1,6 @@
 # 0006: NATS JetStream for events and job queues
 
-Status: accepted (2026-10-20); implementation in workstream P3
+Status: superseded by [0011](0011-kafka-event-streaming-with-schema-registry.md) (2026-10-20)
 
 ## Context
 Several components react to new data: the live feed, website cache invalidation, alerts, webhooks and the LLM

@@ -36,58 +36,71 @@ flowchart LR
     ATLAS -- MCP tools and apps --> AGT
 ```
 
-## Containers
+## Services (v2: microservices by bounded context)
 
 ```mermaid
 flowchart TB
-    subgraph edge["Edge (Cloudflare)"]
-        CDN["CDN + WAF + rate limits"]
-        R2[("R2 object storage<br/>Parquet data files · open-data bucket")]
+    subgraph edge["Edge"]
+        CDN["CDN + WAF"]
+        GW["Envoy Gateway (Kubernetes Gateway API)<br/>TLS · JWT · rate limits"]
     end
-    subgraph webtier["Web (TypeScript)"]
-        WEB["web<br/>Next.js 16 · React 19 · Cache Components"]
+    subgraph clients["Clients"]
+        WEB["web · Next.js 16.4<br/>website + BFF"]
+        AGT["AI agents (MCP)"]
+        DEV["API consumers"]
     end
-    subgraph apitier["API (Python 3.14)"]
-        API["api<br/>FastAPI · REST /v1 · SSE /v1/stream"]
-        MCP["mcp<br/>stateless MCP server (2026-07-28 spec)"]
+    subgraph services["Services (Kubernetes)"]
+        QAPI["query-api · Python / FastAPI<br/>REST /v1"]
+        AI["ai-service · Python<br/>gRPC streaming · MCP"]
+        RT["realtime-gateway · Go<br/>SSE fan-out"]
+        AL["alerts · Go<br/>watchlists · delivery"]
+        ING["ingestion · Python / Dagster<br/>connectors · lakehouse"]
+        EXT["extraction · Python<br/>LLM fallback · KEDA"]
+        IDP["identity · Keycloak<br/>OIDC"]
     end
-    subgraph data["Data plane (Python 3.14)"]
-        DAG["pipeline<br/>Dagster 1.13 assets, sensors, checks"]
-        EXT["extractor<br/>LLM fallback workers"]
-        NOT["notifier<br/>alerts · webhooks · email · push"]
+    subgraph data["Data and messaging"]
+        K{{"Kafka 4 (KRaft) + schema registry"}}
+        PG[("PostgreSQL 18 (CloudNativePG)<br/>DuckLake catalog · app data")]
+        S3[("Object storage (S3 API)<br/>Parquet · raw bronze")]
     end
-    subgraph state["State"]
-        PG[("PostgreSQL 18<br/>DuckLake catalog · app data · Dagster")]
-        NATS{{"NATS 2.14 JetStream<br/>events · job queues · KV"}}
-    end
-    REG["Regulators"] --> DAG
-    DAG -- "write snapshot" --> PG
-    DAG -- "Parquet files" --> R2
-    DAG -- "snapshot.committed<br/>filing.published" --> NATS
-    DAG -- "jobs.extract" --> NATS
-    NATS --> EXT -- "parsed records" --> DAG
-    NATS --> NOT
-    NATS --> API
-    NATS -- "revalidate tags" --> WEB
-    API -- "read pinned snapshot (DuckDB)" --> PG
-    API --> R2
-    MCP --> API
-    WEB -- "REST (typed client)" --> API
-    CDN --> WEB
-    CDN --> API
+    REG["~30 regulators"] --> ING
+    ING -- "commit snapshot" --> PG
+    ING --> S3
+    ING -- "change feed → filings.v1, snapshots.v1" --> K
+    ING -- "extraction.requests.v1" --> K --> EXT -- "extraction.results.v1" --> K
+    K --> RT
+    K --> AL
+    K -- "snapshots.v1 → revalidate" --> WEB
+    QAPI --> PG
+    QAPI --> S3
+    AI -- "read-only SQL" --> QAPI
+    CDN --> GW
+    GW --> WEB
+    GW --> QAPI
+    GW --> RT
+    GW --> AL
+    GW --> AI
+    WEB --> IDP
+    DEV --> CDN
+    AGT --> CDN
 ```
 
-| Container | Technology | Responsibility | Scales by |
+| Service | Technology | Responsibility | Scales on |
 |---|---|---|---|
-| `web` | Next.js 16.4, React 19.3, TypeScript, Tailwind CSS v4 | Public website: live tape, company pages, explorers, research, docs | Edge/serverless |
-| `api` | Python 3.14, FastAPI, Pydantic v2, embedded DuckDB 1.5 | REST `/v1`, SSE stream, OpenAPI 3.1 | Stateless replicas, each reading a pinned snapshot |
-| `mcp` | MCP Python SDK, same codebase | Tools and MCP Apps for AI agents over the API | Stateless replicas (the 2026-07-28 spec removed sessions) |
-| `pipeline` | Dagster 1.13 | Ingestion assets per source and day, enrichment, gold models, data-quality checks, publishing | Dagster run workers |
-| `extractor` | Python, Claude API or local Ollama | LLM fallback for documents the deterministic parsers cannot read | Queue consumers with a concurrency limit |
-| `notifier` | Python | Watchlist alerts, Standard Webhooks, email (Resend), Web Push | Queue consumers |
-| PostgreSQL 18 | | DuckLake catalog, accounts, watchlists, API keys, webhook endpoints, Dagster storage | Vertical, then read replicas |
-| NATS 2.14 JetStream | | Domain events, work queues with retries and dead letters, KV for rate limits | Single binary, then a 3-node cluster |
-| Object storage | Cloudflare R2 (prod), local disk or S3-compatible (dev) | Parquet data files, raw bronze (private bucket), open-data releases (public bucket, no egress fees) | Managed |
+| `web` | Next.js 16.4, React 19.3, TypeScript, Tailwind CSS v4 | Website and backend-for-frontend | Requests (edge or pods) |
+| `query-api` | Python 3.14, FastAPI, DuckDB 1.5 | Public REST `/v1`, read models pinned to snapshots | CPU behind the CDN |
+| `ai-service` | Python, Claude API or Ollama, gRPC, MCP | Ask the Atlas, filing explainer, MCP tools and apps | Concurrent model calls |
+| `realtime-gateway` | Go | Server-sent events from Kafka to browsers, resumable | Open connections |
+| `alerts` | Go, PostgreSQL | Watchlists, alert rules, email / Web Push / webhooks with retry topics | Kafka consumer lag (KEDA) |
+| `ingestion` | Python 3.14, Dagster 1.13 | Connectors, bronze → silver → gold, DuckLake commits, change-feed publishing | Dagster run workers |
+| `extraction` | Python | LLM extraction of PDF filings with evaluation gates | Kafka consumer lag (KEDA) |
+| `identity` | Keycloak | Users (passkeys), OIDC clients, partner API clients | Replicas |
+| Kafka 4 (KRaft) | Strimzi; Redpanda locally | Event backbone, retry and dead-letter topics, schema registry | Partitions |
+| PostgreSQL 18 | CloudNativePG | DuckLake catalog, accounts, watchlists, Dagster storage | Primary + replicas |
+| Object storage | Scaleway Object Storage / R2; local disk in dev | Parquet data files, private raw bronze, open-data releases | Managed |
+
+Decision records: [0010](decisions/0010-microservices-by-bounded-context.md) (service boundaries),
+[0011](decisions/0011-kafka-event-streaming-with-schema-registry.md) (events).
 
 ## Data flow: from a regulator's website to your screen
 
@@ -97,7 +110,7 @@ sequenceDiagram
     participant R as Regulator
     participant D as pipeline (Dagster)
     participant L as DuckLake (Postgres catalog + R2)
-    participant N as NATS JetStream
+    participant N as Kafka
     participant A as api
     participant W as web
     participant U as Browser
@@ -105,10 +118,10 @@ sequenceDiagram
     R-->>D: CSV / Excel / PDF
     D->>L: bronze (raw, private) → silver → gold, one transaction
     L-->>D: snapshot 412
-    D->>N: atlas.snapshot.committed {412}, atlas.filing.published.SE.pdmr {…}
-    N-->>A: switch pinned snapshot 411 → 412 (atomic)
+    D->>N: change feed 411→412 → atlas.snapshots.v1, atlas.filings.v1
+    N-->>A: query-api switches its pinned snapshot 411 → 412
     N-->>W: revalidateTag("snapshot")
-    A-->>U: SSE event "filing" on /v1/stream
+    N-->>U: realtime-gateway pushes SSE event "filing"
     U->>W: open company page
     W->>A: GET /v1/issuers/{lei} (ETag "s412")
 ```
@@ -131,15 +144,20 @@ the regulator's business hours (measured per source and shown on the status page
 - The current M0 code uses the same layers on local Parquet files with DuckDB views; migrating to DuckLake is
   workstream P2 and changes no public schema.
 
-## Events and queues (NATS JetStream)
-| Stream | Subjects | Kind | Consumers |
+## Event streaming (Kafka)
+| Topic | Key | Producer | Consumers |
 |---|---|---|---|
-| `EVENTS` | `atlas.snapshot.committed`, `atlas.filing.published.<country>.<dataset>` | Limits retention (7 days), replayable | api (SSE fan-out, snapshot switch), web revalidator, notifier |
-| `JOBS` | `atlas.jobs.extract.<source>`, `atlas.jobs.webhook.deliver`, `atlas.jobs.email.send` | Work queue, explicit ack, max deliveries with back-off, dead-letter subject | extractor, notifier |
-| KV `ratelimits` | | Token buckets per API key | api |
+| `atlas.filings.v1` | issuer LEI | ingestion (change feed) | realtime-gateway, alerts, signal processor |
+| `atlas.snapshots.v1` | dataset | ingestion | query-api (snapshot switch), web (revalidation) |
+| `atlas.extraction.requests.v1` / `.results.v1` | document hash | ingestion / extraction | extraction / ingestion |
+| `atlas.notifications.v1` (+ `.retry.5m`, `.retry.1h`, `.dlq`) | user id | alerts | alerts delivery workers |
+| `atlas.signals.v1` | issuer LEI | signal processor (e.g. cluster buys) | alerts, web |
 
-Messages carry CloudEvents-style envelopes (`id`, `type`, `source`, `time`, `snapshot`), and consumers are
-idempotent on `id`. The lake remains the source of truth, so any event can be regenerated from snapshots.
+- CloudEvents 1.0 envelopes with JSON payloads whose JSON Schemas are generated from the Pydantic models,
+  committed in `contracts/events/` and registered with BACKWARD compatibility.
+- **No dual writes:** events come from the lake's change feed between committed snapshots, with a checkpoint
+  written after publishing (at-least-once). Producers are idempotent and consumers deduplicate on event ids.
+- The lake stays the source of truth: any topic can be rebuilt by replaying snapshots.
 
 ## Public interfaces
 - **REST `/v1`** (OpenAPI 3.1 generated from the Pydantic models): cursor pagination, filters, RFC 9457
@@ -148,8 +166,8 @@ idempotent on `id`. The lake remains the source of truth, so any event can be re
   through the `Deprecation` and `Sunset` headers.
 - **SSE `/v1/stream`:** live filings with `id`, `Last-Event-ID` resume and heartbeats. SSE works through CDNs
   and proxies and needs no client library.
-- **Webhooks:** signed with the Standard Webhooks spec (HMAC), retried with exponential back-off through the
-  `JOBS` stream, with a delivery log per endpoint.
+- **Webhooks:** signed with the Standard Webhooks spec (HMAC), retried through Kafka retry topics (5 minutes,
+  1 hour) and a dead-letter topic, with a delivery log per endpoint.
 - **MCP server** (spec 2026-07-28, stateless): tools such as `search_issuers`, `insider_activity`,
   `short_interest`, `cluster_buys`, `filing_lag_stats` and a read-only `sql`, plus an MCP App that renders an
   issuer's insider timeline inside the chat.
@@ -176,53 +194,76 @@ idempotent on `id`. The lake remains the source of truth, so any event can be re
 - **Ask the Atlas:** natural-language questions become read-only SQL over gold tables. The SQL is parsed
   with sqlglot (no writes, row and time limits, schema allowlist), the answer shows its SQL and a chart, and a
   golden question set gates prompt changes.
-- **Filing explainer:** plain-language summary and translation of a filing, citing its fields.
+- **Filing explainer:** plain-language summary and translation of a filing, citing its fields, streamed to
+  the website over gRPC server streaming (Protobuf contracts managed with buf).
 - **MCP** (above) makes the whole dataset available to agents with the same guardrails.
 
 ## Security and privacy
-- Pseudonymization ([decisions/0002](decisions/0002-pseudonymize-natural-persons.md)); bronze in a private
-  bucket; no personal data in logs (structured logging with redaction).
-- Fetchers only reach an allowlist of regulator hosts (no SSRF surface).
-- API keys are stored as hashes with a visible prefix; webhook secrets per endpoint; secrets in environment
-  variables from a secret manager.
-- Web: strict Content-Security-Policy and security headers. Edge WAF and rate limits.
-- Supply chain: Renovate, `pip-audit` and `npm audit`, a CycloneDX SBOM per image, and CodeQL.
+Details: [0013](decisions/0013-identity-edge-and-application-security.md).
+- Keycloak (OIDC): authorization code + PKCE with passkeys for the website, client credentials for partners,
+  scoped JWTs validated by every service.
+- Envoy Gateway at the edge: TLS, JWT validation, per-client rate limits, size limits, CORS.
+- Pseudonymization ([0002](decisions/0002-pseudonymize-natural-persons.md)); bronze in a private bucket;
+  personal data redacted from logs; fetchers restricted to an allowlist of regulator hosts (no SSRF).
+- Kubernetes: `restricted` Pod Security, default-deny NetworkPolicies, secrets through External Secrets and
+  SOPS, Kyverno admitting only signed images.
+- Verification in CI: CodeQL, pip-audit, npm audit, govulncheck, Trivy, SBOM (Syft), cosign signatures, and an
+  OWASP ZAP baseline scan of each preview environment. Threat model: `docs/security/threat-model.md`.
 
-## Observability and SLOs
-- OpenTelemetry traces, metrics and logs from every container → Grafana (Tempo, Prometheus, Loki); Sentry
-  for frontend errors.
-- **Data SLOs:** freshness per source, volume anomalies, checksum failure rates and parser coverage, as Dagster
-  asset checks. Breaches alert, and a public status page shows "last filing ingested" per regulator.
-- **Service SLOs:** API p95 under 200 ms for cached reads and 99.9% availability for `/v1` reads.
+## Observability, SLOs and MLOps
+Details: [0014](decisions/0014-observability-slos-and-mlops.md).
+- OpenTelemetry in every service → Collector (tail sampling) → Prometheus, Loki and Tempo; Grafana
+  dashboards as code.
+- SLOs as code with burn-rate alerts: filing freshness per source (15 minutes, 95% of business hours), `/v1`
+  availability 99.9% with p95 under 200 ms, live events within 5 seconds of publication.
+- Data observability: Dagster asset checks and OpenLineage lineage. LLM observability: Langfuse traces with
+  evaluation scores.
+- MLOps: an insider-trade informativeness model with MLflow tracking and registry, walk-forward validation,
+  batch scoring in Dagster, a model card and drift monitoring.
+- Resilience: k6 load tests with budgets, Chaos Mesh experiments in the preview cluster, and runbooks per alert.
 
 ## Delivery
-- **Repository:** one monorepo with `src/disclosure_atlas` (Python package: core, connectors, lake, api,
-  pipeline, workers), `web/` (Next.js), `infra/` (Compose, Kamal, OpenTofu), `research/` and `docs/`.
-- **CI (GitHub Actions):**
-  - Python: Ruff and pytest.
-  - Web: build and type checks.
-  - Contract tests: Schemathesis against the OpenAPI document.
-  - End to end: Playwright.
-  - Lighthouse budgets.
-  - Evaluation gates for the AI components.
-  - OpenAPI drift check (the committed document must match the code).
-- **Environments:** Docker Compose for local development. In production, a small Hetzner VM (ARM) runs the
-  api, pipeline, workers, NATS and PostgreSQL with Kamal 2 zero-downtime deploys; the website runs on Vercel;
-  Cloudflare provides CDN, DNS and R2. The expected cost is about EUR 15 per month at launch. Preview
-  deployments run per pull request.
+Details: [0012](decisions/0012-kubernetes-gitops-and-infrastructure-as-code.md).
+- **Monorepo:**
+
+  | Path | Contents |
+  |---|---|
+  | `src/disclosure_atlas` | Python shared kernel and Python services |
+  | `services/` | Go services |
+  | `web/` | Next.js website |
+  | `contracts/` | Event JSON Schemas and Protobuf |
+  | `deploy/` | Helm charts, Argo CD applications, k3d configuration |
+  | `infra/` | Compose and OpenTofu |
+  | `research/`, `evals/`, `docs/` | Research studies, evaluation sets, documentation |
+
+- **CI (GitHub Actions, path-filtered per service):**
+  - lint and tests;
+  - contract checks (OpenAPI drift, event schema compatibility, `buf breaking`);
+  - Schemathesis against the API;
+  - Playwright end to end;
+  - k6 budgets;
+  - AI evaluation gates;
+  - images built, scanned, given an SBOM, signed and pushed to GHCR.
+- **CD:** Argo CD (GitOps) with an app-of-apps per environment and an ephemeral namespace per pull request.
+  Production runs on Scaleway Kapsule (EU), declared with OpenTofu. k3d runs the same charts locally and in CI.
+- **Releases:** conventional commits and release-please, one version per service.
 
 ## Evolution
 | Phase | Scope |
 |---|---|
-| Now (M0 + P1) | Parquet lake, CLI, FastAPI read API with SSE, Next.js website, Compose with PostgreSQL and NATS |
-| P2–P3 | DuckLake + Dagster, NATS events, alerts and webhooks, accounts and API keys |
-| P4–P6 | MCP server and Ask the Atlas, explorer with DuckDB-WASM, production deployment and observability |
-| Later | Iceberg REST catalog export for Spark and Trino users, more datasets (major holdings, buybacks) |
+| Done (M0, P1) | Parquet lake, CLI, FastAPI read API with SSE, Next.js website, CI |
+| P2 | DuckLake + Dagster, snapshot ids, time travel |
+| P3 | Kafka, change-feed publisher, Go realtime-gateway and alerts, Keycloak, Envoy Gateway |
+| P4 | ai-service: MCP server, Ask the Atlas, gRPC explainer, evaluation gates |
+| P5 | Website product: search, DuckDB-WASM explorer, prices, four languages, end-to-end tests |
+| P6 | Kubernetes, Helm, Argo CD, KEDA, operators, OpenTofu on Scaleway, signed supply chain |
+| P7 | Observability, SLOs, security hardening, load and chaos tests |
+| P8 | MLOps: insider-signal model with MLflow, scoring and monitoring |
 
-## What we deliberately do not use
-- **Kafka:** event volumes are thousands per day, not millions per second. NATS gives streams, queues and KV
-  in one small binary.
+## What we deliberately do not use (yet)
 - **GraphQL for the public API:** an open-data API benefits more from CDN-cacheable REST, bulk files and SQL.
-- **Microservices per connector:** connectors are plugins in one codebase and scale as Dagster runs.
-- **A separate search engine:** PostgreSQL full-text search and trigram indexes cover issuer search at this
-  size.
+  GraphQL stays an option for a future authenticated app API.
+- **A service mesh:** with eight services, mTLS and retries come from the platform and client libraries; a mesh
+  (Linkerd) is the next step if the service count grows.
+- **Microservices per connector:** connectors are plugins inside `ingestion` and scale as Dagster runs.
+- **A separate search engine:** PostgreSQL full-text search and trigram indexes cover issuer search at this size.

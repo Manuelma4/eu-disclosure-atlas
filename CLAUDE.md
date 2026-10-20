@@ -14,7 +14,9 @@ markets, plus reproducible research on top of it. Read README.md first, then ROA
   (CI fails if `web/openapi.json` drifts from the code).
 - Website: `cd web && npm install && npm run dev | typecheck | build`; `npx eslint src`. Next.js 16.4 differs
   from older versions: read `web/node_modules/next/dist/docs/` before writing web code (see `web/AGENTS.md`).
-- Local infrastructure for P2/P3: `docker compose -f infra/compose.yaml up -d` (PostgreSQL 18, NATS 2.14).
+- Local infrastructure: `docker compose -f infra/compose.yaml up -d` (PostgreSQL 18, Redpanda as the Kafka API).
+- Go services: build and test with the local toolchain if present, otherwise in Docker
+  (`docker run --rm -v "$PWD":/src -w /src/services/<name> golang:1.26 go test ./...`).
 
 ## Architecture in one minute
 Platform design and decisions: docs/architecture.md and docs/decisions/. Code map:
@@ -27,6 +29,9 @@ Platform design and decisions: docs/architecture.md and docs/decisions/. Code ma
 - `src/disclosure_atlas/api/`: FastAPI app (REST `/v1`, SSE `/v1/stream`), read model pinned to the lake version.
 - `src/disclosure_atlas/reference/`: reference data (ECB FX now; LEI, ISIN and tickers in WS5).
 - `web/`: Next.js website; a client of the public API only.
+- `services/<name>/`: Go services (realtime-gateway, alerts), each with its own go.mod, tests and Dockerfile.
+- `contracts/`: event JSON Schemas (generated from the Pydantic models, never edited by hand) and Protobuf.
+- `deploy/`, `infra/`: Helm charts, Argo CD, k3d, Compose and OpenTofu.
 - Source naming: `<iso2 country>_<authority>_<dataset>`, e.g. `fr_amf_pdmr`, `de_bafin_shorts`.
 
 ## Rules

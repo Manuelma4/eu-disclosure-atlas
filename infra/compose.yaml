@@ -1,4 +1,4 @@
-# Local infrastructure for the next workstreams (P2: DuckLake + Dagster, P3: events and accounts).
+# Local infrastructure for the next workstreams (P2: DuckLake + Dagster, P3: Kafka events, alerts, identity).
 # The current API and website only need the files in ./lake. Start with: docker compose -f infra/compose.yaml up -d
 name: disclosure-atlas
 
@@ -16,12 +16,26 @@ services:
       interval: 5s
       retries: 10
 
-  nats:
-    image: nats:2.14
-    command: ["-js", "-sd", "/data", "-m", "8222"]
-    ports: ["4222:4222", "8222:8222"]
-    volumes: [nats:/data]
+  kafka:
+    # Redpanda speaks the Kafka API and bundles a schema registry; production runs Apache Kafka 4 (Strimzi).
+    image: redpandadata/redpanda:latest
+    command:
+      - redpanda start --mode dev-container --smp 1 --overprovisioned
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://kafka:9092,external://localhost:19092
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+    ports: ["19092:19092", "18081:18081"]
+    volumes: [kafka:/var/lib/redpanda/data]
+
+  kafka-console:
+    image: redpandadata/console:latest
+    environment:
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_SCHEMAREGISTRY_ENABLED: "true"
+      KAFKA_SCHEMAREGISTRY_URLS: http://kafka:8081
+    ports: ["8080:8080"]
+    depends_on: [kafka]
 
 volumes:
   postgres:
-  nats:
+  kafka:

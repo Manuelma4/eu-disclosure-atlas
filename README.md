@@ -46,7 +46,7 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
 | **MCP server** | Tools and MCP Apps so AI agents can query the dataset | Planned (P4) |
-| **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks | Planned (P3) |
+| **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
 
 Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
 models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
@@ -59,7 +59,11 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 | API | Python 3.14, FastAPI, Pydantic v2, OpenAPI 3.1, SSE, RFC 9457 errors |
 | Data | DuckDB 1.5 on Parquet today, DuckLake 1.0 (PostgreSQL 18 catalog, Cloudflare R2) next |
 | Pipeline | Connector plugins today, Dagster 1.13 assets, sensors and checks next |
-| Events and jobs | NATS 2.14 JetStream (P3) |
+| Services | Python (ingestion, extraction, query-api, ai-service), Go (realtime-gateway, alerts), TypeScript (web) |
+| Events | Apache Kafka 4 (KRaft) with a schema registry, CloudEvents contracts, retry and dead-letter topics |
+| Platform | Kubernetes, Helm, Argo CD (GitOps), KEDA, Strimzi, CloudNativePG, OpenTofu on Scaleway (EU) |
+| Security | Keycloak (OIDC, passkeys), Envoy Gateway, signed images, SBOM, threat model |
+| Observability | OpenTelemetry, Prometheus, Loki, Tempo, Grafana, SLOs as code, Langfuse, MLflow |
 | AI | Claude API or local Ollama for extraction and questions, MCP for agents, evaluation gates in CI |
 
 ## Coverage

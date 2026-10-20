@@ -26,9 +26,9 @@ const LAYERS: { title: string; note: string; nodes: Node[] }[] = [
     note: "One codebase, several deployables",
     nodes: [
       { name: "Connectors", detail: "Plugins, polite client, provenance", live: true },
-      { name: "Dagster 1.13", detail: "Partitioned assets, sensors, checks", live: false },
-      { name: "Extractor", detail: "LLM fallback gated by evaluations", live: false },
-      { name: "Notifier", detail: "Alerts, Standard Webhooks, push", live: false },
+      { name: "ingestion · Dagster 1.13", detail: "Partitioned assets, sensors, checks", live: false },
+      { name: "extraction · Python", detail: "LLM fallback, autoscaled on Kafka lag", live: false },
+      { name: "alerts · Go", detail: "Watchlists, webhooks, retry topics", live: false },
     ],
   },
   {
@@ -36,8 +36,8 @@ const LAYERS: { title: string; note: string; nodes: Node[] }[] = [
     note: "The lake is the system of record",
     nodes: [
       { name: "Lakehouse", detail: "Bronze → silver → gold; DuckLake 1.0 next", live: true },
-      { name: "NATS 2.14 JetStream", detail: "Events, job queues, KV", live: false },
-      { name: "PostgreSQL 18", detail: "Catalog, accounts, API keys", live: false },
+      { name: "Kafka 4 + schema registry", detail: "Change-feed events, retries, DLQ", live: false },
+      { name: "PostgreSQL 18", detail: "DuckLake catalog, accounts (CloudNativePG)", live: false },
       { name: "Object storage", detail: "Parquet on Cloudflare R2", live: false },
     ],
   },
@@ -46,9 +46,9 @@ const LAYERS: { title: string; note: string; nodes: Node[] }[] = [
     note: "Same API for the website and everyone else",
     nodes: [
       { name: "REST /v1 · FastAPI", detail: "OpenAPI 3.1, ETags per snapshot", live: true },
-      { name: "SSE /v1/stream", detail: "Live filings, resumable", live: true },
+      { name: "realtime-gateway · Go", detail: "SSE fan-out; Python stream live today", live: true },
       { name: "Website · Next.js 16.4", detail: "Cache Components, typed client", live: true },
-      { name: "MCP server", detail: "Stateless 2026-07-28 spec, MCP Apps", live: false },
+      { name: "ai-service · MCP + gRPC", detail: "Ask the Atlas, stateless MCP, MCP Apps", live: false },
     ],
   },
 ];
@@ -58,9 +58,12 @@ const STACK = [
   ["API", "FastAPI on Python 3.14, Pydantic v2, OpenAPI 3.1", "One schema from ingestion to the generated TypeScript client"],
   ["Analytics engine", "DuckDB 1.5, Parquet, DuckLake 1.0", "Snapshots, time travel and a change feed on files and SQL"],
   ["Orchestration", "Dagster 1.13", "Partitioned assets, backfills, data-quality checks, lineage"],
-  ["Events and jobs", "NATS 2.14 JetStream", "Fan-out events plus retrying work queues in one small binary"],
+  ["Events", "Kafka 4 (KRaft), schema registry, CloudEvents", "Replayable events from the change feed, retry and dead-letter topics"],
+  ["Services", "Python, Go and TypeScript microservices", "Each bounded context scales and fails on its own"],
+  ["Platform", "Kubernetes, Helm, Argo CD, KEDA, OpenTofu (Scaleway, EU)", "GitOps, preview environments, autoscaling on lag"],
+  ["Security", "Keycloak, Envoy Gateway, cosign, SBOM", "OIDC with passkeys, edge policies, signed supply chain"],
   ["AI", "Claude API or local Ollama, MCP", "Extraction fallback, natural-language questions, agent access, all evaluated"],
-  ["Operations", "Docker, GitHub Actions, OpenTelemetry, Cloudflare", "Cheap to run, observable, reproducible"],
+  ["Observability", "OpenTelemetry, Prometheus, Loki, Tempo, Grafana", "SLOs as code with burn-rate alerts and runbooks"],
 ];
 
 const PRINCIPLES = [
