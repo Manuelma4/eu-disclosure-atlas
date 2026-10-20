@@ -97,7 +97,9 @@ def record_id(source: str, *parts: object) -> str:
 # --- Roles -------------------------------------------------------------------------------
 
 _DEPUTY = re.compile(
-    r"\b(deputy|vice|adjoint|adjunt[oa]|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-|vicepr[ée]sident\w*)\b", re.I
+    r"\b(deputy|vice|adjoint|adjunt[oa]|vicedirekt[øo]r|d[ée]l[ée]gu[ée]|stellvertret\w*|suppleant|vice-|"
+    r"vicepr[ée]sident\w*)\b",
+    re.I,
 )
 _HONORARY = re.compile(r"\b(d.honneur|honorary|honoraire)\b", re.I)
 _OTHER_MEMBER = re.compile(r"\bother member of the company|\bautre membre\b", re.I)
@@ -105,25 +107,28 @@ _CEO = re.compile(
     r"\b(ceo|chief executive|managing director\w*|verkst[äa]llande direkt[öo]r|vd|directeur g[ée]n[ée]ral|"
     r"pdg|pr[ée]sident[- ]directeur|vorstandsvorsitz\w*|consejer[oa] delegad[oa]|amministratore delegato|"
     r"directrice g[ée]n[ée]rale|pr[ée]sidente?[- ]directrice|pr[ée]sidente? du directoire|g[ée]rante?s?|dg|"
-    r"general manager)\b",
+    r"general manager|adm\.? direkt[øo]r|administrerende direkt[øo]r|daglig leder|konsernsjef|"
+    r"koncernchef)\b",
     re.I,
 )
 _CFO = re.compile(
     r"\b(cfo|chief financial|finance director|directeur financier|directrice financi[èe]re|"
     r"finanzvorstand|director financiero|direttore finanziario|ekonomichef|finanschef|"
-    r"director[a]? (general )?(econ[óo]mico[- ])?financier[oa])\b",
+    r"director[a]? (general )?(econ[óo]mico[- ])?financier[oa]|finansdirekt[øo]r|[øo]konomidirekt[øo]r)\b",
     re.I,
 )
 _CHAIR = re.compile(
     r"\b(chair\w*|pr[ée]sident\w* du conseil|aufsichtsratsvorsitz\w*|presidente del consiglio|"
-    r"presidente del consejo|ordf[öo]rande|voorzitter|pr[ée]sidente?)\b",
+    r"presidente del consejo|ordf[öo]rande|voorzitter|pr[ée]sidente?|bestyrelsesformand|styreleder|"
+    r"styrets leder|formand)\b",
     re.I,
 )
 _BOARD = re.compile(
     r"\b(board|administrat(eur|rice)|membre du conseil|aufsichtsrat\w*|verwaltungsrat\w*|consejer[oa]|"
     r"consigliere|styrelse\w*|commissaris|supervisory|"
     r"adm(in|n|i)i?strat(eur|rice)s?|membres? d[eu] conseil|conseil ?d.administration|conseil de surv\w+|"
-    r"conseil de g[ée]rance|membres? du ca|miembro del consejo|administrador\w*)\b",
+    r"conseil de g[ée]rance|membres? du ca|miembro del consejo|administrador\w*|bestyrelsesmedlem\w*|"
+    r"styremedlem\w*|bestyrelse\w*)\b",
     re.I,
 )
 _EXECUTIVE = re.compile(
@@ -131,7 +136,8 @@ _EXECUTIVE = re.compile(
     r"dirigente|ledande befattningshavare|directie|"
     r"comit[ée] ex[ée]cutif|comit[ée] de direction|directoire|comex|codir|secr[ée]taire g[ée]n[ée]ral\w*|"
     r"evp|svp|vp|coo|cto|cio|caio|drh|dga|head of|chief of staff|directora|directiv[oa]s?|"
-    r"comit[ée] de direcci[óo]n|d\.g)\b",
+    r"comit[ée] de direcci[óo]n|d\.g|direkt[øo]r\w*|direktion\w*|koncerndirekt[øo]r|konserndirekt[øo]r|"
+    r"koncernledelse\w*|konsernledelse\w*|ledende medarbejder\w*)\b",
     re.I,
 )
 _ROLE_PRIORITY = [Role.CEO, Role.CFO, Role.CHAIR, Role.EXECUTIVE, Role.BOARD_MEMBER, Role.OTHER]
@@ -176,9 +182,11 @@ _NATURE_RULES: list[tuple[Nature, re.Pattern[str], int]] = [
     (Nature.LENDING, _words("loan", "lending", r"pr[êe]t", "leihe", r"pr[ée]stamo", "prestito", r"l[åa]n"), 0),
     (Nature.PLEDGE, _words(r"pledg\w*", "nantissement", r"verpf[äa]ndung", r"pignoraci[óo]n", "pegno",
                            r"pants[äa]ttning"), 0),
-    (Nature.GIFT, _words("gift", r"donations?", "schenkung", r"donaci[óo]n", r"g[åa]va", r"pr[ée]sent d.usage"), 0),
+    (Nature.GIFT, _words("gift", r"donations?", "schenkung", r"donaci[óo]n", r"g[åa]va", r"pr[ée]sent d.usage",
+                          "gave"), 0),
     (Nature.INHERITANCE, _words("inheritance", "succession", "erbschaft", "herencia", "arv"), 1),
-    (Nature.EXERCISE, _words("exercise", "exercice", r"aus[üu]bung", "ejercicio", "esercizio", r"l[öo]sen"), 0),
+    (Nature.EXERCISE, _words("exercise", "exercice", r"aus[üu]bung", "ejercicio", "esercizio", r"l[öo]sen",
+                              "udnyttelse", r"ut[øo]velse"), 0),
     (Nature.CONVERSION, _words("conversion", "umwandlung", "konvertering"), 0),
     # A contribution in kind ("apport") hands the shares over, unless the text says they were received.
     (Nature.EXCHANGE, _words("apport", "contribution in kind"), -1),
@@ -187,13 +195,14 @@ _NATURE_RULES: list[tuple[Nature, re.Pattern[str], int]] = [
     (Nature.GRANT, _words(r"actions? gratuites?", r"actions? de performance", r"free shares?",
                           r"performance shares?", "livraison"), 1),
     (Nature.SUBSCRIPTION, _words("subscription", "souscription", "zeichnung", r"suscripci[óo]n", "sottoscrizione",
-                                 "teckning", "soucription"), 1),
+                                 "teckning", "soucription", "tegning"), 1),
     (Nature.GRANT, _words("allotment", r"grant\w*", "attribution", "zuteilung", r"asignaci[óo]n", "assegnazione",
-                          "tilldelning"), 1),
+                          "tilldelning", "tildeling"), 1),
     (Nature.BUY, _words("acquisition", "purchase", "buy", "achat", "acquisto", "erwerb", "kauf", "compra",
-                        r"k[öo]p"), 1),
+                        r"k[öo]p", r"k[øo]b", r"kj[øo]p", "purchased", "purchases", "bought"), 1),
     (Nature.SELL, _words("disposal", "sale", "sell", "cession", "vente", r"ver[äa]u[ßs]erung", "verkauf", "venta",
-                         "vendita", "avyttring", r"f[öo]rs[äa]ljning"), -1),
+                         "vendita", "avyttring", r"f[öo]rs[äa]ljning", "salg", "solgt", "sold", "sales",
+                         "disposals"), -1),
 ]
 
 
@@ -238,8 +247,8 @@ _INSTRUMENT_RULES: list[tuple[InstrumentType, re.Pattern[str]]] = [
     (InstrumentType.SWAP, _words("swap", "cfd", "contract for difference")),
     (InstrumentType.BOND, _words("bond", "obligation", "anleihe", "bono", r"obbligazion\w*", r"titres? de cr[ée]ance")),
     (InstrumentType.SHARE, _words("share", "shares", "action", "actions", r"aktie\w*", r"acci[óo]n\w*", r"azion\w*",
-                                  r"aandel\w*", "bta", "btu", "interim share", r"depositary receipts?", "adrs?",
-                                  "ads")),
+                                  r"aandel\w*", r"aksje\w*", "bta", "btu", "interim share", r"depositary receipts?",
+                                  "adrs?", "ads")),
 ]
 
 

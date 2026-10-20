@@ -31,7 +31,8 @@ class PoliteClient:
         return self.request("POST", url, data=data)
 
     def request(
-        self, method: str, url: str, params: Mapping[str, Any] | None = None, data: Mapping[str, Any] | None = None
+        self, method: str, url: str, params: Mapping[str, Any] | None = None, data: Mapping[str, Any] | None = None,
+        json: Any = None,
     ) -> httpx.Response:
         host = httpx.URL(url).host
         for attempt in range(self.retries + 1):
@@ -39,7 +40,7 @@ class PoliteClient:
             if wait > 0:
                 time.sleep(wait)
             try:
-                response = self._client.request(method, url, params=params, data=data)
+                response = self._client.request(method, url, params=params, data=data, json=json)
             except httpx.TransportError:
                 if attempt == self.retries:
                     raise

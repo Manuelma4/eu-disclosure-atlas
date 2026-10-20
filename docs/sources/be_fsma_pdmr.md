@@ -40,3 +40,6 @@ the parser keys on the class names.
 - A full backfill is slow by design: one request per 30 seconds, one request per transaction.
 - The MAR notification threshold is EUR 20,000 per calendar year ([FSMA](https://www.fsma.be/en/managers-transactions);
   Regulation (EU) 2024/2809 raised it from EUR 5,000 from 4 December 2024).
+
+## Observed (8 to 19 October 2026)
+28 transactions, all with ISIN, volume and price; 1 by a closely associated person.

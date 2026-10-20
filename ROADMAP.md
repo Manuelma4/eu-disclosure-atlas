@@ -123,10 +123,13 @@ Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs 
 - BaFin's managers' transactions database (one-year window) and AFM's MAR 19 register (CSV export).
 - Done when: both ingest the last 90 days with valid LEI/ISIN rates reported in the source notes.
 
-### WS3 More jurisdictions `[ ]`
+### WS3 More jurisdictions `[x]`
 - Survey and implement where data is reachable: Denmark, Finland, Norway, Spain (CNMV), Italy (Consob),
   Belgium (FSMA), Austria (FMA), Ireland (CBI), Poland (KNF), Portugal (CMVM). Record dead ends in
   `docs/sources/README.md`.
+- Done: `es_cnmv_pdmr`, `be_fsma_pdmr`, `dk_finanstilsynet_pdmr`, `no_oslobors_pdmr`; a shared reader for
+  issuer-made 2016/523 templates (`connectors/_mar_template.py`). Blocked or deferred, with reasons in
+  `docs/sources/README.md`: AT, IE, PL, FI (terms of Nasdaq's feed), PT (private API).
 
 ## M2 Short positions `[ ]`
 
