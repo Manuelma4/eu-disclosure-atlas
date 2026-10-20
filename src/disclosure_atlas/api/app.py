@@ -48,6 +48,7 @@ from .schemas import (
     Transaction,
 )
 from .security import RateLimitMiddleware, SecurityHeadersMiddleware, rate_limit_settings
+from .signals import signals_router
 
 ISSUER_COLUMNS = """
     issuer_lei AS lei, arg_max(issuer_name, published_at) AS name, arg_max(jurisdiction, published_at) AS country,
@@ -167,6 +168,7 @@ def create_app(
             {"name": "stream", "description": "Server-sent events for new filings"},
             {"name": "exports", "description": "Gold tables as Parquet files"},
             {"name": "ai", "description": "Ask the Atlas: questions in plain English, answered with SQL"},
+            {"name": "signals", "description": "Insider-signal model scores (research output, not investment advice)"},
             {"name": "meta", "description": "Health and source coverage"},
         ],
     )
@@ -187,6 +189,7 @@ def create_app(
     app.add_middleware(SecurityHeadersMiddleware)
     app.include_router(prices_router(read_model, price_store or PriceStore(lake, provider_from_env())))
     app.include_router(exports_router(read_model, lake.root / "exports"))
+    app.include_router(signals_router(lake.root))
 
     @app.exception_handler(StarletteHTTPException)
     async def http_problem(request: Request, exc: StarletteHTTPException) -> JSONResponse:

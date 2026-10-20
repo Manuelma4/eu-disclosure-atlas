@@ -1,0 +1,9 @@
+feature,auc_drop,std
+log_traded_value_60d,0.02158,0.00711
+momentum_20d,0.01359,0.00474
+cluster_insiders_30d,0.00693,0.00267
+role_seniority,0.00557,0.00248
+filing_lag_days,0.00377,0.00331
+is_buy,0.00211,0.00131
+log_amount_eur,0.00097,0.00501
+n_insiders,0.00044,0.00068

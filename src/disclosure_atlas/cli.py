@@ -1,5 +1,5 @@
 """Command line: disclosure-atlas {sources,ingest,watch,publish,contracts,query,stats,export,reference,serve,
-openapi,mcp,migrate-lake,snapshots}."""
+openapi,mcp,migrate-lake,snapshots,signals}."""
 
 from __future__ import annotations
 
@@ -194,6 +194,19 @@ def _cmd_snapshots(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_signals(args: argparse.Namespace) -> int:
+    """Score recent events with the champion insider-signal model (needs the ml extra; see research/signals)."""
+    from .ml.scoring import score
+
+    meta = score(Lake(args.lake), days=args.days)
+    if meta["status"] == "no_model":
+        print("No champion model registered: run research/signals/train.py first", file=sys.stderr)
+        return 1
+    print(f"scored {meta['rows']} events with {meta['model']['name']} v{meta['model']['version']} "
+          f"(snapshot {meta['snapshot']}, drift {meta['drift']['status']})")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="disclosure-atlas", description=__doc__)
     parser.add_argument("--lake", default="lake", help="lake root folder (default: ./lake)")
@@ -264,6 +277,11 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("snapshots", help="list DuckLake snapshots (ids usable as ?as_of= in the API)")
     p.add_argument("--last", type=int, default=20)
     p.set_defaults(func=_cmd_snapshots)
+
+    p = sub.add_parser("signals", help="score recent events with the insider-signal model (needs the ml extra)")
+    p.add_argument("action", choices=["score"])
+    p.add_argument("--days", type=int, default=365, help="publication window scored (default: 365)")
+    p.set_defaults(func=_cmd_signals)
     return parser
 
 
