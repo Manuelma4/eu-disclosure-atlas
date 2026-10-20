@@ -15,8 +15,10 @@ jobs:
         env:
           EXPECTED: 71296266+Manuelma4@users.noreply.github.com
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          # The PR's own commits, not the synthetic refs/pull/N/merge commit GitHub creates for the test run.
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
-          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then RANGE=HEAD; else RANGE="$BASE..HEAD"; fi
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then RANGE="$HEAD_SHA"; else RANGE="$BASE..$HEAD_SHA"; fi
           bad=$(git log --format='%h %ae %an' $RANGE | awk -v e="$EXPECTED" '$2 != e')
           trailers=$(git log --format='%h %B' $RANGE | grep -i -E 'co-authored-by:|claude-session:' || true)
           if [ -n "$bad$trailers" ]; then
