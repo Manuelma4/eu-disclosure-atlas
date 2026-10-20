@@ -1,6 +1,8 @@
 name: CI
 on:
+  # Branches are checked through their pull request (one run per push); main on every push.
   push:
+    branches: [main]
   pull_request:
 jobs:
   test:
