@@ -9,9 +9,10 @@ const count = async (page: Page) => {
   return { selected: a, total: b };
 };
 
-/** The selection count once brushing has finished: the summary updates live during a drag, so wait until two
- * reads 400 ms apart agree. */
+/** The selection count once brushing has finished: the summary updates live during a drag, so wait for the
+ * first update, then until two reads 400 ms apart agree. */
 async function settled(page: Page) {
+  await expect.poll(async () => (await count(page)).selected).toBeLessThan(4000);
   let previous = -1;
   await expect
     .poll(async () => {
@@ -77,4 +78,14 @@ test("roles filter with the keyboard", async ({ page }) => {
 test("explore page is accessible", async ({ page }) => {
   await ready(page);
   await expectAccessible(page);
+});
+
+test("a missing DuckDB-WASM bundle shows an error instead of hanging", async ({ page }) => {
+  await page.route("**/duckdb/*.worker.js", (route) => route.fulfill({ status: 404, body: "" }));
+  await page.goto("/en/explore");
+  await expect(page.getByRole("alert").filter({ hasText: "The explorer could not start" })).toContainText(
+    "DuckDB-WASM could not start",
+    { timeout: 15_000 },
+  );
+  await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
 });
