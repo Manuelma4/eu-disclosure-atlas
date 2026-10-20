@@ -1,8 +1,11 @@
 # EU Disclosure Atlas
 
-**Open, unified, research-grade data on insider trading and short selling across European markets.**
+**Open, unified, research-grade data on insider trading and short selling across European markets: a live
+website, a public API and versioned open data.**
 
 [![CI](https://github.com/Manuelma4/eu-disclosure-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/Manuelma4/eu-disclosure-atlas/actions/workflows/ci.yml)
+
+![EU Disclosure Atlas home page: insider buying in the last 30 days, key figures and weekly insider flow](docs/img/home.jpg)
 
 In the United States, every insider trade is filed on SEC Form 4 within two business days and is free,
 structured and searchable on EDGAR. A whole ecosystem of academic research, retail tools and journalism is
@@ -34,78 +37,74 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
   EUR 10,000 and EUR 50,000. Thirty jurisdictions, different thresholds and the same rules otherwise make it a
   clean setting for policy evaluation.
 
-## What this project builds
+## The platform
 
-1. **Connectors** for each national authority, one module per source, with provenance for every byte.
-2. **One schema** for all of Europe, based on the EU notification template (Implementing Regulation (EU)
-   2016/523) and the SSR disclosure fields. See [docs/data-model.md](docs/data-model.md).
-3. **AI-assisted extraction** for PDF-only sources (France first): deterministic parsing first, then an LLM
-   fallback with schema-constrained output, gated by a hand-labelled evaluation set in CI.
-4. **Entity resolution:** issuers and holders to LEI (GLEIF), instruments to ISIN and issuer (ESMA FIRDS),
-   tickers (OpenFIGI), amounts in EUR (ECB reference rates).
-5. **Research**, reproducible end to end. Do European insiders beat the market? Do funds keep short positions
-   just below the 0.5% publication threshold? Did the Listing Act threshold change disclosure? See
-   [docs/research-agenda.md](docs/research-agenda.md).
-6. **Access:** open Parquet releases, a DuckDB file, a Python CLI, a read-only API, a static explorer and a
-   signals feed (insider cluster buys, crowded shorts) for
-   [MAYAROSERO Investments](https://github.com/Manuelma4/MAYAROSERO-Investments).
+| Surface | What it does | Status |
+|---|---|---|
+| **Website** | Live tape of new filings, insider flow, largest buys, company pages, filings explorer, architecture | Live (Next.js 16.4) |
+| **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
+| **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
+| **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
+| **MCP server** | Tools and MCP Apps so AI agents can query the dataset | Planned (P4) |
+| **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks | Planned (P3) |
+
+Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
+models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
+PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](docs/architecture.md), decisions:
+[docs/decisions/](docs/decisions/).
+
+| Layer | Choice |
+|---|---|
+| Website | Next.js 16.4 (React 19.3, Cache Components), TypeScript, Tailwind CSS v4, typed client generated from OpenAPI |
+| API | Python 3.14, FastAPI, Pydantic v2, OpenAPI 3.1, SSE, RFC 9457 errors |
+| Data | DuckDB 1.5 on Parquet today, DuckLake 1.0 (PostgreSQL 18 catalog, Cloudflare R2) next |
+| Pipeline | Connector plugins today, Dagster 1.13 assets, sensors and checks next |
+| Events and jobs | NATS 2.14 JetStream (P3) |
+| AI | Claude API or local Ollama for extraction and questions, MCP for agents, evaluation gates in CI |
 
 ## Coverage
 
 | Jurisdiction | Authority | Insider trades (MAR 19) | Net short positions (SSR) |
 |---|---|---|---|
 | Sweden | Finansinspektionen | **Live** (`se_fi_pdmr`) | Planned |
-| France | AMF (BDIF) | Planned: PDF + AI extraction | Planned |
+| France | AMF (BDIF) | In progress: PDF + AI extraction | Planned |
 | Germany | BaFin | Planned | Planned |
 | Netherlands | AFM | Planned | Planned |
 | Spain, Italy, Nordics, others | | Researching | Researching |
 
 Status and source notes: [docs/sources/README.md](docs/sources/README.md). Plan: [ROADMAP.md](ROADMAP.md).
 
-## Quickstart
+## Run it
 
 ```bash
-python3.12 -m venv .venv && source .venv/bin/activate
-pip install -e '.[dev]'
+# Data and API (Python 3.14)
+python3.14 -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev,api]'
 pytest                                                    # offline test suite
+disclosure-atlas reference fx                             # ECB euro reference rates
+disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
+disclosure-atlas serve                                    # API on http://127.0.0.1:8000, docs at /docs
+disclosure-atlas watch se_fi_pdmr                         # optional: re-ingest every 5 minutes
 
-disclosure-atlas sources                                  # registered connectors
-disclosure-atlas ingest se_fi_pdmr --start 2026-10-01     # fetch + parse into ./lake
-disclosure-atlas stats
+# Website (Node.js 22 or later)
+cd web && npm install && npm run dev                      # http://localhost:3000
+```
+
+Query the data directly:
+
+```bash
 disclosure-atlas query "
-  SELECT transaction_date, issuer_name, pdmr_role, round(amount / 1e6, 1) AS m_sek
-  FROM insider_transactions
-  WHERE is_open_market AND nature = 'buy' AND currency = 'SEK'
-  ORDER BY amount DESC LIMIT 10"
+  SELECT transaction_date, issuer_name, pdmr_role, round(amount_eur / 1e6, 1) AS m_eur
+  FROM insider_transactions WHERE is_open_market AND nature = 'buy'
+  ORDER BY amount_eur DESC LIMIT 10"
 disclosure-atlas export --out exports                     # gold tables as Parquet
 ```
 
-## Architecture
+## Research agenda
 
-```mermaid
-flowchart LR
-    subgraph Sources["~30 national authorities"]
-        FI["FI (SE)<br/>CSV"]
-        AMF["AMF (FR)<br/>PDF"]
-        BAFIN["BaFin (DE)"]
-        AFM["AFM (NL)"]
-    end
-    subgraph Lake["Medallion lake (Parquet + DuckDB)"]
-        B["Bronze<br/>raw responses, immutable,<br/>never published"]
-        S["Silver<br/>typed records per source,<br/>append-only"]
-        G["Gold<br/>latest version of each record,<br/>superseded rows removed"]
-    end
-    REF["Reference data<br/>GLEIF · ESMA FIRDS · OpenFIGI · ECB FX"]
-    AI["LLM fallback extraction<br/>+ evaluation gate"]
-    Sources --> B --> S --> G
-    AMF -.-> AI -.-> S
-    REF --> G
-    G --> OUT["Parquet releases · API · explorer"]
-    G --> RES["Research: event studies,<br/>bunching, policy evaluation"]
-    G --> SIG["Signals feed →<br/>MAYAROSERO Investments"]
-```
-
-Details and design decisions: [docs/architecture.md](docs/architecture.md), [docs/decisions/](docs/decisions/).
+Do European insiders beat the market? Do funds keep short positions just below the 0.5% publication threshold?
+Did the Listing Act threshold change disclosure? How late are filings, country by country? See
+[docs/research-agenda.md](docs/research-agenda.md).
 
 ## Privacy, terms and disclaimer
 

@@ -1,9 +1,12 @@
-"""Command line: disclosure-atlas {sources,ingest,query,stats,export}."""
+"""Command line: disclosure-atlas {sources,ingest,watch,query,stats,export,reference,serve,openapi}."""
 
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import sys
+import time
 from datetime import date, timedelta
 
 from . import connectors
@@ -36,6 +39,40 @@ def _cmd_ingest(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_watch(args: argparse.Namespace) -> int:
+    """Re-ingest a trailing window forever: new filings appear, revisions are picked up."""
+    connector = connectors.get(args.source)()
+    lake = Lake(args.lake)
+    while True:
+        end = date.today()
+        report = ingest(connector, lake, end - timedelta(days=args.lookback), end)
+        print(f"[{time.strftime('%H:%M:%S')}] {report.summary()}", flush=True)
+        time.sleep(args.every)
+
+
+def _cmd_reference(args: argparse.Namespace) -> int:
+    from .reference.fx import refresh_ecb_rates
+
+    print(f"ECB reference rates: {refresh_ecb_rates(Lake(args.lake))} rows")
+    return 0
+
+
+def _cmd_serve(args: argparse.Namespace) -> int:
+    import uvicorn
+
+    os.environ["ATLAS_LAKE"] = str(Lake(args.lake).root.resolve())
+    uvicorn.run("disclosure_atlas.api.app:app_from_env", factory=True, host=args.host, port=args.port,
+                reload=args.reload)
+    return 0
+
+
+def _cmd_openapi(args: argparse.Namespace) -> int:
+    from .api import create_app
+
+    print(json.dumps(create_app(args.lake).openapi(), indent=2))
+    return 0
+
+
 def _cmd_query(args: argparse.Namespace) -> int:
     Lake(args.lake).connect().sql(args.sql).show(max_rows=args.max_rows, max_width=10_000)
     return 0
@@ -65,6 +102,24 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--end", type=date.fromisoformat, help="last publication date (default: today)")
     p.add_argument("--days", type=int, default=7, help="window when --start is omitted (default: 7)")
     p.set_defaults(func=_cmd_ingest)
+
+    p = sub.add_parser("watch", help="ingest a trailing window repeatedly (near real time)")
+    p.add_argument("source")
+    p.add_argument("--every", type=int, default=300, help="seconds between runs (default: 300)")
+    p.add_argument("--lookback", type=int, default=2, help="days re-fetched each run (default: 2)")
+    p.set_defaults(func=_cmd_watch)
+
+    p = sub.add_parser("reference", help="refresh reference data")
+    p.add_argument("name", choices=["fx"])
+    p.set_defaults(func=_cmd_reference)
+
+    p = sub.add_parser("serve", help="run the REST API (FastAPI + uvicorn)")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--reload", action="store_true")
+    p.set_defaults(func=_cmd_serve)
+
+    sub.add_parser("openapi", help="print the OpenAPI document").set_defaults(func=_cmd_openapi)
 
     p = sub.add_parser("query", help="run SQL against the gold views")
     p.add_argument("sql")

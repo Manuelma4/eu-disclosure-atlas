@@ -1,0 +1,1508 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EU Disclosure Atlas API",
+    "description": "\nOpen, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European\nmarkets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,\nexposed in the `ETag` and `X-Atlas-Snapshot` headers. Not investment advice.\n",
+    "contact": {
+      "name": "Manuel David Maya Rosero",
+      "url": "https://manuelma4.github.io/"
+    },
+    "license": {
+      "name": "Apache-2.0",
+      "identifier": "Apache-2.0"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Health",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sources": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Sources",
+        "operationId": "sources_v1_sources_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SourceStatus"
+                  },
+                  "type": "array",
+                  "title": "Response Sources V1 Sources Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/insider-transactions": {
+      "get": {
+        "tags": [
+          "insider-transactions"
+        ],
+        "summary": "List Transactions",
+        "operationId": "list_transactions_v1_insider_transactions_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ISO country codes, repeatable",
+              "title": "Country"
+            },
+            "description": "ISO country codes, repeatable"
+          },
+          {
+            "name": "issuer_lei",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Issuer Lei"
+            }
+          },
+          {
+            "name": "isin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Isin"
+            }
+          },
+          {
+            "name": "nature",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "buy, sell, grant, ... repeatable",
+              "title": "Nature"
+            },
+            "description": "buy, sell, grant, ... repeatable"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ceo, cfo, chair, ... repeatable",
+              "title": "Role"
+            },
+            "description": "ceo, cfo, chair, ... repeatable"
+          },
+          {
+            "name": "open_market",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Open Market"
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Published on or after (YYYY-MM-DD)",
+              "title": "Since"
+            },
+            "description": "Published on or after (YYYY-MM-DD)"
+          },
+          {
+            "name": "until",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Published on or before (YYYY-MM-DD)",
+              "title": "Until"
+            },
+            "description": "Published on or before (YYYY-MM-DD)"
+          },
+          {
+            "name": "min_amount_eur",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Min Amount Eur"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Issuer name contains",
+              "title": "Q"
+            },
+            "description": "Issuer name contains"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_Transaction_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/insider-transactions/{record_id}": {
+      "get": {
+        "tags": [
+          "insider-transactions"
+        ],
+        "summary": "Get Transaction",
+        "operationId": "get_transaction_v1_insider_transactions__record_id__get",
+        "parameters": [
+          {
+            "name": "record_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Record Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/issuers": {
+      "get": {
+        "tags": [
+          "issuers"
+        ],
+        "summary": "List Issuers",
+        "operationId": "list_issuers_v1_issuers_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Name contains, or exact LEI",
+              "title": "Q"
+            },
+            "description": "Name contains, or exact LEI"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IssuerSummary"
+                  },
+                  "title": "Response List Issuers V1 Issuers Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/issuers/{lei}": {
+      "get": {
+        "tags": [
+          "issuers"
+        ],
+        "summary": "Get Issuer",
+        "operationId": "get_issuer_v1_issuers__lei__get",
+        "parameters": [
+          {
+            "name": "lei",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Lei"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssuerDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stats/overview": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Overview",
+        "operationId": "overview_v1_stats_overview_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Overview"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stats/flow": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Flow",
+        "description": "Open-market insider buying and selling (EUR) per period, by transaction date.",
+        "operationId": "flow_v1_stats_flow_get",
+        "parameters": [
+          {
+            "name": "bucket",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "day",
+                "week",
+                "month"
+              ],
+              "type": "string",
+              "default": "week",
+              "title": "Bucket"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 3660,
+              "minimum": 7,
+              "default": 182,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlowPoint"
+                  },
+                  "title": "Response Flow V1 Stats Flow Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stream": {
+      "get": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Stream",
+        "operationId": "stream_v1_stream_get",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Resume after this event id",
+              "title": "Since"
+            },
+            "description": "Resume after this event id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`filing` events, newest last",
+            "content": {
+              "text/event-stream": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CountryStat": {
+        "properties": {
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "transactions": {
+            "type": "integer",
+            "title": "Transactions"
+          },
+          "issuers": {
+            "type": "integer",
+            "title": "Issuers"
+          },
+          "late_share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Late Share",
+            "description": "Share published more than 5 calendar days after the trade"
+          }
+        },
+        "type": "object",
+        "required": [
+          "country",
+          "transactions",
+          "issuers",
+          "late_share"
+        ],
+        "title": "CountryStat"
+      },
+      "FlowPoint": {
+        "properties": {
+          "period": {
+            "type": "string",
+            "format": "date",
+            "title": "Period",
+            "description": "First day of the bucket"
+          },
+          "buy_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buy Eur"
+          },
+          "sell_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sell Eur"
+          },
+          "buys": {
+            "type": "integer",
+            "title": "Buys"
+          },
+          "sells": {
+            "type": "integer",
+            "title": "Sells"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "buy_eur",
+          "sell_eur",
+          "buys",
+          "sells"
+        ],
+        "title": "FlowPoint"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot"
+          },
+          "records": {
+            "type": "integer",
+            "title": "Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "snapshot",
+          "records"
+        ],
+        "title": "Health"
+      },
+      "IssuerDetail": {
+        "properties": {
+          "lei": {
+            "type": "string",
+            "title": "Lei"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "transactions": {
+            "type": "integer",
+            "title": "Transactions"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "net_open_market_eur_365d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Open Market Eur 365D"
+          },
+          "distinct_buyers_90d": {
+            "type": "integer",
+            "title": "Distinct Buyers 90D"
+          },
+          "distinct_sellers_90d": {
+            "type": "integer",
+            "title": "Distinct Sellers 90D"
+          },
+          "monthly": {
+            "items": {
+              "$ref": "#/components/schemas/MonthPoint"
+            },
+            "type": "array",
+            "title": "Monthly"
+          },
+          "roles": {
+            "items": {
+              "$ref": "#/components/schemas/RoleStat"
+            },
+            "type": "array",
+            "title": "Roles"
+          },
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "type": "array",
+            "title": "Recent"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lei",
+          "name",
+          "country",
+          "transactions",
+          "last_published_at",
+          "net_open_market_eur_365d",
+          "distinct_buyers_90d",
+          "distinct_sellers_90d",
+          "monthly",
+          "roles",
+          "recent"
+        ],
+        "title": "IssuerDetail"
+      },
+      "IssuerSummary": {
+        "properties": {
+          "lei": {
+            "type": "string",
+            "title": "Lei"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "transactions": {
+            "type": "integer",
+            "title": "Transactions"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "net_open_market_eur_365d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Open Market Eur 365D"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lei",
+          "name",
+          "country",
+          "transactions",
+          "last_published_at",
+          "net_open_market_eur_365d"
+        ],
+        "title": "IssuerSummary"
+      },
+      "MonthPoint": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "format": "date",
+            "title": "Month"
+          },
+          "buy_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buy Eur"
+          },
+          "sell_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sell Eur"
+          },
+          "buys": {
+            "type": "integer",
+            "title": "Buys"
+          },
+          "sells": {
+            "type": "integer",
+            "title": "Sells"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "buy_eur",
+          "sell_eur",
+          "buys",
+          "sells"
+        ],
+        "title": "MonthPoint"
+      },
+      "Overview": {
+        "properties": {
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot"
+          },
+          "transactions": {
+            "type": "integer",
+            "title": "Transactions"
+          },
+          "issuers": {
+            "type": "integer",
+            "title": "Issuers"
+          },
+          "countries": {
+            "type": "integer",
+            "title": "Countries"
+          },
+          "sources": {
+            "type": "integer",
+            "title": "Sources"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "last_ingested_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Ingested At"
+          },
+          "open_market_buys_30d": {
+            "type": "integer",
+            "title": "Open Market Buys 30D"
+          },
+          "open_market_sells_30d": {
+            "type": "integer",
+            "title": "Open Market Sells 30D"
+          },
+          "buy_eur_30d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buy Eur 30D"
+          },
+          "sell_eur_30d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sell Eur 30D"
+          },
+          "late_share_365d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Late Share 365D"
+          },
+          "by_country": {
+            "items": {
+              "$ref": "#/components/schemas/CountryStat"
+            },
+            "type": "array",
+            "title": "By Country"
+          },
+          "largest_buys_30d": {
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "type": "array",
+            "title": "Largest Buys 30D"
+          },
+          "latest": {
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "type": "array",
+            "title": "Latest"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot",
+          "transactions",
+          "issuers",
+          "countries",
+          "sources",
+          "last_published_at",
+          "last_ingested_at",
+          "open_market_buys_30d",
+          "open_market_sells_30d",
+          "buy_eur_30d",
+          "sell_eur_30d",
+          "late_share_365d",
+          "by_country",
+          "largest_buys_30d",
+          "latest"
+        ],
+        "title": "Overview"
+      },
+      "Page_Transaction_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor",
+            "description": "Pass as ?cursor= to get the next page"
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot",
+            "description": "Data version the page was read from"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "next_cursor",
+          "snapshot"
+        ],
+        "title": "Page[Transaction]"
+      },
+      "RoleStat": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "transactions": {
+            "type": "integer",
+            "title": "Transactions"
+          },
+          "people": {
+            "type": "integer",
+            "title": "People"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "transactions",
+          "people"
+        ],
+        "title": "RoleStat"
+      },
+      "SourceStatus": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "dataset": {
+            "type": "string",
+            "title": "Dataset"
+          },
+          "authority": {
+            "type": "string",
+            "title": "Authority"
+          },
+          "homepage": {
+            "type": "string",
+            "title": "Homepage"
+          },
+          "records": {
+            "type": "integer",
+            "title": "Records"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "last_ingested_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Ingested At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "country",
+          "dataset",
+          "authority",
+          "homepage",
+          "records",
+          "last_published_at",
+          "last_ingested_at"
+        ],
+        "title": "SourceStatus"
+      },
+      "Transaction": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Stable record id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Connector, e.g. se_fi_pdmr"
+          },
+          "country": {
+            "type": "string",
+            "title": "Country",
+            "description": "ISO 3166-1 alpha-2 country of the publishing authority"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At",
+            "description": "Publication by the authority (UTC)"
+          },
+          "first_seen_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "First Seen At",
+            "description": "When the Atlas first ingested the record (UTC)"
+          },
+          "transaction_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transaction Date"
+          },
+          "issuer_name": {
+            "type": "string",
+            "title": "Issuer Name"
+          },
+          "issuer_lei": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer Lei"
+          },
+          "person_id": {
+            "type": "string",
+            "title": "Person Id",
+            "description": "Pseudonymous id of the manager, stable within the issuer"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "ceo, cfo, chair, executive, board_member, other or unknown"
+          },
+          "role_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role Raw"
+          },
+          "notifier_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notifier Name",
+            "description": "Only for legal entities (e.g. a holding company)"
+          },
+          "closely_associated": {
+            "type": "boolean",
+            "title": "Closely Associated"
+          },
+          "nature": {
+            "type": "string",
+            "title": "Nature",
+            "description": "buy, sell, subscription, grant, exercise, ..."
+          },
+          "direction": {
+            "type": "integer",
+            "title": "Direction",
+            "description": "+1 holding increases, -1 decreases, 0 neutral"
+          },
+          "instrument_type": {
+            "type": "string",
+            "title": "Instrument Type"
+          },
+          "instrument_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument Name"
+          },
+          "isin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isin"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount",
+            "description": "volume \u00d7 price in the transaction currency"
+          },
+          "amount_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Eur",
+            "description": "amount converted with the ECB reference rate of the day"
+          },
+          "venue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Venue"
+          },
+          "open_market": {
+            "type": "boolean",
+            "title": "Open Market",
+            "description": "Buy or sell of shares on a trading venue"
+          },
+          "is_amendment": {
+            "type": "boolean",
+            "title": "Is Amendment"
+          },
+          "filing_lag_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filing Lag Days",
+            "description": "Calendar days between transaction and publication"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "country",
+          "published_at",
+          "first_seen_at",
+          "transaction_date",
+          "issuer_name",
+          "issuer_lei",
+          "person_id",
+          "role",
+          "role_raw",
+          "notifier_name",
+          "closely_associated",
+          "nature",
+          "direction",
+          "instrument_type",
+          "instrument_name",
+          "isin",
+          "volume",
+          "price",
+          "currency",
+          "amount",
+          "amount_eur",
+          "venue",
+          "open_market",
+          "is_amendment",
+          "filing_lag_days"
+        ],
+        "title": "Transaction"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "insider-transactions",
+      "description": "Managers' transactions (MAR Article 19)"
+    },
+    {
+      "name": "issuers",
+      "description": "Issuer profiles and insider activity"
+    },
+    {
+      "name": "stats",
+      "description": "Market-wide aggregates"
+    },
+    {
+      "name": "stream",
+      "description": "Server-sent events for new filings"
+    },
+    {
+      "name": "meta",
+      "description": "Health and source coverage"
+    }
+  ]
+}

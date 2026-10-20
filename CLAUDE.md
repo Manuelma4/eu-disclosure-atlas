@@ -4,18 +4,29 @@ Open, unified data on insider trading (MAR Article 19) and short selling (SSR Ar
 markets, plus reproducible research on top of it. Read README.md first, then ROADMAP.md for your workstream.
 
 ## Commands
-- Setup: `python3.12 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev]'`
+- Setup: `python3.14 -m venv .venv && source .venv/bin/activate && pip install -e '.[dev,api]'`
 - Checks (run before every commit): `ruff check . && pytest -q`
 - Live checks (hit real endpoints, opt-in): `pytest -m network -q`
-- CLI: `disclosure-atlas sources | ingest <source> --start YYYY-MM-DD | stats | query "<SQL>" | export`
+- CLI: `disclosure-atlas sources | ingest <source> --start YYYY-MM-DD | watch <source> | reference fx | serve |
+  openapi | stats | query "<SQL>" | export`
+- API contract: after changing `src/disclosure_atlas/api/`, run
+  `disclosure-atlas --lake /tmp/empty-lake openapi > web/openapi.json && (cd web && npm run api:types)`
+  (CI fails if `web/openapi.json` drifts from the code).
+- Website: `cd web && npm install && npm run dev | typecheck | build`; `npx eslint src`. Next.js 16.4 differs
+  from older versions: read `web/node_modules/next/dist/docs/` before writing web code (see `web/AGENTS.md`).
+- Local infrastructure for P2/P3: `docker compose -f infra/compose.yaml up -d` (PostgreSQL 18, NATS 2.14).
 
 ## Architecture in one minute
+Platform design and decisions: docs/architecture.md and docs/decisions/. Code map:
 - `src/disclosure_atlas/models.py`: the unified schemas (`InsiderTransaction`, `NetShortPosition`) and enums.
 - `src/disclosure_atlas/connectors/<source>.py`: one module per authority and dataset; `@register` makes it
   discoverable. Connectors implement `fetch(start, end)` (network) and `parse(doc, ctx)` (pure).
 - `src/disclosure_atlas/normalize.py`: shared parsing and multilingual vocabularies (roles, natures, instruments).
 - `src/disclosure_atlas/privacy.py`: pseudonyms for natural persons; legal-entity detection.
 - `src/disclosure_atlas/lake.py`: bronze (raw) -> silver (Parquet) -> gold (DuckDB views).
+- `src/disclosure_atlas/api/`: FastAPI app (REST `/v1`, SSE `/v1/stream`), read model pinned to the lake version.
+- `src/disclosure_atlas/reference/`: reference data (ECB FX now; LEI, ISIN and tickers in WS5).
+- `web/`: Next.js website; a client of the public API only.
 - Source naming: `<iso2 country>_<authority>_<dataset>`, e.g. `fr_amf_pdmr`, `de_bafin_shorts`.
 
 ## Rules
