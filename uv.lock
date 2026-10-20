@@ -715,6 +715,7 @@ source = { editable = "." }
 dependencies = [
     { name = "duckdb" },
     { name = "httpx" },
+    { name = "pdfplumber" },
     { name = "pyarrow" },
     { name = "pydantic" },
     { name = "pytz" },
@@ -754,6 +755,9 @@ otel = [
 pdf = [
     { name = "pdfplumber" },
 ]
+prices = [
+    { name = "yfinance" },
+]
 research = [
     { name = "matplotlib" },
     { name = "numpy" },
@@ -786,6 +790,7 @@ requires-dist = [
     { name = "opentelemetry-instrumentation-fastapi", marker = "extra == 'otel'", specifier = ">=0.51b0" },
     { name = "opentelemetry-sdk", marker = "extra == 'otel'", specifier = ">=1.30" },
     { name = "pandas", marker = "extra == 'research'", specifier = ">=2.2" },
+    { name = "pdfplumber", specifier = ">=0.11" },
     { name = "pdfplumber", marker = "extra == 'pdf'", specifier = ">=0.11" },
     { name = "pyarrow", specifier = ">=15" },
     { name = "pydantic", specifier = ">=2.6" },
@@ -796,9 +801,10 @@ requires-dist = [
     { name = "statsmodels", marker = "extra == 'research'", specifier = ">=0.14" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'api'", specifier = ">=0.30" },
     { name = "xlrd", marker = "extra == 'shorts'", specifier = ">=2.0" },
+    { name = "yfinance", marker = "extra == 'prices'", specifier = ">=0.2.40" },
     { name = "yfinance", marker = "extra == 'research'", specifier = ">=0.2.40" },
 ]
-provides-extras = ["dev", "orchestration", "api", "events", "otel", "pdf", "shorts", "llm", "ai", "research"]
+provides-extras = ["dev", "orchestration", "api", "prices", "events", "otel", "pdf", "shorts", "llm", "ai", "research"]
 
 [[package]]
 name = "docstring-parser"

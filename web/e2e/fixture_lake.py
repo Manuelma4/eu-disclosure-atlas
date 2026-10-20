@@ -135,6 +135,11 @@ def build(root: Path, rows: int, issuers: int, seed: int) -> None:
 
     folder = lake.silver / Dataset.INSIDER_TRANSACTIONS.value / "se_fi_pdmr"
     folder.mkdir(parents=True, exist_ok=True)
+    # Model fields the fixture does not set (e.g. ones added by later workstreams) become nulls.
+    rows = max(len(values) for values in columns.values())
+    for name, values in columns.items():
+        if not values:
+            values.extend([None] * rows)
     table = pa.table(columns, schema=arrow_schema(InsiderTransaction))
     pq.write_table(table, folder / "fixture.parquet", compression="zstd")
 
