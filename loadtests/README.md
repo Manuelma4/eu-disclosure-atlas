@@ -19,6 +19,9 @@ for 8 seconds and count the `filing` events they receive).
 - REST and revalidation error rate under 1%, checks above 99%;
 - more than 99% of stream connections open and start with the `retry:` preamble.
 
+The k6 log prints one `Request Failed ... request timeout` warning per stream connection: that is the
+client-side hold ending (error 1050), counted in `sse_connections_ok`, not a REST failure.
+
 ## Run locally
 ```bash
 python loadtests/seed_lake.py /tmp/atlas-lake --transactions 20000
@@ -38,6 +41,9 @@ observability stack running and `OTEL_EXPORTER_OTLP_ENDPOINT` set, watch the run
 
 The seeded lake is entirely synthetic (generated issuers, identifiers and pseudonyms).
 
-## Reference result
-Smoke profile on a laptop (Apple silicon, 20,000 synthetic filings): REST p95 59 ms, revalidation p95 25 ms,
-0% errors, 21 of 21 stream connections delivered events.
+## Reference results
+Smoke profile, 20,000 synthetic filings, on DuckLake (P2):
+- laptop (Apple silicon), gold views evaluated per query: REST p95 33 ms; on a GitHub-hosted runner p95 235 ms
+  (median 66 ms), which missed the budget;
+- with the read model's per-snapshot gold cache (`src/disclosure_atlas/api/readmodel.py`): REST p95 14 ms,
+  median 4.4 ms, revalidation p95 2 ms, 0% errors on the laptop.
