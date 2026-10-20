@@ -22,6 +22,7 @@ dependencies = [
 dev = ["pytest>=8.0", "ruff>=0.6", "dagster>=1.13,<1.14"]
 orchestration = ["dagster>=1.13,<1.14", "dagster-webserver>=1.13,<1.14", "dagster-postgres>=0.29,<0.30"]
 api = ["fastapi>=0.115", "uvicorn[standard]>=0.30"]
+events = ["confluent-kafka>=2.12"]
 otel = [
     "opentelemetry-sdk>=1.30",
     "opentelemetry-exporter-otlp-proto-http>=1.30",

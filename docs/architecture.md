@@ -226,8 +226,8 @@ flowchart LR
 - **Explorer:** DuckDB-WASM plus Mosaic linked views query the published Parquet directly in the browser,
   with millions of rows and no server cost.
 - **Languages:** English, French, Spanish and German (next-intl).
-- **Accounts** (Better Auth with passkeys and magic links): watchlists, alert rules, API keys and webhook
-  endpoints.
+- **Accounts** (Keycloak with passkeys, authorization code + PKCE from the browser): watchlists, alert rules and
+  webhook endpoints, stored by the `alerts` service.
 
 ## AI layer
 - **Extraction** ([decisions/0003](decisions/0003-deterministic-first-extraction-with-evaluated-llm-fallback.md)):

@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Manuelma4/eu-disclosure-atlas/blob/main/contracts/events/filing-published.v1.json",
+  "x-cloudevents-type": "eu.disclosure-atlas.filing.published.v1",
+  "x-kafka-topic": "atlas.filings.v1",
+  "description": "A gold insider transaction seen for the first time. Same fields as the REST API's `Transaction`,\nso the SSE stream can forward the payload unchanged.",
+  "properties": {
+    "id": {
+      "description": "Stable record id",
+      "title": "Id",
+      "type": "string"
+    },
+    "source": {
+      "description": "Connector, e.g. se_fi_pdmr",
+      "title": "Source",
+      "type": "string"
+    },
+    "country": {
+      "description": "ISO 3166-1 alpha-2 country of the publishing authority",
+      "title": "Country",
+      "type": "string"
+    },
+    "published_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Publication by the authority (UTC)",
+      "title": "Published At"
+    },
+    "first_seen_at": {
+      "description": "When the Atlas first ingested the record (UTC)",
+      "format": "date-time",
+      "title": "First Seen At",
+      "type": "string"
+    },
+    "transaction_date": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Transaction Date"
+    },
+    "issuer_name": {
+      "title": "Issuer Name",
+      "type": "string"
+    },
+    "issuer_lei": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Issuer Lei"
+    },
+    "person_id": {
+      "description": "Pseudonymous id of the manager, stable within the issuer",
+      "title": "Person Id",
+      "type": "string"
+    },
+    "role": {
+      "description": "ceo, cfo, chair, executive, board_member, other or unknown",
+      "title": "Role",
+      "type": "string"
+    },
+    "role_raw": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Role Raw"
+    },
+    "notifier_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Only for legal entities (e.g. a holding company)",
+      "title": "Notifier Name"
+    },
+    "closely_associated": {
+      "title": "Closely Associated",
+      "type": "boolean"
+    },
+    "nature": {
+      "description": "buy, sell, subscription, grant, exercise, ...",
+      "title": "Nature",
+      "type": "string"
+    },
+    "direction": {
+      "description": "+1 holding increases, -1 decreases, 0 neutral",
+      "title": "Direction",
+      "type": "integer"
+    },
+    "instrument_type": {
+      "title": "Instrument Type",
+      "type": "string"
+    },
+    "instrument_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Instrument Name"
+    },
+    "isin": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Isin"
+    },
+    "volume": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Volume"
+    },
+    "price": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Price"
+    },
+    "currency": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Currency"
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "volume \u00d7 price in the transaction currency",
+      "title": "Amount"
+    },
+    "amount_eur": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "amount converted with the ECB reference rate of the day",
+      "title": "Amount Eur"
+    },
+    "venue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Venue"
+    },
+    "open_market": {
+      "description": "Buy or sell of shares on a trading venue",
+      "title": "Open Market",
+      "type": "boolean"
+    },
+    "is_amendment": {
+      "title": "Is Amendment",
+      "type": "boolean"
+    },
+    "filing_lag_days": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Calendar days between transaction and publication",
+      "title": "Filing Lag Days"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "country",
+    "published_at",
+    "first_seen_at",
+    "transaction_date",
+    "issuer_name",
+    "issuer_lei",
+    "person_id",
+    "role",
+    "role_raw",
+    "notifier_name",
+    "closely_associated",
+    "nature",
+    "direction",
+    "instrument_type",
+    "instrument_name",
+    "isin",
+    "volume",
+    "price",
+    "currency",
+    "amount",
+    "amount_eur",
+    "venue",
+    "open_market",
+    "is_amendment",
+    "filing_lag_days"
+  ],
+  "title": "FilingPublished",
+  "type": "object"
+}

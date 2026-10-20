@@ -2,24 +2,11 @@
 # errors under 1%, live-stream connections that deliver events. Longer profiles run on demand.
 name: Load test
 on:
-  pull_request:
-    paths:
-      - "src/**"
-      - "loadtests/**"
-      - "pyproject.toml"
-      - ".github/workflows/loadtest.yml"
+  # Performance budgets are judged on main (shared runners make per-PR timings noisy), and on demand.
   push:
     branches: [main]
+    paths: ["src/**", "loadtests/**", "pyproject.toml"]
   workflow_dispatch:
-    inputs:
-      profile:
-        description: "k6 profile"
-        type: choice
-        options: [smoke, load, stress]
-        default: smoke
-
-permissions:
-  contents: read
 
 jobs:
   k6:

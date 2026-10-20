@@ -43,11 +43,11 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 |---|---|---|
 | **Website** | Live tape of new filings, insider flow, largest buys, company pages, filings explorer, architecture | Live (Next.js 16.4) |
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
-| **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable | Live |
+| **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable; fanned out from Kafka by a Go gateway | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
 | **MCP server `/mcp`** | Tools, a guarded `sql` tool and an MCP App so AI agents can query the dataset ([docs/ai.md](docs/ai.md)) | Live |
 | **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
-| **Alerts and webhooks** | Watchlists, email, push, Standard Webhooks (Go service on Kafka) | Planned (P3) |
+| **Alerts and webhooks** | Sign-in (Keycloak, passkeys), watchlists, email and Standard Webhooks with retries (Go service on Kafka) | Live (local stack) |
 
 Under the hood: connectors per regulator → a medallion lakehouse on DuckLake (bronze, silver, gold) orchestrated
 by Dagster → snapshot-pinned read models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
@@ -97,6 +97,19 @@ pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000
 ```
+
+Run the event-driven platform locally (Kafka, PostgreSQL, Keycloak, the Go realtime-gateway and alerts):
+
+```bash
+pip install -e '.[dev,api,events]'
+docker compose -p atlas -f infra/compose.yaml up -d --build  # Keycloak demo account: demo@example.org / demo-dev-only
+ATLAS_KAFKA_BOOTSTRAP=localhost:19092 ATLAS_SCHEMA_REGISTRY_URL=http://localhost:18081 \
+  disclosure-atlas watch se_fi_pdmr                       # new filings → atlas.filings.v1
+cd web && NEXT_PUBLIC_ATLAS_STREAM_URL=http://localhost:8090 npm run dev   # live tape via the gateway; sign in → Watchlist
+```
+
+Alert emails land in Mailpit (http://localhost:8025); webhooks can target the dev sink
+(`http://webhook-sink:8099/hook`, received payloads on http://localhost:8099/deliveries).
 
 Query the data directly:
 

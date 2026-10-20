@@ -30,19 +30,21 @@ Owns: `src/disclosure_atlas/lake.py` (migration), `src/disclosure_atlas/orchestr
   automation, weekly maintenance, and a `snapshot.committed` hook behind a `SnapshotPublisher` interface.
   Operations guide: [docs/operations.md](docs/operations.md).
 
-### P3 Event streaming, real-time and alerts (Kafka, Go) `[ ]`
+### P3 Event streaming, real-time and alerts (Kafka, Go) `[x]`
 Owns: `src/disclosure_atlas/events/`, `contracts/events/`, `services/realtime-gateway/`, `services/alerts/`,
 `infra/compose.yaml` (Kafka, Keycloak), web account pages. Design: decisions 0010, 0011, 0013.
-- Kafka 4 topics and CloudEvents contracts: JSON Schemas generated from the Pydantic models, committed in
-  `contracts/events/`, registered with BACKWARD compatibility, drift-checked in CI.
-- Change-feed publisher in Python (new gold rows → `atlas.filings.v1`, commits → `atlas.snapshots.v1`) with a
-  checkpoint after publish; idempotent producer.
-- `realtime-gateway` (Go): Kafka consumer → SSE fan-out with resume, Prometheus metrics, OpenTelemetry,
-  graceful shutdown; the website's live tape switches to it.
-- `alerts` (Go): watchlists and alert rules in PostgreSQL, rule evaluation on `atlas.filings.v1`, delivery by
-  email, Web Push and Standard Webhooks through retry topics and a dead-letter topic.
-- Keycloak realm (passkeys, website client with PKCE, partner client credentials) and API keys; the website
-  gets sign-in and a watchlist page.
+- [x] Kafka 4 topics and CloudEvents contracts (binary mode): JSON Schemas generated from the Pydantic models
+  (`disclosure-atlas contracts`), committed in `contracts/events/`, registered with BACKWARD compatibility,
+  drift-checked in CI.
+- [x] Change-feed publisher in Python (new gold rows → `atlas.filings.v1`, each run → `atlas.snapshots.v1`) with a
+  checkpoint after acknowledgement and an idempotent producer; runs from `watch` (ATLAS_KAFKA_BOOTSTRAP) or `publish`.
+- [x] `realtime-gateway` (Go, franz-go): Kafka consumer → SSE fan-out with Last-Event-ID resume, Prometheus metrics,
+  OpenTelemetry, graceful shutdown; the website's live tape uses it when NEXT_PUBLIC_ATLAS_STREAM_URL is set.
+- [x] `alerts` (Go): watchlists and alert rules in PostgreSQL, rule evaluation on `atlas.filings.v1`, delivery by
+  email (SMTP or Resend) and Standard Webhooks through retry topics and a dead-letter topic.
+- [x] Keycloak realm (passkeys, website client with PKCE, partner client credentials); the website has sign-in
+  and a watchlist page. Compose runs Kafka, PostgreSQL, Keycloak, the gateway and alerts end to end.
+- Follow-ups: Web Push delivery, hashed API keys for the public tier, `atlas.signals.v1` (cluster buys).
 
 ### P4 AI layer `[x]`
 Owns: `src/disclosure_atlas/ai/`, `evals/ask/`, `docs/ai.md`. Details: [docs/ai.md](docs/ai.md).
