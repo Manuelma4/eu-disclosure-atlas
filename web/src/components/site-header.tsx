@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 
 import { CommandPalette } from "./command-palette";
 import { LocaleSwitcher } from "./locale-switcher";
+import { AccountMenu } from "./account/account-menu";
 import { NavLink } from "./nav-link";
 
 const API_DOCS = `${process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000"}/docs`;
@@ -38,6 +39,7 @@ export async function SiteHeader() {
           <a className="hidden rounded-md px-3 py-1.5 hover:bg-surface-2 hover:text-ink lg:block" href={API_DOCS}>
             {t("api")}
           </a>
+          <AccountMenu />
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <CommandPalette />

@@ -10,10 +10,12 @@ import { useFormat, useLabels } from "@/lib/use-format";
 import { TimeAgo } from "./time-ago";
 import { NatureBadge } from "./ui";
 
-const API_URL = process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000";
+// The Go realtime-gateway when configured (Kafka fan-out), else the Python API's own stream: same events.
+const STREAM_URL =
+  process.env.NEXT_PUBLIC_ATLAS_STREAM_URL ?? process.env.NEXT_PUBLIC_ATLAS_API_URL ?? "http://127.0.0.1:8000";
 type Status = "connecting" | "live" | "reconnecting";
 
-/** Latest filings, kept current by the API's server-sent events stream (GET /v1/stream). */
+/** Latest filings, kept current by server-sent events (GET /v1/stream on the gateway or the API). */
 export function LiveTape({ initial, limit = 12 }: { initial: Transaction[]; limit?: number }) {
   const t = useTranslations("tape");
   const tn = useTranslations("natures");
@@ -26,7 +28,7 @@ export function LiveTape({ initial, limit = 12 }: { initial: Transaction[]; limi
   useEffect(() => {
     const newest = [...initial].sort((a, b) => (a.first_seen_at < b.first_seen_at ? 1 : -1))[0];
     const since = newest ? `?since=${encodeURIComponent(`${newest.first_seen_at}|${newest.id}`)}` : "";
-    const source = new EventSource(`${API_URL}/v1/stream${since}`);
+    const source = new EventSource(`${STREAM_URL}/v1/stream${since}`);
     source.onopen = () => setStatus("live");
     source.onerror = () => setStatus("reconnecting");
     source.addEventListener("filing", (event) => {

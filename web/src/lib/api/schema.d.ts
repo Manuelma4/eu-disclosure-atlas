@@ -847,6 +847,8 @@ export interface operations {
                 q?: string | null;
                 limit?: number;
                 cursor?: string | null;
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
             };
             header?: never;
             path?: never;
@@ -876,7 +878,10 @@ export interface operations {
     };
     get_transaction_v1_insider_transactions__record_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
+            };
             header?: never;
             path: {
                 record_id: string;
@@ -912,6 +917,8 @@ export interface operations {
                 q?: string | null;
                 country?: string | null;
                 limit?: number;
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
             };
             header?: never;
             path?: never;
@@ -941,7 +948,10 @@ export interface operations {
     };
     get_issuer_v1_issuers__lei__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header) */
+                as_of?: number | null;
+            };
             header?: never;
             path: {
                 lei: string;

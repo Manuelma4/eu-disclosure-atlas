@@ -241,10 +241,22 @@
     "lead": "Ein ereignisgesteuertes Lakehouse hinter einer cachefreundlichen API. Neue Meldungen gelangen in Minuten von den Aufsichtsbehörden auf Ihren Bildschirm, und jede Zahl lässt sich aus einem versionierten Snapshot reproduzieren.",
     "containers": "Container",
     "layers": {
-      "sources": { "title": "Quellen", "note": "Per Gesetz öffentlich, von Natur aus verstreut" },
-      "data": { "title": "Datenebene · Python 3.14", "note": "Eine Codebasis, mehrere Deployables" },
-      "state": { "title": "Zustand", "note": "Der Lake ist das führende System" },
-      "interfaces": { "title": "Schnittstellen", "note": "Dieselbe API für die Website und alle anderen" }
+      "sources": {
+        "title": "Quellen",
+        "note": "Per Gesetz öffentlich, von Natur aus verstreut"
+      },
+      "data": {
+        "title": "Datenebene · Python 3.14",
+        "note": "Eine Codebasis, mehrere Deployables"
+      },
+      "state": {
+        "title": "Zustand",
+        "note": "Der Lake ist das führende System"
+      },
+      "interfaces": {
+        "title": "Schnittstellen",
+        "note": "Dieselbe API für die Website und alle anderen"
+      }
     },
     "nodes": {
       "fi": "CSV-Export, adaptive Zeitfenster",
@@ -275,17 +287,50 @@
     "choice": "Wahl",
     "why": "Warum",
     "stack": {
-      "website": { "layer": "Website", "why": "Suchmaschinenfreundliche Unternehmensseiten in vier Sprachen, Streaming, Caches, die durch Daten-Commits invalidiert werden" },
-      "explorer": { "layer": "Explorer", "why": "Millionen Zeilen im Browser abgefragt, verknüpfte Ansichten ohne Server" },
-      "api": { "layer": "API", "why": "Ein Schema von der Erfassung bis zum generierten TypeScript-Client" },
-      "engine": { "layer": "Analyse-Engine", "why": "Snapshots, Time Travel und ein Change Feed auf Dateien und SQL" },
-      "orchestration": { "layer": "Orchestrierung", "why": "Partitionierte Assets, Backfills, Datenqualitätsprüfungen, Lineage" },
-      "events": { "layer": "Ereignisse", "why": "Wiederabspielbare Ereignisse aus dem Change Feed, Retry- und Dead-Letter-Topics" },
-      "services": { "layer": "Dienste", "why": "Jeder Bounded Context skaliert und fällt eigenständig aus" },
-      "platform": { "layer": "Plattform", "why": "GitOps, Vorschauumgebungen, Autoscaling nach Lag" },
-      "security": { "layer": "Sicherheit", "why": "OIDC mit Passkeys, Edge-Richtlinien, signierte Lieferkette" },
-      "ai": { "layer": "KI", "why": "Extraktions-Fallback, Fragen in natürlicher Sprache, Agentenzugriff, alles evaluiert" },
-      "observability": { "layer": "Observability", "why": "SLOs als Code mit Burn-Rate-Alarmen und Runbooks" }
+      "website": {
+        "layer": "Website",
+        "why": "Suchmaschinenfreundliche Unternehmensseiten in vier Sprachen, Streaming, Caches, die durch Daten-Commits invalidiert werden"
+      },
+      "explorer": {
+        "layer": "Explorer",
+        "why": "Millionen Zeilen im Browser abgefragt, verknüpfte Ansichten ohne Server"
+      },
+      "api": {
+        "layer": "API",
+        "why": "Ein Schema von der Erfassung bis zum generierten TypeScript-Client"
+      },
+      "engine": {
+        "layer": "Analyse-Engine",
+        "why": "Snapshots, Time Travel und ein Change Feed auf Dateien und SQL"
+      },
+      "orchestration": {
+        "layer": "Orchestrierung",
+        "why": "Partitionierte Assets, Backfills, Datenqualitätsprüfungen, Lineage"
+      },
+      "events": {
+        "layer": "Ereignisse",
+        "why": "Wiederabspielbare Ereignisse aus dem Change Feed, Retry- und Dead-Letter-Topics"
+      },
+      "services": {
+        "layer": "Dienste",
+        "why": "Jeder Bounded Context skaliert und fällt eigenständig aus"
+      },
+      "platform": {
+        "layer": "Plattform",
+        "why": "GitOps, Vorschauumgebungen, Autoscaling nach Lag"
+      },
+      "security": {
+        "layer": "Sicherheit",
+        "why": "OIDC mit Passkeys, Edge-Richtlinien, signierte Lieferkette"
+      },
+      "ai": {
+        "layer": "KI",
+        "why": "Extraktions-Fallback, Fragen in natürlicher Sprache, Agentenzugriff, alles evaluiert"
+      },
+      "observability": {
+        "layer": "Observability",
+        "why": "SLOs als Code mit Burn-Rate-Alarmen und Runbooks"
+      }
     },
     "stackChoice": {
       "services": "Microservices in Python, Go und TypeScript"
@@ -309,5 +354,61 @@
     "notFoundTitle": "Nicht im Atlas",
     "notFoundBody": "Zu dieser Adresse passt weder ein Emittent noch eine Seite. Die Abdeckung wächst Behörde für Behörde.",
     "searchFilings": "Meldungen durchsuchen"
+  },
+  "account": {
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "watchlist": "Beobachtungsliste",
+    "watchlistTitle": "Beobachtungsliste und Benachrichtigungen",
+    "watchlistDescription": "Folgen Sie Emittenten und erhalten Sie eine E-Mail oder einen signierten Webhook, wenn deren Insider handeln.",
+    "watchlistLead": "Folgen Sie Emittenten über ihren LEI. Sobald eine passende Meldung eingelesen wird, sendet der Benachrichtigungsdienst eine E-Mail oder einen nach dem Standard-Webhooks-Schema signierten Webhook, erneut versucht nach 5 Minuten und nach 1 Stunde.",
+    "signingInTitle": "Anmeldung",
+    "signingIn": "Sie werden angemeldet…",
+    "signInFailed": "Anmeldung fehlgeschlagen: {message}",
+    "signInCardTitle": "Melden Sie sich an, um Benachrichtigungen zu verwalten",
+    "signInCardSubtitle": "Konten nutzen Passkeys oder ein Passwort, verwaltet von Keycloak.",
+    "unreachable": "Der Benachrichtigungsdienst ist nicht erreichbar",
+    "requestFailed": "Anfrage fehlgeschlagen",
+    "issuersTitle": "Emittenten",
+    "issuersSubtitle": "Legal Entity Identifier (20 Zeichen), wie auf den Unternehmensseiten angezeigt.",
+    "remove": "Entfernen",
+    "noIssuers": "Noch keine Emittenten.",
+    "issuerLei": "LEI des Emittenten",
+    "add": "Hinzufügen",
+    "rulesTitle": "Benachrichtigungsregeln",
+    "rulesSubtitle": "Eine Regel beobachtet die Emittenten auf Ihrer Liste.",
+    "anyNature": "jede Art",
+    "fromEur": "ab {amount}",
+    "byEmail": "E-Mail {email}",
+    "byWebhook": "Webhook",
+    "delete": "Löschen",
+    "noRules": "Noch keine Regeln.",
+    "ruleName": "Name der Regel",
+    "ruleNamePlaceholder": "Name der Regel, z. B. CEO-Käufe",
+    "nature": "Art",
+    "buys": "Käufe",
+    "sells": "Verkäufe",
+    "any": "Jede Art",
+    "minimum": "Mindestbetrag in Euro",
+    "minimumPlaceholder": "Mindestbetrag in EUR",
+    "email": "E-Mail",
+    "webhookUrl": "Webhook-URL",
+    "webhookPlaceholder": "Webhook-URL (optional)",
+    "createRule": "Regel anlegen",
+    "secret": "Signaturgeheimnis des Webhooks (wird nur einmal angezeigt):",
+    "deliveriesTitle": "Letzte Zustellungen",
+    "when": "Zeitpunkt",
+    "channel": "Kanal",
+    "status": "Status",
+    "attempts": "Versuche",
+    "filing": "Meldung",
+    "noDeliveries": "Noch nichts zugestellt.",
+    "defaultListName": "Meine Beobachtungsliste",
+    "state_pending": "Ausstehend",
+    "state_retrying": "Wird wiederholt",
+    "state_delivered": "Zugestellt",
+    "state_failed": "Fehlgeschlagen",
+    "channel_email": "E-Mail",
+    "channel_webhook": "Webhook"
   }
 }

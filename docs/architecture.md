@@ -133,16 +133,58 @@ the regulator's business hours (measured per source and shown on the status page
 - **Format: DuckLake 1.0** (April 2026). The catalog is a set of tables in PostgreSQL, data files are Parquet
   on object storage, and every commit is an ACID snapshot. Frequent small commits (a few new filings every
   few minutes) are cheap thanks to data inlining, the problem file-based catalogs handle worst.
-- **Layers:** `bronze` (raw responses, private), `silver` (typed records per source, append-only), `gold`
-  (latest version per record, superseded rows removed, enriched, derived signals). See
+- **Layers:** `bronze` (raw responses, private files plus a provenance manifest), `silver` (DuckLake tables
+  `silver.insider_transactions` and `silver.net_short_positions`, append-only, typed per the models), `gold`
+  (latest version per record, superseded rows removed, enriched, derived signals; DuckDB views). See
   [data-model.md](data-model.md).
-- **Time travel** makes research reproducible: every figure in a research note cites the snapshot it used.
+- **One document, one commit.** `Lake.write_silver` inserts the records parsed from one raw document in one
+  transaction. The commit's extra info records the dataset, source, record count, the document's SHA-256 and
+  the parser version, so every snapshot names exactly what produced it, and unchanged documents are not
+  re-committed when a source is polled every few minutes.
+- **Snapshots are the version.** `Lake.version()` is the current DuckLake snapshot id. The API pins every
+  request to one snapshot: the gold views are defined per snapshot (`... AT (VERSION => n)`), the id is the
+  `ETag` and `X-Atlas-Snapshot`, and `?as_of=<snapshot>` on the transaction and issuer endpoints answers from an
+  earlier snapshot with an immutable cache policy.
+- **Time travel** makes research reproducible: every figure in a research note cites the snapshot it used
+  (`disclosure-atlas snapshots` lists them).
 - **Change feed:** the difference between two snapshots (`table_changes`) yields exactly the new and changed
-  gold rows, which become `filing.published` events. No diffing code, no polling.
+  rows, which become `filing.published` events. No diffing code, no polling of files.
+- **Configuration** (environment): `ATLAS_CATALOG` is the DuckLake metadata location, `postgres:host=... dbname=...`
+  in production and whenever several processes share the lake, with a local DuckDB file
+  (`<lake>/catalog.ducklake`) as the default for tests and laptops (one process at a time).
+  `ATLAS_DATA_PATH` is local disk in development (`<lake>/data/`) or `s3://...` on S3-compatible storage
+  (Cloudflare R2, Scaleway) in production, with credentials from `ATLAS_S3_*` or the AWS credential chain.
+- **Migration:** `disclosure-atlas migrate-lake` loads the Parquet silver files of the M0 layout into DuckLake,
+  one commit per file, idempotently. Gold view names and columns did not change.
+- **Maintenance:** a weekly job flushes inlined rows into Parquet and merges small files. Snapshots are never
+  expired, because they are citable.
 - **Openness:** gold tables are exported daily as plain Parquet with a Frictionless `datapackage.json`, so
   anyone can query Europe's insider trades with one DuckDB line, no account needed.
-- The current M0 code uses the same layers on local Parquet files with DuckDB views; migrating to DuckLake is
-  workstream P2 and changes no public schema.
+
+### Orchestration (Dagster)
+Definitions live in `src/disclosure_atlas/orchestration/` and are discovered from the connector registry, so
+a new connector gets its pipeline without touching orchestration code.
+
+```mermaid
+flowchart LR
+    B["bronze/&lt;source&gt;<br/>daily partitions"] --> S["silver/&lt;source&gt;<br/>1 commit per document"]
+    S --> G["gold/&lt;dataset&gt;<br/>eager automation"]
+    S -. "asset checks" .-> C["freshness · volume ·<br/>ISIN/LEI validity · superseded share"]
+    S -. "success hook" .-> E["snapshot.committed<br/>(SnapshotPublisher)"]
+```
+
+- **Partitions:** one daily partition per publication date in the regulator's time zone, from 3 July 2016 (the
+  date MAR applies from) to today. Backfills of years of history are one Dagster backfill.
+- **Schedules:** each source polls today's partition during its regulator's business hours (Sweden: every 5
+  minutes, 07:00-20:00 Europe/Stockholm, Monday to Friday) and re-ingests yesterday every morning at 06:30 to
+  catch late publications and revisions.
+- **Asset checks** on each silver asset: freshness of the newest publication, volume against the 28-day weekday
+  median, ISIN and LEI check-digit validity rate, and the share of records superseded by the authority.
+- **Snapshot hook:** a run hook publishes `snapshot.committed` for every snapshot a run commits through the
+  `SnapshotPublisher` interface (JSON lines by default; the event-streaming workstream plugs in its broker via
+  `ATLAS_SNAPSHOT_PUBLISHER`). The lake's snapshot list remains the replayable source of truth.
+- **Concurrency:** steps that open the catalog share the `ducklake` pool, limited to one with a DuckDB-file
+  catalog. Operations: [operations.md](operations.md).
 
 ## Event streaming (Kafka)
 | Topic | Key | Producer | Consumers |
@@ -192,8 +234,8 @@ the regulator's business hours (measured per source and shown on the status page
 - **Languages:** English, French, Spanish and German (next-intl, locale-prefixed routes, hreflang alternates).
 - **Quality gates:** Playwright end-to-end tests (axe accessibility checks in light and dark mode, keyboard flows)
   and Lighthouse budgets run in CI against the real API over a synthetic lake.
-- **Accounts** (Better Auth with passkeys and magic links): watchlists, alert rules, API keys and webhook
-  endpoints.
+- **Accounts** (Keycloak with passkeys, authorization code + PKCE from the browser): watchlists, alert rules and
+  webhook endpoints, stored by the `alerts` service.
 
 ## AI layer
 - **Extraction** ([decisions/0003](decisions/0003-deterministic-first-extraction-with-evaluated-llm-fallback.md)):
@@ -260,8 +302,7 @@ Details: [0012](decisions/0012-kubernetes-gitops-and-infrastructure-as-code.md).
 ## Evolution
 | Phase | Scope |
 |---|---|
-| Done (M0, P1) | Parquet lake, CLI, FastAPI read API with SSE, Next.js website, CI |
-| P2 | DuckLake + Dagster, snapshot ids, time travel |
+| Done (M0, P1, P2) | Lake, CLI, FastAPI read API with SSE, Next.js website, CI; DuckLake + Dagster, snapshot ids, time travel |
 | P3 | Kafka, change-feed publisher, Go realtime-gateway and alerts, Keycloak, Envoy Gateway |
 | P4 | ai-service: MCP server, Ask the Atlas, gRPC explainer, evaluation gates |
 | P5 | Website product: search, DuckDB-WASM explorer, prices, four languages, end-to-end tests |

@@ -241,10 +241,22 @@
     "lead": "Un lakehouse orientado a eventos detrás de una API pensada para la caché. Las nuevas notificaciones llegan de los supervisores a su pantalla en minutos, y cada cifra puede reproducirse a partir de una instantánea versionada.",
     "containers": "Contenedores",
     "layers": {
-      "sources": { "title": "Fuentes", "note": "Públicas por ley, dispersas por diseño" },
-      "data": { "title": "Plano de datos · Python 3.14", "note": "Un solo código base, varios desplegables" },
-      "state": { "title": "Estado", "note": "El lago es el sistema de registro" },
-      "interfaces": { "title": "Interfaces", "note": "La misma API para el sitio web y para todos los demás" }
+      "sources": {
+        "title": "Fuentes",
+        "note": "Públicas por ley, dispersas por diseño"
+      },
+      "data": {
+        "title": "Plano de datos · Python 3.14",
+        "note": "Un solo código base, varios desplegables"
+      },
+      "state": {
+        "title": "Estado",
+        "note": "El lago es el sistema de registro"
+      },
+      "interfaces": {
+        "title": "Interfaces",
+        "note": "La misma API para el sitio web y para todos los demás"
+      }
     },
     "nodes": {
       "fi": "Exportación CSV, ventanas adaptativas",
@@ -275,17 +287,50 @@
     "choice": "Elección",
     "why": "Por qué",
     "stack": {
-      "website": { "layer": "Sitio web", "why": "Páginas de empresa optimizadas para buscadores en cuatro idiomas, streaming, cachés invalidadas por los commits de datos" },
-      "explorer": { "layer": "Explorador", "why": "Millones de filas consultadas en el navegador, vistas vinculadas sin servidor" },
-      "api": { "layer": "API", "why": "Un único esquema desde la ingesta hasta el cliente TypeScript generado" },
-      "engine": { "layer": "Motor analítico", "why": "Instantáneas, viaje en el tiempo y flujo de cambios sobre archivos y SQL" },
-      "orchestration": { "layer": "Orquestación", "why": "Assets particionados, recargas históricas, controles de calidad de datos, linaje" },
-      "events": { "layer": "Eventos", "why": "Eventos reproducibles desde el flujo de cambios, topics de reintento y de mensajes fallidos" },
-      "services": { "layer": "Servicios", "why": "Cada contexto delimitado escala y falla por su cuenta" },
-      "platform": { "layer": "Plataforma", "why": "GitOps, entornos de vista previa, autoescalado según el retraso" },
-      "security": { "layer": "Seguridad", "why": "OIDC con passkeys, políticas en el borde, cadena de suministro firmada" },
-      "ai": { "layer": "IA", "why": "Extracción de respaldo, preguntas en lenguaje natural, acceso para agentes, todo evaluado" },
-      "observability": { "layer": "Observabilidad", "why": "SLO como código con alertas de tasa de consumo y runbooks" }
+      "website": {
+        "layer": "Sitio web",
+        "why": "Páginas de empresa optimizadas para buscadores en cuatro idiomas, streaming, cachés invalidadas por los commits de datos"
+      },
+      "explorer": {
+        "layer": "Explorador",
+        "why": "Millones de filas consultadas en el navegador, vistas vinculadas sin servidor"
+      },
+      "api": {
+        "layer": "API",
+        "why": "Un único esquema desde la ingesta hasta el cliente TypeScript generado"
+      },
+      "engine": {
+        "layer": "Motor analítico",
+        "why": "Instantáneas, viaje en el tiempo y flujo de cambios sobre archivos y SQL"
+      },
+      "orchestration": {
+        "layer": "Orquestación",
+        "why": "Assets particionados, recargas históricas, controles de calidad de datos, linaje"
+      },
+      "events": {
+        "layer": "Eventos",
+        "why": "Eventos reproducibles desde el flujo de cambios, topics de reintento y de mensajes fallidos"
+      },
+      "services": {
+        "layer": "Servicios",
+        "why": "Cada contexto delimitado escala y falla por su cuenta"
+      },
+      "platform": {
+        "layer": "Plataforma",
+        "why": "GitOps, entornos de vista previa, autoescalado según el retraso"
+      },
+      "security": {
+        "layer": "Seguridad",
+        "why": "OIDC con passkeys, políticas en el borde, cadena de suministro firmada"
+      },
+      "ai": {
+        "layer": "IA",
+        "why": "Extracción de respaldo, preguntas en lenguaje natural, acceso para agentes, todo evaluado"
+      },
+      "observability": {
+        "layer": "Observabilidad",
+        "why": "SLO como código con alertas de tasa de consumo y runbooks"
+      }
     },
     "stackChoice": {
       "services": "Microservicios en Python, Go y TypeScript"
@@ -309,5 +354,61 @@
     "notFoundTitle": "No está en el Atlas",
     "notFoundBody": "Ningún emisor ni ninguna página coincide con esta dirección. La cobertura crece supervisor a supervisor.",
     "searchFilings": "Buscar notificaciones"
+  },
+  "account": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "watchlist": "Lista de seguimiento",
+    "watchlistTitle": "Lista de seguimiento y alertas",
+    "watchlistDescription": "Siga emisores y reciba un correo o un webhook firmado cuando sus directivos operen.",
+    "watchlistLead": "Siga emisores por su LEI. Cuando se integra una notificación que coincide, el servicio de alertas envía un correo o un webhook firmado con el esquema Standard Webhooks, que se reintenta a los 5 minutos y a la hora.",
+    "signingInTitle": "Iniciando sesión",
+    "signingIn": "Iniciando su sesión…",
+    "signInFailed": "No se pudo iniciar sesión: {message}",
+    "signInCardTitle": "Inicie sesión para gestionar sus alertas",
+    "signInCardSubtitle": "Las cuentas usan llaves de acceso o una contraseña, gestionadas por Keycloak.",
+    "unreachable": "No se pudo contactar con el servicio de alertas",
+    "requestFailed": "La solicitud ha fallado",
+    "issuersTitle": "Emisores",
+    "issuersSubtitle": "Identificadores de entidad jurídica (20 caracteres), como en las páginas de las sociedades.",
+    "remove": "Quitar",
+    "noIssuers": "Todavía no hay emisores.",
+    "issuerLei": "LEI del emisor",
+    "add": "Añadir",
+    "rulesTitle": "Reglas de alerta",
+    "rulesSubtitle": "Una regla vigila los emisores de su lista.",
+    "anyNature": "cualquier naturaleza",
+    "fromEur": "desde {amount}",
+    "byEmail": "correo {email}",
+    "byWebhook": "webhook",
+    "delete": "Eliminar",
+    "noRules": "Todavía no hay reglas.",
+    "ruleName": "Nombre de la regla",
+    "ruleNamePlaceholder": "Nombre de la regla, p. ej. compras del CEO",
+    "nature": "Naturaleza",
+    "buys": "Compras",
+    "sells": "Ventas",
+    "any": "Cualquier naturaleza",
+    "minimum": "Importe mínimo en euros",
+    "minimumPlaceholder": "Mínimo en EUR",
+    "email": "Correo electrónico",
+    "webhookUrl": "URL del webhook",
+    "webhookPlaceholder": "URL del webhook (opcional)",
+    "createRule": "Crear regla",
+    "secret": "Secreto de firma del webhook (se muestra una sola vez):",
+    "deliveriesTitle": "Envíos recientes",
+    "when": "Fecha",
+    "channel": "Canal",
+    "status": "Estado",
+    "attempts": "Intentos",
+    "filing": "Notificación",
+    "noDeliveries": "Todavía no se ha enviado nada.",
+    "defaultListName": "Mi lista de seguimiento",
+    "state_pending": "Pendiente",
+    "state_retrying": "Reintentando",
+    "state_delivered": "Entregado",
+    "state_failed": "Fallido",
+    "channel_email": "Correo",
+    "channel_webhook": "Webhook"
   }
 }

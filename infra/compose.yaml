@@ -1,6 +1,17 @@
-# Local infrastructure for the next workstreams (P2: DuckLake + Dagster, P3: Kafka events, alerts, identity).
-# The current API and website only need the files in ./lake. Start with: docker compose -f infra/compose.yaml up -d
-name: disclosure-atlas
+# Local platform: Kafka (Redpanda) with a schema registry, PostgreSQL 18, Keycloak, the realtime-gateway and
+# alerts services, plus Mailpit and a webhook sink to see notifications. The Python API and the website run
+# on the host (see README.md, "Run it").
+#   docker compose -f infra/compose.yaml up -d --build
+#   ATLAS_KAFKA_BOOTSTRAP=localhost:19092 ATLAS_SCHEMA_REGISTRY_URL=http://localhost:18081 \
+#     disclosure-atlas watch se_fi_pdmr
+# Run several copies side by side with a project name and host ports from the environment, for example
+#   ATLAS_PG_PORT=5443 ATLAS_KAFKA_PORT=19093 docker compose -p atlas-p3 -f infra/compose.yaml up -d
+# Host ports (defaults): ATLAS_PG_PORT 5432, ATLAS_KAFKA_PORT 19092, ATLAS_SCHEMA_REGISTRY_PORT 18081,
+# ATLAS_CONSOLE_PORT 8080, ATLAS_KEYCLOAK_PORT 8180, ATLAS_MAILPIT_PORT 8025, ATLAS_SMTP_PORT 1025,
+# ATLAS_GATEWAY_PORT 8090, ATLAS_ALERTS_PORT 8091, ATLAS_SINK_PORT 8099; ATLAS_WEB_ORIGINS for CORS.
+# Every credential below is a development default; nothing here is suitable for production.
+# PostgreSQL also holds the DuckLake catalog (ATLAS_CATALOG, see docs/operations.md); without it the lake
+# falls back to a local DuckDB-file catalog.
 
 services:
   postgres:
@@ -9,7 +20,7 @@ services:
       POSTGRES_USER: atlas
       POSTGRES_PASSWORD: atlas-dev-only
       POSTGRES_DB: atlas
-    ports: ["5432:5432"]
+    ports: ["${ATLAS_PG_PORT:-5432}:5432"]
     volumes: [postgres:/var/lib/postgresql]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]
@@ -18,23 +29,104 @@ services:
 
   kafka:
     # Redpanda speaks the Kafka API and bundles a schema registry; production runs Apache Kafka 4 (Strimzi).
-    image: redpandadata/redpanda:latest
+    image: redpandadata/redpanda:v26.2.5
     command:
       - redpanda start --mode dev-container --smp 1 --overprovisioned
       - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
-      - --advertise-kafka-addr internal://kafka:9092,external://localhost:19092
+      - --advertise-kafka-addr internal://kafka:9092,external://localhost:${ATLAS_KAFKA_PORT:-19092}
       - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
-    ports: ["19092:19092", "18081:18081"]
+    ports: ["${ATLAS_KAFKA_PORT:-19092}:19092", "${ATLAS_SCHEMA_REGISTRY_PORT:-18081}:18081"]
     volumes: [kafka:/var/lib/redpanda/data]
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true'"]
+      interval: 5s
+      retries: 20
+
+  kafka-init:
+    # Topics of docs/architecture.md ("Event streaming"); in Kubernetes they are Strimzi KafkaTopic resources.
+    image: redpandadata/redpanda:v26.2.5
+    depends_on:
+      kafka: { condition: service_healthy }
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        rpk() { command rpk -X brokers=kafka:9092 "$$@"; }
+        create() { rpk topic create "$$@" 2>&1 | grep -vE 'TOPIC_ALREADY_EXISTS' || true; }
+        create atlas.filings.v1 -p 3 -c retention.ms=2592000000
+        create atlas.snapshots.v1 -p 1 -c cleanup.policy=compact
+        create atlas.notifications.v1 atlas.notifications.v1.retry.5m atlas.notifications.v1.retry.1h -p 3
+        create atlas.notifications.v1.dlq -p 1 -c retention.ms=2592000000
+        rpk topic list
+    restart: "no"
 
   kafka-console:
-    image: redpandadata/console:latest
+    image: redpandadata/console:v3.12.0
     environment:
       KAFKA_BROKERS: kafka:9092
       KAFKA_SCHEMAREGISTRY_ENABLED: "true"
       KAFKA_SCHEMAREGISTRY_URLS: http://kafka:8081
-    ports: ["8080:8080"]
+    ports: ["${ATLAS_CONSOLE_PORT:-8080}:8080"]
     depends_on: [kafka]
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin-dev-only
+      # Tokens always carry this issuer; services inside the network fetch keys from keycloak:8080.
+      KC_HOSTNAME: http://localhost:${ATLAS_KEYCLOAK_PORT:-8180}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+    ports: ["${ATLAS_KEYCLOAK_PORT:-8180}:8080"]
+    volumes: ["./keycloak:/opt/keycloak/data/import:ro"]
+
+  mailpit:
+    # Catches alert emails: web UI on http://localhost:8025
+    image: axllent/mailpit:v1.31.6
+    ports: ["${ATLAS_MAILPIT_PORT:-8025}:8025", "${ATLAS_SMTP_PORT:-1025}:1025"]
+
+  realtime-gateway:
+    build: ../services/realtime-gateway
+    image: atlas/realtime-gateway:dev
+    environment:
+      ATLAS_KAFKA_BOOTSTRAP: kafka:9092
+      ATLAS_CORS_ORIGINS: ${ATLAS_WEB_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+    ports: ["${ATLAS_GATEWAY_PORT:-8090}:8080"]
+    depends_on:
+      kafka-init: { condition: service_completed_successfully }
+    stop_grace_period: 15s
+
+  alerts:
+    build: ../services/alerts
+    image: atlas/alerts:dev
+    environment:
+      ATLAS_DATABASE_URL: postgres://atlas:atlas-dev-only@postgres:5432/atlas
+      ATLAS_KAFKA_BOOTSTRAP: kafka:9092
+      ATLAS_OIDC_ISSUER: http://localhost:${ATLAS_KEYCLOAK_PORT:-8180}/realms/atlas
+      ATLAS_OIDC_JWKS_URL: http://keycloak:8080/realms/atlas/protocol/openid-connect/certs
+      ATLAS_CORS_ORIGINS: ${ATLAS_WEB_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      ATLAS_ALERTS_ALLOW_PRIVATE_WEBHOOKS: "true" # lets the webhook sink below receive deliveries
+      ATLAS_EMAIL_PROVIDER: smtp
+      ATLAS_EMAIL_FROM: EU Disclosure Atlas <alerts@atlas.localhost>
+      ATLAS_SMTP_ADDR: mailpit:1025
+    ports: ["${ATLAS_ALERTS_PORT:-8091}:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka-init: { condition: service_completed_successfully }
+      keycloak: { condition: service_started }
+    stop_grace_period: 15s
+
+  webhook-sink:
+    # Development receiver: logs deliveries; GET http://localhost:8099/deliveries lists them.
+    build: ../services/alerts
+    image: atlas/alerts:dev
+    entrypoint: ["/webhook-sink"]
+    environment:
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+    ports: ["${ATLAS_SINK_PORT:-8099}:8099"]
+    depends_on: [alerts]
 
 volumes:
   postgres:

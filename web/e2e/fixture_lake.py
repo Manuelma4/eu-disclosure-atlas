@@ -143,6 +143,9 @@ def build(root: Path, rows: int, issuers: int, seed: int) -> None:
           for i, d in enumerate(fx_days)]
     lake.fx_path.parent.mkdir(parents=True, exist_ok=True)
     pq.write_table(pa.Table.from_pylist(fx, schema=FX_SCHEMA), lake.fx_path)
+    # Commit the file into the DuckLake catalog (one snapshot), as the pre-DuckLake migration path does.
+    lake.migrate()
+    lake.close()
     print(f"{rows} synthetic filings for {issuers} issuers -> {root}")
 
 

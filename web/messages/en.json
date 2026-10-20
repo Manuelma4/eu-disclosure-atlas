@@ -241,10 +241,22 @@
     "lead": "An event-driven lakehouse behind a cache-friendly API. New filings flow from regulators to your screen in minutes, and every number can be reproduced from a versioned snapshot.",
     "containers": "Containers",
     "layers": {
-      "sources": { "title": "Sources", "note": "Public by law, scattered by design" },
-      "data": { "title": "Data plane · Python 3.14", "note": "One codebase, several deployables" },
-      "state": { "title": "State", "note": "The lake is the system of record" },
-      "interfaces": { "title": "Interfaces", "note": "Same API for the website and everyone else" }
+      "sources": {
+        "title": "Sources",
+        "note": "Public by law, scattered by design"
+      },
+      "data": {
+        "title": "Data plane · Python 3.14",
+        "note": "One codebase, several deployables"
+      },
+      "state": {
+        "title": "State",
+        "note": "The lake is the system of record"
+      },
+      "interfaces": {
+        "title": "Interfaces",
+        "note": "Same API for the website and everyone else"
+      }
     },
     "nodes": {
       "fi": "CSV export, adaptive windows",
@@ -275,17 +287,50 @@
     "choice": "Choice",
     "why": "Why",
     "stack": {
-      "website": { "layer": "Website", "why": "Search-friendly company pages in four languages, streaming, caches invalidated by data commits" },
-      "explorer": { "layer": "Explorer", "why": "Millions of rows queried in the browser, linked views without a server" },
-      "api": { "layer": "API", "why": "One schema from ingestion to the generated TypeScript client" },
-      "engine": { "layer": "Analytics engine", "why": "Snapshots, time travel and a change feed on files and SQL" },
-      "orchestration": { "layer": "Orchestration", "why": "Partitioned assets, backfills, data-quality checks, lineage" },
-      "events": { "layer": "Events", "why": "Replayable events from the change feed, retry and dead-letter topics" },
-      "services": { "layer": "Services", "why": "Each bounded context scales and fails on its own" },
-      "platform": { "layer": "Platform", "why": "GitOps, preview environments, autoscaling on lag" },
-      "security": { "layer": "Security", "why": "OIDC with passkeys, edge policies, signed supply chain" },
-      "ai": { "layer": "AI", "why": "Extraction fallback, natural-language questions, agent access, all evaluated" },
-      "observability": { "layer": "Observability", "why": "SLOs as code with burn-rate alerts and runbooks" }
+      "website": {
+        "layer": "Website",
+        "why": "Search-friendly company pages in four languages, streaming, caches invalidated by data commits"
+      },
+      "explorer": {
+        "layer": "Explorer",
+        "why": "Millions of rows queried in the browser, linked views without a server"
+      },
+      "api": {
+        "layer": "API",
+        "why": "One schema from ingestion to the generated TypeScript client"
+      },
+      "engine": {
+        "layer": "Analytics engine",
+        "why": "Snapshots, time travel and a change feed on files and SQL"
+      },
+      "orchestration": {
+        "layer": "Orchestration",
+        "why": "Partitioned assets, backfills, data-quality checks, lineage"
+      },
+      "events": {
+        "layer": "Events",
+        "why": "Replayable events from the change feed, retry and dead-letter topics"
+      },
+      "services": {
+        "layer": "Services",
+        "why": "Each bounded context scales and fails on its own"
+      },
+      "platform": {
+        "layer": "Platform",
+        "why": "GitOps, preview environments, autoscaling on lag"
+      },
+      "security": {
+        "layer": "Security",
+        "why": "OIDC with passkeys, edge policies, signed supply chain"
+      },
+      "ai": {
+        "layer": "AI",
+        "why": "Extraction fallback, natural-language questions, agent access, all evaluated"
+      },
+      "observability": {
+        "layer": "Observability",
+        "why": "SLOs as code with burn-rate alerts and runbooks"
+      }
     },
     "stackChoice": {
       "services": "Python, Go and TypeScript microservices"
@@ -309,5 +354,61 @@
     "notFoundTitle": "Not in the Atlas",
     "notFoundBody": "No issuer or page matches this address. Coverage grows regulator by regulator.",
     "searchFilings": "Search filings"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "watchlist": "Watchlist",
+    "watchlistTitle": "Watchlist and alerts",
+    "watchlistDescription": "Follow issuers and get an email or a signed webhook when their insiders trade.",
+    "watchlistLead": "Follow issuers by LEI. When a matching filing is ingested, the alerts service sends an email or a webhook signed with the Standard Webhooks scheme, retried after 5 minutes and 1 hour.",
+    "signingInTitle": "Signing in",
+    "signingIn": "Signing you in…",
+    "signInFailed": "Sign-in failed: {message}",
+    "signInCardTitle": "Sign in to manage alerts",
+    "signInCardSubtitle": "Accounts use passkeys or a password, managed by Keycloak.",
+    "unreachable": "Could not reach the alerts service",
+    "requestFailed": "Request failed",
+    "issuersTitle": "Issuers",
+    "issuersSubtitle": "Legal Entity Identifiers (20 characters), as shown on company pages.",
+    "remove": "Remove",
+    "noIssuers": "No issuers yet.",
+    "issuerLei": "Issuer LEI",
+    "add": "Add",
+    "rulesTitle": "Alert rules",
+    "rulesSubtitle": "A rule watches the issuers on your list.",
+    "anyNature": "any nature",
+    "fromEur": "from {amount}",
+    "byEmail": "email {email}",
+    "byWebhook": "webhook",
+    "delete": "Delete",
+    "noRules": "No rules yet.",
+    "ruleName": "Rule name",
+    "ruleNamePlaceholder": "Rule name, e.g. CEO buys",
+    "nature": "Nature",
+    "buys": "Buys",
+    "sells": "Sells",
+    "any": "Any nature",
+    "minimum": "Minimum amount in euros",
+    "minimumPlaceholder": "Minimum EUR",
+    "email": "Email",
+    "webhookUrl": "Webhook URL",
+    "webhookPlaceholder": "Webhook URL (optional)",
+    "createRule": "Create rule",
+    "secret": "Webhook signing secret (shown once):",
+    "deliveriesTitle": "Recent deliveries",
+    "when": "When",
+    "channel": "Channel",
+    "status": "Status",
+    "attempts": "Attempts",
+    "filing": "Filing",
+    "noDeliveries": "Nothing delivered yet.",
+    "defaultListName": "My watchlist",
+    "state_pending": "Pending",
+    "state_retrying": "Retrying",
+    "state_delivered": "Delivered",
+    "state_failed": "Failed",
+    "channel_email": "Email",
+    "channel_webhook": "Webhook"
   }
 }

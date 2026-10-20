@@ -7,5 +7,5 @@ export default createMiddleware(routing);
 
 export const config = {
   // Everything except API routes, Next.js internals, the DuckDB-WASM bundle and files with an extension.
-  matcher: ["/((?!api|_next|_vercel|duckdb|.*\\..*).*)"],
+  matcher: ["/((?!api|_next|duckdb|.*\\..*).*)"],
 };

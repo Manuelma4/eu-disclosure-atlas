@@ -15,6 +15,8 @@ jobs:
       - run: pytest -q
       - name: OpenAPI document is up to date
         run: disclosure-atlas --lake /tmp/empty-lake openapi > /tmp/openapi.json && diff -u web/openapi.json /tmp/openapi.json
+      - name: Event contracts are up to date
+        run: disclosure-atlas contracts --check
   web:
     runs-on: ubuntu-latest
     defaults:
@@ -64,3 +66,29 @@ jobs:
             web/playwright-report
             web/test-results
             web/.lighthouseci
+  go:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [realtime-gateway, alerts]
+    defaults:
+      run:
+        working-directory: services/${{ matrix.service }}
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: test
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env:
+      ATLAS_TEST_DATABASE_URL: postgres://postgres:test@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: services/${{ matrix.service }}/go.mod
+          cache-dependency-path: services/${{ matrix.service }}/go.sum
+      - run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
+      - run: go vet ./...
+      - run: go test -race ./...

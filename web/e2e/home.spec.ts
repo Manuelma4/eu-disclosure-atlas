@@ -64,3 +64,12 @@ test("skip link moves focus to the content", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page.locator("main")).toBeFocused();
 });
+
+test("account pages live under the locale and are translated", async ({ page }) => {
+  await page.goto("/fr/account/watchlist");
+  await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Liste de suivi et alertes");
+  await expect(page.getByRole("button", { name: "Se connecter" }).first()).toBeVisible();
+  const unprefixed = await page.goto("/account/watchlist");
+  expect(unprefixed?.url()).toMatch(/\/(en|fr|es|de)\/account\/watchlist$/);
+});

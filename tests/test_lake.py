@@ -1,10 +1,12 @@
 from datetime import UTC, datetime
 
+import pyarrow as pa
 import pyarrow.parquet as pq
+import pytest
 from conftest import fi_doc, fi_row
 
 from disclosure_atlas.connectors.se_fi_pdmr import SwedenFIPDMR
-from disclosure_atlas.lake import Lake
+from disclosure_atlas.lake import Lake, UnknownSnapshot
 from disclosure_atlas.models import Dataset, InsiderTransaction, NetShortPosition, arrow_schema
 
 T1 = datetime(2026, 10, 3, 6, 0, tzinfo=UTC)
@@ -57,3 +59,53 @@ def test_export_writes_gold_parquet(tmp_path, ctx):
     assert counts == {"insider_transactions": 1, "net_short_positions": 0}
     table = pq.read_table(tmp_path / "out" / "insider_transactions.parquet")
     assert "is_open_market" in table.column_names and "pdmr_id" in table.column_names
+
+
+def test_each_document_is_one_ducklake_snapshot_with_provenance(tmp_path, ctx):
+    lake = Lake(tmp_path)
+    before = lake.current_snapshot()
+    connector = SwedenFIPDMR(http=object())
+    doc = fi_doc([fi_row(), fi_row(Volume="5.0")])
+    records = list(connector.parse(doc, ctx))
+    snapshot = lake.write_silver(Dataset.INSIDER_TRANSACTIONS, connector.name, records,
+                                 provenance={"sha256": doc.sha256, "parser": connector.parser_id})
+    assert snapshot == before + 1 and lake.version() == str(snapshot)
+    (info,) = lake.snapshots(since=before)
+    assert info["extra"] == {"dataset": "insider_transactions", "source": "se_fi_pdmr", "records": 2,
+                             "sha256": doc.sha256, "parser": connector.parser_id}
+    assert lake.parsed_documents("se_fi_pdmr") == {(doc.sha256, connector.parser_id)}
+    assert lake.write_silver(Dataset.INSIDER_TRANSACTIONS, connector.name, []) is None
+    assert lake.current_snapshot() == snapshot
+
+
+def test_time_travel_reads_an_earlier_snapshot(tmp_path, ctx):
+    lake = Lake(tmp_path)
+    load(lake, fi_doc([fi_row()], fetched_at=T1), ctx)
+    first = lake.current_snapshot()
+    load(lake, fi_doc([fi_row(Volume="5.0")], fetched_at=T2), ctx)
+    assert lake.connect().execute("SELECT count(*) FROM insider_transactions").fetchone()[0] == 2
+    assert lake.connect(as_of=first).execute("SELECT count(*) FROM insider_transactions").fetchone()[0] == 1
+    with pytest.raises(UnknownSnapshot):
+        lake.connect(as_of=lake.current_snapshot() + 1)
+
+
+def test_migrate_loads_parquet_silver_once(tmp_path, ctx):
+    connector = SwedenFIPDMR(http=object())
+    records = list(connector.parse(fi_doc([fi_row(), fi_row(Volume="5.0")]), ctx))
+    folder = tmp_path / "silver" / "insider_transactions" / "se_fi_pdmr"
+    folder.mkdir(parents=True)
+    table = pa.Table.from_pylist([r.model_dump() for r in records], schema=arrow_schema(InsiderTransaction))
+    pq.write_table(table.drop_columns(["status_raw"]), folder / "20261003T060000000000Z-abc.parquet")
+    lake = Lake(tmp_path)
+    assert lake.migrate() == {"insider_transactions": 2, "net_short_positions": 0}
+    assert lake.migrate() == {"insider_transactions": 0, "net_short_positions": 0}
+    con = lake.connect()
+    assert con.execute("SELECT count(*), count(status_raw) FROM insider_transactions").fetchone() == (2, 0)
+
+
+def test_lake_location_comes_from_the_environment(tmp_path, monkeypatch):
+    monkeypatch.setenv("ATLAS_CATALOG", str(tmp_path / "elsewhere.ducklake"))
+    monkeypatch.setenv("ATLAS_DATA_PATH", str(tmp_path / "files") + "/")
+    lake = Lake(tmp_path / "lake")
+    assert lake.version() == str(lake.current_snapshot())
+    assert (tmp_path / "elsewhere.ducklake").exists() and (tmp_path / "files").is_dir()

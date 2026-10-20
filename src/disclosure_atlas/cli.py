@@ -1,10 +1,12 @@
-"""Command line: disclosure-atlas {sources,ingest,watch,query,stats,export,reference,serve,openapi,mcp}."""
+"""Command line: disclosure-atlas {sources,ingest,watch,publish,contracts,query,stats,export,reference,serve,
+openapi,mcp,migrate-lake,snapshots}."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import date, timedelta
@@ -41,14 +43,53 @@ def _cmd_ingest(args: argparse.Namespace) -> int:
 
 
 def _cmd_watch(args: argparse.Namespace) -> int:
-    """Re-ingest a trailing window forever: new filings appear, revisions are picked up."""
+    """Re-ingest a trailing window forever: new filings appear, revisions are picked up.
+
+    With ATLAS_KAFKA_BOOTSTRAP set, each run is followed by the change-feed publisher (new gold rows to
+    atlas.filings.v1, the run to atlas.snapshots.v1), starting after the newest row already in the lake.
+    """
+    from .events.publisher import from_env
+
     connector = connectors.get(args.source)()
     lake = Lake(args.lake)
+    publisher = from_env(lake, dict(os.environ))
+    if publisher:
+        publisher.start_at_end()
     while True:
         end = date.today()
         report = ingest(connector, lake, end - timedelta(days=args.lookback), end)
         print(f"[{time.strftime('%H:%M:%S')}] {report.summary()}", flush=True)
+        if publisher:
+            print(f"[{time.strftime('%H:%M:%S')}] {publisher.publish().summary()}", flush=True)
+        if args.once:
+            return 0
         time.sleep(args.every)
+
+
+def _cmd_publish(args: argparse.Namespace) -> int:
+    from .events.publisher import from_env
+
+    publisher = from_env(Lake(args.lake), dict(os.environ))
+    if publisher is None:
+        print("Set ATLAS_KAFKA_BOOTSTRAP (e.g. localhost:19092) to publish events", file=sys.stderr)
+        return 2
+    print(publisher.publish(backfill=args.backfill).summary())
+    return 0
+
+
+def _cmd_contracts(args: argparse.Namespace) -> int:
+    from .events.contracts import stale_contracts, write_contracts
+
+    if args.check:
+        if stale := stale_contracts(args.out):
+            print(f"Event contracts out of date in {args.out}: {', '.join(stale)}. "
+                  "Run: disclosure-atlas contracts", file=sys.stderr)
+            return 1
+        print(f"Event contracts in {args.out} are up to date")
+        return 0
+    for path in write_contracts(args.out):
+        print(path)
+    return 0
 
 
 def _cmd_reference(args: argparse.Namespace) -> int:
@@ -100,6 +141,23 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_migrate_lake(args: argparse.Namespace) -> int:
+    lake = Lake(args.lake)
+    loaded = lake.migrate()
+    for dataset, rows in loaded.items():
+        print(f"{dataset}: {rows} rows loaded from {lake.silver / dataset}")
+    catalog = re.sub(r"password=\S+", "password=***", lake.catalog)
+    print(f"DuckLake catalog {catalog}, data in {lake.data_path}, snapshot {lake.version()}")
+    return 0
+
+
+def _cmd_snapshots(args: argparse.Namespace) -> int:
+    for snap in Lake(args.lake).snapshots()[-args.last:]:
+        time = snap["snapshot_time"].isoformat(timespec="seconds") if snap["snapshot_time"] else "-"
+        print(f"{snap['snapshot_id']:>8}  {time}  {snap['commit_message'] or json.dumps(snap['changes'], default=str)}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="disclosure-atlas", description=__doc__)
     parser.add_argument("--lake", default="lake", help="lake root folder (default: ./lake)")
@@ -118,7 +176,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("source")
     p.add_argument("--every", type=int, default=300, help="seconds between runs (default: 300)")
     p.add_argument("--lookback", type=int, default=2, help="days re-fetched each run (default: 2)")
+    p.add_argument("--once", action="store_true", help="run once and exit")
     p.set_defaults(func=_cmd_watch)
+
+    p = sub.add_parser("publish", help="publish new gold rows to Kafka (needs ATLAS_KAFKA_BOOTSTRAP)")
+    p.add_argument("--backfill", action="store_true",
+                   help="without a checkpoint, publish all history instead of starting at the newest row")
+    p.set_defaults(func=_cmd_publish)
 
     p = sub.add_parser("reference", help="refresh reference data")
     p.add_argument("name", choices=["fx"])
@@ -132,6 +196,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("openapi", help="print the OpenAPI document").set_defaults(func=_cmd_openapi)
 
+    p = sub.add_parser("contracts", help="write the event payload JSON Schemas (CloudEvents data)")
+    p.add_argument("--out", default="contracts/events")
+    p.add_argument("--check", action="store_true", help="fail if the committed schemas differ from the code")
+    p.set_defaults(func=_cmd_contracts)
+
     sub.add_parser("mcp", help="run the MCP server over stdio (needs the ai extra)").set_defaults(func=_cmd_mcp)
 
     p = sub.add_parser("query", help="run SQL against the gold views")
@@ -144,6 +213,14 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("export", help="write gold tables to Parquet")
     p.add_argument("--out", default="exports")
     p.set_defaults(func=_cmd_export)
+
+    sub.add_parser(
+        "migrate-lake", help="load Parquet silver files (pre-DuckLake layout) into the DuckLake catalog; idempotent"
+    ).set_defaults(func=_cmd_migrate_lake)
+
+    p = sub.add_parser("snapshots", help="list DuckLake snapshots (ids usable as ?as_of= in the API)")
+    p.add_argument("--last", type=int, default=20)
+    p.set_defaults(func=_cmd_snapshots)
     return parser
 
 
