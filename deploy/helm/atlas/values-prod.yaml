@@ -59,8 +59,12 @@ query-api:
     # Trust X-Forwarded-For only from in-cluster proxies (Kapsule Cilium pod range); never "*".
     FORWARDED_ALLOW_IPS: 100.64.0.0/15
     ATLAS_CORS_ORIGINS: https://atlas.example.org
+    # DuckLake catalog in CloudNativePG.
+    ATLAS_CATALOG: "postgres:host=atlas-pg-rw dbname=atlas user=atlas"
+    PGPASSWORD: {secretKeyRef: {name: atlas-pg-app, key: password}}
   networkPolicy:
     egressOtlp: true
+    egressPostgres: true
   autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 10, targetCPUUtilizationPercentage: 65}
   resources:
     requests: {cpu: 250m, memory: 512Mi}
@@ -73,8 +77,14 @@ web:
   networkPolicy:
     egressOtlp: true
   autoscaling: {enabled: true, minReplicas: 2, maxReplicas: 8, targetCPUUtilizationPercentage: 65}
+ingestion:
+  env:
+    ATLAS_KAFKA_BOOTSTRAP: '{{ include "atlas-lib.kafkaBootstrap" . }}'
+    ATLAS_CATALOG: "postgres:host=atlas-pg-rw dbname=atlas user=atlas"
+    PGPASSWORD: {secretKeyRef: {name: atlas-pg-app, key: password}}
 extraction:
   enabled: false
+# The Go services wait for Keycloak and the real domain (OIDC issuer) before production.
 realtime-gateway:
   enabled: false
 alerts:

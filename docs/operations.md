@@ -1,15 +1,16 @@
 # Operations
 
-Two parts: the data pipeline (DuckLake and Dagster) and the platform (Kubernetes, GitOps and the supply
-chain).
+Two parts: running the lake and the pipeline ([Lake and pipeline](#lake-and-pipeline)), and running the
+platform on Kubernetes, on a laptop (k3d) and in production
+([Kubernetes, GitOps and the supply chain](#kubernetes-gitops-and-the-supply-chain)).
 
-# Part 1: data pipeline
+## Lake and pipeline
 
 How to run the lake and the pipeline locally: DuckLake catalog, Dagster, backfills and data-quality checks.
 Design: [architecture.md](architecture.md) ("Lakehouse"), decisions [0005](decisions/0005-ducklake-as-lakehouse-format.md)
 and [0007](decisions/0007-dagster-for-orchestration.md).
 
-## 1. Choose a catalog
+### 1. Choose a catalog
 
 The lake reads its location from the environment (see `src/disclosure_atlas/lake.py`):
 
@@ -34,7 +35,7 @@ If another PostgreSQL already listens on port 5432, publish the container elsewh
 `ATLAS_PG_PORT=55432 docker compose ...` and use `port=55432` in `ATLAS_CATALOG`. The `-p` project name keeps
 your containers apart from other checkouts that use the same compose file.
 
-## 2. Migrate an existing Parquet lake
+### 2. Migrate an existing Parquet lake
 
 Lakes created before DuckLake keep silver as Parquet files under `<lake>/silver/`. Load them once:
 
@@ -46,7 +47,7 @@ disclosure-atlas --lake lake stats             # same gold numbers as before the
 
 The Parquet files are left in place; delete `<lake>/silver/` once you are satisfied.
 
-## 3. Run Dagster
+### 3. Run Dagster
 
 ```bash
 pip install -e '.[dev,api,orchestration]'
@@ -70,7 +71,7 @@ Re-polling an unchanged day is cheap: bronze stores the response, and silver ski
 already committed by the same parser version (recorded in each snapshot's commit info). Bumping a connector's
 `parser_version` makes silver re-parse stored bronze documents without refetching them.
 
-## 4. Backfill a source
+### 4. Backfill a source
 
 In the UI: **Catalog → silver/se_fi_pdmr → Materialize → select a partition range** (bronze is selected with it).
 From the command line, for one partition:
@@ -87,7 +88,7 @@ source is slow by design.
 The pipeline-free path still works: `disclosure-atlas ingest se_fi_pdmr --start 2026-04-20` writes the same
 bronze and silver (one commit per document).
 
-## 5. Check freshness and data quality
+### 5. Check freshness and data quality
 
 Each `silver/<source>` asset carries four checks, run after every materialization:
 
@@ -110,7 +111,7 @@ disclosure-atlas query "SELECT source, max(published_at) AS newest, max(first_se
 The API reports the same through `GET /v1/sources` (`last_published_at`, `last_ingested_at`) and
 `GET /v1/health` (current snapshot).
 
-## 6. Snapshots and time travel
+### 6. Snapshots and time travel
 
 - `X-Atlas-Snapshot` on every API response is the DuckLake snapshot the answer came from.
 - `?as_of=<snapshot>` on `/v1/insider-transactions`, `/v1/insider-transactions/{id}`, `/v1/issuers` and
@@ -119,16 +120,17 @@ The API reports the same through `GET /v1/sources` (`last_published_at`, `last_i
   `SnapshotPublisher`. To plug in a broker, implement `publish(event)` and point
   `ATLAS_SNAPSHOT_PUBLISHER=package.module:factory` at a factory taking the lake root.
 
-# Part 2: Kubernetes, GitOps and the supply chain
+## Kubernetes, GitOps and the supply chain
 
 How the Atlas runs on Kubernetes, on a laptop (k3d) and in production (Scaleway Kapsule), how a change reaches
 production, how to roll back and how pull-request previews work. Design: [decision 0012](decisions/0012-kubernetes-gitops-and-infrastructure-as-code.md).
 
-## Map
+### Map
 
 | Path | Contents |
 |---|---|
-| `Dockerfile` | One Python image (`atlas-python`) for query-api, ingestion and extraction; uv with `uv.lock`, non-root (uid 10001) |
+| `Dockerfile` | One Python image (`atlas-python`) for query-api, ingestion, extraction and ai-service (extras api, ai, events, orchestration, otel, pdf, shorts, llm; DuckDB extensions preinstalled); uv with `uv.lock`, non-root (uid 10001) |
+| `services/<name>/Dockerfile` | Go images `atlas-realtime-gateway` and `atlas-alerts` (P3), distroless, uid 65532; built, scanned and signed by the same workflow |
 | `web/Dockerfile` | Next.js standalone build on distroless Node.js 24 (`atlas-web`, uid 65532) |
 | `deploy/helm/atlas-lib` | Library chart: workload, service, probes, PDB, NetworkPolicy, HPA, KEDA ScaledObject, ingress |
 | `deploy/helm/<service>` | One chart per service: query-api, web, ingestion, extraction, ai-service, realtime-gateway, alerts |
@@ -142,7 +144,7 @@ production, how to roll back and how pull-request previews work. Design: [decisi
 | `infra/tofu/` | OpenTofu modules (kapsule, object-storage, dns) and environments (prod, preview) |
 | `.github/workflows/` | `images.yml` (build, scan, SBOM, sign), `platform.yml` (lint, kubeconform, tofu, k3d smoke), `deploy.yml` (promotion) |
 
-## Every pod
+### Every pod
 
 The library chart gives every service the same baseline, so a chart cannot forget it:
 
@@ -160,7 +162,7 @@ The library chart gives every service the same baseline, so a chart cannot forge
 - **Scaling:** HPAs on CPU for query-api and web; KEDA ScaledObjects on Kafka consumer lag for extraction
   (scales to zero) and alerts.
 
-## Running locally on k3d
+### Running locally on k3d
 
 Needs Docker (8 GB of memory for the full stack, 3 GB for the smoke test). `helm`, `k3d`, `kubectl`,
 `kubeconform` and `tofu` are used from the host when installed, otherwise from their official container images
@@ -174,12 +176,19 @@ This creates the cluster `atlas` (one server, one agent, k3s 1.36), builds `atla
 and imports them, installs the operators at the versions in `deploy/platform/operators.env` (Strimzi,
 CloudNativePG, cert-manager, KEDA, Kyverno, External Secrets) and the Kyverno policies (signature checks in
 Audit mode, since local images are unsigned), then the umbrella chart with `values-dev.yaml`: query-api, web,
+realtime-gateway, alerts (KEDA on the lag of its four consumer groups, database URL from CloudNativePG),
 ingestion (live Sweden FI connector), a single-node Kafka 4 with the Atlas topics and a PostgreSQL 18 cluster.
+ingestion and query-api share the DuckLake catalog in that PostgreSQL cluster (`ATLAS_CATALOG`, password from
+the CloudNativePG `atlas-pg-app` Secret) and the Parquet data files on the lake volume; the smoke test, without
+PostgreSQL, uses a catalog file on the volume. The DuckDB extensions the lake loads are baked into the image,
+because pods have a read-only root filesystem and no internet egress.
 
 | URL | What |
 |---|---|
 | http://atlas.localhost:8080 | Website |
 | http://api.atlas.localhost:8080/v1/health | API (`/docs` for OpenAPI) |
+| http://stream.atlas.localhost:8080/v1/stream | Live filings (realtime-gateway) |
+| http://alerts.atlas.localhost:8080/v1 | Alerts API (Keycloak tokens) |
 
 ```bash
 export KUBECONFIG="$PWD/.k3d/kubeconfig-host"   # the cluster's kubeconfig; atlas.sh never touches ~/.kube
@@ -203,7 +212,7 @@ To try GitOps locally, `make k3d-argocd` installs Argo CD and the `dev` root app
 private, so first give Argo CD read access (a fine-grained, read-only token):
 `argocd repo add https://github.com/Manuelma4/eu-disclosure-atlas.git --username Manuelma4 --password <token>`.
 
-## Supply chain
+### Supply chain
 
 `images.yml` runs on every pull request and every push to main:
 
@@ -227,13 +236,14 @@ cosign verify ghcr.io/manuelma4/atlas-python:sha-1a2b3c4 \
   --certificate-identity-regexp '^https://github\.com/Manuelma4/eu-disclosure-atlas/'
 ```
 
-## Deploy flow
+### Deploy flow
 
 Argo CD deploys what main says; nobody runs `helm` or `kubectl apply` against production.
 
 1. A pull request merges into main; `images.yml` builds and signs `sha-<commit>`.
 2. The owner runs `deploy.yml` by hand (Actions → Deploy → Run workflow) with the `sha-<7 hex>` tag to deploy. It
-   verifies the cosign signature of every image of that tag (identity: the images workflow on `refs/heads/main`) and opens a pull request that sets
+   verifies the cosign signature of every
+   image of that tag (identity: the images workflow on `refs/heads/main`) and opens a pull request that sets
    `global.image.tag` in `deploy/helm/atlas/values-prod.yaml`.
 3. Merging that pull request is the deploy. Argo CD's `prod-atlas` application syncs it: rolling updates
    respect the PodDisruptionBudgets and readiness probes, Kyverno admits only signed images.
@@ -244,7 +254,7 @@ Repository settings this needs: "Allow GitHub Actions to create and approve pull
 environment (optionally with required reviewers). Pull requests opened with `GITHUB_TOKEN` do not trigger other
 workflows; the promotion only changes a values file, which `platform.yml` would validate on the next push.
 
-## Rollbacks
+### Rollbacks
 
 - **Revert the promotion pull request** (or merge a new one): Argo CD syncs the previous tag. This is the normal
   path, because git stays the truth.
@@ -256,7 +266,7 @@ workflows; the promotion only changes a values file, which `platform.yml` would 
 - **Data:** the umbrella chart keeps the lake volume on uninstall (`helm.sh/resource-policy: keep`), Strimzi
   claims are kept, and CloudNativePG restores from its object-storage backups (point in time) into a new cluster.
 
-## Preview environments
+### Preview environments
 
 Label a pull request `preview`. The `atlas-previews` ApplicationSet on the preview cluster (pull-request
 generator, polled every two minutes) creates the Application `atlas-pr-<number>`:
@@ -273,7 +283,7 @@ everything in the namespace. The generator needs a read-only GitHub token in the
 image at build time (`NEXT_PUBLIC_ATLAS_API_URL`), so a preview's live tape calls the production API; its
 server-rendered pages use the preview's own API.
 
-## Secrets
+### Secrets
 
 Runtime secrets live in Scaleway Secret Manager and reach pods through External Secrets (`ExternalSecret`
 objects in `values-prod.yaml`, the `scaleway` ClusterSecretStore in `deploy/platform/manifests/`). The single
@@ -286,7 +296,7 @@ sops --decrypt deploy/secrets/scaleway-secret-manager.enc.yaml | kubectl apply -
 
 No plaintext secret is ever committed; `.env` and keys are git-ignored.
 
-## Infrastructure (OpenTofu)
+### Infrastructure (OpenTofu)
 
 `infra/tofu/environments/{prod,preview}` compose three modules:
 
@@ -315,7 +325,7 @@ kubectl apply -n argocd -f deploy/argocd/projects/atlas.yaml -f deploy/argocd/en
 Before that, replace the placeholders: the domain `atlas.example.org` (values files, ApplicationSet, tfvars),
 the Scaleway project id in the ClusterSecretStore, and the age recipient in `.sops.yaml`.
 
-## Validation
+### Validation
 
 | Check | Command | CI |
 |---|---|---|

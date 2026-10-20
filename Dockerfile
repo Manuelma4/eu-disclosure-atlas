@@ -13,11 +13,11 @@ WORKDIR /src
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-dev --extra api --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-install-project
+    uv sync --frozen --no-dev --extra api --extra events --extra orchestration --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-install-project
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev --extra api --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-editable
+    uv sync --frozen --no-dev --extra api --extra events --extra orchestration --extra otel --extra pdf --extra shorts --extra llm --extra ai --no-editable
 
 FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime
 LABEL org.opencontainers.image.source="https://github.com/Manuelma4/eu-disclosure-atlas" \
@@ -30,6 +30,9 @@ COPY --from=build --chown=10001:10001 /app/.venv /app/.venv
 ENV PATH="/app/.venv/bin:${PATH}" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 HOME=/home/atlas
 WORKDIR /data
 USER 10001:10001
+# DuckDB extensions used by the lake (src/disclosure_atlas/lake.py), installed at build time: pods run with a
+# read-only root filesystem and no internet egress, so INSTALL at runtime must find them already in place.
+RUN python -c "import duckdb; con = duckdb.connect(); [con.install_extension(e) for e in ('ducklake', 'postgres', 'sqlite', 'httpfs')]"
 EXPOSE 8000
 ENTRYPOINT ["disclosure-atlas", "--lake", "/data/lake"]
 CMD ["serve", "--host", "0.0.0.0", "--port", "8000"]

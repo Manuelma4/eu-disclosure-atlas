@@ -17,6 +17,7 @@ service:
   port: 8080
 env:
   KAFKA_BROKERS: '{{ include "atlas-lib.kafkaBootstrap" . }}'
+  ATLAS_CORS_ORIGINS: '{{ .Values.global.webUrl | default "http://atlas.localhost:8080" }}'
 envFromSecret: ""
 kafka:
   bootstrapServers: ""
