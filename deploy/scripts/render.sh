@@ -15,7 +15,7 @@ for chart in query-api web ingestion extraction ai-service realtime-gateway aler
 done
 
 # The umbrella chart per environment, with every optional service switched on so its manifests are checked too.
-all_on=(--set extraction.enabled=true,ai-service.enabled=true,realtime-gateway.enabled=true,alerts.enabled=true)
+all_on=(--set "extraction.enabled=true,ai-service.enabled=true,realtime-gateway.enabled=true,alerts.enabled=true")
 for env in dev ci preview prod; do
   helm template atlas atlas --namespace atlas -f "atlas/values-$env.yaml" "${all_on[@]}" \
     --set global.image.tag=sha-0000000 > "$rel_out/atlas-$env.yaml"

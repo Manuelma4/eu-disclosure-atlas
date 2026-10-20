@@ -82,8 +82,8 @@ install() {
 
 check() {
   log "checking the API and the website through the ingress"
-  local health="" i
-  for i in $(seq 1 30); do
+  local health=""
+  for _ in $(seq 1 30); do
     health="$(curl -fsS -H 'Host: api.atlas.localhost' http://127.0.0.1:8080/v1/health 2>/dev/null)" && break
     sleep 2
   done

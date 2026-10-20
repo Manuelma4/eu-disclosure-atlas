@@ -54,7 +54,7 @@ Owns: `web/`.
   markers; research pages; API reference (Scalar); English, French, Spanish and German; accessibility and
   Lighthouse budgets; Playwright end-to-end tests.
 
-### P6 Kubernetes, GitOps and supply chain `[ ]`
+### P6 Kubernetes, GitOps and supply chain `[x]`
 Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deploy). Design: decision 0012.
 - Dockerfiles for every service (non-root, distroless or slim), Helm charts (probes, resources, PDBs,
   NetworkPolicies, HPA or KEDA ScaledObjects), an umbrella chart, and a k3d cluster that runs everything.

@@ -51,7 +51,8 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 Under the hood: connectors per regulator → a medallion lakehouse (bronze, silver, gold) → snapshot-pinned read
 models → REST, SSE and a website whose cache is invalidated by data commits. AI-assisted extraction reads
 PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](docs/architecture.md), decisions:
-[docs/decisions/](docs/decisions/).
+[docs/decisions/](docs/decisions/), running it on Kubernetes (k3d locally, GitOps in production):
+[docs/operations.md](docs/operations.md).
 
 | Layer | Choice |
 |---|---|
