@@ -1,0 +1,110 @@
+# Local observability stack (P7, decision 0014): OpenTelemetry Collector, Prometheus, Loki, Tempo, Grafana.
+# A Compose override: paths resolve from infra/ (the first file), so run it from the repository root:
+#
+#   docker compose -f infra/compose.yaml -f deploy/observability/compose.yaml up -d \
+#     otel-collector prometheus loki tempo grafana
+#
+# Then point a local API at the Collector:
+#   OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 disclosure-atlas serve
+# or start the containerized API on a synthetic lake with `--profile app` (used by the ZAP and k6 jobs).
+# Grafana: http://localhost:3030 · Prometheus: http://localhost:9090 · Tempo: :3200 · Loki: :3100
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.130.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ../deploy/observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    depends_on: [tempo, loki]
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+      - --web.enable-remote-write-receiver   # Tempo metrics generator (service graph, span metrics)
+      - --enable-feature=exemplar-storage    # metric points link to traces
+      - --web.enable-lifecycle
+    volumes:
+      - ../deploy/observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../deploy/observability/prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus:/prometheus
+    ports: ["9090:9090"]
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:3.5.0
+    command: ["-config.file=/etc/loki/config.yaml"]
+    volumes:
+      - ../deploy/observability/loki.yaml:/etc/loki/config.yaml:ro
+      - loki:/loki
+    ports: ["3100:3100"]
+    restart: unless-stopped
+
+  tempo:
+    image: grafana/tempo:2.8.1
+    command: ["-config.file=/etc/tempo/config.yaml"]
+    user: "0"   # writes to the named volume; local development only
+    volumes:
+      - ../deploy/observability/tempo.yaml:/etc/tempo/config.yaml:ro
+      - tempo:/var/tempo
+    ports: ["3200:3200"]
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    environment:
+      # Local only: anonymous admin so dashboards and Explore open without a login. Never in a cluster.
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/api-red.json
+    volumes:
+      - ../deploy/observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../deploy/observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana:/var/lib/grafana
+    ports: ["3030:3000"]
+    depends_on: [prometheus, loki, tempo]
+    restart: unless-stopped
+
+  # The query API on a synthetic lake (loadtests/seed_lake.py), for DAST, load tests and demos.
+  query-api:
+    profiles: [app]
+    image: python:3.14-slim
+    working_dir: /src
+    command:
+      - sh
+      - -c
+      - >-
+        pip install --quiet --root-user-action=ignore '.[api,otel]' &&
+        ([ -d /lake/silver ] || python loadtests/seed_lake.py /lake --transactions $${ATLAS_SEED_TRANSACTIONS:-20000}) &&
+        exec disclosure-atlas --lake /lake serve --host 0.0.0.0 --port 8000
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SERVICE_NAME: query-api
+      ATLAS_ENVIRONMENT: local
+      ATLAS_RATE_LIMIT_PER_MINUTE: ${ATLAS_RATE_LIMIT_PER_MINUTE:-600}
+      ATLAS_SEED_TRANSACTIONS: ${ATLAS_SEED_TRANSACTIONS:-20000}
+    volumes:
+      - ..:/src
+      - atlas-lake:/lake
+    ports: ["${ATLAS_API_PORT:-8000}:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/v1/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 30s
+    depends_on: [otel-collector]
+
+volumes:
+  prometheus:
+  loki:
+  tempo:
+  grafana:
+  atlas-lake:
