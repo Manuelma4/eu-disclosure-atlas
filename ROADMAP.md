@@ -122,6 +122,8 @@ Owns: `connectors/fr_amf_pdmr.py`, `src/disclosure_atlas/extraction/`, `evals/fr
 Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs and tests.
 - BaFin's managers' transactions database (one-year window) and AFM's MAR 19 register (CSV export).
 - Done when: both ingest the last 90 days with valid LEI/ISIN rates reported in the source notes.
+- Done: `nl_afm_pdmr` (XML index + one HTML page per notification). Germany is blocked: the BaFin database
+  host's robots.txt disallows everything (see `docs/sources/de_bafin_pdmr.md`).
 
 ### WS3 More jurisdictions `[ ]`
 - Survey and implement where data is reachable: Denmark, Finland, Norway, Spain (CNMV), Italy (Consob),
