@@ -7,6 +7,15 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+# Gold columns behind `Transaction`, shared by the REST API, the SSE stream and the change-feed publisher.
+TX_COLUMNS = """
+    record_id AS id, source, jurisdiction AS country, published_at, first_seen_at, transaction_date,
+    issuer_name, issuer_lei, pdmr_id AS person_id, pdmr_role AS role, pdmr_role_raw AS role_raw,
+    notifier_name, closely_associated, nature, direction, instrument_type, instrument_name, isin,
+    volume, price, currency, amount, amount_eur, venue, is_open_market AS open_market, is_amendment,
+    filing_lag_days
+"""
+
 
 class Transaction(BaseModel):
     id: str = Field(description="Stable record id")
