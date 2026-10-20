@@ -25,6 +25,8 @@ from .telemetry import query_span
 
 log = logging.getLogger(__name__)
 GOLD_TABLES = tuple(dataset.value for dataset in Dataset)
+ENRICHMENT_TABLES = ("issuers", "instruments")
+"""Small reference-backed gold views, cached when the source has them (a SandboxedLake exposes only GOLD_TABLES)."""
 
 
 @dataclass
@@ -84,7 +86,8 @@ class ReadModel:
             con = duckdb.connect()
             con.execute("SET GLOBAL TimeZone = 'UTC'")
             try:
-                for table in GOLD_TABLES:
+                available = {name for (name,) in source.execute("SHOW TABLES").fetchall()}
+                for table in (*GOLD_TABLES, *(t for t in ENRICHMENT_TABLES if t in available)):
                     con.register("_gold", source.execute(f"SELECT * FROM {table}").fetch_arrow_table())
                     con.execute(f"CREATE TABLE {table} AS SELECT * FROM _gold")
                     con.unregister("_gold")

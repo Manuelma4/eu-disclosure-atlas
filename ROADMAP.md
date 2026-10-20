@@ -141,12 +141,15 @@ Owns: `connectors/*_shorts.py`, their docs and tests.
 
 ## M3 Reference data and enrichment `[ ]`
 
-### WS5 Entity resolution and FX `[ ]`
+### WS5 Entity resolution and FX `[x]`
 Owns: `src/disclosure_atlas/reference/`, gold enrichment views, `docs/reference-data.md`.
-- GLEIF (LEI to legal name, country), ESMA FIRDS (ISIN to issuer LEI, instrument), OpenFIGI (ISIN to tickers).
-  ECB reference rates and `amount_eur` are already done in P1.
-- Done when: gold exposes `issuers`, `instruments` and `insider_transactions_enriched` with `amount_eur`
-  and a primary ticker where one exists.
+- [x] GLEIF (LEI to legal name, country), ESMA FIRDS (ISIN to issuer LEI, instrument), OpenFIGI (ISIN to
+  tickers), cached in `lake/reference/` (`disclosure-atlas reference lei|firds|figi`). ECB reference rates and
+  `amount_eur` are already done in P1.
+- [x] Gold exposes `issuers`, `instruments` and `insider_transactions_enriched` with `amount_eur` and a primary
+  ticker where one exists; the issuer API returns the legal name and tickers. See
+  [docs/reference-data.md](docs/reference-data.md).
+- [ ] Next: allowlist the new views for MCP and Ask the Atlas; include them in `export`; schedule refreshes.
 
 ## M4 Research `[ ]`
 

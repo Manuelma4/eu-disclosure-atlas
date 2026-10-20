@@ -1,1 +1,1 @@
-"""Reference data used to enrich gold tables (FX now; LEI, ISIN and tickers in workstream WS5)."""
+"""Reference data used to enrich gold tables: ECB FX, GLEIF LEI, ESMA FIRDS and OpenFIGI (docs/reference-data.md)."""

@@ -30,8 +30,18 @@ class PoliteClient:
         """Form POST (some registers are stateful search forms); cookies persist across calls."""
         return self.request("POST", url, data=data)
 
+    def post_json(self, url: str, payload: Any, headers: Mapping[str, str] | None = None) -> httpx.Response:
+        """JSON POST (batch lookup APIs such as OpenFIGI)."""
+        return self.request("POST", url, json=payload, headers=headers)
+
     def request(
-        self, method: str, url: str, params: Mapping[str, Any] | None = None, data: Mapping[str, Any] | None = None
+        self,
+        method: str,
+        url: str,
+        params: Mapping[str, Any] | None = None,
+        data: Mapping[str, Any] | None = None,
+        json: Any = None,
+        headers: Mapping[str, str] | None = None,
     ) -> httpx.Response:
         host = httpx.URL(url).host
         for attempt in range(self.retries + 1):
@@ -39,7 +49,7 @@ class PoliteClient:
             if wait > 0:
                 time.sleep(wait)
             try:
-                response = self._client.request(method, url, params=params, data=data)
+                response = self._client.request(method, url, params=params, data=data, json=json, headers=headers)
             except httpx.TransportError:
                 if attempt == self.retries:
                     raise

@@ -7,6 +7,8 @@ reference/<name>.parquet                   reference data (e.g. ECB euro referen
 gold                                        DuckDB views pinned to one DuckLake snapshot: latest version of each
                                             record, minus superseded ones, plus derived columns (first_seen_at,
                                             is_open_market, amount_eur...)
+                                            plus issuers, instruments and insider_transactions_enriched
+                                            (GLEIF, FIRDS and OpenFIGI reference data; see reference/enrich.py)
 
 The DuckLake catalog and data path come from the environment:
 
@@ -37,6 +39,7 @@ import pyarrow.parquet as pq
 from .connectors.base import RawDocument, Record
 from .models import RECORD_TYPES, Dataset, arrow_schema
 from .privacy import load_key
+from .reference.enrich import REFERENCE_TABLES, empty_select, enriched_sql
 
 CATALOG = "atlas"
 """Name under which the DuckLake catalog is attached in every engine."""
@@ -192,9 +195,14 @@ class _Engine:
             cur.close()
 
     def views(self, snapshot: int, fx_path: Path) -> str:
-        """Schema holding silver_*, fx_rates and the gold views as of ``snapshot`` (created once per process)."""
+        """Schema holding silver_*, fx_rates, reference tables and the gold views as of ``snapshot``.
+
+        Created once per process and per set of reference files present (a missing one reads as an empty table).
+        """
         has_fx = fx_path.exists()
-        schema = f"snap_{snapshot}" + ("" if has_fx else "_nofx")
+        references = {name: fx_path.parent / file for name, (file, _) in REFERENCE_TABLES.items()}
+        present = sum(1 << i for i, path in enumerate(references.values()) if path.exists())
+        schema = f"snap_{snapshot}" + ("" if has_fx else "_nofx") + (f"_r{present}" if present else "")
         with self.lock:
             if schema in self._views:
                 return schema
@@ -217,6 +225,15 @@ class _Engine:
                         f"CREATE OR REPLACE VIEW memory.{schema}.{dataset.value} AS "
                         f"{_gold_sql(dataset, f'memory.{schema}', has_fx)}"
                     )
+                for name, path in references.items():
+                    source = (
+                        f"SELECT * FROM read_parquet({_quote(str(path))})"
+                        if path.exists()
+                        else empty_select(REFERENCE_TABLES[name][1])
+                    )
+                    cur.execute(f"CREATE OR REPLACE VIEW memory.{schema}.{name} AS {source}")
+                for name, sql in enriched_sql(f"memory.{schema}").items():
+                    cur.execute(f"CREATE OR REPLACE VIEW memory.{schema}.{name} AS {sql}")
                 cur.execute("COMMIT")
             finally:
                 cur.close()
@@ -362,8 +379,12 @@ class Lake:
     def fx_path(self) -> Path:
         return self.root / "reference" / "ecb_fx.parquet"
 
+    def reference_path(self, name: str) -> Path:
+        """File of one entity reference table (``gleif_lei``, ``firds_instruments``, ``openfigi_listings``)."""
+        return self.root / "reference" / REFERENCE_TABLES[name][0]
+
     def connect(self, *, as_of: int | str | None = None) -> duckdb.DuckDBPyConnection:
-        """A cursor exposing silver_<dataset>, fx_rates and the gold <dataset> views as of one snapshot.
+        """A cursor exposing silver_<dataset>, fx_rates, reference tables and the gold views as of one snapshot.
 
         ``as_of`` defaults to the current snapshot, so every query on the cursor sees the same data. Cursors derived
         from the returned one with ``.cursor()`` do not inherit its search path: call ``connect`` again instead.
