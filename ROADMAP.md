@@ -72,7 +72,8 @@ Owns: `deploy/`, `infra/tofu/`, Dockerfiles, `.github/workflows/` (images, deplo
 Owns: `deploy/observability/`, `docs/security/`, `docs/runbooks/`, `loadtests/`. Design: 0013, 0014.
 - OpenTelemetry in the Python, Go and Node.js services; Collector with tail sampling; Prometheus, Loki, Tempo
   and Grafana dashboards as code; SLOs as code with burn-rate alerts and runbooks.
-- STRIDE threat model, security headers and CSP, CodeQL, pip-audit, npm audit, govulncheck, ZAP baseline.
+- STRIDE threat model, security headers and CSP, CodeQL, pip-audit, npm audit, govulncheck, ZAP baseline
+  (no update bots: the owner is the only contributor).
 - k6 load tests with budgets in CI; Chaos Mesh experiments for the preview cluster.
 
 ### P8 MLOps: insider-signal model `[ ]`

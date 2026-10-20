@@ -1,0 +1,25 @@
+name: Single contributor
+# The owner (Manuelma4) must be the only author: no other identities, no bots, no attribution trailers.
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  authors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check commit authors and trailers
+        env:
+          EXPECTED: 71296266+Manuelma4@users.noreply.github.com
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then RANGE=HEAD; else RANGE="$BASE..HEAD"; fi
+          bad=$(git log --format='%h %ae %an' $RANGE | awk -v e="$EXPECTED" '$2 != e')
+          trailers=$(git log --format='%h %B' $RANGE | grep -i -E 'co-authored-by:|claude-session:' || true)
+          if [ -n "$bad$trailers" ]; then
+            echo "Commits violating the single-contributor policy:"; echo "$bad"; echo "$trailers"; exit 1
+          fi
+          echo "All commits in $RANGE are authored by Manuelma4 without attribution trailers."
