@@ -41,10 +41,10 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 
 | Surface | What it does | Status |
 |---|---|---|
-| **Website** | Live tape of new filings, insider flow, largest buys, company pages, filings explorer, architecture | Live (Next.js 16.4) |
+| **Website** | Live tape, insider flow, company pages with price charts and insider markers, filings search, an in-browser explorer (DuckDB-WASM + Mosaic), Ctrl/Cmd+K search; English, French, Spanish and German | Live (Next.js 16.4) |
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable; fanned out from Kafka by a Go gateway | Live |
-| **Open data** | Gold tables as Parquet (`disclosure-atlas export`), daily releases next | Partial |
+| **Open data** | Gold tables as Parquet (`disclosure-atlas export`, `GET /v1/exports`), daily releases next | Partial |
 | **MCP server `/mcp`** | Tools, a guarded `sql` tool and an MCP App so AI agents can query the dataset ([docs/ai.md](docs/ai.md)) | Live |
 | **Ask the Atlas `/v1/ask`** | Questions in plain English answered with guarded read-only SQL, gated by a golden set | Live (needs `ANTHROPIC_API_KEY`) |
 | **Alerts and webhooks** | Sign-in (Keycloak, passkeys), watchlists, email and Standard Webhooks with retries (Go service on Kafka) | Live (local stack) |
@@ -84,7 +84,7 @@ Status and source notes: [docs/sources/README.md](docs/sources/README.md). Plan:
 ```bash
 # Data and API (Python 3.14)
 python3.14 -m venv .venv && source .venv/bin/activate
-pip install -e '.[dev,api]'
+pip install -e '.[dev,api,prices]'                       # prices: yfinance for company charts (development)
 pytest                                                    # offline test suite
 disclosure-atlas reference fx                             # ECB euro reference rates
 disclosure-atlas ingest se_fi_pdmr --start 2026-04-20     # six months of Swedish filings into ./lake
@@ -96,6 +96,7 @@ pip install -e '.[ai]' && disclosure-atlas mcp            # optional: MCP server
 
 # Website (Node.js 22 or later)
 cd web && npm install && npm run dev                      # http://localhost:3000
+cd web && npx playwright test                             # end-to-end tests against a fixture API
 ```
 
 Run the event-driven platform locally (Kafka, PostgreSQL, Keycloak, the Go realtime-gateway and alerts):

@@ -15,6 +15,8 @@ export type IssuerSummary = components["schemas"]["IssuerSummary"];
 export type FlowPoint = components["schemas"]["FlowPoint"];
 export type SourceStatus = components["schemas"]["SourceStatus"];
 export type TransactionPage = components["schemas"]["Page_Transaction_"];
+export type PriceSeries = components["schemas"]["PriceSeries"];
+export type ExportFile = components["schemas"]["ExportFile"];
 export type TransactionQuery = NonNullable<paths["/v1/insider-transactions"]["get"]["parameters"]["query"]>;
 
 export const API_URL = process.env.ATLAS_API_URL ?? "http://127.0.0.1:8000";
@@ -79,5 +81,18 @@ export async function getTransactions(query: TransactionQuery): Promise<Transact
   cacheLife("minutes");
   const { data, response } = await api.GET("/v1/insider-transactions", { params: { query } });
   if (!data) throw new ApiError("/v1/insider-transactions", response.status);
+  return data;
+}
+
+/** Daily prices and insider days for an issuer; null when the issuer does not exist (404). */
+export async function getPrices(lei: string, days = 730): Promise<PriceSeries | null> {
+  "use cache";
+  cacheTag("snapshot");
+  cacheLife("hours");
+  const { data, response } = await api.GET("/v1/issuers/{lei}/prices", {
+    params: { path: { lei }, query: { days } },
+  });
+  if (response.status === 404) return null;
+  if (!data) throw new ApiError("/v1/issuers/{lei}/prices", response.status);
   return data;
 }

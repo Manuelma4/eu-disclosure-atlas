@@ -1,0 +1,414 @@
+{
+  "meta": {
+    "title": "EU Disclosure Atlas : opérations des dirigeants en Europe",
+    "description": "Données ouvertes et unifiées sur les opérations des dirigeants et les ventes à découvert sur les marchés européens, publiées par les autorités nationales en application de MAR et du règlement sur la vente à découvert. En direct, pseudonymisées, de qualité recherche.",
+    "siteName": "EU Disclosure Atlas"
+  },
+  "nav": {
+    "main": "Principale",
+    "overview": "Aperçu",
+    "filings": "Déclarations",
+    "explore": "Explorer",
+    "architecture": "Architecture",
+    "api": "API",
+    "skip": "Aller au contenu",
+    "language": "Langue",
+    "home": "EU Disclosure Atlas, accueil"
+  },
+  "search": {
+    "open": "Rechercher des sociétés",
+    "shortcut": "{key} K",
+    "dialogLabel": "Rechercher des sociétés et des pages",
+    "placeholder": "Nom de société ou LEI…",
+    "inputLabel": "Rechercher",
+    "companies": "Sociétés",
+    "pages": "Pages",
+    "loading": "Recherche…",
+    "noResults": "Aucune société ne correspond à « {query} ».",
+    "error": "La recherche est indisponible pour le moment.",
+    "filings": "{count, plural, one {# déclaration} other {# déclarations}}",
+    "hint": "↑ ↓ pour naviguer · Entrée pour ouvrir · Esc pour fermer",
+    "close": "Fermer la recherche"
+  },
+  "footer": {
+    "privacy": "Un projet de recherche et de transparence. Les personnes physiques n’apparaissent que sous des identifiants pseudonymes.",
+    "advice": "Rien ici ne constitue un conseil en investissement.",
+    "sources": "Sources : Finansinspektionen (FI), données traitées et réutilisées gratuitement avec mention de la source · taux de référence de l’euro de la BCE.",
+    "builtBy": "Réalisé par <link>Manuel David Maya Rosero</link>."
+  },
+  "common": {
+    "live": "En direct",
+    "planned": "Prévu",
+    "showTable": "Afficher le tableau",
+    "hideTable": "Masquer le tableau",
+    "legend": "Légende",
+    "snapshot": "Instantané",
+    "dash": "–"
+  },
+  "roles": {
+    "ceo": "CEO",
+    "cfo": "CFO",
+    "chair": "Président·e du conseil",
+    "executive": "Dirigeant·e",
+    "board_member": "Membre du conseil",
+    "other": "Autre",
+    "unknown": "Inconnu"
+  },
+  "natures": {
+    "buy": "Achat",
+    "sell": "Vente",
+    "subscription": "Souscription",
+    "grant": "Attribution",
+    "exercise": "Exercice",
+    "conversion": "Conversion",
+    "exchange": "Échange",
+    "gift": "Donation",
+    "inheritance": "Succession",
+    "pledge": "Nantissement",
+    "lending": "Prêt",
+    "internal_transfer": "Transfert interne",
+    "merger": "Fusion",
+    "other": "Autre",
+    "increases": "(détention en hausse)",
+    "decreases": "(détention en baisse)"
+  },
+  "instruments": {
+    "share": "Action",
+    "option": "Option",
+    "warrant": "Warrant",
+    "subscription_right": "Droit de souscription",
+    "convertible": "Convertible",
+    "bond": "Obligation",
+    "swap": "Swap",
+    "other": "Autre"
+  },
+  "time": {
+    "justNow": "à l’instant"
+  },
+  "home": {
+    "kicker": "Opérations des dirigeants · positions courtes · 30 autorités, un seul jeu de données",
+    "title": "Les opérations des dirigeants en Europe, dans un seul jeu de données ouvert et en direct.",
+    "lead": "Le droit de l’UE rend publiques les opérations des dirigeants et les positions courtes importantes, mais elles sont dispersées entre une trentaine d’autorités nationales, dans des PDF, des tableurs et des portails. L’Atlas les rassemble, les met dans un schéma unique et remplace chaque personne physique par un pseudonyme.",
+    "bought30d": "Achats des dirigeants sur le marché, 30 derniers jours",
+    "against": "contre {amount} de ventes · dernière déclaration intégrée <when></when> · instantané des données <code>{snapshot}</code>",
+    "filings": "Déclarations",
+    "liveSources": "{count, plural, one {# source en direct} other {# sources en direct}}",
+    "issuers": "Émetteurs",
+    "countries": "{count, plural, one {# pays} other {# pays}}",
+    "buysPerSell": "Achats par vente, 30 jours",
+    "buysSells": "{buys} achats · {sells} ventes",
+    "late": "Déclarées avec plus de 5 jours de retard",
+    "lateNote": "Sur les déclarations des 12 derniers mois (MAR accorde 3 jours ouvrables)",
+    "flowTitle": "Flux des dirigeants, par semaine",
+    "flowSubtitle": "Achats et ventes d’actions sur le marché par les dirigeants au cours des six derniers mois, en euros aux taux de référence de la BCE.",
+    "latestTitle": "Dernières déclarations",
+    "latestSubtitle": "Publications les plus récentes, toutes sources confondues",
+    "largestTitle": "Plus gros achats sur le marché",
+    "largestSubtitle": "30 derniers jours, en euros",
+    "via": "via {name}",
+    "traded": "opération du {date}",
+    "coverageTitle": "Couverture",
+    "coverageSubtitle": "Un connecteur par autorité et par jeu de données. D’autres sont ajoutés en parallèle.",
+    "country": "Pays",
+    "regulator": "Autorité",
+    "status": "Statut",
+    "records": "Enregistrements",
+    "lastPublication": "Dernière publication",
+    "inProgressAmf": "En cours : déclarations PDF avec extraction par IA",
+    "exploreCta": "Explorez toutes les déclarations dans votre navigateur",
+    "exploreCtaNote": "DuckDB et graphiques liés, sans allers-retours serveur"
+  },
+  "tape": {
+    "live": "En direct : les nouvelles déclarations apparaissent ici dès leur intégration",
+    "connecting": "Connexion au flux en direct…"
+  },
+  "flow": {
+    "buys": "Achats des dirigeants",
+    "sells": "Ventes des dirigeants",
+    "ariaLabel": "Achats et ventes des dirigeants par période, en euros",
+    "weekOf": "Semaine du {date}",
+    "point": "{period} : achats {buy} en {buys} opérations, ventes {sell} en {sells} opérations",
+    "buysCount": "achats · {count}",
+    "sellsCount": "ventes · {count}",
+    "net": "Net",
+    "period": "Période",
+    "buyTrades": "Opérations d’achat",
+    "sellTrades": "Opérations de vente"
+  },
+  "table": {
+    "traded": "Opération",
+    "published": "Publication",
+    "issuer": "Émetteur",
+    "role": "Fonction",
+    "nature": "Nature",
+    "instrument": "Instrument",
+    "volume": "Volume",
+    "amount": "Montant",
+    "late": "retard · {days} j",
+    "lateTitle": "Publiée plus de 5 jours calendaires après l’opération",
+    "via": "via {name}",
+    "empty": "Aucune déclaration ne correspond."
+  },
+  "filings": {
+    "metaDescription": "Recherchez toutes les opérations des dirigeants de l’Atlas par émetteur, fonction, nature et date.",
+    "title": "Déclarations",
+    "lead": "Toutes les opérations des dirigeants de l’Atlas, les plus récentes en premier. La même requête s’exécute sur l’API publique.",
+    "issuer": "Émetteur",
+    "issuerPlaceholder": "Le nom contient…",
+    "nature": "Nature",
+    "role": "Fonction",
+    "all": "Toutes",
+    "since": "Publiées depuis le",
+    "openMarket": "Sur le marché uniquement",
+    "apply": "Appliquer",
+    "reset": "Réinitialiser",
+    "next": "50 suivantes",
+    "filters": "Filtres"
+  },
+  "company": {
+    "notFound": "Émetteur introuvable",
+    "metaTitle": "{name} : opérations des dirigeants",
+    "metaDescription": "{count} opérations de dirigeants déclarées pour {name} (LEI {lei}), avec les achats et ventes des dirigeants face au cours de l’action.",
+    "breadcrumb": "Fil d’Ariane",
+    "lastFiling": "dernière déclaration publiée le {date}",
+    "net365": "Solde net sur le marché, 12 mois",
+    "net365Note": "Achats moins ventes des dirigeants, en euros",
+    "buyers90": "Dirigeants acheteurs, 90 jours",
+    "sellers90": "Dirigeants vendeurs, 90 jours",
+    "people": "Personnes distinctes",
+    "filings": "Déclarations",
+    "allTypes": "Tous types d’opérations",
+    "priceTitle": "Cours de l’action et opérations des dirigeants",
+    "priceSubtitle": "Clôture quotidienne, non ajustée ; repères les jours où des dirigeants ont acheté ou vendu sur le marché.",
+    "monthlyTitle": "Flux des dirigeants, par mois",
+    "monthlySubtitle": "Achats et ventes d’actions sur le marché par les dirigeants, en euros.",
+    "noDated": "Aucune opération datée pour l’instant.",
+    "whoTitle": "Qui déclare",
+    "whoSubtitle": "Selon la fonction la plus élevée",
+    "people_col": "Personnes",
+    "recentTitle": "Déclarations",
+    "recentSubtitle": "Les 100 plus récentes ; personnes physiques sous pseudonyme, personnes morales sous leur nom"
+  },
+  "price": {
+    "close": "Clôture",
+    "buyDay": "Achats des dirigeants",
+    "sellDay": "Ventes des dirigeants",
+    "ariaLabel": "Cours quotidien de l’action {name} avec les opérations des dirigeants. Utilisez les flèches gauche et droite pour avancer jour par jour, Page précédente et Page suivante pour passer d’une opération de dirigeant à l’autre.",
+    "noPrices": "Aucun cours n’est encore disponible pour cet émetteur. Les opérations des dirigeants figurent dans le tableau.",
+    "unavailable": "Le service de cours est indisponible pour le moment.",
+    "loading": "Chargement des cours…",
+    "source": "{ticker} · {currency} · cours : {provider}, au {date}",
+    "date": "Date",
+    "buys": "Achats",
+    "sells": "Ventes",
+    "boughtEur": "Acheté",
+    "soldEur": "Vendu",
+    "trades": "{count, plural, one {# opération} other {# opérations}}",
+    "noTrade": "Aucune opération de dirigeant",
+    "tableCaption": "Jours avec des opérations de dirigeants sur le marché et cours de clôture"
+  },
+  "explore": {
+    "metaDescription": "Explorez toutes les déclarations des dirigeants de l’Atlas dans votre navigateur, avec DuckDB-WASM et des graphiques liés à filtrage croisé.",
+    "title": "Explorer",
+    "lead": "Toutes les déclarations de l’Atlas, interrogées dans votre navigateur avec DuckDB-WASM. Faites glisser sur le graphique hebdomadaire ou la distribution des montants, ou cliquez sur des fonctions : chaque vue filtre les autres.",
+    "stage_engine": "Démarrage de DuckDB dans votre navigateur…",
+    "stage_download": "Lecture de l’export Parquet…",
+    "stage_ready": "{rows} déclarations chargées en {seconds} s",
+    "failed": "L’explorateur n’a pas pu démarrer : {message}",
+    "retry": "Réessayer",
+    "reset": "Effacer les filtres",
+    "selected": "{count} déclarations sur {total} sélectionnées",
+    "selectedEur": "{amount} en opérations sur le marché",
+    "weekTitle": "Déclarations par semaine",
+    "weekSubtitle": "Par date de publication. Faites glisser pour sélectionner une période.",
+    "roleTitle": "Par fonction",
+    "roleSubtitle": "Cliquez sur une fonction pour filtrer ; Maj-clic pour en ajouter.",
+    "amountTitle": "Distribution des montants",
+    "amountSubtitle": "Valeur des opérations en euros, échelle logarithmique. Faites glisser pour sélectionner un intervalle.",
+    "buy": "Achats",
+    "sell": "Ventes",
+    "other": "Autres opérations",
+    "week": "Semaine",
+    "count": "Déclarations",
+    "amountRange": "Montant (EUR)",
+    "source": "Données : {path} · instantané {snapshot} · {size}",
+    "download": "Télécharger le Parquet",
+    "keyboard": "Les graphiques réagissent à la souris ; chacun dispose aussi d’une vue en tableau qui suit les mêmes filtres."
+  },
+  "architecture": {
+    "metaDescription": "Comment EU Disclosure Atlas est construit : lakehouse événementiel, données versionnées, REST, SSE et MCP.",
+    "title": "Architecture",
+    "lead": "Un lakehouse événementiel derrière une API pensée pour le cache. Les nouvelles déclarations passent des autorités à votre écran en quelques minutes, et chaque chiffre peut être reproduit à partir d’un instantané versionné.",
+    "containers": "Conteneurs",
+    "layers": {
+      "sources": {
+        "title": "Sources",
+        "note": "Publiques par la loi, dispersées par nature"
+      },
+      "data": {
+        "title": "Plan de données · Python 3.14",
+        "note": "Une seule base de code, plusieurs déployables"
+      },
+      "state": {
+        "title": "État",
+        "note": "Le lac est le système de référence"
+      },
+      "interfaces": {
+        "title": "Interfaces",
+        "note": "La même API pour le site et pour tous les autres"
+      }
+    },
+    "nodes": {
+      "fi": "Export CSV, fenêtres adaptatives",
+      "amf": "Déclarations PDF, extraction par IA",
+      "others": "Un connecteur chacune",
+      "reference": "Taux BCE en direct ; GLEIF, FIRDS, OpenFIGI ensuite",
+      "referenceName": "Données de référence",
+      "connectors": "Plugins, client courtois, provenance",
+      "connectorsName": "Connecteurs",
+      "ingestion": "Assets partitionnés, capteurs, contrôles",
+      "extraction": "Repli LLM, mise à l’échelle automatique selon le retard Kafka",
+      "alerts": "Listes de suivi, webhooks, topics de relance",
+      "lakehouse": "Bronze → argent → or ; DuckLake 1.0 ensuite",
+      "lakehouseName": "Lakehouse",
+      "kafka": "Événements du flux de modifications, relances, DLQ",
+      "postgres": "Catalogue DuckLake, comptes (CloudNativePG)",
+      "storage": "Parquet sur Cloudflare R2",
+      "storageName": "Stockage objet",
+      "rest": "OpenAPI 3.1, ETags par instantané",
+      "gateway": "Diffusion SSE ; flux Python déjà en service",
+      "website": "Cache Components, client typé, explorateur DuckDB-WASM",
+      "websiteName": "Site web · Next.js 16.4",
+      "ai": "Interroger l’Atlas, MCP sans état, MCP Apps"
+    },
+    "stackTitle": "Pile technique",
+    "stackSubtitle": "Versions actuelles, octobre 2026",
+    "layer": "Couche",
+    "choice": "Choix",
+    "why": "Pourquoi",
+    "stack": {
+      "website": {
+        "layer": "Site web",
+        "why": "Pages société bien référencées en quatre langues, streaming, caches invalidés par les commits de données"
+      },
+      "explorer": {
+        "layer": "Explorateur",
+        "why": "Des millions de lignes interrogées dans le navigateur, vues liées sans serveur"
+      },
+      "api": {
+        "layer": "API",
+        "why": "Un seul schéma, de l’ingestion au client TypeScript généré"
+      },
+      "engine": {
+        "layer": "Moteur analytique",
+        "why": "Instantanés, voyage dans le temps et flux de modifications sur fichiers et SQL"
+      },
+      "orchestration": {
+        "layer": "Orchestration",
+        "why": "Assets partitionnés, rattrapages, contrôles de qualité des données, lignage"
+      },
+      "events": {
+        "layer": "Événements",
+        "why": "Événements rejouables issus du flux de modifications, topics de relance et de lettres mortes"
+      },
+      "services": {
+        "layer": "Services",
+        "why": "Chaque contexte délimité monte en charge et tombe en panne indépendamment"
+      },
+      "platform": {
+        "layer": "Plateforme",
+        "why": "GitOps, environnements de prévisualisation, mise à l’échelle selon le retard"
+      },
+      "security": {
+        "layer": "Sécurité",
+        "why": "OIDC avec passkeys, politiques en périphérie, chaîne d’approvisionnement signée"
+      },
+      "ai": {
+        "layer": "IA",
+        "why": "Extraction de secours, questions en langage naturel, accès pour agents, le tout évalué"
+      },
+      "observability": {
+        "layer": "Observabilité",
+        "why": "SLO en tant que code avec alertes de taux de consommation et runbooks"
+      }
+    },
+    "stackChoice": {
+      "services": "Microservices Python, Go et TypeScript"
+    },
+    "principlesTitle": "Principes",
+    "principles": {
+      "p1": "Le lac est le système de référence ; caches, événements et recherche sont des projections reconstructibles.",
+      "p2": "Chaque lecture est rattachée à un instantané des données : les réponses sont cohérentes, citables et peuvent être mises en cache.",
+      "p3": "Les composants réagissent à des événements, pas à des interrogations périodiques.",
+      "p4": "Le site web utilise l’API publique : aucun raccourci privé.",
+      "p5": "Chaque langage là où il excelle : Python pour les données, TypeScript pour le web.",
+      "p6": "Les personnes physiques sont des pseudonymes partout en dehors de la couche brute privée."
+    },
+    "fullArchitecture": "Architecture complète",
+    "decisions": "Décisions d’architecture"
+  },
+  "errors": {
+    "title": "Les données sont inaccessibles pour le moment",
+    "body": "Le site lit toutes ses données depuis l’API publique. Elle redémarre peut-être ; votre page fonctionnera de nouveau dans un instant.",
+    "retry": "Réessayer",
+    "notFoundTitle": "Absent de l’Atlas",
+    "notFoundBody": "Aucun émetteur ni aucune page ne correspond à cette adresse. La couverture s’étend autorité par autorité.",
+    "searchFilings": "Rechercher des déclarations"
+  },
+  "account": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "watchlist": "Liste de suivi",
+    "watchlistTitle": "Liste de suivi et alertes",
+    "watchlistDescription": "Suivez des émetteurs et recevez un e-mail ou un webhook signé quand leurs dirigeants déclarent une opération.",
+    "watchlistLead": "Suivez des émetteurs par leur LEI. Quand une déclaration correspondante est intégrée, le service d’alertes envoie un e-mail ou un webhook signé selon le schéma Standard Webhooks, renvoyé après 5 minutes puis 1 heure.",
+    "signingInTitle": "Connexion",
+    "signingIn": "Connexion en cours…",
+    "signInFailed": "Échec de la connexion : {message}",
+    "signInCardTitle": "Connectez-vous pour gérer vos alertes",
+    "signInCardSubtitle": "Les comptes utilisent des clés d’accès ou un mot de passe, gérés par Keycloak.",
+    "unreachable": "Le service d’alertes est injoignable",
+    "requestFailed": "La requête a échoué",
+    "issuersTitle": "Émetteurs",
+    "issuersSubtitle": "Identifiants d’entité juridique (20 caractères), tels qu’affichés sur les pages des sociétés.",
+    "remove": "Retirer",
+    "noIssuers": "Aucun émetteur pour l’instant.",
+    "issuerLei": "LEI de l’émetteur",
+    "add": "Ajouter",
+    "rulesTitle": "Règles d’alerte",
+    "rulesSubtitle": "Une règle surveille les émetteurs de votre liste.",
+    "anyNature": "toute nature",
+    "fromEur": "à partir de {amount}",
+    "byEmail": "e-mail {email}",
+    "byWebhook": "webhook",
+    "delete": "Supprimer",
+    "noRules": "Aucune règle pour l’instant.",
+    "ruleName": "Nom de la règle",
+    "ruleNamePlaceholder": "Nom de la règle, p. ex. achats du CEO",
+    "nature": "Nature",
+    "buys": "Achats",
+    "sells": "Ventes",
+    "any": "Toute nature",
+    "minimum": "Montant minimum en euros",
+    "minimumPlaceholder": "Minimum en EUR",
+    "email": "E-mail",
+    "webhookUrl": "URL du webhook",
+    "webhookPlaceholder": "URL du webhook (facultatif)",
+    "createRule": "Créer la règle",
+    "secret": "Secret de signature du webhook (affiché une seule fois) :",
+    "deliveriesTitle": "Envois récents",
+    "when": "Date",
+    "channel": "Canal",
+    "status": "Statut",
+    "attempts": "Tentatives",
+    "filing": "Déclaration",
+    "noDeliveries": "Aucun envoi pour l’instant.",
+    "defaultListName": "Ma liste de suivi",
+    "state_pending": "En attente",
+    "state_retrying": "Nouvelle tentative",
+    "state_delivered": "Livré",
+    "state_failed": "Échec",
+    "channel_email": "E-mail",
+    "channel_webhook": "Webhook"
+  }
+}

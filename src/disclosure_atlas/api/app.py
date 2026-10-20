@@ -26,7 +26,10 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .. import __version__, connectors
 from ..lake import Lake, UnknownSnapshot
+from ..reference.prices import PriceStore, provider_from_env
 from . import telemetry
+from .exports import exports_router
+from .prices import prices_router
 from .readmodel import ReadModel, Snapshot
 from .schemas import (
     TX_COLUMNS,
@@ -134,9 +137,11 @@ def create_app(
     stream_poll_seconds: float = 5.0,
     asker: Any = None,
     rate_limit: tuple[int, int] | None = None,
+    price_store: PriceStore | None = None,
 ) -> FastAPI:
     """The API. `asker` overrides the Ask the Atlas model client (tests and evaluations); `rate_limit` is
-    (requests per minute, burst) per client IP, defaulting to the environment settings."""
+    (requests per minute, burst) per client IP, defaulting to the environment settings; `price_store` overrides
+    the share-price provider (default: ATLAS_PRICE_PROVIDER)."""
     lake = Lake(lake_root or os.environ.get("ATLAS_LAKE", "lake"))
     read_model = ReadModel(lake)
     mcp_sessions: Any = None
@@ -158,6 +163,7 @@ def create_app(
             {"name": "issuers", "description": "Issuer profiles and insider activity"},
             {"name": "stats", "description": "Market-wide aggregates"},
             {"name": "stream", "description": "Server-sent events for new filings"},
+            {"name": "exports", "description": "Gold tables as Parquet files"},
             {"name": "ai", "description": "Ask the Atlas: questions in plain English, answered with SQL"},
             {"name": "meta", "description": "Health and source coverage"},
         ],
@@ -172,11 +178,13 @@ def create_app(
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[o.strip() for o in origins.split(",") if o.strip()],
-        allow_methods=["GET", "POST"],
+        allow_methods=["GET", "HEAD", "POST"],
         allow_headers=["*"],
-        expose_headers=["ETag", "X-Atlas-Snapshot"],
+        expose_headers=["ETag", "X-Atlas-Snapshot", "Accept-Ranges", "Content-Range", "Content-Length"],
     )
     app.add_middleware(SecurityHeadersMiddleware)
+    app.include_router(prices_router(read_model, price_store or PriceStore(lake, provider_from_env())))
+    app.include_router(exports_router(read_model, lake.root / "exports"))
 
     @app.exception_handler(StarletteHTTPException)
     async def http_problem(request: Request, exc: StarletteHTTPException) -> JSONResponse:

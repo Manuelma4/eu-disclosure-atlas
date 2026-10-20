@@ -1,0 +1,414 @@
+{
+  "meta": {
+    "title": "EU Disclosure Atlas: insider trades across Europe",
+    "description": "Open, unified data on insider trading and short selling across European markets, published by national regulators under MAR and the Short Selling Regulation. Live, pseudonymized, research-grade.",
+    "siteName": "EU Disclosure Atlas"
+  },
+  "nav": {
+    "main": "Main",
+    "overview": "Overview",
+    "filings": "Filings",
+    "explore": "Explore",
+    "architecture": "Architecture",
+    "api": "API",
+    "skip": "Skip to content",
+    "language": "Language",
+    "home": "EU Disclosure Atlas, home"
+  },
+  "search": {
+    "open": "Search companies",
+    "shortcut": "{key} K",
+    "dialogLabel": "Search companies and pages",
+    "placeholder": "Company name or LEI…",
+    "inputLabel": "Search",
+    "companies": "Companies",
+    "pages": "Pages",
+    "loading": "Searching…",
+    "noResults": "No company matches “{query}”.",
+    "error": "Search is unavailable right now.",
+    "filings": "{count, plural, one {# filing} other {# filings}}",
+    "hint": "↑ ↓ to move · Enter to open · Esc to close",
+    "close": "Close search"
+  },
+  "footer": {
+    "privacy": "A research and transparency project. Natural persons appear only as pseudonymous ids.",
+    "advice": "Nothing here is investment advice.",
+    "sources": "Sources: Finansinspektionen (FI), data processed and re-used free of charge with attribution · ECB euro reference rates.",
+    "builtBy": "Built by <link>Manuel David Maya Rosero</link>."
+  },
+  "common": {
+    "live": "Live",
+    "planned": "Planned",
+    "showTable": "Show table",
+    "hideTable": "Hide table",
+    "legend": "Legend",
+    "snapshot": "Snapshot",
+    "dash": "–"
+  },
+  "roles": {
+    "ceo": "CEO",
+    "cfo": "CFO",
+    "chair": "Chair",
+    "executive": "Executive",
+    "board_member": "Board member",
+    "other": "Other",
+    "unknown": "Unknown"
+  },
+  "natures": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "subscription": "Subscription",
+    "grant": "Grant",
+    "exercise": "Exercise",
+    "conversion": "Conversion",
+    "exchange": "Exchange",
+    "gift": "Gift",
+    "inheritance": "Inheritance",
+    "pledge": "Pledge",
+    "lending": "Lending",
+    "internal_transfer": "Internal transfer",
+    "merger": "Merger",
+    "other": "Other",
+    "increases": "(holding increases)",
+    "decreases": "(holding decreases)"
+  },
+  "instruments": {
+    "share": "Share",
+    "option": "Option",
+    "warrant": "Warrant",
+    "subscription_right": "Subscription right",
+    "convertible": "Convertible",
+    "bond": "Bond",
+    "swap": "Swap",
+    "other": "Other"
+  },
+  "time": {
+    "justNow": "just now"
+  },
+  "home": {
+    "kicker": "Insider trades · short positions · 30 regulators, one dataset",
+    "title": "Europe’s insider trades, in one live, open dataset.",
+    "lead": "EU law makes managers’ trades and large short positions public, but they are scattered across about thirty national regulators, in PDFs, spreadsheets and portals. The Atlas collects them, puts them in one schema and replaces every natural person with a pseudonym.",
+    "bought30d": "Bought on the open market by insiders, last 30 days",
+    "against": "against {amount} sold · last filing ingested <when></when> · data snapshot <code>{snapshot}</code>",
+    "filings": "Filings",
+    "liveSources": "{count, plural, one {# live source} other {# live sources}}",
+    "issuers": "Issuers",
+    "countries": "{count, plural, one {# country} other {# countries}}",
+    "buysPerSell": "Buys per sell, 30 days",
+    "buysSells": "{buys} buys · {sells} sells",
+    "late": "Filed more than 5 days late",
+    "lateNote": "Of filings in the last 12 months (MAR allows 3 business days)",
+    "flowTitle": "Insider flow, weekly",
+    "flowSubtitle": "Open-market share purchases and sales by managers over the last six months, in euros at ECB reference rates.",
+    "latestTitle": "Latest filings",
+    "latestSubtitle": "Newest publications across all sources",
+    "largestTitle": "Largest open-market buys",
+    "largestSubtitle": "Last 30 days, in euros",
+    "via": "via {name}",
+    "traded": "traded {date}",
+    "coverageTitle": "Coverage",
+    "coverageSubtitle": "One connector per regulator and dataset. More are being added in parallel.",
+    "country": "Country",
+    "regulator": "Regulator",
+    "status": "Status",
+    "records": "Records",
+    "lastPublication": "Last publication",
+    "inProgressAmf": "In progress: PDF filings with AI extraction",
+    "exploreCta": "Explore every filing in your browser",
+    "exploreCtaNote": "DuckDB and linked charts, no server round trips"
+  },
+  "tape": {
+    "live": "Live: new filings appear here as they are ingested",
+    "connecting": "Connecting to the live stream…"
+  },
+  "flow": {
+    "buys": "Insider buys",
+    "sells": "Insider sells",
+    "ariaLabel": "Insider buying and selling by period, in euros",
+    "weekOf": "Week of {date}",
+    "point": "{period}: buys {buy} in {buys} trades, sells {sell} in {sells} trades",
+    "buysCount": "buys · {count}",
+    "sellsCount": "sells · {count}",
+    "net": "Net",
+    "period": "Period",
+    "buyTrades": "Buy trades",
+    "sellTrades": "Sell trades"
+  },
+  "table": {
+    "traded": "Traded",
+    "published": "Published",
+    "issuer": "Issuer",
+    "role": "Role",
+    "nature": "Nature",
+    "instrument": "Instrument",
+    "volume": "Volume",
+    "amount": "Amount",
+    "late": "late · {days} d",
+    "lateTitle": "Published more than 5 calendar days after the trade",
+    "via": "via {name}",
+    "empty": "No filings match."
+  },
+  "filings": {
+    "metaDescription": "Search every managers’ transaction in the Atlas by issuer, role, nature and date.",
+    "title": "Filings",
+    "lead": "Every managers’ transaction in the Atlas, newest first. The same query runs on the public API.",
+    "issuer": "Issuer",
+    "issuerPlaceholder": "Name contains…",
+    "nature": "Nature",
+    "role": "Role",
+    "all": "All",
+    "since": "Published since",
+    "openMarket": "Open market only",
+    "apply": "Apply",
+    "reset": "Reset",
+    "next": "Next 50",
+    "filters": "Filters"
+  },
+  "company": {
+    "notFound": "Issuer not found",
+    "metaTitle": "{name}: insider trades",
+    "metaDescription": "{count} managers’ transactions disclosed for {name} (LEI {lei}), with insider buying and selling against the share price.",
+    "breadcrumb": "Breadcrumb",
+    "lastFiling": "last filing published {date}",
+    "net365": "Net open-market trading, 12 months",
+    "net365Note": "Insider buys minus sells, in euros",
+    "buyers90": "Insiders buying, 90 days",
+    "sellers90": "Insiders selling, 90 days",
+    "people": "Distinct people",
+    "filings": "Filings",
+    "allTypes": "All transaction types",
+    "priceTitle": "Share price and insider trades",
+    "priceSubtitle": "Daily close, unadjusted; markers on days when insiders bought or sold on the market.",
+    "monthlyTitle": "Insider flow, monthly",
+    "monthlySubtitle": "Open-market share purchases and sales by managers, in euros.",
+    "noDated": "No dated transactions yet.",
+    "whoTitle": "Who files",
+    "whoSubtitle": "By most senior role",
+    "people_col": "People",
+    "recentTitle": "Filings",
+    "recentSubtitle": "Most recent 100; people appear as pseudonyms, legal entities by name"
+  },
+  "price": {
+    "close": "Close",
+    "buyDay": "Insider buying",
+    "sellDay": "Insider selling",
+    "ariaLabel": "Daily share price of {name} with insider trades. Use the left and right arrow keys to move day by day, Page Up and Page Down to jump between insider trades.",
+    "noPrices": "No share price is available for this issuer yet. Insider trades are listed in the table.",
+    "unavailable": "The price service is unavailable right now.",
+    "loading": "Loading prices…",
+    "source": "{ticker} · {currency} · prices: {provider}, as of {date}",
+    "date": "Date",
+    "buys": "Buys",
+    "sells": "Sells",
+    "boughtEur": "Bought",
+    "soldEur": "Sold",
+    "trades": "{count, plural, one {# trade} other {# trades}}",
+    "noTrade": "No insider trade",
+    "tableCaption": "Days with open-market insider trades and the closing price"
+  },
+  "explore": {
+    "metaDescription": "Explore every insider filing in the Atlas in your browser, with DuckDB-WASM and linked, cross-filtering charts.",
+    "title": "Explore",
+    "lead": "Every filing in the Atlas, queried in your browser with DuckDB-WASM. Drag across the weekly chart or the amount distribution, or click roles, and every view filters the others.",
+    "stage_engine": "Starting DuckDB in your browser…",
+    "stage_download": "Reading the Parquet export…",
+    "stage_ready": "{rows} filings loaded in {seconds} s",
+    "failed": "The explorer could not start: {message}",
+    "retry": "Try again",
+    "reset": "Clear filters",
+    "selected": "{count} of {total} filings selected",
+    "selectedEur": "{amount} in open-market trades",
+    "weekTitle": "Filings by week",
+    "weekSubtitle": "By publication date. Drag to select a period.",
+    "roleTitle": "By role",
+    "roleSubtitle": "Click a role to filter; Shift-click to add.",
+    "amountTitle": "Amount distribution",
+    "amountSubtitle": "Transaction value in euros, log scale. Drag to select a range.",
+    "buy": "Buys",
+    "sell": "Sells",
+    "other": "Other transactions",
+    "week": "Week",
+    "count": "Filings",
+    "amountRange": "Amount (EUR)",
+    "source": "Data: {path} · snapshot {snapshot} · {size}",
+    "download": "Download Parquet",
+    "keyboard": "Charts respond to the mouse; every chart also has a table view that follows the same filters."
+  },
+  "architecture": {
+    "metaDescription": "How the EU Disclosure Atlas is built: event-driven lakehouse, versioned data, REST, SSE and MCP.",
+    "title": "Architecture",
+    "lead": "An event-driven lakehouse behind a cache-friendly API. New filings flow from regulators to your screen in minutes, and every number can be reproduced from a versioned snapshot.",
+    "containers": "Containers",
+    "layers": {
+      "sources": {
+        "title": "Sources",
+        "note": "Public by law, scattered by design"
+      },
+      "data": {
+        "title": "Data plane · Python 3.14",
+        "note": "One codebase, several deployables"
+      },
+      "state": {
+        "title": "State",
+        "note": "The lake is the system of record"
+      },
+      "interfaces": {
+        "title": "Interfaces",
+        "note": "Same API for the website and everyone else"
+      }
+    },
+    "nodes": {
+      "fi": "CSV export, adaptive windows",
+      "amf": "PDF filings, AI extraction",
+      "others": "One connector each",
+      "reference": "ECB rates live; GLEIF, FIRDS, OpenFIGI next",
+      "referenceName": "Reference data",
+      "connectors": "Plugins, polite client, provenance",
+      "connectorsName": "Connectors",
+      "ingestion": "Partitioned assets, sensors, checks",
+      "extraction": "LLM fallback, autoscaled on Kafka lag",
+      "alerts": "Watchlists, webhooks, retry topics",
+      "lakehouse": "Bronze → silver → gold; DuckLake 1.0 next",
+      "lakehouseName": "Lakehouse",
+      "kafka": "Change-feed events, retries, DLQ",
+      "postgres": "DuckLake catalog, accounts (CloudNativePG)",
+      "storage": "Parquet on Cloudflare R2",
+      "storageName": "Object storage",
+      "rest": "OpenAPI 3.1, ETags per snapshot",
+      "gateway": "SSE fan-out; Python stream live today",
+      "website": "Cache Components, typed client, DuckDB-WASM explorer",
+      "websiteName": "Website · Next.js 16.4",
+      "ai": "Ask the Atlas, stateless MCP, MCP Apps"
+    },
+    "stackTitle": "Stack",
+    "stackSubtitle": "Current versions, October 2026",
+    "layer": "Layer",
+    "choice": "Choice",
+    "why": "Why",
+    "stack": {
+      "website": {
+        "layer": "Website",
+        "why": "Search-friendly company pages in four languages, streaming, caches invalidated by data commits"
+      },
+      "explorer": {
+        "layer": "Explorer",
+        "why": "Millions of rows queried in the browser, linked views without a server"
+      },
+      "api": {
+        "layer": "API",
+        "why": "One schema from ingestion to the generated TypeScript client"
+      },
+      "engine": {
+        "layer": "Analytics engine",
+        "why": "Snapshots, time travel and a change feed on files and SQL"
+      },
+      "orchestration": {
+        "layer": "Orchestration",
+        "why": "Partitioned assets, backfills, data-quality checks, lineage"
+      },
+      "events": {
+        "layer": "Events",
+        "why": "Replayable events from the change feed, retry and dead-letter topics"
+      },
+      "services": {
+        "layer": "Services",
+        "why": "Each bounded context scales and fails on its own"
+      },
+      "platform": {
+        "layer": "Platform",
+        "why": "GitOps, preview environments, autoscaling on lag"
+      },
+      "security": {
+        "layer": "Security",
+        "why": "OIDC with passkeys, edge policies, signed supply chain"
+      },
+      "ai": {
+        "layer": "AI",
+        "why": "Extraction fallback, natural-language questions, agent access, all evaluated"
+      },
+      "observability": {
+        "layer": "Observability",
+        "why": "SLOs as code with burn-rate alerts and runbooks"
+      }
+    },
+    "stackChoice": {
+      "services": "Python, Go and TypeScript microservices"
+    },
+    "principlesTitle": "Principles",
+    "principles": {
+      "p1": "The lake is the system of record; caches, events and search are rebuildable projections.",
+      "p2": "Every read is pinned to a data snapshot, so answers are consistent, cacheable and citable.",
+      "p3": "Components react to events, not to polling.",
+      "p4": "The website uses the public API: no private shortcuts.",
+      "p5": "Each language where it is strongest: Python for data, TypeScript for the web.",
+      "p6": "Natural persons are pseudonyms everywhere outside the private raw layer."
+    },
+    "fullArchitecture": "Full architecture",
+    "decisions": "Decision records"
+  },
+  "errors": {
+    "title": "The data is not reachable right now",
+    "body": "The website reads everything from the public API. It may be restarting; your page will work again in a moment.",
+    "retry": "Try again",
+    "notFoundTitle": "Not in the Atlas",
+    "notFoundBody": "No issuer or page matches this address. Coverage grows regulator by regulator.",
+    "searchFilings": "Search filings"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "watchlist": "Watchlist",
+    "watchlistTitle": "Watchlist and alerts",
+    "watchlistDescription": "Follow issuers and get an email or a signed webhook when their insiders trade.",
+    "watchlistLead": "Follow issuers by LEI. When a matching filing is ingested, the alerts service sends an email or a webhook signed with the Standard Webhooks scheme, retried after 5 minutes and 1 hour.",
+    "signingInTitle": "Signing in",
+    "signingIn": "Signing you in…",
+    "signInFailed": "Sign-in failed: {message}",
+    "signInCardTitle": "Sign in to manage alerts",
+    "signInCardSubtitle": "Accounts use passkeys or a password, managed by Keycloak.",
+    "unreachable": "Could not reach the alerts service",
+    "requestFailed": "Request failed",
+    "issuersTitle": "Issuers",
+    "issuersSubtitle": "Legal Entity Identifiers (20 characters), as shown on company pages.",
+    "remove": "Remove",
+    "noIssuers": "No issuers yet.",
+    "issuerLei": "Issuer LEI",
+    "add": "Add",
+    "rulesTitle": "Alert rules",
+    "rulesSubtitle": "A rule watches the issuers on your list.",
+    "anyNature": "any nature",
+    "fromEur": "from {amount}",
+    "byEmail": "email {email}",
+    "byWebhook": "webhook",
+    "delete": "Delete",
+    "noRules": "No rules yet.",
+    "ruleName": "Rule name",
+    "ruleNamePlaceholder": "Rule name, e.g. CEO buys",
+    "nature": "Nature",
+    "buys": "Buys",
+    "sells": "Sells",
+    "any": "Any nature",
+    "minimum": "Minimum amount in euros",
+    "minimumPlaceholder": "Minimum EUR",
+    "email": "Email",
+    "webhookUrl": "Webhook URL",
+    "webhookPlaceholder": "Webhook URL (optional)",
+    "createRule": "Create rule",
+    "secret": "Webhook signing secret (shown once):",
+    "deliveriesTitle": "Recent deliveries",
+    "when": "When",
+    "channel": "Channel",
+    "status": "Status",
+    "attempts": "Attempts",
+    "filing": "Filing",
+    "noDeliveries": "Nothing delivered yet.",
+    "defaultListName": "My watchlist",
+    "state_pending": "Pending",
+    "state_retrying": "Retrying",
+    "state_delivered": "Delivered",
+    "state_failed": "Failed",
+    "channel_email": "Email",
+    "channel_webhook": "Webhook"
+  }
+}

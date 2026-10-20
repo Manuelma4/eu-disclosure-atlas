@@ -5,6 +5,8 @@
  */
 import { useSyncExternalStore } from "react";
 
+import { routing } from "@/i18n/routing";
+
 const ISSUER = process.env.NEXT_PUBLIC_ATLAS_OIDC_ISSUER ?? "http://localhost:8180/realms/atlas";
 const CLIENT_ID = process.env.NEXT_PUBLIC_ATLAS_OIDC_CLIENT_ID ?? "atlas-web";
 const ENDPOINTS = {
@@ -32,7 +34,12 @@ type TokenResponse = {
   expires_in: number;
 };
 
-const callbackUrl = () => `${window.location.origin}/account/callback`;
+/** The page's language prefix (/en, /fr…), so sign-in comes back to the same language. */
+const localePrefix = () => {
+  const segment = window.location.pathname.split("/")[1];
+  return `/${(routing.locales as readonly string[]).includes(segment) ? segment : routing.defaultLocale}`;
+};
+const callbackUrl = () => `${window.location.origin}${localePrefix()}/account/callback`;
 
 function base64url(bytes: Uint8Array): string {
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -71,7 +78,7 @@ function clear() {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-/** Redirects to Keycloak; comes back to /account/callback, then to `returnTo`. */
+/** Redirects to Keycloak; comes back to /<locale>/account/callback, then to `returnTo`. */
 export async function signIn(returnTo = window.location.pathname): Promise<void> {
   const verifier = randomString();
   const state = randomString();
@@ -89,7 +96,7 @@ export async function signIn(returnTo = window.location.pathname): Promise<void>
   window.location.href = new URL(`?${params}`, ENDPOINTS.authorize).href; // Keycloak, not a Next.js route
 }
 
-/** Completes sign-in on /account/callback; returns the path to go back to. */
+/** Completes sign-in on /<locale>/account/callback; returns the path to go back to. */
 export async function completeSignIn(search: string): Promise<string> {
   const params = new URLSearchParams(search);
   const pending = JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? "null") as
@@ -117,7 +124,7 @@ export async function completeSignIn(search: string): Promise<string> {
 export function signOut(): void {
   const session = readSession();
   clear();
-  const params = new URLSearchParams({ client_id: CLIENT_ID, post_logout_redirect_uri: `${window.location.origin}/` });
+  const params = new URLSearchParams({ client_id: CLIENT_ID, post_logout_redirect_uri: `${window.location.origin}${localePrefix()}` });
   if (session?.idToken) params.set("id_token_hint", session.idToken);
   window.location.href = new URL(`?${params}`, ENDPOINTS.logout).href;
 }

@@ -14,6 +14,145 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/v1/issuers/{lei}/prices": {
+      "get": {
+        "tags": [
+          "issuers"
+        ],
+        "summary": "Issuer Prices",
+        "description": "Daily prices of the issuer's share, plus the days on which its insiders bought or sold on the market.\n\nPrices come from a pluggable provider (yfinance in development) and are cached in the lake's reference\narea. They are unadjusted closing prices of the listing on the issuer's home market. Not investment advice.",
+        "operationId": "issuer_prices_v1_issuers__lei__prices_get",
+        "parameters": [
+          {
+            "name": "lei",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Lei"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1830,
+              "minimum": 30,
+              "description": "Calendar days of history",
+              "default": 730,
+              "title": "Days"
+            },
+            "description": "Calendar days of history"
+          },
+          {
+            "name": "isin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Override the share ISIN",
+              "title": "Isin"
+            },
+            "description": "Override the share ISIN"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceSeries"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exports": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "List Exports",
+        "description": "Gold tables available as Parquet for the current data snapshot.",
+        "operationId": "list_exports_v1_exports_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ExportFile"
+                  },
+                  "type": "array",
+                  "title": "Response List Exports V1 Exports Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exports/{name}": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Get Export",
+        "description": "One gold table as Parquet (zstd). Supports `Range` requests, so DuckDB reads it remotely.",
+        "operationId": "get_export_v1_exports__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportName"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parquet file (supports Range requests)",
+            "content": {
+              "application/vnd.apache.parquet": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/health": {
       "get": {
         "tags": [
@@ -862,6 +1001,48 @@
         ],
         "title": "CountryStat"
       },
+      "ExportFile": {
+        "properties": {
+          "dataset": {
+            "type": "string",
+            "title": "Dataset"
+          },
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Relative URL of the Parquet file"
+          },
+          "rows": {
+            "type": "integer",
+            "title": "Rows"
+          },
+          "bytes": {
+            "type": "integer",
+            "title": "Bytes"
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dataset",
+          "path",
+          "rows",
+          "bytes",
+          "snapshot"
+        ],
+        "title": "ExportFile"
+      },
+      "ExportName": {
+        "type": "string",
+        "enum": [
+          "insider_transactions.parquet",
+          "net_short_positions.parquet"
+        ],
+        "title": "ExportName"
+      },
       "FlowPoint": {
         "properties": {
           "period": {
@@ -946,6 +1127,81 @@
           "records"
         ],
         "title": "Health"
+      },
+      "InsiderDay": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "Transaction date"
+          },
+          "buys": {
+            "type": "integer",
+            "title": "Buys",
+            "description": "Open-market purchases of shares"
+          },
+          "sells": {
+            "type": "integer",
+            "title": "Sells",
+            "description": "Open-market sales of shares"
+          },
+          "buy_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buy Eur"
+          },
+          "sell_eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sell Eur"
+          },
+          "buy_volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buy Volume"
+          },
+          "sell_volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sell Volume"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "buys",
+          "sells",
+          "buy_eur",
+          "sell_eur",
+          "buy_volume",
+          "sell_volume"
+        ],
+        "title": "InsiderDay"
       },
       "IssuerDetail": {
         "properties": {
@@ -1298,6 +1554,163 @@
           "snapshot"
         ],
         "title": "Page[Transaction]"
+      },
+      "PriceBar": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "open": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open"
+          },
+          "high": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "High"
+          },
+          "low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Low"
+          },
+          "close": {
+            "type": "number",
+            "title": "Close"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "title": "PriceBar"
+      },
+      "PriceSeries": {
+        "properties": {
+          "lei": {
+            "type": "string",
+            "title": "Lei"
+          },
+          "isin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isin",
+            "description": "Share ISIN used (the one most often traded by the issuer's insiders)"
+          },
+          "ticker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ticker",
+            "description": "Listing the prices come from, as the provider names it"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency",
+            "description": "Trading currency of the listing"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "Price provider: yfinance (development), synthetic or none"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetched At",
+            "description": "When the provider was last queried for this ISIN"
+          },
+          "bars": {
+            "items": {
+              "$ref": "#/components/schemas/PriceBar"
+            },
+            "type": "array",
+            "title": "Bars",
+            "description": "Daily bars, oldest first (unadjusted)"
+          },
+          "insider": {
+            "items": {
+              "$ref": "#/components/schemas/InsiderDay"
+            },
+            "type": "array",
+            "title": "Insider",
+            "description": "Days with open-market insider trades in the window"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lei",
+          "isin",
+          "ticker",
+          "currency",
+          "provider",
+          "fetched_at",
+          "bars",
+          "insider"
+        ],
+        "title": "PriceSeries"
       },
       "RoleStat": {
         "properties": {
@@ -1702,6 +2115,10 @@
     {
       "name": "stream",
       "description": "Server-sent events for new filings"
+    },
+    {
+      "name": "exports",
+      "description": "Gold tables as Parquet files"
     },
     {
       "name": "ai",

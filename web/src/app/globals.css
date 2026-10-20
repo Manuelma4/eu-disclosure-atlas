@@ -14,9 +14,12 @@
   --baseline: #c3c2b7;
   --ring: rgba(11, 11, 11, 0.1);
   --accent: #2a78d6;
+  --accent-ink: #1d64b8;
   --buy: #2a78d6;
   --sell: #e34948;
+  --other: #8f8d85;
   --live: #0ca30c;
+  --focus: #1d64b8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,8 +35,11 @@
     --baseline: #383835;
     --ring: rgba(255, 255, 255, 0.1);
     --accent: #3987e5;
+    --accent-ink: #6ea8ee;
     --buy: #3987e5;
     --sell: #e66767;
+    --other: #77756e;
+    --focus: #6ea8ee;
   }
 }
 
@@ -49,8 +55,11 @@
   --baseline: #383835;
   --ring: rgba(255, 255, 255, 0.1);
   --accent: #3987e5;
+  --accent-ink: #6ea8ee;
   --buy: #3987e5;
   --sell: #e66767;
+  --other: #77756e;
+  --focus: #6ea8ee;
 }
 
 @theme inline {
@@ -63,6 +72,8 @@
   --color-hairline: var(--hairline);
   --color-baseline: var(--baseline);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-other: var(--other);
   --color-buy: var(--buy);
   --color-sell: var(--sell);
   --color-live: var(--live);
@@ -92,7 +103,37 @@ body {
   animation: arrive 4s ease-out;
 }
 
+/* Keyboard focus: one visible, high-contrast ring everywhere (WCAG 2.4.7, 2.4.11). */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Mosaic / Observable Plot charts in the explorer: scale to the card, theme the tooltips. */
+.explorer-plot {
+  --plot-background: var(--surface);
+}
+.explorer-plot svg {
+  max-width: 100%;
+  height: auto;
+}
+.explorer-plot [aria-label="tip"] {
+  color: var(--ink);
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
   .arrive {
     animation: none;
   }

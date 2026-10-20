@@ -1,11 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import { Card } from "@/components/ui";
+import { Link } from "@/i18n/navigation";
 import { alerts, type Delivery, type Endpoint, type Rule, type Watchlist } from "@/lib/alerts";
 import { signIn, useSession } from "@/lib/auth";
+import { useFormat, useLabels } from "@/lib/use-format";
 
 type Data = { watchlist: Watchlist | null; rules: Rule[]; endpoints: Endpoint[]; deliveries: Delivery[] };
 
@@ -23,6 +25,9 @@ async function load(): Promise<Data> {
 }
 
 export function WatchlistManager() {
+  const t = useTranslations("account");
+  const format = useFormat();
+  const labels = useLabels();
   const session = useSession();
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +39,8 @@ export function WatchlistManager() {
         setData(next);
         setError(null);
       })
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : "Could not reach the alerts service"));
-  }, []);
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : t("unreachable")));
+  }, [t]);
 
   useEffect(() => {
     if (session) refresh();
@@ -46,16 +51,16 @@ export function WatchlistManager() {
       await action();
       refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Request failed");
+      setError(e instanceof Error ? e.message : t("requestFailed"));
     }
   };
 
   if (session === undefined) return null;
   if (!session) {
     return (
-      <Card title="Sign in to manage alerts" subtitle="Accounts use passkeys or a password, managed by Keycloak.">
+      <Card title={t("signInCardTitle")} subtitle={t("signInCardSubtitle")}>
         <button type="button" className={button} onClick={() => signIn()}>
-          Sign in
+          {t("signIn")}
         </button>
       </Card>
     );
@@ -69,7 +74,7 @@ export function WatchlistManager() {
       if (data?.watchlist) {
         await alerts(`/v1/watchlists/${data.watchlist.id}/issuers/${encodeURIComponent(lei)}`, { method: "PUT" });
       } else {
-        await alerts("/v1/watchlists", { method: "POST", body: { name: "My watchlist", issuers: [lei] } });
+        await alerts("/v1/watchlists", { method: "POST", body: { name: t("defaultListName"), issuers: [lei] } });
       }
       form.reset();
     });
@@ -113,7 +118,7 @@ export function WatchlistManager() {
         </p>
       )}
 
-      <Card title="Issuers" subtitle="Legal Entity Identifiers (20 characters), as shown on company pages.">
+      <Card title={t("issuersTitle")} subtitle={t("issuersSubtitle")}>
         <ul className="divide-y divide-hairline text-sm">
           {(data?.watchlist?.issuers ?? []).map((lei) => (
             <li key={lei} className="flex items-center justify-between py-2">
@@ -125,86 +130,86 @@ export function WatchlistManager() {
                 className="text-ink-3 hover:text-ink"
                 onClick={() => run(() => alerts(`/v1/watchlists/${data!.watchlist!.id}/issuers/${lei}`, { method: "DELETE" }))}
               >
-                Remove
+                {t("remove")}
               </button>
             </li>
           ))}
-          {data && !data.watchlist?.issuers.length && <li className="py-2 text-ink-3">No issuers yet.</li>}
+          {data && !data.watchlist?.issuers.length && <li className="py-2 text-ink-3">{t("noIssuers")}</li>}
         </ul>
         <form onSubmit={addIssuer} className="mt-3 flex gap-2">
           <label className="sr-only" htmlFor="lei">
-            Issuer LEI
+            {t("issuerLei")}
           </label>
           <input id="lei" name="lei" required pattern="[0-9A-Za-z]{18}[0-9]{2}" placeholder="549300…" className={`${input} flex-1 font-mono`} />
-          <button className={button}>Add</button>
+          <button className={button}>{t("add")}</button>
         </form>
       </Card>
 
-      <Card title="Alert rules" subtitle="A rule watches the issuers on your list.">
+      <Card title={t("rulesTitle")} subtitle={t("rulesSubtitle")}>
         <ul className="divide-y divide-hairline text-sm">
           {(data?.rules ?? []).map((rule) => (
             <li key={rule.id} className="flex items-start justify-between gap-3 py-2">
               <div>
                 <p className="font-medium text-ink">{rule.name}</p>
                 <p className="text-xs text-ink-3">
-                  {rule.natures.length ? rule.natures.join(", ") : "any nature"}
-                  {rule.min_amount_eur ? ` · from EUR ${rule.min_amount_eur.toLocaleString("en")}` : ""}
-                  {rule.email ? ` · email ${rule.email}` : ""}
-                  {rule.webhook_endpoint_id ? " · webhook" : ""}
+                  {rule.natures.length ? rule.natures.map(labels.nature).join(", ") : t("anyNature")}
+                  {rule.min_amount_eur ? ` · ${t("fromEur", { amount: format.eur(rule.min_amount_eur) })}` : ""}
+                  {rule.email ? ` · ${t("byEmail", { email: rule.email })}` : ""}
+                  {rule.webhook_endpoint_id ? ` · ${t("byWebhook")}` : ""}
                 </p>
               </div>
               <button type="button" className="text-ink-3 hover:text-ink" onClick={() => run(() => alerts(`/v1/rules/${rule.id}`, { method: "DELETE" }))}>
-                Delete
+                {t("delete")}
               </button>
             </li>
           ))}
-          {data && !data.rules.length && <li className="py-2 text-ink-3">No rules yet.</li>}
+          {data && !data.rules.length && <li className="py-2 text-ink-3">{t("noRules")}</li>}
         </ul>
         <form onSubmit={addRule} className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-          <input name="name" required maxLength={100} placeholder="Rule name, e.g. CEO buys" aria-label="Rule name" className={`${input} sm:col-span-2`} />
-          <select name="nature" aria-label="Nature" className={input} defaultValue="buy">
-            <option value="buy">Buys</option>
-            <option value="sell">Sells</option>
-            <option value="any">Any nature</option>
+          <input name="name" required maxLength={100} placeholder={t("ruleNamePlaceholder")} aria-label={t("ruleName")} className={`${input} sm:col-span-2`} />
+          <select name="nature" aria-label={t("nature")} className={input} defaultValue="buy">
+            <option value="buy">{t("buys")}</option>
+            <option value="sell">{t("sells")}</option>
+            <option value="any">{t("any")}</option>
           </select>
-          <input name="min_amount_eur" type="number" min={0} step={1000} placeholder="Minimum EUR" aria-label="Minimum amount in euros" className={input} />
-          <input name="email" type="email" defaultValue={session.email} placeholder="Email" aria-label="Email" className={input} />
-          <input name="webhook_url" type="url" placeholder="Webhook URL (optional)" aria-label="Webhook URL" className={input} />
+          <input name="min_amount_eur" type="number" min={0} step={1000} placeholder={t("minimumPlaceholder")} aria-label={t("minimum")} className={input} />
+          <input name="email" type="email" defaultValue={session.email} placeholder={t("email")} aria-label={t("email")} className={input} />
+          <input name="webhook_url" type="url" placeholder={t("webhookPlaceholder")} aria-label={t("webhookUrl")} className={input} />
           <button className={`${button} sm:col-span-2`} disabled={!data?.watchlist}>
-            Create rule
+            {t("createRule")}
           </button>
         </form>
         {secret && (
           <p className="mt-3 rounded-md bg-surface-2 px-3 py-2 text-xs text-ink-2">
-            Webhook signing secret (shown once): <code className="break-all font-mono text-ink">{secret}</code>
+            {t("secret")} <code className="break-all font-mono text-ink">{secret}</code>
           </p>
         )}
       </Card>
 
-      <Card title="Recent deliveries" className="lg:col-span-2">
+      <Card title={t("deliveriesTitle")} className="lg:col-span-2">
         <table className="w-full text-left text-sm">
           <thead className="text-xs text-ink-3">
             <tr>
-              <th className="py-1 font-normal">When</th>
-              <th className="py-1 font-normal">Channel</th>
-              <th className="py-1 font-normal">Status</th>
-              <th className="py-1 font-normal">Attempts</th>
-              <th className="py-1 font-normal">Filing</th>
+              <th scope="col" className="py-1 font-normal">{t("when")}</th>
+              <th scope="col" className="py-1 font-normal">{t("channel")}</th>
+              <th scope="col" className="py-1 font-normal">{t("status")}</th>
+              <th scope="col" className="py-1 font-normal">{t("attempts")}</th>
+              <th scope="col" className="py-1 font-normal">{t("filing")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-hairline">
             {(data?.deliveries ?? []).map((d) => (
               <tr key={d.id}>
-                <td className="py-1.5 text-ink-2">{new Date(d.created_at).toLocaleString("en-GB")}</td>
-                <td className="py-1.5">{d.channel}</td>
-                <td className="py-1.5">{d.status}</td>
+                <td className="py-1.5 text-ink-2">{format.dateTime(d.created_at)}</td>
+                <td className="py-1.5">{t(`channel_${d.channel}`)}</td>
+                <td className="py-1.5">{t(`state_${d.status}`)}</td>
                 <td className="py-1.5 tabular">{d.attempts}</td>
                 <td className="py-1.5 font-mono text-xs text-ink-3">{d.filing_id.slice(0, 12)}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        {data && !data.deliveries.length && <p className="pt-2 text-sm text-ink-3">Nothing delivered yet.</p>}
+        {data && !data.deliveries.length && <p className="pt-2 text-sm text-ink-3">{t("noDeliveries")}</p>}
       </Card>
     </div>
   );
