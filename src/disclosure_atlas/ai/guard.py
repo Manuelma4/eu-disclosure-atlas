@@ -139,16 +139,42 @@ def lock_down(con: duckdb.DuckDBPyConnection, allowed_directories: Iterable[Path
 
 
 class SandboxedLake:
-    """Adapter for api.readmodel.ReadModel: same version() as the lake, sandboxed connections."""
+    """Adapter for api.readmodel.ReadModel: same version() as the lake, isolated read-only connections.
+
+    The lake's DuckDB engine is shared by the whole process (a DuckDB-file catalog can be attached only once), and
+    the lock-down settings are database-wide, so applying them to the engine would lock every other reader. Instead,
+    each data snapshot is copied into a private in-memory database that holds only the allowlisted tables, with no
+    file or network access at all and a locked configuration. The copy is rebuilt when the snapshot changes.
+    """
 
     def __init__(self, lake: Any) -> None:
         self.lake = lake
+        self._lock = threading.Lock()
+        self._key: str | None = None
+        self._sandbox: duckdb.DuckDBPyConnection | None = None
 
     def version(self) -> str:
         return self.lake.version()
 
-    def connect(self) -> duckdb.DuckDBPyConnection:
-        return lock_down(self.lake.connect(), [self.lake.root])
+    def connect(self, *, as_of: int | str | None = None) -> duckdb.DuckDBPyConnection:
+        key = str(as_of if as_of is not None else self.lake.version())
+        with self._lock:
+            if self._sandbox is None or key != self._key:
+                source = self.lake.connect(as_of=as_of)
+                sandbox = duckdb.connect()
+                sandbox.execute("SET TimeZone = 'UTC'")
+                try:
+                    for table in sorted(ALLOWED_TABLES):
+                        data = source.execute(f"SELECT * FROM {table}").fetch_arrow_table()  # noqa: S608
+                        sandbox.register("_copy", data)
+                        sandbox.execute(f"CREATE TABLE {table} AS SELECT * FROM _copy")
+                        sandbox.unregister("_copy")
+                finally:
+                    source.close()
+                if self._sandbox is not None:
+                    self._sandbox.close()
+                self._sandbox, self._key = lock_down(sandbox, []), key
+            return self._sandbox.cursor()
 
 
 @dataclass

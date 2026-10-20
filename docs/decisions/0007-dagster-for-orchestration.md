@@ -1,6 +1,6 @@
 # 0007: Dagster for orchestration
 
-Status: accepted (2026-10-20); implementation in workstream P2
+Status: accepted (2026-10-20); implemented in workstream P2 (see docs/operations.md)
 
 ## Context
 About 60 source feeds (30 authorities, two datasets), each partitioned by publication date, polled every few

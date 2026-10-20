@@ -144,11 +144,13 @@ def test_streamable_http_endpoint_on_the_api(http_url):
     assert asyncio.run(negotiated()) == "2026-07-28"
 
 
-def test_stdio_command(lake):
+def test_stdio_command(tmp_path):
     from mcp import StdioServerParameters
 
+    own = build_synthetic_lake(tmp_path / "lake")
+    own.close()  # a DuckDB-file catalog is locked by one process: release it so the server process can attach it
     params = StdioServerParameters(
-        command=sys.executable, args=["-m", "disclosure_atlas.cli", "--lake", str(lake.root), "mcp"]
+        command=sys.executable, args=["-m", "disclosure_atlas.cli", "--lake", str(own.root), "mcp"]
     )
     result = call(params, "filing_lag_stats", {"country": "SE"})
     assert [row["country"] for row in result.structured_content["result"]] == ["SE"]

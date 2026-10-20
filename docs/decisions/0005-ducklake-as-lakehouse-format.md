@@ -1,6 +1,6 @@
 # 0005: DuckLake as the lakehouse format
 
-Status: accepted (2026-10-20); migration planned in workstream P2
+Status: accepted (2026-10-20); implemented in workstream P2 (see docs/architecture.md, "Lakehouse")
 
 ## Context
 Ingestion commits small batches often (a few filings every few minutes across ~60 source feeds). Research needs
