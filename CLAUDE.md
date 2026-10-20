@@ -16,7 +16,7 @@ markets, plus reproducible research on top of it. Read README.md first, then ROA
   from older versions: read `web/node_modules/next/dist/docs/` before writing web code (see `web/AGENTS.md`).
 - Local infrastructure: `docker compose -f infra/compose.yaml up -d` (PostgreSQL 18, Redpanda as the Kafka API).
 - Go services: build and test with the local toolchain if present, otherwise in Docker
-  (`docker run --rm -v "$PWD":/src -w /src/services/<name> golang:1.26 go test ./...`).
+  (`docker run --rm -v "$PWD":/src -w /src/services/<name> golang:1.27 go test ./...`).
 
 ## Architecture in one minute
 Platform design and decisions: docs/architecture.md and docs/decisions/. Code map:
