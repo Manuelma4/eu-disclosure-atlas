@@ -137,7 +137,7 @@ def build(root: Path, rows: int, issuers: int, seed: int) -> None:
     folder.mkdir(parents=True, exist_ok=True)
     # Model fields the fixture does not set (e.g. ones added by later workstreams) become nulls.
     rows = max(len(values) for values in columns.values())
-    for name, values in columns.items():
+    for values in columns.values():
         if not values:
             values.extend([None] * rows)
     table = pa.table(columns, schema=arrow_schema(InsiderTransaction))
