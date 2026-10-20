@@ -523,15 +523,27 @@
       "rootUrl": "http://localhost:3000",
       "redirectUris": [
         "http://localhost:3000/*",
-        "http://127.0.0.1:3000/*"
+        "http://127.0.0.1:3000/*",
+        "http://localhost:3003/*",
+        "http://127.0.0.1:3003/*",
+        "http://localhost:3005/*",
+        "http://127.0.0.1:3005/*",
+        "http://localhost:3007/*",
+        "http://127.0.0.1:3007/*"
       ],
       "webOrigins": [
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
+        "http://localhost:3003",
+        "http://127.0.0.1:3003",
+        "http://localhost:3005",
+        "http://127.0.0.1:3005",
+        "http://localhost:3007",
+        "http://127.0.0.1:3007"
       ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
-        "post.logout.redirect.uris": "http://localhost:3000/*##http://127.0.0.1:3000/*"
+        "post.logout.redirect.uris": "http://localhost:3000/*##http://localhost:3003/*##http://localhost:3005/*##http://localhost:3007/*"
       },
       "defaultClientScopes": [
         "basic",

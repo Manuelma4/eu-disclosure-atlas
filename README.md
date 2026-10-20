@@ -100,7 +100,7 @@ Run the event-driven platform locally (Kafka, PostgreSQL, Keycloak, the Go realt
 
 ```bash
 pip install -e '.[dev,api,events]'
-docker compose -f infra/compose.yaml up -d --build        # Keycloak demo account: demo@example.org / demo-dev-only
+docker compose -p atlas -f infra/compose.yaml up -d --build  # Keycloak demo account: demo@example.org / demo-dev-only
 ATLAS_KAFKA_BOOTSTRAP=localhost:19092 ATLAS_SCHEMA_REGISTRY_URL=http://localhost:18081 \
   disclosure-atlas watch se_fi_pdmr                       # new filings → atlas.filings.v1
 cd web && NEXT_PUBLIC_ATLAS_STREAM_URL=http://localhost:8090 npm run dev   # live tape via the gateway; sign in → Watchlist
