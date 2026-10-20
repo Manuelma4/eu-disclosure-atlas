@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Local data lake (bronze holds raw regulator files and is never published)
+lake/
+*.duckdb
+*.duckdb.wal
+exports/
+
+# Secrets
+.env
+.pseudonym_key
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
