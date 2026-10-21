@@ -141,6 +141,10 @@ Owns: `connectors/de_bafin_pdmr.py`, `connectors/nl_afm_pdmr.py` and their docs 
 - Done: `es_cnmv_pdmr`, `be_fsma_pdmr`, `dk_finanstilsynet_pdmr`, `no_oslobors_pdmr`; a shared reader for
   issuer-made 2016/523 templates (`connectors/_mar_template.py`). Blocked or deferred, with reasons in
   `docs/sources/README.md`: AT, IE, PL, FI (terms of Nasdaq's feed), PT (private API).
+- [x] Data quality (October 2026): Danish press releases that repeat the attached template are read once;
+  Nordic prices written with a decimal point are checked against the stated total.
+- [ ] Next: flag prices far from the market close (issuers sometimes type the total in the price column), and a
+  `reparse` command that rebuilds silver from bronze after a parser fix.
 
 ## M2 Short positions `[ ]`
 

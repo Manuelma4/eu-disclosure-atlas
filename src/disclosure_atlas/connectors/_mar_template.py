@@ -416,6 +416,42 @@ def price_lines(tx: TemplateTransaction, nordic: bool) -> list[Line]:
     return _paired_cells(pairs, nordic) if pairs else _single_cells(singles, nordic)
 
 
+_STATED_MONEY = re.compile(r"(?:\b(?:DKK|NOK|SEK|EUR|kr)\.?\s*(?P<after>\d[\d.,'  ]*\d|\d))|"
+                           r"(?:(?P<before>\d[\d.,'  ]*\d|\d)\s*(?:DKK|NOK|SEK|EUR|kr)\b)", re.I)
+
+
+def decimal_point_prices(lines: list[Line], tx: TemplateTransaction, nordic: bool) -> list[Line]:
+    """Some Nordic issuers write the price with a decimal point ("1.870" for 1.87 kr.) next to volumes and totals
+    with the Danish thousands point ("55.000 stk.", "102.850 DKK"), so the price reads 1,000 times too high. The
+    decimal reading is taken only when the aggregated section states the total it gives and nothing that fits
+    the price as written (its total or average)."""
+    if not nordic or not lines or any(p is None or v is None or p < 1000 or not p.is_integer() for p, v, _ in lines):
+        return lines
+    text = " ".join(tx.aggregated)
+    stated = [to_number(m.group("after") or m.group("before"), nordic) for m in _STATED_MONEY.finditer(text)]
+    stated = [s for s in stated if s]
+    as_written = sum(p * v for p, v, _ in lines if p is not None and v is not None)
+    volume = sum(v for _, v, _ in lines if v is not None)
+    if not stated or not volume:
+        return lines
+
+    def near(value: float, target: float) -> bool:
+        return abs(value - target) <= 0.005 * abs(target)
+
+    if any(near(s, as_written) or near(s, as_written / volume) for s in stated):
+        return lines
+    if any(near(s, as_written / 1000) for s in stated):
+        return [(p / 1000 if p is not None else None, v, c) for p, v, c in lines]
+    return lines
+
+
+def filing_fingerprint(filing: TemplateFiling) -> tuple:
+    """What two copies of one notification share (a press release often repeats the attached template)."""
+    return (" ".join((entity_name(filing.declarant) or "").casefold().split()),
+            tuple((normalize_nature(clean(tx.nature) or "")[0], find_date(tx.date_text),
+                   tuple(price_lines(tx, filing.nordic))) for tx in filing.transactions))
+
+
 def aggregated_line(tx: TemplateTransaction, nordic: bool) -> tuple[float | None, float | None, str | None]:
     """(price, volume, currency) from labelled aggregated text only ("Average price ...: NOK 51.70")."""
     text = " ".join(tx.aggregated)
@@ -459,7 +495,7 @@ def template_records(filing: TemplateFiling, *, source: str, jurisdiction: str, 
         description = clean(" ".join(tx.description))
         nature_raw = clean(tx.nature) or ""
         nature, direction = normalize_nature(nature_raw)
-        lines = price_lines(tx, filing.nordic)
+        lines = decimal_point_prices(price_lines(tx, filing.nordic), tx, filing.nordic)
         if not lines:
             lines = [aggregated_line(tx, filing.nordic)]
         venue = clean(tx.venue)

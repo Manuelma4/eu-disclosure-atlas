@@ -346,6 +346,7 @@ class NorwayOsloBorsPDMR(Connector):
     authority = "Oslo Børs NewsWeb (forms of Finanstilsynet)"
     homepage = "https://newsweb.oslobors.no/search?category=1102"
     window_days = 7
+    parser_version = 2  # 2: decimal-point prices checked against the stated total
 
     def fetch(self, start: date, end: date) -> Iterator[RawDocument]:
         for window_start, window_end in date_windows(start, end, self.window_days):

@@ -52,9 +52,9 @@ def template_rows(name="Anna Eksempel", position="CEO", issuer="Eksempel Holding
     return rows
 
 
-def records(rows, ctx, published=datetime(2026, 10, 20, 7, tzinfo=UTC)):
+def records(rows, ctx, published=datetime(2026, 10, 20, 7, tzinfo=UTC), nordic=None):
     out = []
-    for f, filing in enumerate(parse_rows(rows)):
+    for f, filing in enumerate(parse_rows(rows, nordic)):
         out += list(template_records(filing, source="dk_test", jurisdiction="DK", key=f"k/{f}", ctx=ctx,
                                      source_url=None, published_at=published,
                                      fetched_at=datetime(2026, 10, 20, 8, tzinfo=UTC), parser="dk_test@1",
@@ -107,6 +107,18 @@ def test_closely_associated_links_to_the_named_manager(ctx):
     (tx,) = records(rows, ctx)
     assert tx.pdmr_id == ctx.person_id("Anna Eksempel", scope=EXAMPLE_LEI) != tx.notifier_id
     assert tx.pdmr_role == "chair" and "eksempel" not in (tx.pdmr_role_raw or "").casefold()
+
+
+def test_decimal_point_price_next_to_danish_thousands(ctx):
+    # "1.870" is 1.87 kr.: the aggregated section states the total, 55.000 stk. x 1,87 kr. = 102.850 DKK.
+    rows = template_rows(prices=(("1.870 DKK", "55.000 stk."),), aggregated=("55.000 stk.", "102.850 DKK"))
+    (tx,) = records(rows, ctx, nordic=True)
+    assert (tx.price, tx.volume, tx.amount) == (1.87, 55000.0, 102850.0)
+    # A price in the thousands stays as written when the aggregated section states its total or its average.
+    for aggregated in (("10 stk.", "125.000 DKK"), ("10 stk.", "12.500 DKK")):
+        rows = template_rows(prices=(("12.500 DKK", "10 stk."),), aggregated=aggregated)
+        (tx,) = records(rows, ctx, nordic=True)
+        assert (tx.price, tx.amount) == (12500.0, 125000.0)
 
 
 def test_ambiguous_prices_are_left_empty(ctx):

@@ -112,6 +112,15 @@ def test_fetch_reads_one_language_per_announcement(tmp_path, ctx):
     assert report.records == 2 and not report.warnings
 
 
+def test_a_press_release_repeating_the_template_is_read_once(ctx, monkeypatch):
+    monkeypatch.setitem(globals(), "ANNOUNCEMENTS", {"400000004": ["Skema-da.html (Danish)",
+                                                                  "Pressemeddelelse-da.html (Danish)"]})
+    connector = DenmarkFinanstilsynetPDMR(http=FakeOAM())
+    docs = [d for d in connector.fetch(date(2026, 10, 19), date(2026, 10, 19)) if d.meta["kind"] == "document"]
+    assert [d.meta["use"] for d in docs] == [True, False]
+    assert len([r for d in docs for r in connector.parse(d, ctx)]) == 1
+
+
 def test_helpers():
     values, links = details_values(details("1", ["a b.pdf (English)"]))
     assert values["Issuer/LEI code"] == EXAMPLE_LEI and links[0]["title"] == "a b.pdf (English)"

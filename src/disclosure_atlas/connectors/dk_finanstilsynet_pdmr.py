@@ -18,7 +18,7 @@ from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 from ..models import Dataset, InsiderTransaction
-from ._mar_template import TemplateError, read_document, template_records
+from ._mar_template import TemplateError, filing_fingerprint, read_document, template_records
 from .base import Connector, ParseContext, RawDocument, date_windows, register
 
 # The module id is the search app's configuration on https://www.finanstilsynet.dk/finansielle-temaer/
@@ -86,6 +86,7 @@ class DenmarkFinanstilsynetPDMR(Connector):
     authority = "Finanstilsynet (Danish Financial Supervisory Authority), OAM"
     homepage = SEARCH_PAGE
     window_days = 31
+    parser_version = 2  # 2: decimal-point prices checked against the stated total
 
     def fetch(self, start: date, end: date) -> Iterator[RawDocument]:
         for window_start, window_end in date_windows(start, end, self.window_days):
@@ -136,21 +137,28 @@ class DenmarkFinanstilsynetPDMR(Connector):
         for n, link in enumerate(links):
             got = self.http.get(document_url(link["url"]))
             try:
-                readable = bool(read_document(got.content))
+                filings = read_document(got.content)
             except TemplateError:
-                readable = False
-            documents.append((n, link, got, readable))
+                filings = []
+            documents.append((n, link, got, filings))
         # Danish and English versions of the same notification: read one language only, English first.
-        languages = {language_of(link["title"]) for _, link, _, ok in documents if ok}
+        languages = {language_of(link["title"]) for _, link, _, filings in documents if filings}
         chosen = "english" if "english" in languages else next(iter(sorted(languages)), None)
-        for n, link, got, readable in documents:
+        seen: set[tuple] = set()
+        for n, link, got, filings in documents:
             title = link["title"]
+            use = bool(filings) and language_of(title) == chosen
+            if use:
+                # A press release often repeats the template attached next to it: read each notification once.
+                prints = {filing_fingerprint(filing) for filing in filings}
+                use = not prints <= seen
+                seen |= prints
             yield RawDocument(
                 source=self.name, url=str(got.url), params={}, content=got.content,
                 content_type=got.headers.get("content-type"), fetched_at=datetime.now(UTC),
                 suffix=".html" if title.rsplit(" (", 1)[0].lower().endswith((".html", ".htm")) else ".pdf",
                 meta={"kind": "document", "index": n, "title": title, "language": language_of(title),
-                      "use": readable and language_of(title) == chosen, **base},
+                      "use": use, **base},
             )
 
     def parse(self, doc: RawDocument, ctx: ParseContext) -> Iterator[InsiderTransaction]:

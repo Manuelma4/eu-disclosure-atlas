@@ -19,7 +19,8 @@ shared reader (`connectors/_mar_template.py`), which understands English and Dan
 values it can read unambiguously (a price written as "see the appendix" stays empty).
 
 When both languages carry the template, only the English documents are read (Danish otherwise), so a trade
-is not counted twice. The bronze manifest marks each document with `language` and `use`.
+is not counted twice. A press release that repeats the template attached next to it (same person, nature, date,
+prices and volumes) is not read either. The bronze manifest marks each document with `language` and `use`.
 
 ## Mapping and privacy
 - `published_at` is the announcement's "Published" time (Copenhagen local time, stored in UTC).
@@ -40,6 +41,13 @@ is not counted twice. The bronze manifest marks each document with `language` an
 - Announcements whose documents are only press releases (for example weekly buy-back reports in the same
   category) produce no record; the listing's bronze manifest counts them as `unread`.
 - Some issuers publish the same template in a new announcement each day of a buy-back programme.
+- Some issuers write the price with a decimal point ("1.870" for 1.87 kr.) next to Danish thousands points in
+  volumes and totals ("55.000 stk.", "102.850 DKK"). Read as Danish, such a price is 1,000 times too high. The
+  reader switches to the decimal reading only when the aggregated section states the total it gives and
+  nothing that fits the price as written (October 2026).
+- Known issue: an issuer may type the total amount in the price column (for example "41.943" for 30.000
+  shares, with the same "41.943 DKK" as aggregated price). Nothing in the document contradicts it, so the
+  record keeps a price far above the market; catching it needs a check against market prices (ROADMAP WS3).
 
 ## Observed (20 August to 19 October 2026)
 156 announcements with documents; 130 of them yield records (the others are press releases, buy-back reports or
