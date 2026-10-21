@@ -5,7 +5,7 @@ website, a public API and versioned open data.**
 
 [![CI](https://github.com/Manuelma4/eu-disclosure-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/Manuelma4/eu-disclosure-atlas/actions/workflows/ci.yml)
 
-![EU Disclosure Atlas home page: insider buying in the last 30 days, key figures and weekly insider flow](docs/img/home.jpg)
+![EU Disclosure Atlas home page: insider buying in the last 30 days and key figures across seven countries](docs/img/home.jpg)
 
 In the United States, every insider trade is filed on SEC Form 4 within two business days and is free,
 structured and searchable on EDGAR. A whole ecosystem of academic research, retail tools and journalism is
@@ -73,11 +73,17 @@ PDF-only sources with an evaluation gate. Full design: [docs/architecture.md](do
 
 | Jurisdiction | Authority | Insider trades (MAR 19) | Net short positions (SSR) |
 |---|---|---|---|
-| Sweden | Finansinspektionen | **Live** (`se_fi_pdmr`) | Planned |
-| France | AMF (BDIF) | **Live** (`fr_amf_pdmr`): PDF parsing, LLM fallback, evaluated | Planned |
-| Germany | BaFin | Blocked: the database host disallows crawling (robots.txt) | Planned |
-| Netherlands | AFM | **Live** (`nl_afm_pdmr`) | Planned |
-| Spain, Italy, Nordics, others | | Researching | Researching |
+| Sweden | Finansinspektionen | **Live** (`se_fi_pdmr`) | **Live** (`se_fi_shorts`) |
+| France | AMF (BDIF) | **Live** (`fr_amf_pdmr`): PDF parsing, LLM fallback, evaluated | **Live** (`fr_amf_shorts`) |
+| Germany | BaFin | Blocked: the database host disallows crawling (robots.txt) | **Live** (`de_bafin_shorts`) |
+| Netherlands | AFM | **Live** (`nl_afm_pdmr`) | **Live** (`nl_afm_shorts`) |
+| Spain | CNMV | **Live** (`es_cnmv_pdmr`) | **Live** (`es_cnmv_shorts`) |
+| Ireland | Central Bank of Ireland | Blocked (see the source notes) | **Live** (`ie_cbi_shorts`) |
+| Belgium | FSMA | **Live** (`be_fsma_pdmr`) | Researching |
+| Denmark | Finanstilsynet (OAM) | **Live** (`dk_finanstilsynet_pdmr`) | Researching |
+| Norway | Oslo Børs NewsWeb (OAM) | **Live** (`no_oslobors_pdmr`) | Researching |
+| Italy | Consob | Researching | Blocked: CAPTCHA for automated clients |
+| Finland, Poland, Austria, Portugal, others | | Blocked or deferred (see the source notes) | Researching |
 
 Status and source notes: [docs/sources/README.md](docs/sources/README.md). Plan: [ROADMAP.md](ROADMAP.md).
 
@@ -145,7 +151,16 @@ transactions exclude commercial use). Contents, licensing per source and how rel
 
 Do European insiders beat the market? Do funds keep short positions just below the 0.5% publication threshold?
 Did the Listing Act threshold change disclosure? How late are filings, country by country? See
-[docs/research-agenda.md](docs/research-agenda.md).
+[docs/research-agenda.md](docs/research-agenda.md). Results so far, each reproducible with one command:
+
+- [Insider event study](research/insider_event_study/README.md) (Sweden, 2016 to 2026): purchases carry
+  information (stocks rise about 0.7% on the first session after a purchase is published); sales carry much less.
+- [Thresholds and regulation](research/thresholds/README.md): short-position exits land just below the 0.5%
+  publication threshold 3.1 percentage points more often than the trend predicts; Sweden's Listing Act
+  threshold rise (EUR 5,000 to 20,000) cut notifications by 21%; 30% of French filings are later than three
+  business days, against 5% in Sweden.
+- [Insider signals](research/signals/README.md): an MLOps pipeline whose model shows no out-of-sample skill,
+  reported as such.
 
 ## Privacy, terms and disclaimer
 
