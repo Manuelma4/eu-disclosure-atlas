@@ -12,7 +12,7 @@ unblock it.
 | Primary storage | The Unternehmensregister (§ 26 WpHG with § 8b HGB) |
 
 ## Why it is blocked
-- The project crawls only where robots.txt allows it (see `CLAUDE.md`). The whole BaFin portal host that serves
+- The project crawls only where robots.txt allows it (see [legal and ethics](../legal-and-ethics.md)). The whole BaFin portal host that serves
   the database disallows every path for every user agent, so the database and its CSV export are out of reach for
   an automated client, however polite.
 - The Unternehmensregister, where issuers must store the notices, disallows its search, publication and register

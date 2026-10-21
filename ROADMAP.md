@@ -1,7 +1,7 @@
 # Roadmap
 
-Status: `[ ]` todo · `[~]` in progress · `[x]` done. Each workstream (WS) is sized for one Claude session
-and owns its files, so several can run in parallel on separate branches (see CLAUDE.md).
+Status: `[ ]` todo · `[~]` in progress · `[x]` done. Each workstream (WS) owns its files, so several can run
+in parallel on separate branches.
 
 ## M0 Foundation `[x]`
 - [x] Unified schemas, multilingual normalization, pseudonymization, polite HTTP client
@@ -204,6 +204,6 @@ Owns: `scripts/release-data.sh`, `src/disclosure_atlas/publish/`, `docs/open-dat
 
 ## M6 Integration `[ ]`
 
-### WS9 Signals for MAYAROSERO Investments `[ ]`
+### WS9 Signals feed for trading platforms `[ ]`
 - JSON feed: European insider cluster buys and crowded shorts, with methodology notes.
-- Adapter PR in the MAYAROSERO Investments repo (separate repository and branch).
+- A client adapter that consumes the feed, in a separate repository.

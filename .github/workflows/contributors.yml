@@ -22,7 +22,7 @@ jobs:
         run: |
           if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then RANGE="$HEAD_SHA"; else RANGE="$BASE..$HEAD_SHA"; fi
           bad=$(git log --format='%h %ae %an' "$RANGE" | awk -v e="$EXPECTED" '$2 != e')
-          trailers=$(git log --format='%h %B' "$RANGE" | grep -i -E 'co-authored-by:|claude-session:' || true)
+          trailers=$(git log --format='%h %B' "$RANGE" | grep -i -E '^(co-authored-by|[a-z-]*session):' || true)
           if [ -n "$bad$trailers" ]; then
             echo "Commits violating the single-contributor policy:"; echo "$bad"; echo "$trailers"; exit 1
           fi

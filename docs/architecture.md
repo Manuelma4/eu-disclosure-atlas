@@ -26,7 +26,7 @@ flowchart LR
     ATLAS(("EU Disclosure Atlas"))
     INV["Investors and analysts"]
     RES["Researchers and journalists"]
-    DEV["Developers and apps<br/>(e.g. MAYAROSERO Investments)"]
+    DEV["Developers and apps"]
     AGT["AI agents<br/>(Claude via MCP)"]
     REG --> ATLAS
     REF --> ATLAS

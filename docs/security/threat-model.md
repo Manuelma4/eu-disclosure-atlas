@@ -11,7 +11,7 @@ decision record and assigned to a workstream), **accepted** (residual risk, with
 
 | Asset | Classification | Where | Notes |
 |---|---|---|---|
-| Raw regulator documents (bronze) | Confidential: contain real names of natural persons | object storage, private bucket | Never published (CLAUDE.md, decision 0002) |
+| Raw regulator documents (bronze) | Confidential: contain real names of natural persons | object storage, private bucket | Never published (decision 0002, docs/legal-and-ethics.md) |
 | Pseudonym key | Secret | External Secrets / SOPS | Re-identification key for natural persons |
 | Silver and gold data | Public (pseudonymized) | Parquet, DuckLake catalog | Integrity matters more than confidentiality |
 | User accounts, watchlists, alert rules, webhook secrets | Personal data, confidential | PostgreSQL (alerts) and Keycloak | P3 |

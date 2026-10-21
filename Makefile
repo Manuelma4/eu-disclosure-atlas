@@ -1,4 +1,4 @@
-# Platform shortcuts (P6). Python, website and Go commands are in CLAUDE.md and README.md.
+# Platform shortcuts (P6). Python, website and Go commands are in README.md.
 .PHONY: k3d-up k3d-smoke k3d-down k3d-argocd deploy-validate tofu-check argocd-platform
 
 k3d-up: ## Local cluster with operators and the full dev release
