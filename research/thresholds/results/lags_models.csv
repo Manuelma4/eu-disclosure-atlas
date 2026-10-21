@@ -1,0 +1,25 @@
+model,term,coef,se,p,n
+LPM,C(country)[T.SE],-0.252458,0.033709,0.0,161097
+LPM,"C(role_group, Treatment('CEO/CFO'))[T.Chair/board]",0.012519,0.015995,0.433827,161097
+LPM,"C(role_group, Treatment('CEO/CFO'))[T.Other]",0.055938,0.034536,0.105301,161097
+LPM,"C(role_group, Treatment('CEO/CFO'))[T.Other executive]",0.001303,0.014515,0.928459,161097
+LPM,"C(size, Treatment('EUR 20k-100k'))[T.< EUR 5k]",0.042761,0.015809,0.006833,161097
+LPM,"C(size, Treatment('EUR 20k-100k'))[T.>= EUR 1m]",-0.00904,0.011569,0.434574,161097
+LPM,"C(size, Treatment('EUR 20k-100k'))[T.EUR 100k-1m]",-0.017568,0.007169,0.014258,161097
+LPM,"C(size, Treatment('EUR 20k-100k'))[T.EUR 5k-20k]",0.020464,0.005735,0.000359,161097
+LPM,"C(segment, Treatment('Main market'))[T.Growth market / MTF]",0.012685,0.013455,0.345804,161097
+LPM,"C(segment, Treatment('Main market'))[T.Unknown]",0.049996,0.017898,0.005216,161097
+LPM,associated,0.025624,0.01803,0.155265,161097
+LPM,market,-0.002706,0.007045,0.700885,161097
+Logit (average marginal effects),C(country)[T.SE],-0.180396,0.015925,0.0,161097
+Logit (average marginal effects),"C(role_group, Treatment('CEO/CFO'))[T.Chair/board]",0.013971,0.016322,0.392014,161097
+Logit (average marginal effects),"C(role_group, Treatment('CEO/CFO'))[T.Other]",0.044729,0.018838,0.017575,161097
+Logit (average marginal effects),"C(role_group, Treatment('CEO/CFO'))[T.Other executive]",0.003832,0.014798,0.795648,161097
+Logit (average marginal effects),"C(size, Treatment('EUR 20k-100k'))[T.< EUR 5k]",0.035575,0.0112,0.001492,161097
+Logit (average marginal effects),"C(size, Treatment('EUR 20k-100k'))[T.>= EUR 1m]",-0.004888,0.010114,0.62889,161097
+Logit (average marginal effects),"C(size, Treatment('EUR 20k-100k'))[T.EUR 100k-1m]",-0.019059,0.006945,0.006064,161097
+Logit (average marginal effects),"C(size, Treatment('EUR 20k-100k'))[T.EUR 5k-20k]",0.021308,0.006001,0.000385,161097
+Logit (average marginal effects),"C(segment, Treatment('Main market'))[T.Growth market / MTF]",0.01655,0.012817,0.196633,161097
+Logit (average marginal effects),"C(segment, Treatment('Main market'))[T.Unknown]",0.050347,0.016707,0.002583,161097
+Logit (average marginal effects),associated,0.018216,0.014302,0.202785,161097
+Logit (average marginal effects),market,-0.006446,0.007449,0.386815,161097

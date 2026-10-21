@@ -177,11 +177,17 @@ Owns: `research/insider_event_study/`.
 - [ ] Next: other countries as their connectors land; routine versus opportunistic insiders (Cohen, Malloy
   and Pomorski, 2012); delisted-firm prices to close the survivorship gap.
 
-### WS7 Thresholds and regulation `[ ]`
+### WS7 Thresholds and regulation `[x]` (shorts: six countries; PDMR: Sweden and France)
 Owns: `research/thresholds/`.
-- Bunching of net short positions just below 0.5% across jurisdictions.
-- Listing Act threshold change: disclosure volume before and after, across national threshold choices.
-- Filing-lag compliance with the three-business-day rule, by country.
+- [x] Bunching of net short positions at 0.5% across six jurisdictions: difference in bunching against the
+  0.6%-1.5% steps, holder bootstrap. Small excess of exits just below 0.5%, no missing mass at entry.
+- [x] Threshold changes: Sweden EUR 5k to 20k (Listing Act, Dec 2024) and France EUR 20k to 50k (Dec 2025),
+  with France's unchanged 2025 as a placebo; volume, size-class DiD, bunching at the new thresholds.
+- [x] Filing-lag compliance with the three-business-day rule, by country, role, size and segment.
+- One command (`python research/thresholds/run.py --backfill`) and a paper-style write-up in
+  [research/thresholds/README.md](research/thresholds/README.md).
+- [ ] Next: other countries as their PDMR connectors land; do late or below-threshold filings carry
+  information (link to WS6 abnormal returns)?
 
 ## M5 Publishing and access `[ ]`
 

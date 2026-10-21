@@ -1,0 +1,3 @@
+country,lines,share_late,se,share_late_notification_level,share_late_over_20bd,median_lag_bd,p90_lag_bd
+FR,35769.0,0.302217,0.002428,0.27289,0.092818,2.0,16.0
+SE,125961.0,0.051079,0.00062,0.040687,0.014552,1.0,3.0

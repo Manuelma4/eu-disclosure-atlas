@@ -1,0 +1,57 @@
+{
+  "sample_until": "2026-10-20",
+  "short_notifications": 177480,
+  "short_holders": 915,
+  "pdmr_lines": {
+    "SE": 153846,
+    "FR": 48970
+  },
+  "pdmr_first_publication": {
+    "FR": "2021-12-08",
+    "SE": "2016-07-04"
+  },
+  "listing_act_years": {
+    "SE": {
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "pre_years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "FR": {
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "pre_years": [
+        2022,
+        2023,
+        2024
+      ]
+    }
+  },
+  "lag_lines": 181776,
+  "lag_excluded_amendments": 12129,
+  "lag_excluded_implausible_over_365_days": 1526,
+  "lag_excluded_restamped_publication_dates": 8037
+}
