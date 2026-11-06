@@ -29,9 +29,10 @@ test("filings page is accessible", async ({ page }) => {
   await expectAccessible(page);
 });
 
-test("filings are translated", async ({ page }) => {
+test("a legacy filings URL keeps its filters when it redirects to English", async ({ page }) => {
   await page.goto("/de/filings?nature=buy");
-  await expect(page.locator("html")).toHaveAttribute("lang", "de");
+  await expect(page).toHaveURL(/\/en\/filings\?nature=buy$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.locator("tbody tr").first()).toBeVisible();
-  await expect(page.locator("thead")).not.toContainText("Published");
+  await expect(page.locator("thead")).toContainText("Published");
 });

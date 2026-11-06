@@ -45,6 +45,13 @@ const nextConfig: NextConfig = {
     sri: { algorithm: "sha256" },
     globalNotFound: true,
   },
+  async redirects() {
+    return ["fr", "es", "de"].map((locale) => ({
+      source: `/${locale}/:path*`,
+      destination: "/en/:path*",
+      permanent: true,
+    }));
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

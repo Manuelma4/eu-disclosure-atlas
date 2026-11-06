@@ -48,17 +48,17 @@ test("search", async ({ page }) => {
 
 test.describe("dark", () => {
   test.use({ colorScheme: "dark" });
-  test("home in French, dark mode", async ({ page }) => {
-    await page.goto("/fr");
+  test("home in dark mode", async ({ page }) => {
+    await page.goto("/en");
     await expect(page.getByTestId("buy-30d")).toBeVisible();
     await page.waitForTimeout(500);
-    await page.screenshot({ path: out("home-fr-dark"), ...shot });
+    await page.screenshot({ path: out("home-dark"), ...shot });
   });
-  test("explore in German, dark mode", async ({ page }) => {
-    await page.goto("/de/explore");
+  test("explore in dark mode", async ({ page }) => {
+    await page.goto("/en/explore");
     await expect(page.getByTestId("explore-status")).toContainText(/\d/, { timeout: 30_000 });
     await expect(page.locator(".explorer-plot svg")).toHaveCount(3);
     await page.waitForTimeout(500);
-    await page.screenshot({ path: out("explore-de-dark"), ...shot });
+    await page.screenshot({ path: out("explore-dark"), ...shot });
   });
 });

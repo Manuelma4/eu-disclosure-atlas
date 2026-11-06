@@ -1,5 +1,5 @@
 // Responsive and console audit of the website (development tool, not part of CI).
-//   node scripts/audit-pages.mjs <base-url> <out-dir> [company-lei] [--locales=en,fr,de] [--shots]
+//   node scripts/audit-pages.mjs <base-url> <out-dir> [company-lei] [--locales=en] [--shots]
 // For every page, viewport and locale: horizontal overflow (with the widest offending elements), console
 // errors and warnings, failed requests and page errors. With --shots, screenshots at 390 and 1440 px (en).
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { chromium } from "@playwright/test";
 
 const [base, out, lei = "549300EXAMPLE0000073"] = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-const locales = (process.argv.find((a) => a.startsWith("--locales="))?.split("=")[1] ?? "en,fr,de").split(",");
+const locales = (process.argv.find((a) => a.startsWith("--locales="))?.split("=")[1] ?? "en").split(",");
 const shots = process.argv.includes("--shots");
 const VIEWPORTS = [
   [360, 740],

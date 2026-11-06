@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { expectAccessible, ROBOTICS_LEI } from "./helpers";
 
-const PAGES = ["/en", "/en/filings", `/en/company/${ROBOTICS_LEI}`, "/en/architecture", "/fr", "/de/explore"];
+const PAGES = ["/en", "/en/filings", `/en/company/${ROBOTICS_LEI}`, "/en/architecture", "/en/account/watchlist", "/en/explore"];
 
 test.describe("dark mode", () => {
   test.use({ colorScheme: "dark" });

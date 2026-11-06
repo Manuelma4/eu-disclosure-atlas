@@ -2,7 +2,8 @@ import { expect, test } from "@playwright/test";
 
 import { expectAccessible } from "./helpers";
 
-test("redirects to the visitor's language and renders the overview", async ({ page }) => {
+test("renders the English overview even when the browser prefers French", async ({ page }) => {
+  await page.setExtraHTTPHeaders({ "Accept-Language": "fr" });
   await page.goto("/");
   await expect(page).toHaveURL(/\/en$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
@@ -26,20 +27,12 @@ test("live tape connects to the stream", async ({ page }) => {
   await expect(page.getByTestId("tape-status")).toContainText("Live", { timeout: 15_000 });
 });
 
-test("language switch keeps the page and translates it", async ({ page }) => {
-  await page.goto("/en/filings");
-  await page.getByRole("combobox", { name: "Language" }).selectOption("fr");
-  await expect(page).toHaveURL(/\/fr\/filings$/);
-  await expect(page.locator("html")).toHaveAttribute("lang", "fr");
-  await expect(page.getByRole("navigation", { name: /./ }).first()).not.toContainText("Overview");
-});
-
 for (const locale of ["fr", "es", "de"]) {
-  test(`overview renders in ${locale}`, async ({ page }) => {
+  test(`the former /${locale} overview redirects to English`, async ({ page }) => {
     await page.goto(`/${locale}`);
-    await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await expect(page.getByTestId("buy-30d")).toContainText("€");
-    await expect(page.locator("body")).not.toContainText("Insider flow, weekly");
+    await expect(page).toHaveURL(/\/en$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.getByRole("heading", { name: "Insider flow, weekly" })).toBeVisible();
   });
 }
 
@@ -65,11 +58,10 @@ test("skip link moves focus to the content", async ({ page }) => {
   await expect(page.locator("main")).toBeFocused();
 });
 
-test("account pages live under the locale and are translated", async ({ page }) => {
-  await page.goto("/fr/account/watchlist");
-  await expect(page.locator("html")).toHaveAttribute("lang", "fr");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Liste de suivi et alertes");
-  await expect(page.getByRole("button", { name: "Se connecter" }).first()).toBeVisible();
-  const unprefixed = await page.goto("/account/watchlist");
-  expect(unprefixed?.url()).toMatch(/\/(en|fr|es|de)\/account\/watchlist$/);
+test("account pages use the English route and interface", async ({ page }) => {
+  await page.goto("/account/watchlist");
+  await expect(page).toHaveURL(/\/en\/account\/watchlist$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Watchlist and alerts");
+  await expect(page.getByRole("button", { name: "Sign in" }).first()).toBeVisible();
 });

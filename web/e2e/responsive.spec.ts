@@ -11,8 +11,6 @@ const PAGES = {
   architecture: "/en/architecture",
   watchlist: "/en/account/watchlist",
   "not found": "/en/no-such-page",
-  "overview (German)": "/de",
-  "filings (French)": "/fr/filings",
 };
 
 async function expectNoHorizontalScroll(page: Page) {
@@ -28,7 +26,7 @@ for (const [name, path] of Object.entries(PAGES)) {
     await page.goto(path);
     await expect(page.locator("main")).toBeVisible();
     if (path.endsWith("/explore")) {
-      await expect(page.getByTestId("explore-status")).toContainText(/loaded in|geladen|chargées/, { timeout: 30_000 });
+      await expect(page.getByTestId("explore-status")).toContainText("loaded in", { timeout: 30_000 });
       await expect(page.locator(".explorer-plot svg")).toHaveCount(3);
     }
     await expectNoHorizontalScroll(page);
@@ -46,7 +44,7 @@ test("the menu button opens the navigation, moves focus into it and closes with 
   const close = page.getByRole("button", { name: "Close menu" });
   await expect(close).toHaveAttribute("aria-expanded", "true");
   await expect(page.getByRole("button", { name: "Search companies" })).toBeFocused();
-  await expect(page.getByRole("combobox", { name: "Language" })).toBeVisible();
+  await expect(page.getByRole("combobox", { name: "Language" })).toHaveCount(0);
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
   await expect(page.getByRole("link", { name: "Explore" })).toBeHidden();

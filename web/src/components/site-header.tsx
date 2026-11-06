@@ -4,7 +4,6 @@ import { Link } from "@/i18n/navigation";
 
 import { AccountMenu } from "./account/account-menu";
 import { CommandPalette, SearchButton } from "./command-palette";
-import { LocaleSwitcher } from "./locale-switcher";
 import { MobileMenu } from "./mobile-menu";
 import { NavLink } from "./nav-link";
 
@@ -54,7 +53,6 @@ export async function SiteHeader() {
         </nav>
         <div className="ml-auto hidden items-center gap-2 text-sm text-ink-2 md:flex">
           <SearchButton />
-          <LocaleSwitcher />
           <AccountMenu />
         </div>
 
@@ -72,11 +70,8 @@ export async function SiteHeader() {
                 {t("api")}
               </a>
             </nav>
-            <div className="mt-2 grid gap-3 border-t border-hairline pt-3 text-[15px] text-ink-2">
-              <div className="grid">
-                <AccountMenu variant="menu" />
-              </div>
-              <LocaleSwitcher variant="menu" />
+            <div className="mt-2 grid border-t border-hairline pt-3 text-[15px] text-ink-2">
+              <AccountMenu variant="menu" />
             </div>
           </MobileMenu>
         </div>

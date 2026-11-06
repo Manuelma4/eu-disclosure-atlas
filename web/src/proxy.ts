@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "./i18n/routing";
 
-/** Redirects unprefixed paths to the visitor's language (Accept-Language, then English) and sets hreflang links. */
+/** Redirects unprefixed page paths to English. */
 export default createMiddleware(routing);
 
 export const config = {

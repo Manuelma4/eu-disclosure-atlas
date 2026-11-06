@@ -41,7 +41,7 @@ January 2030. It centralises access to filings, not a harmonised, research-ready
 
 | Surface | What it does | Status |
 |---|---|---|
-| **Website** | Live tape, insider flow, company pages with price charts and insider markers, filings search, an in-browser explorer (DuckDB-WASM + Mosaic), Ctrl/Cmd+K search; English, French, Spanish and German | Live (Next.js 16.4) |
+| **Website** | English interface with a live tape, insider flow, company pages with price charts and insider markers, filings search, an in-browser explorer (DuckDB-WASM + Mosaic), and Ctrl/Cmd+K search | Live (Next.js 16.4) |
 | **REST API `/v1`** | Filings, issuers, statistics; OpenAPI 3.1, cursor pagination, ETags pinned to data snapshots | Live (FastAPI) |
 | **Live stream `/v1/stream`** | Server-sent events for every newly ingested filing, resumable; fanned out from Kafka by a Go gateway | Live |
 | **Open data** | Gold tables as Parquet (`disclosure-atlas export`, `GET /v1/exports`), daily releases next | Partial |

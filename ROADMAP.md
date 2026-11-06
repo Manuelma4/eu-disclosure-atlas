@@ -68,8 +68,7 @@ Owns: `web/`, `src/disclosure_atlas/api/{prices,exports}.py`, `src/disclosure_at
 - [x] Price chart with insider buy and sell markers (lightweight-charts), `GET /v1/issuers/{lei}/prices` with a
   pluggable provider (yfinance in development, synthetic for tests), ISIN-to-ticker mapping, cache under
   `lake/reference/prices/`
-- [x] English, French, Spanish and German (next-intl, locale-prefixed routes, hreflang); a CI check keeps the
-  four catalogues in sync
+- [x] English interface with canonical `/en` routes and redirects from former language URLs
 - [x] Accessibility (keyboard paths for every chart, focus rings, skip link, reduced motion, axe in light and
   dark mode), Lighthouse budgets, Playwright end-to-end tests against a fixture API, all in CI
 - [ ] Follow-ups: research pages (with WS6/WS7 results) and an API reference page (Scalar)

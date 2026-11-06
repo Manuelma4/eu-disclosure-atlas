@@ -34,12 +34,8 @@ type TokenResponse = {
   expires_in: number;
 };
 
-/** The page's language prefix (/en, /fr…), so sign-in comes back to the same language. */
-const localePrefix = () => {
-  const segment = window.location.pathname.split("/")[1];
-  return `/${(routing.locales as readonly string[]).includes(segment) ? segment : routing.defaultLocale}`;
-};
-const callbackUrl = () => `${window.location.origin}${localePrefix()}/account/callback`;
+const ENGLISH_PREFIX = `/${routing.defaultLocale}`;
+const callbackUrl = (prefix: string = ENGLISH_PREFIX) => `${window.location.origin}${prefix}/account/callback`;
 
 function base64url(bytes: Uint8Array): string {
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -78,16 +74,17 @@ function clear() {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-/** Redirects to Keycloak; comes back to /<locale>/account/callback, then to `returnTo`. */
+/** Redirects to Keycloak; comes back to /en/account/callback, then to `returnTo`. */
 export async function signIn(returnTo = window.location.pathname): Promise<void> {
   const verifier = randomString();
   const state = randomString();
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier)));
-  sessionStorage.setItem(PENDING_KEY, JSON.stringify({ verifier, state, returnTo }));
+  const redirectUri = callbackUrl();
+  sessionStorage.setItem(PENDING_KEY, JSON.stringify({ verifier, state, returnTo, redirectUri }));
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
     response_type: "code",
-    redirect_uri: callbackUrl(),
+    redirect_uri: redirectUri,
     scope: "openid email profile",
     state,
     code_challenge: base64url(digest),
@@ -96,15 +93,17 @@ export async function signIn(returnTo = window.location.pathname): Promise<void>
   window.location.href = new URL(`?${params}`, ENDPOINTS.authorize).href; // Keycloak, not a Next.js route
 }
 
-/** Completes sign-in on /<locale>/account/callback; returns the path to go back to. */
+/** Completes sign-in and returns the path to go back to. */
 export async function completeSignIn(search: string): Promise<string> {
   const params = new URLSearchParams(search);
   const pending = JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? "null") as
-    | { verifier: string; state: string; returnTo: string }
+    | { verifier: string; state: string; returnTo: string; redirectUri?: string }
     | null;
   sessionStorage.removeItem(PENDING_KEY);
   if (params.get("error")) throw new Error(params.get("error_description") ?? params.get("error") ?? "Sign-in failed");
   if (!pending || params.get("state") !== pending.state) throw new Error("Sign-in expired, please try again");
+  // A sign-in already underway may return via an old locale URL. Exchange its code with the original callback URI.
+  const legacyPrefix = pending.returnTo.match(/^\/(?:fr|es|de)(?=\/|$)/)?.[0];
   const response = await fetch(ENDPOINTS.token, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -112,19 +111,20 @@ export async function completeSignIn(search: string): Promise<string> {
       grant_type: "authorization_code",
       client_id: CLIENT_ID,
       code: params.get("code") ?? "",
-      redirect_uri: callbackUrl(),
+      redirect_uri: pending.redirectUri ?? callbackUrl(legacyPrefix),
       code_verifier: pending.verifier,
     }),
   });
   if (!response.ok) throw new Error(`Token exchange failed (${response.status})`);
   store((await response.json()) as TokenResponse);
+  if (legacyPrefix) return `${ENGLISH_PREFIX}${pending.returnTo.slice(legacyPrefix.length)}`;
   return pending.returnTo.startsWith("/") ? pending.returnTo : "/";
 }
 
 export function signOut(): void {
   const session = readSession();
   clear();
-  const params = new URLSearchParams({ client_id: CLIENT_ID, post_logout_redirect_uri: `${window.location.origin}${localePrefix()}` });
+  const params = new URLSearchParams({ client_id: CLIENT_ID, post_logout_redirect_uri: `${window.location.origin}${ENGLISH_PREFIX}` });
   if (session?.idToken) params.set("id_token_hint", session.idToken);
   window.location.href = new URL(`?${params}`, ENDPOINTS.logout).href;
 }

@@ -231,7 +231,7 @@ flowchart LR
 - **Prices:** `/v1/issuers/{lei}/prices` maps the issuer's share ISIN to a listing and returns daily bars with the
   days its insiders traded, through a pluggable provider cached under `lake/reference/prices/` (see
   [prices.md](prices.md)).
-- **Languages:** English, French, Spanish and German (next-intl, locale-prefixed routes, hreflang alternates).
+- **Interface:** English (next-intl), with canonical `/en` routes and redirects from former language URLs.
 - **Quality gates:** Playwright end-to-end tests (axe accessibility checks in light and dark mode, keyboard flows)
   and Lighthouse budgets run in CI against the real API over a synthetic lake.
 - **Accounts** (Keycloak with passkeys, authorization code + PKCE from the browser): watchlists, alert rules and
@@ -305,7 +305,7 @@ Details: [0012](decisions/0012-kubernetes-gitops-and-infrastructure-as-code.md).
 | Done (M0, P1, P2) | Lake, CLI, FastAPI read API with SSE, Next.js website, CI; DuckLake + Dagster, snapshot ids, time travel |
 | P3 | Kafka, change-feed publisher, Go realtime-gateway and alerts, Keycloak, Envoy Gateway |
 | P4 | ai-service: MCP server, Ask the Atlas, gRPC explainer, evaluation gates |
-| P5 | Website product: search, DuckDB-WASM explorer, prices, four languages, end-to-end tests |
+| P5 | Website product: search, DuckDB-WASM explorer, prices, English interface, end-to-end tests |
 | P6 | Kubernetes, Helm, Argo CD, KEDA, operators, OpenTofu on Scaleway, signed supply chain |
 | P7 | Observability, SLOs, security hardening, load and chaos tests |
 | P8 | MLOps: insider-signal model with MLflow, scoring and monitoring |

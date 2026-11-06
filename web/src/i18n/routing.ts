@@ -1,14 +1,14 @@
 import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
-  locales: ["en", "fr", "es", "de"],
+  locales: ["en"],
   defaultLocale: "en",
   localePrefix: "always",
+  localeDetection: false,
+  localeCookie: false,
 });
 
 export type Locale = (typeof routing.locales)[number];
 
-/** Intl locale used for numbers and dates in each UI language. */
-export const INTL_LOCALE: Record<Locale, string> = { en: "en-GB", fr: "fr-FR", es: "es-ES", de: "de-DE" };
-
-export const LOCALE_NAMES: Record<Locale, string> = { en: "English", fr: "Français", es: "Español", de: "Deutsch" };
+/** Intl locale used for numbers and dates. */
+export const INTL_LOCALE: Record<Locale, string> = { en: "en-GB" };

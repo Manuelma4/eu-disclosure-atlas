@@ -3,6 +3,7 @@ import * as rootParams from "next/root-params";
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 
+import englishMessages from "../../messages/en.json";
 import { routing } from "./routing";
 
 export default getRequestConfig(async ({ locale: requested }) => {
@@ -11,7 +12,7 @@ export default getRequestConfig(async ({ locale: requested }) => {
   if (!hasLocale(routing.locales, candidate)) notFound();
   return {
     locale: candidate,
-    messages: (await import(`../../messages/${candidate}.json`)).default,
+    messages: englishMessages,
     timeZone: "UTC",
   };
 });
