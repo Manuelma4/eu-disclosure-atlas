@@ -7,11 +7,14 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
+    // Build output, including the fixture site's separate Next.js directory.
     ".next/**",
+    ".next-e2e/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Prebuild copies third-party DuckDB-WASM bundles into this directory.
+    "public/duckdb/**",
   ]),
 ]);
 
