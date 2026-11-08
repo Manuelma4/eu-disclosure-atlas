@@ -1,5 +1,6 @@
 // Lighthouse CI: budgets for the main pages, measured on the production build against the fixture API.
 // Run with `npm run lighthouse` (starts scripts/serve-fixture.mjs, uses Playwright's Chromium).
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- Lighthouse CI loads this .cjs configuration as CommonJS.
 const { chromium } = require("@playwright/test");
 
 const BASE = "http://127.0.0.1:3005";
