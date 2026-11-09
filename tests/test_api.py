@@ -1,3 +1,4 @@
+import hashlib
 from datetime import UTC, date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -193,3 +194,45 @@ def test_as_of_time_travel_on_transactions_and_issuers(client, lake):
     assert client.get(f"/v1/insider-transactions/{item}", params={"as_of": pinned}).status_code == 200
     missing = client.get("/v1/insider-transactions", params={"as_of": 10_000})
     assert missing.status_code == 404 and missing.json()["status"] == 404
+
+
+def test_pinned_issuer_windows_use_snapshot_time(tmp_path, monkeypatch):
+    lake = Lake(tmp_path / "lake")
+    now = datetime.now(STOCKHOLM)
+    lake.fx_path.parent.mkdir(parents=True)
+    rates = [{"date": now.date() - timedelta(days=401), "currency": "SEK", "rate": 10.0}]
+    pq.write_table(pa.Table.from_pylist(rates, schema=SCHEMA), lake.fx_path)
+    rows = []
+    for days, volume in [(120, "75"), (400, "50")]:
+        published = now - timedelta(days=days)
+        rows.append(fi_row(**{
+            "Publication date": published.strftime("%d/%m/%Y %H:%M:%S"),
+            "Transaction date": (published - timedelta(days=1)).strftime("%d/%m/%Y %H:%M:%S"),
+            "Volume": volume, "Price": "2.0", "Currency": "EUR",
+        }))
+    _load(lake, rows)
+    pinned = lake.current_snapshot()
+
+    def historical_time(self, snapshot_id):
+        assert snapshot_id == pinned
+        return now - timedelta(days=60)
+
+    monkeypatch.setattr(Lake, "snapshot_time", historical_time)
+
+    with TestClient(create_app(str(lake.root))) as client:
+        latest = client.get("/v1/issuers").json()[0]
+        lei = latest["lei"]
+        assert latest["net_open_market_eur_365d"] == 150
+        assert client.get(f"/v1/issuers/{lei}").json()["distinct_buyers_90d"] == 0
+        params = {"as_of": pinned}
+        listed = client.get("/v1/issuers", params=params).json()[0]
+        assert listed["net_open_market_eur_365d"] == 250
+        detail = client.get(f"/v1/issuers/{lei}", params=params)
+        assert detail.json()["net_open_market_eur_365d"] == 250
+        assert detail.json()["distinct_buyers_90d"] == 1
+        assert "immutable" in detail.headers["cache-control"]
+        old_hash = hashlib.sha1(str(detail.url).encode()).hexdigest()[:10]
+        old_headers = {"If-None-Match": f'W/"{pinned}-{old_hash}"'}
+        assert client.get(f"/v1/issuers/{lei}", params=params, headers=old_headers).status_code == 200
+        headers = {"If-None-Match": detail.headers["etag"]}
+        assert client.get(f"/v1/issuers/{lei}", params=params, headers=headers).status_code == 304

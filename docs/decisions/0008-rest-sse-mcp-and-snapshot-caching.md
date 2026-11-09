@@ -12,6 +12,8 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
 - **Caching:** every read is pinned to a data version, the `ETag` is that version, and responses carry
   `Cache-Control: public, s-maxage=60, stale-while-revalidate=600`. A new snapshot changes every ETag at once,
   and the website's Cache Components use the same version as a cache tag.
+  Issuer queries with `?as_of=<snapshot>` measure their 90-day and 365-day windows from the snapshot's
+  commit timestamp. Current issuer queries measure those windows from request time.
 - **SSE** for live filings: one-way, works through proxies and CDNs, resumes with `Last-Event-ID`.
   WebSockets are not needed for a one-way feed.
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.

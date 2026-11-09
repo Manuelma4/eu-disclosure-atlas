@@ -54,7 +54,7 @@ from .signals import signals_router
 ISSUER_COLUMNS = """
     issuer_lei AS lei, arg_max(issuer_name, published_at) AS name, arg_max(jurisdiction, published_at) AS country,
     count(*) AS transactions, max(published_at) AS last_published_at,
-    sum(direction * amount_eur) FILTER (WHERE is_open_market AND published_at >= now() - INTERVAL 365 DAY)
+    sum(direction * amount_eur) FILTER (WHERE is_open_market AND published_at >= coalesce(?, now()) - INTERVAL 365 DAY)
         AS net_open_market_eur_365d
 """
 ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce(e.tickers, []) AS tickers"
@@ -110,9 +110,12 @@ def _if_none_match(value: str, opaque_tag: str) -> bool:
     return matched
 
 
-def _conditional(request: Request, response: Response, snapshot: Snapshot) -> Response | None:
+def _conditional(
+    request: Request, response: Response, snapshot: Snapshot, *, pinned_variant: str = "",
+) -> Response | None:
     """Set cache headers and check the precondition for an existing representation."""
-    opaque_tag = f"{snapshot.version}-{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"
+    variant = pinned_variant if snapshot.pinned else ""
+    opaque_tag = f"{snapshot.version}-{variant}{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"
     etag = f'W/"{opaque_tag}"'
     cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
     headers = {"ETag": etag, "Cache-Control": cache, "X-Atlas-Snapshot": snapshot.version}
@@ -352,34 +355,36 @@ def create_app(
             where.append("jurisdiction = ?")
             params.append(country.upper())
         with read_model.snapshot(as_of) as snap:
-            if not_modified := _conditional(request, response, snap):
+            if not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-"):
                 return not_modified
+            reference_time = lake.snapshot_time(as_of) if as_of is not None else None
             return snap.rows(
                 f"SELECT s.*, {ENRICHED_COLUMNS} FROM ("
                 f"SELECT {ISSUER_COLUMNS} FROM insider_transactions WHERE {' AND '.join(where)} "
                 "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?"
                 ") s LEFT JOIN issuers e ON e.lei = s.lei ORDER BY s.last_published_at DESC NULLS LAST, s.lei",
-                [*params, limit],
+                [reference_time, *params, limit],
             )
 
     @app.get("/v1/issuers/{lei}", response_model=IssuerDetail, tags=["issuers"])
     def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         lei = lei.upper()
         with read_model.snapshot(as_of) as snap:
+            reference_time = lake.snapshot_time(as_of) if as_of is not None else None
             summary = snap.one(
                 f"""
                 SELECT {ISSUER_COLUMNS},
                     count(DISTINCT pdmr_id) FILTER (WHERE is_open_market AND direction > 0
-                        AND published_at >= now() - INTERVAL 90 DAY) AS distinct_buyers_90d,
+                        AND published_at >= coalesce(?, now()) - INTERVAL 90 DAY) AS distinct_buyers_90d,
                     count(DISTINCT pdmr_id) FILTER (WHERE is_open_market AND direction < 0
-                        AND published_at >= now() - INTERVAL 90 DAY) AS distinct_sellers_90d
+                        AND published_at >= coalesce(?, now()) - INTERVAL 90 DAY) AS distinct_sellers_90d
                 FROM insider_transactions WHERE issuer_lei = ? GROUP BY issuer_lei
                 """,
-                [lei],
+                [reference_time, reference_time, reference_time, lei],
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
-            if not_modified := _conditional(request, response, snap):
+            if not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-"):
                 return not_modified
             summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(

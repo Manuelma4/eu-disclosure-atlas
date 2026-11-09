@@ -350,6 +350,20 @@ class Lake:
         finally:
             cur.close()
 
+    def snapshot_time(self, snapshot_id: int) -> datetime:
+        """Return the commit timestamp of one retained snapshot."""
+        cur = self._engine.con.cursor()
+        try:
+            row = cur.execute(
+                f"SELECT snapshot_time FROM {CATALOG}.snapshots() WHERE snapshot_id = ?",
+                [snapshot_id],
+            ).fetchone()
+        finally:
+            cur.close()
+        if row is None or row[0] is None:
+            raise UnknownSnapshot(f"snapshot {snapshot_id} has no retained commit timestamp")
+        return row[0].astimezone(UTC)
+
     def snapshots(self, since: int | None = None) -> list[dict[str, Any]]:
         """Committed snapshots (id, time, changes, author, message, extra info as a dict), oldest first."""
         cur = self._engine.con.cursor()
