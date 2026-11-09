@@ -11,6 +11,7 @@ import contextlib
 import hashlib
 import json
 import os
+import re
 import time
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from datetime import UTC, date, datetime
@@ -60,6 +61,7 @@ ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce
 """Issuer reference data (GLEIF legal name, OpenFIGI tickers) joined from the gold ``issuers`` view."""
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
 IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+_ETAG_LIST_MEMBER = re.compile(r'[ \t]*(?:(?:W/)?"([\x21\x23-\x7e\x80-\xff]*)"[ \t]*)?(?:,|\Z)')
 AsOf = Annotated[
     int | None,
     Query(ge=0, description="Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"),
@@ -93,12 +95,28 @@ def _parse_event_id(event_id: str) -> tuple[datetime, str]:
         raise HTTPException(HTTPStatus.BAD_REQUEST, "Invalid stream position") from exc
 
 
+def _if_none_match(value: str, opaque_tag: str) -> bool:
+    """Match an HTTP validator list using weak comparison (RFC 9110, §13.1.2)."""
+    if value.strip(" \t") == "*":
+        return True
+    offset = 0
+    matched = False
+    while offset < len(value):
+        member = _ETAG_LIST_MEMBER.match(value, offset)
+        if member is None:
+            return False
+        matched |= member[1] == opaque_tag
+        offset = member.end()
+    return matched
+
+
 def _conditional(request: Request, response: Response, snapshot: Snapshot) -> Response | None:
-    """Set ETag and caching headers; return a 304 response when the client already has this version."""
-    etag = f'W/"{snapshot.version}-{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"'
+    """Set cache headers and check the precondition for an existing representation."""
+    opaque_tag = f"{snapshot.version}-{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"
+    etag = f'W/"{opaque_tag}"'
     cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
     headers = {"ETag": etag, "Cache-Control": cache, "X-Atlas-Snapshot": snapshot.version}
-    if request.headers.get("if-none-match") == etag:
+    if _if_none_match(",".join(request.headers.getlist("if-none-match")), opaque_tag):
         return Response(status_code=HTTPStatus.NOT_MODIFIED, headers=headers)
     response.headers.update(headers)
     return None
@@ -310,11 +328,11 @@ def create_app(
     @app.get("/v1/insider-transactions/{record_id}", response_model=Transaction, tags=["insider-transactions"])
     def get_transaction(record_id: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         with read_model.snapshot(as_of) as snap:
+            row = snap.one(f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE record_id = ?", [record_id])
+            if row is None:
+                raise HTTPException(HTTPStatus.NOT_FOUND, f"No transaction {record_id}")
             if not_modified := _conditional(request, response, snap):
                 return not_modified
-            row = snap.one(f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE record_id = ?", [record_id])
-        if row is None:
-            raise HTTPException(HTTPStatus.NOT_FOUND, f"No transaction {record_id}")
         return row
 
     @app.get("/v1/issuers", response_model=list[IssuerSummary], tags=["issuers"])
@@ -348,8 +366,6 @@ def create_app(
     def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         lei = lei.upper()
         with read_model.snapshot(as_of) as snap:
-            if not_modified := _conditional(request, response, snap):
-                return not_modified
             summary = snap.one(
                 f"""
                 SELECT {ISSUER_COLUMNS},
@@ -363,6 +379,8 @@ def create_app(
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
+            if not_modified := _conditional(request, response, snap):
+                return not_modified
             summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(
                 """

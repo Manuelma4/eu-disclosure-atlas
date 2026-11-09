@@ -100,6 +100,41 @@ def test_etag_round_trip_and_new_data_changes_it(client, lake):
     assert len(refreshed.json()["items"]) == 4
 
 
+@pytest.mark.parametrize(("validators", "status"), [
+    (['"unrelated,opaque"', "{strong}"], 304),
+    (['"unrelated,opaque", {weak}'], 304),
+    (["*"], 304),
+    (["{weak}, malformed"], 200),
+    (['"unrelated"'], 200),
+])
+def test_if_none_match_validators(client, validators, status):
+    path = "/v1/insider-transactions"
+    first = client.get(path)
+    weak = first.headers["etag"]
+    headers = [("If-None-Match", value.format(weak=weak, strong=weak.removeprefix("W/")))
+               for value in validators]
+    conditional = client.get(path, headers=headers)
+    assert conditional.status_code == status
+    if status == 304:
+        assert not conditional.content
+        for header in ("etag", "cache-control", "x-atlas-snapshot"):
+            assert conditional.headers[header] == first.headers[header]
+
+
+@pytest.mark.parametrize(("collection", "items", "key"), [
+    ("insider-transactions", "items", "id"),
+    ("issuers", None, "lei"),
+])
+def test_if_none_match_wildcard_requires_an_existing_resource(client, collection, items, key):
+    path = f"/v1/{collection}"
+    records = client.get(path).json()
+    if items is not None:
+        records = records[items]
+    headers = {"If-None-Match": "*"}
+    assert client.get(f"{path}/{records[0][key]}", headers=headers).status_code == 304
+    assert client.get(f"{path}/does-not-exist", headers=headers).status_code == 404
+
+
 def test_issuers_search_and_detail(client):
     issuers = client.get("/v1/issuers", params={"q": "robotics"}).json()
     assert [i["name"] for i in issuers] == ["Example Robotics AB (publ)"]
