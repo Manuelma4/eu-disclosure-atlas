@@ -165,7 +165,7 @@ class SandboxedLake:
                 sandbox.execute("SET TimeZone = 'UTC'")
                 try:
                     for table in sorted(ALLOWED_TABLES):
-                        data = source.execute(f"SELECT * FROM {table}").fetch_arrow_table()  # noqa: S608
+                        data = source.sql(f"SELECT * FROM {table}").to_arrow_table()  # noqa: S608
                         sandbox.register("_copy", data)
                         sandbox.execute(f"CREATE TABLE {table} AS SELECT * FROM _copy")
                         sandbox.unregister("_copy")

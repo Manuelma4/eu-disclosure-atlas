@@ -88,7 +88,7 @@ class ReadModel:
             try:
                 available = {name for (name,) in source.execute("SHOW TABLES").fetchall()}
                 for table in (*GOLD_TABLES, *(t for t in ENRICHMENT_TABLES if t in available)):
-                    con.register("_gold", source.execute(f"SELECT * FROM {table}").fetch_arrow_table())
+                    con.register("_gold", source.sql(f"SELECT * FROM {table}").to_arrow_table())
                     con.execute(f"CREATE TABLE {table} AS SELECT * FROM _gold")
                     con.unregister("_gold")
             finally:
