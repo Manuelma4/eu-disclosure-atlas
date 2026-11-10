@@ -9,11 +9,12 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
 - **REST `/v1`** with OpenAPI 3.1 generated from the models, cursor pagination, RFC 9457 errors and API keys.
   GraphQL is not used: arbitrary query shapes defeat CDN caching, and heavy analytical needs are better served
   by bulk Parquet and SQL.
-- **Caching:** every read is pinned to a data version, the `ETag` is that version, and responses carry
-  `Cache-Control: public, s-maxage=60, stale-while-revalidate=600`. A new snapshot changes every ETag at once,
-  and the website's Cache Components use the same version as a cache tag.
+- **Caching:** the cacheable data reads include the snapshot version in their ETag. Current responses use bounded
+  cache lifetimes, and the website's Cache Components use the version as a cache tag.
   Issuer queries with `?as_of=<snapshot>` measure their 90-day and 365-day windows from the snapshot's
-  commit timestamp. Current issuer queries measure those windows from request time.
+  commit timestamp. Live issuer, overview and flow responses also fingerprint their content in the ETag.
+  Revalidation recomputes the live result so a record leaving a rolling window can invalidate the ETag
+  while the snapshot stays fixed.
 - **SSE** for live filings: one-way, works through proxies and CDNs, resumes with `Last-Event-ID`.
   WebSockets are not needed for a one-way feed.
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.

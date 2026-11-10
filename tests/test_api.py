@@ -5,10 +5,11 @@ from zoneinfo import ZoneInfo
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
-from conftest import fi_doc, fi_row
+from conftest import EXAMPLE_LEI, fi_doc, fi_row
 from fastapi.testclient import TestClient
 
 from disclosure_atlas.api import create_app
+from disclosure_atlas.api.readmodel import Snapshot
 from disclosure_atlas.connectors.base import ParseContext
 from disclosure_atlas.connectors.se_fi_pdmr import SwedenFIPDMR
 from disclosure_atlas.lake import Lake
@@ -236,3 +237,66 @@ def test_pinned_issuer_windows_use_snapshot_time(tmp_path, monkeypatch):
         assert client.get(f"/v1/issuers/{lei}", params=params, headers=old_headers).status_code == 200
         headers = {"If-None-Match": detail.headers["etag"]}
         assert client.get(f"/v1/issuers/{lei}", params=params, headers=headers).status_code == 304
+
+
+@pytest.mark.parametrize(("path", "window"), [
+    ("/v1/stats/overview", 30),
+    ("/v1/stats/flow?days=7", 7),
+    ("/v1/issuers", 365),
+    (f"/v1/issuers/{EXAMPLE_LEI}", 90),
+])
+def test_live_etag_changes_when_a_record_leaves_its_window(tmp_path, monkeypatch, path, window):
+    lake = Lake(tmp_path / "lake")
+    before = datetime(2026, 1, 1, 23, 59, 59, tzinfo=UTC)
+    after = before + timedelta(seconds=2)
+    transaction_day = before.date() - timedelta(days=window)
+    publication = before - timedelta(days=window) + timedelta(seconds=1)
+    lake.fx_path.parent.mkdir(parents=True)
+    pq.write_table(pa.Table.from_pylist([
+        {"date": transaction_day, "currency": "SEK", "rate": 10.0},
+    ], schema=SCHEMA), lake.fx_path)
+    _load(lake, [fi_row(**{
+        "Publication date": publication.astimezone(STOCKHOLM).strftime("%d/%m/%Y %H:%M:%S"),
+        "Transaction date": transaction_day.strftime("%d/%m/%Y 00:00:00"),
+    })], fetched_at=before)
+    clock = before
+    query_rows = Snapshot.rows
+
+    def rows_at_clock(self, sql, params=None):
+        sql = sql.replace("now()", f"TIMESTAMPTZ '{clock.isoformat()}'")
+        sql = sql.replace("current_date", f"DATE '{clock.date().isoformat()}'")
+        return query_rows(self, sql, params)
+
+    monkeypatch.setattr(Snapshot, "rows", rows_at_clock)
+
+    with TestClient(create_app(str(lake.root))) as client:
+        first = client.get(path)
+        assert first.status_code == 200
+        old_headers = {"If-None-Match": first.headers["etag"]}
+        assert client.get(path, headers=old_headers).status_code == 304
+        historical_params = {"as_of": first.headers["x-atlas-snapshot"]}
+        historical = client.get(path, params=historical_params) if path.startswith("/v1/issuers") else None
+
+        clock = after
+        fresh = client.get(path)
+        assert fresh.status_code == 200
+        assert fresh.headers["x-atlas-snapshot"] == first.headers["x-atlas-snapshot"]
+        assert fresh.json() != first.json()
+        changed = client.get(path, headers=old_headers)
+        assert changed.status_code == 200
+        assert changed.json() == fresh.json()
+        assert changed.headers["etag"] != first.headers["etag"]
+
+        cached = client.get(path, headers={"If-None-Match": changed.headers["etag"]})
+        assert cached.status_code == 304 and not cached.content
+        for header in ("etag", "cache-control", "x-atlas-snapshot"):
+            assert cached.headers[header] == changed.headers[header]
+        if historical is not None:
+            again = client.get(path, params=historical_params)
+            assert historical.status_code == again.status_code == 200
+            assert historical.json() == again.json()
+            assert historical.headers["etag"] == again.headers["etag"]
+            assert "immutable" in again.headers["cache-control"]
+            assert client.get(path, params=historical_params, headers={
+                "If-None-Match": historical.headers["etag"],
+            }).status_code == 304

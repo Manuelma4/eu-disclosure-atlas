@@ -1,7 +1,7 @@
 """FastAPI application: /v1 read API over the gold views, SSE live stream, RFC 9457 errors.
 
-Every response is pinned to a data version: the ETag is derived from it, so a new ingest invalidates
-caches everywhere at once (see docs/decisions/0008).
+Cached responses use a data version in their ETag. Live rolling windows also use a fingerprint of
+their response content, which can change without a new ingest (see docs/decisions/0008).
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ from typing import Annotated, Any, Literal
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.concurrency import run_in_threadpool
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -111,10 +112,14 @@ def _if_none_match(value: str, opaque_tag: str) -> bool:
 
 
 def _conditional(
-    request: Request, response: Response, snapshot: Snapshot, *, pinned_variant: str = "",
+    request: Request, response: Response, snapshot: Snapshot, *,
+    pinned_variant: str = "", live_payload: Any = None,
 ) -> Response | None:
     """Set cache headers and check the precondition for an existing representation."""
     variant = pinned_variant if snapshot.pinned else ""
+    if not snapshot.pinned and live_payload is not None:
+        encoded = json.dumps(jsonable_encoder(live_payload), sort_keys=True, separators=(",", ":")).encode()
+        variant = f"live-{hashlib.sha256(encoded).hexdigest()}-"
     opaque_tag = f"{snapshot.version}-{variant}{hashlib.sha1(str(request.url).encode()).hexdigest()[:10]}"
     etag = f'W/"{opaque_tag}"'
     cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
@@ -355,16 +360,19 @@ def create_app(
             where.append("jurisdiction = ?")
             params.append(country.upper())
         with read_model.snapshot(as_of) as snap:
-            if not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-"):
+            if snap.pinned and (not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-")):
                 return not_modified
             reference_time = lake.snapshot_time(as_of) if as_of is not None else None
-            return snap.rows(
+            rows = snap.rows(
                 f"SELECT s.*, {ENRICHED_COLUMNS} FROM ("
                 f"SELECT {ISSUER_COLUMNS} FROM insider_transactions WHERE {' AND '.join(where)} "
                 "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?"
                 ") s LEFT JOIN issuers e ON e.lei = s.lei ORDER BY s.last_published_at DESC NULLS LAST, s.lei",
                 [reference_time, *params, limit],
             )
+            if not snap.pinned and (not_modified := _conditional(request, response, snap, live_payload=rows)):
+                return not_modified
+            return rows
 
     @app.get("/v1/issuers/{lei}", response_model=IssuerDetail, tags=["issuers"])
     def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
@@ -384,7 +392,7 @@ def create_app(
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
-            if not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-"):
+            if snap.pinned and (not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-")):
                 return not_modified
             summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(
@@ -409,19 +417,20 @@ def create_app(
                 "ORDER BY published_at DESC NULLS LAST, record_id DESC LIMIT 100",
                 [lei],
             )
-        return IssuerDetail(
-            **summary,
-            monthly=[MonthPoint(**m) for m in monthly],
-            roles=[RoleStat(**r) for r in roles],
-            recent=[Transaction(**t) for t in recent],
-        )
+            detail = IssuerDetail(
+                **summary,
+                monthly=[MonthPoint(**m) for m in monthly],
+                roles=[RoleStat(**r) for r in roles],
+                recent=[Transaction(**t) for t in recent],
+            )
+            if not snap.pinned and (not_modified := _conditional(request, response, snap, live_payload=detail)):
+                return not_modified
+            return detail
 
     @app.get("/v1/stats/overview", response_model=Overview, tags=["stats"])
     def overview(request: Request, response: Response) -> Any:
         recent_30 = "published_at >= now() - INTERVAL 30 DAY"
         with read_model.snapshot() as snap:
-            if not_modified := _conditional(request, response, snap):
-                return not_modified
             totals = snap.one(
                 f"""
                 SELECT count(*) AS transactions, count(DISTINCT issuer_lei) AS issuers,
@@ -453,13 +462,14 @@ def create_app(
                 f"SELECT {TX_COLUMNS} FROM insider_transactions "
                 "ORDER BY published_at DESC NULLS LAST, record_id DESC LIMIT 15"
             )
-            return Overview(
+            result = Overview(
                 snapshot=snap.version,
                 **totals,
                 by_country=[CountryStat(**c) for c in by_country],
                 largest_buys_30d=[Transaction(**t) for t in largest],
                 latest=[Transaction(**t) for t in latest],
             )
+            return _conditional(request, response, snap, live_payload=result) or result
 
     @app.get("/v1/stats/flow", response_model=list[FlowPoint], tags=["stats"])
     def flow(
@@ -475,9 +485,7 @@ def create_app(
             where.append("jurisdiction = ?")
             params.append(country.upper())
         with read_model.snapshot() as snap:
-            if not_modified := _conditional(request, response, snap):
-                return not_modified
-            return snap.rows(
+            rows = snap.rows(
                 f"""
                 SELECT CAST(date_trunc('{bucket}', transaction_date) AS DATE) AS period,
                     sum(amount_eur) FILTER (WHERE direction > 0) AS buy_eur,
@@ -489,6 +497,7 @@ def create_app(
                 """,
                 params,
             )
+            return _conditional(request, response, snap, live_payload=rows) or rows
 
     def new_filings(position: tuple[datetime, str]) -> list[dict[str, Any]]:
         seen, record = position
