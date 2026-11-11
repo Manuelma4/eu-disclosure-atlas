@@ -23,6 +23,24 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.
 - **MCP** (spec 2026-07-28, stateless) so AI agents can use the dataset with the same guardrails as the API.
 
+## Reproduce the cache checks
+
+From the repository root, use the project's Python environment with the
+development dependencies and DuckLake extension available.
+
+```sh
+python -m pytest -q tests/test_api.py \
+  -k 'cutoff_when_the_clock_crosses or tied_rows_have_stable_order or same_latest_filing or pinned_issuer_windows or live_etag_changes'
+```
+
+The eight selected cases use synthetic filings and a local DuckLake catalog.
+They exercise ties in issuer and overview queries, a clock crossing within a
+single overview request, and a change to a live response at a fixed snapshot.
+An unchanged conditional request returns an empty HTTP 304. A changed live
+response returns 200 with a new ETag. The pinned issuer cases also check that
+previous validator formats receive the current representation. Verified with
+DuckDB 1.5.0.
+
 ## Consequences
 - The CDN absorbs most read traffic; API replicas stay small and stateless.
 - Third parties get the same API the website uses, so it is always exercised and documented.
