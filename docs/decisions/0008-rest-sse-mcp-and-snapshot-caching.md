@@ -17,6 +17,7 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
   while the snapshot stays fixed. Issuer and overview queries break ordering ties before applying limits
   or fingerprinting a list. If several issuer filings share the latest timestamp, the greatest record ID
   selects the reported name and country. The pinned issuer ETag version changes with the representation.
+  Overview totals and largest purchases use the same database time for their 30-day window.
 - **SSE** for live filings: one-way, works through proxies and CDNs, resumes with `Last-Event-ID`.
   WebSockets are not needed for a one-way feed.
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.

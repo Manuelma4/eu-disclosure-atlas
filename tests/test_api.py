@@ -75,6 +75,42 @@ def test_overview_uses_eur_amounts_and_orders_latest(client):
     assert "anna" not in str(body).casefold() and "erik" not in str(body).casefold()
 
 
+def test_overview_uses_one_cutoff_when_the_clock_crosses_during_a_request(client, monkeypatch):
+    path = "/v1/stats/overview"
+    initial = client.get(path).json()
+    buy = initial["largest_buys_30d"][0]
+    expires = datetime.fromisoformat(buy["published_at"]) + timedelta(days=30)
+    before = expires - timedelta(seconds=1)
+    after = expires + timedelta(seconds=1)
+    clock = before
+    crosses_during_request = True
+    read_rows = Snapshot.rows
+
+    def rows_at_clock(self, sql, params=None):
+        reference = after if crosses_during_request and "ORDER BY amount_eur" in sql else clock
+        sql = sql.replace("now()", f"TIMESTAMPTZ '{reference.isoformat()}'")
+        return read_rows(self, sql, params)
+
+    monkeypatch.setattr(Snapshot, "rows", rows_at_clock)
+    before_cutoff = client.get(path)
+    assert before_cutoff.status_code == 200
+    assert before_cutoff.json()["open_market_buys_30d"] == 1
+    assert before_cutoff.json()["buy_eur_30d"] == buy["amount_eur"]
+    assert before_cutoff.json()["largest_buys_30d"] == [buy]
+
+    clock = after
+    crosses_during_request = False
+    refreshed = client.get(path, headers={"If-None-Match": before_cutoff.headers["etag"]})
+    assert refreshed.status_code == 200
+    assert refreshed.headers["x-atlas-snapshot"] == before_cutoff.headers["x-atlas-snapshot"]
+    assert refreshed.headers["etag"] != before_cutoff.headers["etag"]
+    assert refreshed.json()["open_market_buys_30d"] == 0
+    assert refreshed.json()["buy_eur_30d"] is None
+    assert refreshed.json()["largest_buys_30d"] == []
+    cached = client.get(path, headers={"If-None-Match": refreshed.headers["etag"]})
+    assert cached.status_code == 304 and not cached.content
+
+
 def test_transactions_filters_and_cursor_pagination(client):
     sells = client.get("/v1/insider-transactions", params={"nature": "sell"}).json()
     assert [t["role"] for t in sells["items"]] == ["cfo"]

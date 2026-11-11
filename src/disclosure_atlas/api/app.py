@@ -440,7 +440,7 @@ def create_app(
         with read_model.snapshot() as snap:
             totals = snap.one(
                 f"""
-                SELECT count(*) AS transactions, count(DISTINCT issuer_lei) AS issuers,
+                SELECT now() AS window_end, count(*) AS transactions, count(DISTINCT issuer_lei) AS issuers,
                     count(DISTINCT jurisdiction) AS countries, count(DISTINCT source) AS sources,
                     max(published_at) AS last_published_at, max(first_seen_at) AS last_ingested_at,
                     count(*) FILTER (WHERE is_open_market AND direction > 0 AND {recent_30}) AS open_market_buys_30d,
@@ -453,6 +453,7 @@ def create_app(
                 FROM insider_transactions
                 """
             )
+            window_end = totals.pop("window_end")
             by_country = snap.rows(
                 """
                 SELECT jurisdiction AS country, count(*) AS transactions, count(DISTINCT issuer_lei) AS issuers,
@@ -463,7 +464,9 @@ def create_app(
             )
             largest = snap.rows(
                 f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE is_open_market AND direction > 0 "
-                f"AND {recent_30} AND amount_eur IS NOT NULL ORDER BY amount_eur DESC, record_id DESC LIMIT 8"
+                "AND published_at >= CAST(? AS TIMESTAMPTZ) - INTERVAL 30 DAY "
+                "AND amount_eur IS NOT NULL ORDER BY amount_eur DESC, record_id DESC LIMIT 8",
+                [window_end],
             )
             latest = snap.rows(
                 f"SELECT {TX_COLUMNS} FROM insider_transactions "
