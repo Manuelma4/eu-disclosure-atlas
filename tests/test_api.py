@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
-from conftest import EXAMPLE_LEI, fi_doc, fi_row
+from conftest import EXAMPLE_LEI, fi_doc, fi_row, make_lei
 from fastapi.testclient import TestClient
 
 from disclosure_atlas.api import create_app
@@ -86,6 +86,55 @@ def test_transactions_filters_and_cursor_pagination(client):
     assert len(ids) == 3
     detail = client.get(f"/v1/insider-transactions/{second['items'][0]['id']}").json()
     assert detail["id"] == second["items"][0]["id"]
+
+
+def test_tied_rows_have_stable_order_and_etags(tmp_path):
+    lake = Lake(tmp_path / "lake")
+    today = date.today()
+    trade_day = today - timedelta(days=1)
+    lake.fx_path.parent.mkdir(parents=True)
+    pq.write_table(pa.Table.from_pylist([
+        {"date": trade_day, "currency": "SEK", "rate": 10.0},
+    ], schema=SCHEMA), lake.fx_path)
+    other_lei = make_lei("649300EXAMPLE00001")
+    publication = _published(1)
+    rows = [
+        fi_row(**{
+            "LEI-code": EXAMPLE_LEI if index < 6 else other_lei,
+            "Publication date": publication,
+            "Transaction date": trade_day.strftime("%d/%m/%Y 00:00:00"),
+            "Position": "Chief Financial Officer (CFO)" if index % 2 else "Chief Executive Officer (CEO)",
+            "Volume": "3000" if index == 0 else "2750",
+        })
+        for index in range(12)
+    ]
+    connector = SwedenFIPDMR(http=object())
+    records = list(connector.parse(fi_doc(rows), ParseContext(pseudonym_key=lake.pseudonym_key())))
+    records = [
+        record.model_copy(update={"record_id": f"{index:032x}", "jurisdiction": "FR" if index < 6 else "SE"})
+        for index, record in enumerate(records)
+    ]
+    lake.write_silver(Dataset.INSIDER_TRANSACTIONS, connector.name, records)
+
+    overview = "/v1/stats/overview"
+    detail = f"/v1/issuers/{EXAMPLE_LEI}"
+    listing = "/v1/issuers?limit=1"
+    with TestClient(create_app(str(lake.root))) as client:
+        initial = {path: client.get(path) for path in (overview, detail, listing)}
+    assert all(response.status_code == 200 for response in initial.values())
+    expected_buys = [records[0].record_id, *(record.record_id for record in reversed(records[5:]))]
+    assert [row["id"] for row in initial[overview].json()["largest_buys_30d"]] == expected_buys
+    assert [row["country"] for row in initial[overview].json()["by_country"]] == ["FR", "SE"]
+    assert [row["role"] for row in initial[detail].json()["roles"]] == ["ceo", "cfo"]
+    assert [row["lei"] for row in initial[listing].json()] == [EXAMPLE_LEI]
+
+    with TestClient(create_app(str(lake.root))) as client:
+        for path, response in initial.items():
+            again = client.get(path)
+            assert again.json() == response.json()
+            assert again.headers["etag"] == response.headers["etag"]
+            cached = client.get(path, headers={"If-None-Match": response.headers["etag"]})
+            assert cached.status_code == 304 and not cached.content
 
 
 def test_etag_round_trip_and_new_data_changes_it(client, lake):
@@ -233,8 +282,9 @@ def test_pinned_issuer_windows_use_snapshot_time(tmp_path, monkeypatch):
         assert detail.json()["distinct_buyers_90d"] == 1
         assert "immutable" in detail.headers["cache-control"]
         old_hash = hashlib.sha1(str(detail.url).encode()).hexdigest()[:10]
-        old_headers = {"If-None-Match": f'W/"{pinned}-{old_hash}"'}
-        assert client.get(f"/v1/issuers/{lei}", params=params, headers=old_headers).status_code == 200
+        for variant in ("", "issuer-clock-"):
+            old_headers = {"If-None-Match": f'W/"{pinned}-{variant}{old_hash}"'}
+            assert client.get(f"/v1/issuers/{lei}", params=params, headers=old_headers).status_code == 200
         headers = {"If-None-Match": detail.headers["etag"]}
         assert client.get(f"/v1/issuers/{lei}", params=params, headers=headers).status_code == 304
 

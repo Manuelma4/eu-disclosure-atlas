@@ -62,6 +62,7 @@ ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce
 """Issuer reference data (GLEIF legal name, OpenFIGI tickers) joined from the gold ``issuers`` view."""
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
 IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+PINNED_ISSUER_ETAG_VARIANT = "issuer-clock-order-"
 _ETAG_LIST_MEMBER = re.compile(r'[ \t]*(?:(?:W/)?"([\x21\x23-\x7e\x80-\xff]*)"[ \t]*)?(?:,|\Z)')
 AsOf = Annotated[
     int | None,
@@ -360,13 +361,15 @@ def create_app(
             where.append("jurisdiction = ?")
             params.append(country.upper())
         with read_model.snapshot(as_of) as snap:
-            if snap.pinned and (not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-")):
+            if snap.pinned and (not_modified := _conditional(
+                request, response, snap, pinned_variant=PINNED_ISSUER_ETAG_VARIANT,
+            )):
                 return not_modified
             reference_time = lake.snapshot_time(as_of) if as_of is not None else None
             rows = snap.rows(
                 f"SELECT s.*, {ENRICHED_COLUMNS} FROM ("
                 f"SELECT {ISSUER_COLUMNS} FROM insider_transactions WHERE {' AND '.join(where)} "
-                "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?"
+                "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST, lei LIMIT ?"
                 ") s LEFT JOIN issuers e ON e.lei = s.lei ORDER BY s.last_published_at DESC NULLS LAST, s.lei",
                 [reference_time, *params, limit],
             )
@@ -392,7 +395,9 @@ def create_app(
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
-            if snap.pinned and (not_modified := _conditional(request, response, snap, pinned_variant="issuer-clock-")):
+            if snap.pinned and (not_modified := _conditional(
+                request, response, snap, pinned_variant=PINNED_ISSUER_ETAG_VARIANT,
+            )):
                 return not_modified
             summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(
@@ -409,7 +414,7 @@ def create_app(
             )
             roles = snap.rows(
                 "SELECT pdmr_role AS role, count(*) AS transactions, count(DISTINCT pdmr_id) AS people "
-                "FROM insider_transactions WHERE issuer_lei = ? GROUP BY 1 ORDER BY 2 DESC",
+                "FROM insider_transactions WHERE issuer_lei = ? GROUP BY 1 ORDER BY 2 DESC, 1",
                 [lei],
             )
             recent = snap.rows(
@@ -451,12 +456,12 @@ def create_app(
                 SELECT jurisdiction AS country, count(*) AS transactions, count(DISTINCT issuer_lei) AS issuers,
                     avg(CASE WHEN filing_lag_days > 5 THEN 1.0 ELSE 0.0 END)
                         FILTER (WHERE filing_lag_days IS NOT NULL) AS late_share
-                FROM insider_transactions GROUP BY 1 ORDER BY 2 DESC
+                FROM insider_transactions GROUP BY 1 ORDER BY 2 DESC, 1
                 """
             )
             largest = snap.rows(
                 f"SELECT {TX_COLUMNS} FROM insider_transactions WHERE is_open_market AND direction > 0 "
-                f"AND {recent_30} AND amount_eur IS NOT NULL ORDER BY amount_eur DESC LIMIT 8"
+                f"AND {recent_30} AND amount_eur IS NOT NULL ORDER BY amount_eur DESC, record_id DESC LIMIT 8"
             )
             latest = snap.rows(
                 f"SELECT {TX_COLUMNS} FROM insider_transactions "
