@@ -53,7 +53,9 @@ from .security import RateLimitMiddleware, SecurityHeadersMiddleware, rate_limit
 from .signals import signals_router
 
 ISSUER_COLUMNS = """
-    issuer_lei AS lei, arg_max(issuer_name, published_at) AS name, arg_max(jurisdiction, published_at) AS country,
+    issuer_lei AS lei,
+    arg_max(issuer_name, (published_at, record_id)) FILTER (WHERE published_at IS NOT NULL) AS name,
+    arg_max(jurisdiction, (published_at, record_id)) FILTER (WHERE published_at IS NOT NULL) AS country,
     count(*) AS transactions, max(published_at) AS last_published_at,
     sum(direction * amount_eur) FILTER (WHERE is_open_market AND published_at >= coalesce(?, now()) - INTERVAL 365 DAY)
         AS net_open_market_eur_365d
@@ -62,7 +64,7 @@ ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce
 """Issuer reference data (GLEIF legal name, OpenFIGI tickers) joined from the gold ``issuers`` view."""
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
 IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
-PINNED_ISSUER_ETAG_VARIANT = "issuer-clock-order-"
+PINNED_ISSUER_ETAG_VARIANT = "issuer-clock-order-v2-"
 _ETAG_LIST_MEMBER = re.compile(r'[ \t]*(?:(?:W/)?"([\x21\x23-\x7e\x80-\xff]*)"[ \t]*)?(?:,|\Z)')
 AsOf = Annotated[
     int | None,

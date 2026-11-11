@@ -15,7 +15,8 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
   commit timestamp. Live issuer, overview and flow responses also fingerprint their content in the ETag.
   Revalidation recomputes the live result so a record leaving a rolling window can invalidate the ETag
   while the snapshot stays fixed. Issuer and overview queries break ordering ties before applying limits
-  or fingerprinting a list. The pinned issuer ETag version changes when the response ordering changes.
+  or fingerprinting a list. If several issuer filings share the latest timestamp, the greatest record ID
+  selects the reported name and country. The pinned issuer ETag version changes with the representation.
 - **SSE** for live filings: one-way, works through proxies and CDNs, resumes with `Last-Event-ID`.
   WebSockets are not needed for a one-way feed.
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.

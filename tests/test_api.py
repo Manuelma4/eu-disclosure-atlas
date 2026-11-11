@@ -137,6 +137,49 @@ def test_tied_rows_have_stable_order_and_etags(tmp_path):
             assert cached.status_code == 304 and not cached.content
 
 
+def test_issuer_name_and_country_use_the_same_latest_filing(tmp_path, monkeypatch):
+    publication = _published(1)
+    doc = fi_doc([
+        fi_row(Issuer="Alpha AB", **{"Publication date": publication}),
+        fi_row(Issuer="Beta AB", **{"Publication date": publication}),
+        fi_row(Issuer="Earlier AB", **{"Publication date": _published(2)}),
+        fi_row(Issuer="Undated AB", **{"Publication date": ""}),
+    ])
+    lake = Lake(tmp_path / "lake")
+    connector = SwedenFIPDMR(http=object())
+    parsed = list(connector.parse(doc, ParseContext(pseudonym_key=lake.pseudonym_key())))
+    records = [
+        row.model_copy(update={"record_id": f"{index:032x}", "jurisdiction": country})
+        for index, (row, country) in enumerate(zip(parsed, ("SE", "FI", "FR", "DE"), strict=True))
+    ]
+    lake.write_silver(Dataset.INSIDER_TRANSACTIONS, connector.name, records)
+    read_rows = Snapshot.rows
+    previous = None
+    for direction in ("ASC", "DESC"):
+        def rows_in_input_order(self, sql, params=None, *, direction=direction):
+            if "arg_max(issuer_name" in sql:
+                sql = sql.replace(
+                    "FROM insider_transactions",
+                    f"FROM (SELECT * FROM insider_transactions ORDER BY record_id {direction}) filings",
+                )
+            return read_rows(self, sql, params)
+
+        monkeypatch.setattr(Snapshot, "rows", rows_in_input_order)
+        with TestClient(create_app(str(lake.root))) as client:
+            listing = client.get("/v1/issuers", params={"limit": 1})
+            detail = client.get(f"/v1/issuers/{EXAMPLE_LEI}")
+            assert listing.status_code == detail.status_code == 200
+            for response, issuer in ((listing, listing.json()[0]), (detail, detail.json())):
+                assert (issuer["name"], issuer["country"]) == ("Beta AB", "FI")
+                assert issuer["transactions"] == 4
+                cached = client.get(str(response.url), headers={"If-None-Match": response.headers["etag"]})
+                assert cached.status_code == 304 and not cached.content
+            current = [(response.json(), response.headers["etag"]) for response in (listing, detail)]
+            if previous is not None:
+                assert current == previous
+            previous = current
+
+
 def test_etag_round_trip_and_new_data_changes_it(client, lake):
     first = client.get("/v1/insider-transactions")
     etag = first.headers["etag"]
@@ -275,18 +318,24 @@ def test_pinned_issuer_windows_use_snapshot_time(tmp_path, monkeypatch):
         assert latest["net_open_market_eur_365d"] == 150
         assert client.get(f"/v1/issuers/{lei}").json()["distinct_buyers_90d"] == 0
         params = {"as_of": pinned}
-        listed = client.get("/v1/issuers", params=params).json()[0]
-        assert listed["net_open_market_eur_365d"] == 250
+        listing = client.get("/v1/issuers", params={**params, "limit": 1})
+        assert listing.json()[0]["net_open_market_eur_365d"] == 250
         detail = client.get(f"/v1/issuers/{lei}", params=params)
         assert detail.json()["net_open_market_eur_365d"] == 250
         assert detail.json()["distinct_buyers_90d"] == 1
-        assert "immutable" in detail.headers["cache-control"]
-        old_hash = hashlib.sha1(str(detail.url).encode()).hexdigest()[:10]
-        for variant in ("", "issuer-clock-"):
-            old_headers = {"If-None-Match": f'W/"{pinned}-{variant}{old_hash}"'}
-            assert client.get(f"/v1/issuers/{lei}", params=params, headers=old_headers).status_code == 200
-        headers = {"If-None-Match": detail.headers["etag"]}
-        assert client.get(f"/v1/issuers/{lei}", params=params, headers=headers).status_code == 304
+        for response in (listing, detail):
+            assert response.status_code == 200
+            assert "immutable" in response.headers["cache-control"]
+            url = str(response.url)
+            old_hash = hashlib.sha1(url.encode()).hexdigest()[:10]
+            for variant in ("", "issuer-clock-", "issuer-clock-order-"):
+                old_headers = {"If-None-Match": f'W/"{pinned}-{variant}{old_hash}"'}
+                refreshed = client.get(url, headers=old_headers)
+                assert refreshed.status_code == 200
+                assert refreshed.json() == response.json()
+                assert refreshed.headers["etag"] == response.headers["etag"]
+            cached = client.get(url, headers={"If-None-Match": response.headers["etag"]})
+            assert cached.status_code == 304 and not cached.content
 
 
 @pytest.mark.parametrize(("path", "window"), [
