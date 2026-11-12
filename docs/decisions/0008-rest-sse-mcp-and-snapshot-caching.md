@@ -17,7 +17,9 @@ Consumers are browsers, apps, researchers and AI agents. Data changes in discret
   while the snapshot stays fixed. Issuer and overview queries break ordering ties before applying limits
   or fingerprinting a list. If several issuer filings share the latest timestamp, the greatest record ID
   selects the reported name and country. The pinned issuer ETag version changes with the representation.
-  Overview totals and largest purchases use the same database time for their 30-day window.
+  Revalidation of a pinned issuer detail checks for a filing at that snapshot before returning 304.
+  A missing issuer still returns 404 with a wildcard validator. Overview totals and largest purchases
+  use the same database time for their 30-day window.
 - **SSE** for live filings: one-way, works through proxies and CDNs, resumes with `Last-Event-ID`.
   WebSockets are not needed for a one-way feed.
 - **Webhooks** following the Standard Webhooks spec for server-to-server notifications.
@@ -30,16 +32,16 @@ development dependencies and DuckLake extension available.
 
 ```sh
 python -m pytest -q tests/test_api.py \
-  -k 'cutoff_when_the_clock_crosses or tied_rows_have_stable_order or same_latest_filing or pinned_issuer_windows or live_etag_changes'
+  -k 'cutoff_when_the_clock_crosses or tied_rows_have_stable_order or same_latest_filing or pinned_issuer_windows or pinned_issuer_revalidation or live_etag_changes'
 ```
 
-The eight selected cases use synthetic filings and a local DuckLake catalog.
+The nine selected cases use synthetic filings and a local DuckLake catalog.
 They exercise ties in issuer and overview queries, a clock crossing within a
 single overview request, and a change to a live response at a fixed snapshot.
 An unchanged conditional request returns an empty HTTP 304. A changed live
 response returns 200 with a new ETag. The pinned issuer cases also check that
-previous validator formats receive the current representation. Verified with
-DuckDB 1.5.0.
+previous validator formats receive the current representation and a matching
+validator uses only an existence check. Verified with DuckDB 1.5.0.
 
 ## Consequences
 - The CDN absorbs most read traffic; API replicas stay small and stateless.

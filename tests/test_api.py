@@ -12,7 +12,7 @@ from disclosure_atlas.api import create_app
 from disclosure_atlas.api.readmodel import Snapshot
 from disclosure_atlas.connectors.base import ParseContext
 from disclosure_atlas.connectors.se_fi_pdmr import SwedenFIPDMR
-from disclosure_atlas.lake import Lake
+from disclosure_atlas.lake import Lake, UnknownSnapshot
 from disclosure_atlas.models import Dataset
 from disclosure_atlas.reference.fx import SCHEMA
 
@@ -323,6 +323,64 @@ def test_as_of_time_travel_on_transactions_and_issuers(client, lake):
     assert client.get(f"/v1/insider-transactions/{item}", params={"as_of": pinned}).status_code == 200
     missing = client.get("/v1/insider-transactions", params={"as_of": 10_000})
     assert missing.status_code == 404 and missing.json()["status"] == 404
+
+
+def test_pinned_issuer_revalidation_checks_existence_at_the_requested_snapshot(tmp_path, monkeypatch):
+    lake = Lake(tmp_path / "lake")
+    filing = fi_row()
+    _load(lake, [filing])
+    params = {"as_of": lake.current_snapshot()}
+    new_lei = make_lei("649300EXAMPLE00001")
+    _load(lake, [dict(filing, Status="Revised"), fi_row(**{"LEI-code": new_lei})])
+    old_path, new_path = (f"/v1/issuers/{lei.lower()}" for lei in (EXAMPLE_LEI, new_lei))
+    with TestClient(create_app(str(lake.root))) as client:
+        first = client.get(old_path, params=params)
+        assert first.status_code == 200
+        assert client.get(old_path).status_code == 404
+        assert client.get(new_path).status_code == 200
+
+        queries = []
+        read_rows = Snapshot.rows
+
+        def record_queries(self, sql, params=None):
+            queries.append(" ".join(sql.split()))
+            return read_rows(self, sql, params)
+
+        monkeypatch.setattr(Snapshot, "rows", record_queries)
+        tag = first.headers["etag"]
+        conditions = (
+            {"If-None-Match": tag},
+            {"If-None-Match": tag.removeprefix("W/")},
+            {"If-None-Match": "*"},
+            [("If-None-Match", 'W/"another"'), ("If-None-Match", tag)],
+        )
+        for headers in conditions:
+            queries.clear()
+            response = client.get(old_path, params=params, headers=headers)
+            assert response.status_code == 304 and not response.content
+            for header in ("etag", "cache-control", "x-atlas-snapshot"):
+                assert response.headers[header] == first.headers[header]
+            assert len(queries) == 1 and "HAVING count(*) > 0" in queries[0] and "GROUP BY" not in queries[0]
+
+        missing = client.get(new_path, params=params, headers={"If-None-Match": "*"})
+        assert missing.status_code == 404
+        assert missing.headers["content-type"] == "application/problem+json"
+        assert all(header not in missing.headers for header in ("etag", "cache-control", "x-atlas-snapshot"))
+        prefix, _, _ = tag.rpartition("-")
+        url_hash = hashlib.sha1(str(missing.url).encode()).hexdigest()[:10]
+        missing_tag = f'{prefix}-{url_hash}"'
+        exact = client.get(new_path, params=params, headers={"If-None-Match": missing_tag})
+        assert exact.status_code == 404 and exact.content == missing.content
+        assert all(header not in exact.headers for header in ("etag", "cache-control", "x-atlas-snapshot"))
+
+        def unavailable(self, snapshot_id):
+            raise UnknownSnapshot(f"snapshot {snapshot_id} has no retained commit timestamp")
+
+        monkeypatch.setattr(Lake, "snapshot_time", unavailable)
+        expired = client.get(old_path, params=params, headers={"If-None-Match": first.headers["etag"]})
+        assert expired.status_code == 404
+        assert expired.headers["content-type"] == "application/problem+json"
+        assert "etag" not in expired.headers
 
 
 def test_pinned_issuer_windows_use_snapshot_time(tmp_path, monkeypatch):

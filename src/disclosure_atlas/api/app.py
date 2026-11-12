@@ -384,6 +384,16 @@ def create_app(
         lei = lei.upper()
         with read_model.snapshot(as_of) as snap:
             reference_time = lake.snapshot_time(as_of) if as_of is not None else None
+            if snap.pinned and (not_modified := _conditional(
+                request, response, snap, pinned_variant=PINNED_ISSUER_ETAG_VARIANT,
+            )):
+                exists = snap.one(
+                    "SELECT count(*) FROM insider_transactions WHERE issuer_lei = ? HAVING count(*) > 0",
+                    [lei],
+                )
+                if exists is None:
+                    raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
+                return not_modified
             summary = snap.one(
                 f"""
                 SELECT {ISSUER_COLUMNS},
@@ -397,10 +407,6 @@ def create_app(
             )
             if summary is None:
                 raise HTTPException(HTTPStatus.NOT_FOUND, f"No issuer with LEI {lei}")
-            if snap.pinned and (not_modified := _conditional(
-                request, response, snap, pinned_variant=PINNED_ISSUER_ETAG_VARIANT,
-            )):
-                return not_modified
             summary |= snap.one(f"SELECT {ENRICHED_COLUMNS} FROM issuers e WHERE e.lei = ?", [lei]) or {}
             monthly = snap.rows(
                 """
