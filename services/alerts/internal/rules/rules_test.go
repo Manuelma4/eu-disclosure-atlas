@@ -47,3 +47,40 @@ func TestMatch(t *testing.T) {
 		t.Error("invalid payload accepted")
 	}
 }
+
+func BenchmarkMatch(b *testing.B) {
+	filing, err := Decode([]byte(payload))
+	if err != nil {
+		b.Fatal(err)
+	}
+	watchlist := "w1"
+	minimum, aboveAmount := 100_000.0, 200_000.0
+	rules := []store.Rule{
+		{Enabled: true},
+		{},
+		{Enabled: true, Natures: []string{"sell"}},
+		{Enabled: true, Roles: []string{"cfo", "ceo"}, Countries: []string{"fr", "se"}},
+		{Enabled: true, WatchlistID: &watchlist, OpenMarketOnly: true, MinAmountEUR: &minimum},
+		{Enabled: true, MinAmountEUR: &aboveAmount},
+	}
+	want := []bool{true, false, false, true, true, false}
+	const matchesPerBatch = 3
+	for i, rule := range rules {
+		if got := Match(rule, filing); got != want[i] {
+			b.Fatalf("rule %d matched %t, want %t", i, got, want[i])
+		}
+	}
+	matched := 0
+	b.ReportAllocs()
+	for b.Loop() {
+		for _, rule := range rules {
+			if Match(rule, filing) {
+				matched++
+			}
+		}
+	}
+	if matched != matchesPerBatch*b.N {
+		b.Fatalf("matched %d rules, want %d", matched, matchesPerBatch*b.N)
+	}
+	b.ReportMetric(float64(len(rules)), "rules/op")
+}

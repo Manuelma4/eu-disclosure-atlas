@@ -52,3 +52,16 @@ lists what it received on `GET /deliveries`.
 # unit tests; the PostgreSQL tests run when ATLAS_TEST_DATABASE_URL points to a server (admin connection)
 docker run --rm -v "$PWD":/src -w /src/services/alerts golang:1.27 go test -race ./...
 ```
+
+## Measure rule evaluation locally
+
+From `services/alerts` with the Go version declared in `go.mod`:
+
+```bash
+GOMAXPROCS=1 go test ./internal/rules -run '^TestMatch$' -bench '^BenchmarkMatch$' -benchmem -benchtime=100ms -count=3
+```
+
+One benchmark operation evaluates six rules against the same synthetic filing.
+Three rules must match. The timed section measures only rule evaluation.
+JSON decoding runs before timing. The benchmark needs no database, Kafka broker
+or notification service. Use the same fixture and Go version when comparing runs.
