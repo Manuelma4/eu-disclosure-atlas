@@ -65,3 +65,16 @@ One benchmark operation evaluates six rules against the same synthetic filing.
 Three rules must match. The timed section measures only rule evaluation.
 JSON decoding runs before timing. The benchmark needs no database, Kafka broker
 or notification service. Use the same fixture and Go version when comparing runs.
+
+To measure an enabled candidate list after issuer preselection:
+
+```bash
+GOMAXPROCS=1 go test ./internal/rules -run '^TestMatch$' -bench '^BenchmarkMatchCandidates$' -benchmem -benchtime=100ms -count=3
+```
+
+One operation evaluates 240 candidates across four synthetic filings and must
+return 128 matches. Three filings have 64 candidates each and one without an
+issuer has 48. The workload exercises early and late filter rejection, short
+and long country lists, and amounts at, below or missing from a rule threshold.
+It approximates an already selected batch and does not measure the store query
+or notification delivery. Read `ns/op` as time for the entire batch.

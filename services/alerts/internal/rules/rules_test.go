@@ -84,3 +84,67 @@ func BenchmarkMatch(b *testing.B) {
 	}
 	b.ReportMetric(float64(len(rules)), "rules/op")
 }
+
+func BenchmarkMatchCandidates(b *testing.B) {
+	lei := "549300EXAMPLE0000155"
+	amount, highMinimum := 150_000.0, 200_000.0
+	watchlist := "w1"
+	filings := []Filing{
+		{Country: "SE", Role: "ceo", Nature: "buy", IssuerLEI: &lei, AmountEUR: &amount, OpenMarket: true},
+		{Country: "FR", Role: "cfo", Nature: "sell", IssuerLEI: &lei, AmountEUR: &amount, OpenMarket: true},
+		{Country: "DE", Role: "chair", Nature: "grant", IssuerLEI: &lei, AmountEUR: &amount},
+		{Country: "SE", Role: "ceo", Nature: "buy", OpenMarket: true},
+	}
+	groups := []struct {
+		rule store.Rule
+		want [4]bool
+	}{
+		{store.Rule{Enabled: true}, [4]bool{true, true, true, true}},
+		{store.Rule{Enabled: true, Natures: []string{"buy"}, Countries: []string{"SE", "FR"}}, [4]bool{true, false, false, true}},
+		{store.Rule{Enabled: true, Roles: []string{"ceo", "cfo"}, Countries: []string{"AT", "BE", "DE", "DK", "ES", "FI", "FR", "SE"}, MinAmountEUR: &highMinimum}, [4]bool{}},
+		{store.Rule{Enabled: true, WatchlistID: &watchlist, OpenMarketOnly: true, MinAmountEUR: &amount}, [4]bool{true, true, false, false}},
+	}
+
+	candidates := make([][]store.Rule, len(filings))
+	matchesPerBatch, evaluationsPerBatch := 0, 0
+	for i, filing := range filings {
+		for range 16 {
+			for _, group := range groups {
+				if filing.IssuerLEI == nil && group.rule.WatchlistID != nil {
+					continue // the store only returns watchlist rules for a known issuer
+				}
+				if got := Match(group.rule, filing); got != group.want[i] {
+					b.Fatalf("filing %d, candidate %d: match %t, want %t", i, len(candidates[i]), got, group.want[i])
+				}
+				candidates[i] = append(candidates[i], group.rule)
+				evaluationsPerBatch++
+				if group.want[i] {
+					matchesPerBatch++
+				}
+			}
+		}
+	}
+	const evaluations = 240
+	const expectedMatches = 128
+	if evaluationsPerBatch != evaluations {
+		b.Fatalf("fixture has %d candidates, want %d", evaluationsPerBatch, evaluations)
+	}
+	if matchesPerBatch != expectedMatches {
+		b.Fatalf("fixture matched %d rules, want %d", matchesPerBatch, expectedMatches)
+	}
+	matched := 0
+	b.ReportAllocs()
+	for b.Loop() {
+		for i, filing := range filings {
+			for _, rule := range candidates[i] {
+				if Match(rule, filing) {
+					matched++
+				}
+			}
+		}
+	}
+	if matched != expectedMatches*b.N {
+		b.Fatalf("matched %d rules, want %d", matched, expectedMatches*b.N)
+	}
+	b.ReportMetric(evaluations, "rules/op")
+}
