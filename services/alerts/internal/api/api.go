@@ -20,6 +20,7 @@ import (
 )
 
 var leiPattern = regexp.MustCompile(`^[0-9A-Z]{18}[0-9]{2}$`)
+var countryCodePattern = regexp.MustCompile(`^[A-Za-z]{2}$`)
 
 // Config holds API behaviour.
 type Config struct {
@@ -253,8 +254,8 @@ func (in *ruleInput) validate() string {
 		}
 	}
 	for i, c := range in.Countries {
-		if len(c) != 2 {
-			return "countries are ISO 3166-1 alpha-2 codes"
+		if !countryCodePattern.MatchString(c) {
+			return "country filters must have the two-letter ISO 3166-1 alpha-2 format"
 		}
 		in.Countries[i] = strings.ToUpper(c)
 	}

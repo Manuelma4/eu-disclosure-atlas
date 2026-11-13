@@ -55,6 +55,28 @@ func setup(t *testing.T) (*httptest.Server, *testutil.Issuer) {
 	return srv, issuer
 }
 
+func TestRuleCountryFilters(t *testing.T) {
+	email := "alerts@example.test"
+	for _, country := range []string{"12", "S1", " S", "é", "SWE", ""} {
+		t.Run(country, func(t *testing.T) {
+			in := ruleInput{Name: "Country filter", Email: &email, Countries: []string{country}}
+			if msg := in.validate(); msg == "" {
+				t.Fatalf("accepted invalid country filter %q", country)
+			}
+		})
+	}
+	in := ruleInput{Name: "Country filter", Email: &email, Countries: []string{"se", "Fr", "DE"}}
+	if msg := in.validate(); msg != "" {
+		t.Fatalf("valid country filters: %s", msg)
+	}
+	want := []string{"SE", "FR", "DE"}
+	for i, country := range in.Countries {
+		if country != want[i] {
+			t.Errorf("country %d: got %q, want %q", i, country, want[i])
+		}
+	}
+}
+
 func TestAuthentication(t *testing.T) {
 	srv, issuer := setup(t)
 	anonymous := client{t, srv.URL, ""}
