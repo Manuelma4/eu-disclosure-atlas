@@ -23,7 +23,8 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   topic, with the attempt count and last error. Offsets are committed after handling (at-least-once).
 - **Idempotence:** the notification id is a UUIDv5 of rule × filing × channel; it is the deliveries primary
   key and the `webhook-id`, so a replayed filing or redelivered record never notifies twice.
-- **Webhooks:** `webhook-id`, `webhook-timestamp` and `webhook-signature: v1,<base64 HMAC-SHA256>` over
+- **Webhooks:** endpoint URLs require a hostname and cannot contain credentials or a fragment.
+  Requests carry `webhook-id`, `webhook-timestamp` and `webhook-signature: v1,<base64 HMAC-SHA256>` over
   `id.timestamp.body` with a `whsec_` secret ([Standard Webhooks](https://www.standardwebhooks.com)); https only,
   no redirects, 10 s timeout, and non-public IP addresses refused at dial time (SSRF), unless
   `ATLAS_ALERTS_ALLOW_PRIVATE_WEBHOOKS=true` (local development only).

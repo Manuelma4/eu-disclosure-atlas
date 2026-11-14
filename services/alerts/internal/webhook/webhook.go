@@ -81,14 +81,17 @@ func Verify(secret string, header http.Header, body []byte, now time.Time) error
 // ValidateURL accepts https URLs (and http when allowInsecure, for local development).
 func ValidateURL(raw string, allowInsecure bool) error {
 	u, err := url.Parse(raw)
-	if err != nil || u.Host == "" {
-		return errors.New("webhook URL must be absolute")
+	if err != nil || u.Hostname() == "" {
+		return errors.New("webhook URL must be absolute with a hostname")
 	}
 	if u.Scheme != "https" && !(allowInsecure && u.Scheme == "http") {
 		return errors.New("webhook URL must use https")
 	}
 	if u.User != nil {
 		return errors.New("webhook URL must not contain credentials")
+	}
+	if u.Fragment != "" {
+		return errors.New("webhook URL must not contain a fragment")
 	}
 	return nil
 }

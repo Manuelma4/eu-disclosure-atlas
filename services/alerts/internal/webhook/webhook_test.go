@@ -70,7 +70,10 @@ func TestValidateURL(t *testing.T) {
 			t.Fatalf("%s: %v", raw, err)
 		}
 	}
-	for _, raw := range []string{"http://example.com", "ftp://x", "/relative", "https://user:pw@example.com"} {
+	for _, raw := range []string{
+		"http://example.com", "ftp://x", "/relative", "https://user:pw@example.com",
+		"https://:443/hook", "https://example.com/hook#receiver",
+	} {
 		if ValidateURL(raw, false) == nil {
 			t.Fatalf("%s accepted", raw)
 		}
