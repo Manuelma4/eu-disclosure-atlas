@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -14,6 +15,54 @@ import (
 )
 
 const lei = "549300EXAMPLE0000155"
+
+func TestDecodeRequiresOneCompleteJSONBody(t *testing.T) {
+	const bodyJSON = `{"name":"Example"}`
+	const limit = 64 << 10
+	for _, tc := range []struct {
+		name   string
+		suffix string
+		valid  bool
+	}{
+		{"whitespace", " \n\t", true},
+		{"second document", " {}", false},
+		{"trailing garbage", " unexpected", false},
+		{"exact size limit", strings.Repeat(" ", limit-len(bodyJSON)), true},
+		{"one byte over the limit", strings.Repeat(" ", limit-len(bodyJSON)+1), false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodPost, "/v1/watchlists", strings.NewReader(bodyJSON+tc.suffix))
+			w := httptest.NewRecorder()
+			var body struct {
+				Name string `json:"name"`
+			}
+			if accepted := decode(w, r, &body); accepted != tc.valid {
+				t.Fatalf("decode accepted = %v, want %v", accepted, tc.valid)
+			}
+			if !tc.valid && w.Code != http.StatusBadRequest {
+				t.Fatalf("status = %d, want %d", w.Code, http.StatusBadRequest)
+			}
+			if tc.valid && body.Name != "Example" {
+				t.Fatalf("name = %q", body.Name)
+			}
+		})
+	}
+}
+
+func TestCreateWatchlistRejectsTrailingDataBeforeStoreAccess(t *testing.T) {
+	issuer := testutil.NewIssuer(t)
+	a := New(Config{}, nil, issuer.Verifier(), slog.New(slog.NewTextHandler(io.Discard, nil)))
+	mux := http.NewServeMux()
+	a.Routes(mux)
+
+	r := httptest.NewRequest(http.MethodPost, "/v1/watchlists", strings.NewReader(`{"name":"Example"} {}`))
+	r.Header.Set("Authorization", "Bearer "+issuer.Token(t, "alice", []string{"alerts:write"}, nil))
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want %d: %s", w.Code, http.StatusBadRequest, w.Body.String())
+	}
+}
 
 type client struct {
 	t     *testing.T

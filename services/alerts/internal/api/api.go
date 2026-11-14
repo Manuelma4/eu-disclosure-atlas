@@ -5,6 +5,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"log/slog"
 	"net/http"
 	"net/mail"
@@ -105,6 +106,10 @@ func decode(w http.ResponseWriter, r *http.Request, v any) bool {
 	dec.DisallowUnknownFields()
 	if err := dec.Decode(v); err != nil {
 		Problem(w, r, http.StatusBadRequest, "Invalid JSON body: "+err.Error())
+		return false
+	}
+	if err := dec.Decode(&struct{}{}); err != io.EOF {
+		Problem(w, r, http.StatusBadRequest, "JSON body must contain a single document within the size limit")
 		return false
 	}
 	return true

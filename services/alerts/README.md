@@ -13,6 +13,7 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   `rules`, `webhook-endpoints` (the signing secret is returned once, on creation) and `deliveries`.
   Keycloak access tokens are verified against the realm's JWKS (issuer, audience `atlas-alerts`, expiry); reads
   need `alerts:read` or `alerts:write`, writes `alerts:write`. Every row is scoped to the token's `sub`.
+  Requests with a JSON body accept one document, including surrounding whitespace, within 64 KiB.
 - **Evaluator** (consumer group `atlas-alerts-evaluator`, starts at the end of the topic): matches each
   `filing.published.v1` event against enabled rules (watchlist issuers, natures, roles, countries, open-market
   only, minimum EUR amount), ignores events first seen more than `ATLAS_ALERTS_MAX_EVENT_AGE` ago (replays),
