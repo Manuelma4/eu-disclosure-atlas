@@ -5,6 +5,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"log/slog"
 	"net/http"
@@ -24,21 +25,19 @@ type received struct {
 	At       time.Time       `json:"received_at"`
 }
 
-func main() {
-	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	var secrets []string
-	for _, s := range strings.Split(os.Getenv("WEBHOOK_SECRET"), ",") {
-		if s = strings.TrimSpace(s); s != "" {
-			secrets = append(secrets, s)
-		}
-	}
+func sinkHandler(log *slog.Logger, secrets []string) http.Handler {
 	var mu sync.Mutex
 	var last []received
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /", func(w http.ResponseWriter, r *http.Request) {
-		body, err := io.ReadAll(io.LimitReader(r.Body, 1<<20))
+		body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 1<<20))
 		if err != nil {
+			var tooLarge *http.MaxBytesError
+			if errors.As(err, &tooLarge) {
+				http.Error(w, "request body exceeds 1 MiB", http.StatusRequestEntityTooLarge)
+				return
+			}
 			http.Error(w, "read error", http.StatusBadRequest)
 			return
 		}
@@ -73,12 +72,23 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(last)
 	})
+	return mux
+}
+
+func main() {
+	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	var secrets []string
+	for _, s := range strings.Split(os.Getenv("WEBHOOK_SECRET"), ",") {
+		if s = strings.TrimSpace(s); s != "" {
+			secrets = append(secrets, s)
+		}
+	}
 	addr := os.Getenv("WEBHOOK_SINK_ADDR")
 	if addr == "" {
 		addr = ":8099"
 	}
 	log.Info("listening", "addr", addr)
-	server := &http.Server{Addr: addr, Handler: mux, ReadHeaderTimeout: 5 * time.Second}
+	server := &http.Server{Addr: addr, Handler: sinkHandler(log, secrets), ReadHeaderTimeout: 5 * time.Second}
 	if err := server.ListenAndServe(); err != nil {
 		log.Error("exit", "err", err)
 		os.Exit(1)
