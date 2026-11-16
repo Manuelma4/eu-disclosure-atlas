@@ -46,8 +46,9 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
 | `ATLAS_WEBSITE_URL` | `http://localhost:3000` (links in emails) |
 
 `cmd/webhook-sink` is a development receiver that verifies signatures (`WEBHOOK_SECRET`, comma-separated) and
-lists what it received on `GET /deliveries`. It rejects bodies over 1 MiB with HTTP 413 before verifying a
-signature or recording the delivery.
+lists received deliveries at `GET /deliveries`. It rejects bodies over 1 MiB with HTTP 413, including
+streams without a known content length. Other body read failures return HTTP 400. Both
+early responses leave the delivery history intact.
 
 ```bash
 # unit tests; the PostgreSQL tests run when ATLAS_TEST_DATABASE_URL points to a server (admin connection)
