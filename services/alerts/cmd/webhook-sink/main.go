@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -68,9 +69,10 @@ func sinkHandler(log *slog.Logger, secrets []string) http.Handler {
 	})
 	mux.HandleFunc("GET /deliveries", func(w http.ResponseWriter, _ *http.Request) {
 		mu.Lock()
-		defer mu.Unlock()
+		history := slices.Clone(last)
+		mu.Unlock()
 		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(last)
+		_ = json.NewEncoder(w).Encode(history)
 	})
 	return mux
 }

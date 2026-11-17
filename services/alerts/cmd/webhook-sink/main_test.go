@@ -50,6 +50,70 @@ func TestSinkHistoryIsAnArrayBeforeAndAfterDelivery(t *testing.T) {
 	}
 }
 
+type blockedHistoryWriter struct {
+	*httptest.ResponseRecorder
+	writing chan struct{}
+	release chan struct{}
+}
+
+func (w blockedHistoryWriter) Write(p []byte) (int, error) {
+	close(w.writing)
+	<-w.release
+	return w.ResponseRecorder.Write(p)
+}
+
+func TestSlowHistoryResponseDoesNotBlockDelivery(t *testing.T) {
+	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), nil)
+	post := func(id string) int {
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader("{}"))
+		req.Header.Set("webhook-id", id)
+		res := httptest.NewRecorder()
+		sink.ServeHTTP(res, req)
+		return res.Code
+	}
+	if status := post("before"); status != http.StatusNoContent {
+		t.Fatalf("first delivery status = %d", status)
+	}
+	out := blockedHistoryWriter{httptest.NewRecorder(), make(chan struct{}), make(chan struct{})}
+	historyDone := make(chan struct{})
+	go func() {
+		defer close(historyDone)
+		sink.ServeHTTP(out, httptest.NewRequest(http.MethodGet, "/deliveries", nil))
+	}()
+	t.Cleanup(func() {
+		if out.release != nil {
+			close(out.release)
+		}
+		<-historyDone
+	})
+	select {
+	case <-out.writing:
+	case <-time.After(2 * time.Second):
+		t.Fatal("history writer was not reached")
+	}
+
+	deliveryDone := make(chan int, 1)
+	go func() { deliveryDone <- post("during") }()
+	select {
+	case status := <-deliveryDone:
+		if status != http.StatusNoContent {
+			t.Fatalf("second delivery status = %d", status)
+		}
+	case <-time.After(2 * time.Second):
+		t.Fatal("delivery blocked while the history response was being written")
+	}
+	close(out.release)
+	<-historyDone
+	out.release = nil
+	var deliveries []received
+	if err := json.Unmarshal(out.Body.Bytes(), &deliveries); err != nil {
+		t.Fatal(err)
+	}
+	if len(deliveries) != 1 || deliveries[0].ID != "before" {
+		t.Fatalf("history = %v, want only the delivery present at capture", deliveries)
+	}
+}
+
 func TestSinkRejectsUnreadableBodiesBeforeRecording(t *testing.T) {
 	secret := webhook.NewSecret()
 	var logs bytes.Buffer
