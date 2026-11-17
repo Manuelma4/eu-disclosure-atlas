@@ -27,7 +27,7 @@ type received struct {
 
 func sinkHandler(log *slog.Logger, secrets []string) http.Handler {
 	var mu sync.Mutex
-	var last []received
+	last := []received{}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /", func(w http.ResponseWriter, r *http.Request) {

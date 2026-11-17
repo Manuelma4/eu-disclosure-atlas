@@ -17,6 +17,39 @@ import (
 	"github.com/Manuelma4/eu-disclosure-atlas/services/alerts/internal/webhook"
 )
 
+func TestSinkHistoryIsAnArrayBeforeAndAfterDelivery(t *testing.T) {
+	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), nil)
+	history := func() []received {
+		t.Helper()
+		res := httptest.NewRecorder()
+		sink.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/deliveries", nil))
+		if res.Code != http.StatusOK || res.Header().Get("Content-Type") != "application/json" {
+			t.Fatalf("history response = %d %q", res.Code, res.Header().Get("Content-Type"))
+		}
+		var deliveries []received
+		if err := json.Unmarshal(res.Body.Bytes(), &deliveries); err != nil {
+			t.Fatal(err)
+		}
+		if deliveries == nil {
+			t.Fatalf("history was JSON null, want an array")
+		}
+		return deliveries
+	}
+	if count := len(history()); count != 0 {
+		t.Fatalf("startup history length = %d, want 0", count)
+	}
+	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader("{}"))
+	req.Header.Set("webhook-id", "first")
+	res := httptest.NewRecorder()
+	sink.ServeHTTP(res, req)
+	if res.Code != http.StatusNoContent {
+		t.Fatalf("delivery status = %d, want %d", res.Code, http.StatusNoContent)
+	}
+	if deliveries := history(); len(deliveries) != 1 || deliveries[0].ID != "first" {
+		t.Fatalf("history = %v, want one delivery with id first", deliveries)
+	}
+}
+
 func TestSinkRejectsUnreadableBodiesBeforeRecording(t *testing.T) {
 	secret := webhook.NewSecret()
 	var logs bytes.Buffer
