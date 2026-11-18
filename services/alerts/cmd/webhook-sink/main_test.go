@@ -2,8 +2,12 @@ package main
 
 import (
 	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -16,6 +20,53 @@ import (
 
 	"github.com/Manuelma4/eu-disclosure-atlas/services/alerts/internal/webhook"
 )
+
+func TestSinkRejectsAnEmptySigningKeyAndAcceptsTheRotatedKey(t *testing.T) {
+	valid := webhook.NewSecret()
+	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), []string{"whsec_", valid})
+	history := func() []received {
+		t.Helper()
+		res := httptest.NewRecorder()
+		sink.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/deliveries", nil))
+		var rows []received
+		if err := json.Unmarshal(res.Body.Bytes(), &rows); err != nil || rows == nil {
+			t.Fatalf("history = %s, error = %v", res.Body.String(), err)
+		}
+		return rows
+	}
+	if len(history()) != 0 {
+		t.Fatal("unexpected startup history")
+	}
+	body := []byte("{}")
+	now := time.Now()
+	mac := hmac.New(sha256.New, nil)
+	fmt.Fprintf(mac, "%s.%d.", "empty", now.Unix())
+	mac.Write(body)
+	forged := "v1," + base64.StdEncoding.EncodeToString(mac.Sum(nil))
+	send := func(id, signature string) int {
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
+		req.Header.Set("webhook-id", id)
+		req.Header.Set("webhook-timestamp", strconv.FormatInt(now.Unix(), 10))
+		req.Header.Set("webhook-signature", signature)
+		res := httptest.NewRecorder()
+		sink.ServeHTTP(res, req)
+		return res.Code
+	}
+	if status := send("empty", forged); status != http.StatusUnauthorized {
+		t.Fatalf("empty key response = %d, want 401", status)
+	}
+	signature, err := webhook.Sign(valid, "valid", now, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if status := send("valid", signature); status != http.StatusNoContent {
+		t.Fatalf("rotated key response = %d, want 204", status)
+	}
+	rows := history()
+	if len(rows) != 2 || rows[0].Verified || !rows[1].Verified || rows[0].ID != "empty" || rows[1].ID != "valid" {
+		t.Fatalf("history = %v", rows)
+	}
+}
 
 func TestSinkHistoryIsAnArrayBeforeAndAfterDelivery(t *testing.T) {
 	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), nil)

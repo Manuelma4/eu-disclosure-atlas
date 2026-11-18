@@ -121,6 +121,8 @@ cd web && NEXT_PUBLIC_ATLAS_STREAM_URL=http://localhost:8090 npm run dev   # liv
 Alert emails land in Mailpit (http://localhost:8025); webhooks can target the dev sink
 (`http://webhook-sink:8099/hook`, received payloads on http://localhost:8099/deliveries).
 The history endpoint returns a JSON array, initially empty, with up to 100 deliveries.
+Configured webhook secrets must decode to a nonempty signing key. During rotation,
+a signature from another valid configured key can still verify.
 
 Query the data directly:
 

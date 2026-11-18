@@ -37,7 +37,11 @@ func NewSecret() string {
 }
 
 func key(secret string) ([]byte, error) {
-	return base64.StdEncoding.DecodeString(strings.TrimPrefix(secret, secretPrefix))
+	decoded, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(secret, secretPrefix))
+	if err == nil && len(decoded) == 0 {
+		return nil, errors.New("signing key is empty")
+	}
+	return decoded, err
 }
 
 // Sign returns the webhook-signature header value.

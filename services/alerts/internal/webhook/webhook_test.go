@@ -50,6 +50,24 @@ func TestSendAndVerify(t *testing.T) {
 	}
 }
 
+func TestEmptySigningKeyIsRejected(t *testing.T) {
+	now := time.Unix(1614265330, 0)
+	body := []byte(`{}`)
+	headers := http.Header{
+		"Webhook-Id":        {"test"},
+		"Webhook-Timestamp": {"1614265330"},
+		"Webhook-Signature": {"v1,06UCkhGCn5kOit6dSyTLexifGb2i7oVnMq8gF5PDXzc="},
+	}
+	for _, secret := range []string{"", "whsec_", "whsec_\r\n"} {
+		if _, err := Sign(secret, "test", now, body); err == nil {
+			t.Error("accepted an empty signing key")
+		}
+		if err := Verify(secret, headers, body, now); err == nil {
+			t.Error("accepted a signature with an empty signing key")
+		}
+	}
+}
+
 func TestSenderReportsFailuresAndBlocksPrivateAddresses(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
