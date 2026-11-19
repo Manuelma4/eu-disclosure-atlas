@@ -29,6 +29,9 @@ const secretPrefix = "whsec_"
 // Tolerance is how far a webhook-timestamp may be from the receiver's clock (replay protection).
 const Tolerance = 5 * time.Minute
 
+// RFC 6598 shared space is not globally routable and is distinct from RFC 1918.
+var sharedAddressSpace = netip.MustParsePrefix("100.64.0.0/10")
+
 // NewSecret returns a random signing secret ("whsec_" + base64 of 24 bytes).
 func NewSecret() string {
 	b := make([]byte, 24)
@@ -130,7 +133,7 @@ func (s *Sender) control(_, address string, _ syscall.RawConn) error {
 		return err
 	}
 	ip := addrPort.Addr().Unmap()
-	if !ip.IsGlobalUnicast() || ip.IsPrivate() || ip.IsLoopback() || ip.IsLinkLocalUnicast() {
+	if !ip.IsGlobalUnicast() || ip.IsPrivate() || ip.IsLoopback() || ip.IsLinkLocalUnicast() || sharedAddressSpace.Contains(ip) {
 		return fmt.Errorf("refusing to deliver to non-public address %s", ip)
 	}
 	return nil

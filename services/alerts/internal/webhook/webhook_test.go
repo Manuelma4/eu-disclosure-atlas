@@ -112,6 +112,24 @@ func TestEmptySigningKeyIsRejected(t *testing.T) {
 	}
 }
 
+func TestSenderBlocksSharedAddressSpaceAtDialTime(t *testing.T) {
+	sender := NewSender(false)
+	local := NewSender(true)
+	for _, address := range []string{"100.64.0.0:443", "100.64.0.1:443", "100.127.255.255:443", "[::ffff:100.64.0.1]:443"} {
+		if err := sender.control("tcp", address, nil); err == nil {
+			t.Errorf("shared address %s accepted", address)
+		}
+		if err := local.control("tcp", address, nil); err != nil {
+			t.Errorf("explicit local-development override rejected %s: %v", address, err)
+		}
+	}
+	for _, address := range []string{"100.63.255.255:443", "100.128.0.0:443", "8.8.8.8:443", "[2606:4700:4700::1111]:443"} {
+		if err := sender.control("tcp", address, nil); err != nil {
+			t.Errorf("public address outside the shared prefix %s rejected: %v", address, err)
+		}
+	}
+}
+
 func TestSenderReportsFailuresAndBlocksPrivateAddresses(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)

@@ -30,6 +30,8 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   Verification authenticates the exact timestamp header text; numeric parsing is
   used only for the five-minute clock tolerance. Changing that text requires a
   new signature even when it represents the same Unix time.
+  The dial-time guard also rejects RFC 6598 shared addresses (`100.64.0.0/10`),
+  including IPv4-mapped IPv6 forms, unless the local-development override is enabled.
 - **Email:** `ATLAS_EMAIL_PROVIDER=smtp` (`ATLAS_SMTP_ADDR`, optional `ATLAS_SMTP_USER`/`ATLAS_SMTP_PASSWORD`) or
   `resend` (`ATLAS_RESEND_API_KEY`), with `ATLAS_EMAIL_FROM`. Unset: email notifications go to the dead-letter topic.
 - **Storage:** PostgreSQL schema `alerts`, migrations embedded in the binary (`internal/store/migrations`) and
