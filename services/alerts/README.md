@@ -27,6 +27,9 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   `id.timestamp.body` with a `whsec_` secret ([Standard Webhooks](https://www.standardwebhooks.com)); https only,
   no redirects, 10 s timeout, and non-public IP addresses refused at dial time (SSRF), unless
   `ATLAS_ALERTS_ALLOW_PRIVATE_WEBHOOKS=true` (local development only).
+  Verification authenticates the exact timestamp header text; numeric parsing is
+  used only for the five-minute clock tolerance. Changing that text requires a
+  new signature even when it represents the same Unix time.
 - **Email:** `ATLAS_EMAIL_PROVIDER=smtp` (`ATLAS_SMTP_ADDR`, optional `ATLAS_SMTP_USER`/`ATLAS_SMTP_PASSWORD`) or
   `resend` (`ATLAS_RESEND_API_KEY`), with `ATLAS_EMAIL_FROM`. Unset: email notifications go to the dead-letter topic.
 - **Storage:** PostgreSQL schema `alerts`, migrations embedded in the binary (`internal/store/migrations`) and

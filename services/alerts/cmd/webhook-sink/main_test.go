@@ -21,6 +21,42 @@ import (
 	"github.com/Manuelma4/eu-disclosure-atlas/services/alerts/internal/webhook"
 )
 
+func TestSinkRejectsTimestampTextChangedAfterSigning(t *testing.T) {
+	secret := webhook.NewSecret()
+	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), []string{secret})
+	now := time.Now()
+	body := []byte(`{}`)
+	signature, err := webhook.Sign(secret, "msg_1", now, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stamp := strconv.FormatInt(now.Unix(), 10)
+	for _, raw := range []string{stamp, "0" + stamp, "+" + stamp} {
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
+		req.Header.Set("webhook-id", "msg_1")
+		req.Header.Set("webhook-timestamp", raw)
+		req.Header.Set("webhook-signature", signature)
+		res := httptest.NewRecorder()
+		sink.ServeHTTP(res, req)
+		want := http.StatusUnauthorized
+		if raw == stamp {
+			want = http.StatusNoContent
+		}
+		if res.Code != want {
+			t.Errorf("timestamp %q: status %d, want %d", raw, res.Code, want)
+		}
+	}
+	res := httptest.NewRecorder()
+	sink.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/deliveries", nil))
+	var rows []received
+	if err := json.Unmarshal(res.Body.Bytes(), &rows); err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 3 || !rows[0].Verified || rows[1].Verified || rows[2].Verified {
+		t.Fatalf("unexpected verification history: %+v", rows)
+	}
+}
+
 func TestSinkRejectsAnEmptySigningKeyAndAcceptsTheRotatedKey(t *testing.T) {
 	valid := webhook.NewSecret()
 	sink := sinkHandler(slog.New(slog.NewTextHandler(io.Discard, nil)), []string{"whsec_", valid})

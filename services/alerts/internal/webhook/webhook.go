@@ -46,12 +46,16 @@ func key(secret string) ([]byte, error) {
 
 // Sign returns the webhook-signature header value.
 func Sign(secret, id string, ts time.Time, body []byte) (string, error) {
+	return signTimestamp(secret, id, strconv.FormatInt(ts.Unix(), 10), body)
+}
+
+func signTimestamp(secret, id, timestamp string, body []byte) (string, error) {
 	k, err := key(secret)
 	if err != nil {
 		return "", fmt.Errorf("invalid secret: %w", err)
 	}
 	mac := hmac.New(sha256.New, k)
-	fmt.Fprintf(mac, "%s.%d.", id, ts.Unix())
+	fmt.Fprintf(mac, "%s.%s.", id, timestamp)
 	mac.Write(body)
 	return "v1," + base64.StdEncoding.EncodeToString(mac.Sum(nil)), nil
 }
@@ -70,7 +74,7 @@ func Verify(secret string, header http.Header, body []byte, now time.Time) error
 	if now.Sub(ts) > Tolerance || ts.Sub(now) > Tolerance {
 		return errors.New("webhook-timestamp outside tolerance")
 	}
-	expected, err := Sign(secret, id, ts, body)
+	expected, err := signTimestamp(secret, id, tsRaw, body)
 	if err != nil {
 		return err
 	}

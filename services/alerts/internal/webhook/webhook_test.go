@@ -2,6 +2,10 @@ package webhook
 
 import (
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,6 +14,46 @@ import (
 	"testing"
 	"time"
 )
+
+func TestVerifyBindsTheRawTimestampHeader(t *testing.T) {
+	secret := "whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw"
+	key, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(secret, "whsec_"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	now := time.Unix(1614265330, 0)
+	body := []byte(`{"value":1}`)
+	canonical, err := Sign(secret, "msg_1", now, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, raw := range []string{"1614265330", "01614265330", "+1614265330"} {
+		t.Run(raw, func(t *testing.T) {
+			headers := http.Header{}
+			headers.Set("webhook-id", "msg_1")
+			headers.Set("webhook-timestamp", raw)
+			headers.Set("webhook-signature", canonical)
+			if err := Verify(secret, headers, body, now); (err == nil) != (raw == "1614265330") {
+				t.Errorf("canonical signature with timestamp %q: %v", raw, err)
+			}
+			mac := hmac.New(sha256.New, key)
+			fmt.Fprintf(mac, "%s.%s.", "msg_1", raw)
+			mac.Write(body)
+			headers.Set("webhook-signature", "v1,"+base64.StdEncoding.EncodeToString(mac.Sum(nil)))
+			if err := Verify(secret, headers, body, now); err != nil {
+				t.Errorf("independent raw signature rejected: %v", err)
+			}
+			if Verify(secret, headers, []byte(`{"value":2}`), now) == nil {
+				t.Error("changed body accepted")
+			}
+			for _, delta := range []time.Duration{-Tolerance - time.Second, Tolerance + time.Second} {
+				if Verify(secret, headers, body, now.Add(delta)) == nil {
+					t.Error("out-of-tolerance timestamp accepted")
+				}
+			}
+		})
+	}
+}
 
 func TestSignMatchesStandardWebhooksVector(t *testing.T) {
 	// Test vector from the Standard Webhooks reference libraries.
