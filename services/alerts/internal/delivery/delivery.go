@@ -5,8 +5,9 @@
 //	                                  v
 //	                      .retry.5m --> .retry.1h --> .dlq
 //
-// Each notification has a deterministic id (rule × filing × channel) recorded in the deliveries table, so
-// replays and redeliveries never notify twice; a delivered or failed notification is skipped.
+// Each notification has a deterministic id (rule × filing × channel) recorded in the deliveries table.
+// A persisted delivered or failed status skips later handling. Sending and recording the outcome are
+// separate operations, so a crash or store failure between them can cause duplicate delivery.
 package delivery
 
 import (

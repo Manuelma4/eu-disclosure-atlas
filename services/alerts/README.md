@@ -21,8 +21,12 @@ atlas.filings.v1 ──evaluator──▶ atlas.notifications.v1 ──delivery�
   topics): one consumer group per tier. A retry tier waits until a record has
   spent its delay in the topic, then retries; failures move on to the next tier and finally to the dead-letter
   topic, with the attempt count and last error. Offsets are committed after handling (at-least-once).
-- **Idempotence:** the notification id is a UUIDv5 of rule × filing × channel; it is the deliveries primary
-  key and the `webhook-id`, so a replayed filing or redelivered record never notifies twice.
+- **Idempotence:** the notification id is a UUIDv5 of rule × filing × channel and is both the deliveries
+  primary key and the `webhook-id`. A persisted `delivered` or `failed` status suppresses later handling.
+  Sending precedes recording the outcome: a crash or storage failure between those steps can cause a retry
+  after the receiver has accepted the request. Delivery remains at-least-once; webhook receivers should
+  deduplicate side effects by `webhook-id`. The [delivery handler](internal/delivery/delivery.go)
+  and [attempt update](internal/store/store.go) perform these separate steps.
 - **Webhooks:** `webhook-id`, `webhook-timestamp` and `webhook-signature: v1,<base64 HMAC-SHA256>` over
   `id.timestamp.body` with a `whsec_` secret ([Standard Webhooks](https://www.standardwebhooks.com)); https only,
   no redirects, 10 s timeout, and non-public IP addresses refused at dial time (SSRF), unless
@@ -55,7 +59,36 @@ lists received deliveries at `GET /deliveries`. It rejects bodies over 1 MiB wit
 streams without a known content length. Other body read failures return HTTP 400. Both
 early responses leave the delivery history intact.
 
+For the full suite, export `ATLAS_TEST_DATABASE_URL` as an admin connection to a
+dedicated test PostgreSQL server reachable from the container. The
+[test fixture](internal/testutil/testutil.go) drops and recreates per-package test
+databases; PostgreSQL tests are skipped when that variable is unset. Run from
+the repository root:
+
 ```bash
-# unit tests; the PostgreSQL tests run when ATLAS_TEST_DATABASE_URL points to a server (admin connection)
-docker run --rm -v "$PWD":/src -w /src/services/alerts golang:1.27 go test -race ./...
+docker run --rm --env ATLAS_TEST_DATABASE_URL -v "$PWD":/src -w /src/services/alerts golang:1.27 go test -race ./...
 ```
+
+## Local webhook checks
+
+From the repository root, with a Go 1.27 toolchain already installed:
+
+```bash
+cd services/alerts
+GOTOOLCHAIN=local GOPROXY=off GOMAXPROCS=2 go test -p 2 -race ./internal/webhook ./cmd/webhook-sink -count=1
+GOTOOLCHAIN=local GOPROXY=off GOMAXPROCS=2 go vet -p 2 ./internal/webhook ./cmd/webhook-sink
+```
+
+This bounded check uses the installed toolchain without module-proxy downloads.
+The [signer/sender tests](internal/webhook/webhook_test.go) cover signature
+vectors, exact timestamp text, body changes, clock tolerance, empty signing keys,
+HTTP outcomes and the dial-time address guard. The [receiver tests](cmd/webhook-sink/main_test.go)
+cover signature rotation, delivery history and body-read limits/failures. HTTP
+fixtures are local test servers or direct handler calls; shared-address cases
+invoke the guard without connecting to those addresses.
+
+These two packages do not validate the evaluator, PostgreSQL persistence,
+Kafka retry/dead-letter processing or email delivery. Use the broader suite
+above with its dependencies and a dedicated test database for that scope.
+A webhook signature authenticates a request; receiver-side deduplication is a
+separate responsibility.
