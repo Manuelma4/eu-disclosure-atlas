@@ -8,8 +8,8 @@ plus the hand-written symptom alerts, live in
 
 | Alert | Severity | SLO / signal | Runbook | Owner |
 |---|---|---|---|---|
-| `AtlasApiAvailabilityBudgetBurn` | page / ticket | `/v1` availability 99.9% | [api-availability.md](api-availability.md) | platform |
-| `AtlasQueryApiDown` | page | no telemetry from the API | [api-availability.md](api-availability.md) | platform |
+| `AtlasApiAvailabilityBudgetBurn` | page / ticket | 99.9% of recorded `/v1` requests without a 5xx, excluding `/v1/stream` | [api-availability.md](api-availability.md) | platform |
+| `AtlasQueryApiDown` | page | request counts and source-ingestion timestamps absent | [api-availability.md](api-availability.md) | platform |
 | `AtlasApiLatencyBudgetBurn` | page / ticket | `/v1` p95 under 200 ms | [api-latency.md](api-latency.md) | platform |
 | `AtlasFilingFreshnessBudgetBurn` | page / ticket | filings visible within 15 min, 95%, per source | [filing-freshness.md](filing-freshness.md) | data |
 | `AtlasSourceStale` | ticket | no ingestion for a business day | [source-stale.md](source-stale.md) | data |
