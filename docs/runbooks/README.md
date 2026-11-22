@@ -12,7 +12,7 @@ plus the hand-written symptom alerts, live in
 | `AtlasQueryApiDown` | page | no telemetry from the API | [api-availability.md](api-availability.md) | platform |
 | `AtlasApiLatencyBudgetBurn` | page / ticket | `/v1` p95 under 200 ms | [api-latency.md](api-latency.md) | platform |
 | `AtlasFilingFreshnessBudgetBurn` | page / ticket | filings visible within 15 min, 95%, per source | [filing-freshness.md](filing-freshness.md) | data |
-| `AtlasSourceStale` | ticket | no ingestion for a business day | [source-stale.md](source-stale.md) | data |
+| `AtlasSourceStale` | ticket | observed ingestion gap >26 h for 30 min, Tue–Fri UTC | [source-stale.md](source-stale.md) | data |
 | `AtlasLiveEventDelayBudgetBurn` | page / ticket | live events within 5 s, 99% | [live-event-delay.md](live-event-delay.md) | platform |
 | `AtlasKafkaConsumerLagHigh` | ticket | consumer lag over 1,000 records | [kafka-consumer-lag.md](kafka-consumer-lag.md) | platform |
 | `AtlasTelemetryPipelineDown` | ticket | Collector not scraped | [telemetry-pipeline.md](telemetry-pipeline.md) | platform |

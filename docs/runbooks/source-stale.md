@@ -1,18 +1,27 @@
 # Source stale
 
-**Alert:** `AtlasSourceStale` (ticket), labelled with `source`.
-**Signal:** no new filing from the source has been ingested for more than 26 hours on a weekday. Owner: data.
-
-## What it means
-Either the regulator published nothing (possible for small markets or around public holidays), or the
-connector silently stopped. The freshness SLO cannot see this case, because it counts filings that arrive.
+**Alert:** `AtlasSourceStale` (ticket), labelled with `source`. Owner: data.
+The rule compares the latest reported ingestion timestamp per source to the
+current time. It requires a gap greater than 26 hours, evaluated Tuesday through
+Friday in UTC, and a condition that persists for 30 minutes.
+[Alert rule](../../deploy/observability/prometheus/rules/atlas-alerts.yaml) ·
+[Prometheus weekday function](https://prometheus.io/docs/prometheus/latest/querying/functions/#day_of_week)
 
 ## Confirm
-1. Open the regulator's listing (URL in `docs/sources/<source>.md`). New filings there but not in the Atlas
-   means the connector is broken: follow [filing-freshness.md](filing-freshness.md).
-2. Public holiday in that country: acknowledge and close.
-3. Check that ingestion runs at all (Dagster run history, or the `watch` process).
 
-## Fix
-If a source is legitimately quiet, raise the threshold for it in
-`deploy/observability/prometheus/rules/atlas-alerts.yaml` with a comment saying why.
+1. In Prometheus or Grafana, check that the source has an
+   `atlas_source_last_ingested_seconds` series. If the series is missing, check
+   telemetry and the source metrics before interpreting alert silence. The
+   threshold comparison requires a timestamp sample.
+2. Compare the latest ingested record with the upstream listing using the
+   [source notes](../sources/README.md). A quiet source or a local holiday can
+   explain the gap. If the upstream listing is ahead, inspect recent runs in
+   Dagster or the watch process and follow the [freshness runbook](filing-freshness.md).
+3. If several sources lose metrics together, check the
+   [telemetry pipeline](telemetry-pipeline.md).
+
+## Follow up
+
+Record the upstream check, last observed ingestion time, and recent job outcome.
+Filing freshness measures the delay of records that arrived. Use source activity
+and connector state to investigate delays where no new records arrive.
