@@ -4,9 +4,13 @@ Scenarios for the public API with performance budgets (decision 0014). One scrip
 
 | Profile | Shape | Where |
 |---|---|---|
-| `smoke` | ~5 REST users and 3 live-stream clients for 50 s | every PR touching the API (`.github/workflows/loadtest.yml`) |
-| `load` | 50 REST users and 100 stream clients for 5 minutes | on demand (workflow dispatch) or locally |
-| `stress` | 200 REST users and 500 stream clients for 8 minutes | on demand, against a preview environment |
+| `smoke` | ~5 REST users and 3 live-stream clients for 50 s | weekly schedule, manual workflow dispatch, or local k6 |
+| `load` | up to 50 REST users over 5 min 30 s, plus 100 stream clients for 5 min | manual workflow dispatch or local k6 |
+| `stress` | up to 200 REST users and 500 stream clients for 8 minutes | direct k6 execution against an isolated synthetic test environment |
+
+The [load-test workflow](../.github/workflows/loadtest.yml) seeds a local
+synthetic lake with 20,000 transactions. The weekly run uses the smoke profile.
+Manual dispatch offers `smoke` and `load`.
 
 Scenarios (weights of REST users): **overview** (30%: overview, weekly flow, sources, then an `If-None-Match`
 revalidation), **filings pagination** (30%: five pages by cursor, then a filtered query), **issuer pages**
@@ -14,8 +18,8 @@ revalidation), **filings pagination** (30%: five pages by cursor, then a filtere
 for 8 seconds and count the `filing` events they receive).
 
 ## Budgets (thresholds; the run fails when one is missed)
-- REST `p(95) < 200 ms` with a warm server (snapshot-pinned responses are cached), revalidations
-  (`304`) `p(95) < 50 ms`;
+- REST `p(95) < 200 ms` and overview revalidations (`304`) `p(95) < 50 ms`.
+  The script uses live URLs and sends `If-None-Match` when the overview response includes an ETag;
 - REST and revalidation error rate under 1%, checks above 99%;
 - more than 99% of stream connections open and start with the `retry:` preamble.
 
