@@ -1,13 +1,23 @@
 # Live-event delay
 
 **Alert:** `AtlasLiveEventDelayBudgetBurn` (page, ticket).
-**SLO:** 99% of live events reach connected clients within 5 seconds (realtime-gateway: from the Kafka record
-timestamp; query API stream: from first ingestion). Owner: platform.
+**SLO:** 99% of recorded server-side SSE delay observations are within five
+seconds. Owner: platform. [SLI specification](../../deploy/observability/slos/realtime.yaml)
+
+The query API measures from the filing's `first_seen_at` after yielding the SSE
+event. The gateway measures from the Kafka record timestamp after a live event
+write and flush. The gateway resumes from its backlog without adding those
+replayed events to the delay histogram. Both measurements end at the server.
+A client-side observation is needed to measure receipt or rendering.
 
 ## Confirm
-1. Grafana *Real time*: delivery delay by service, connected clients, events per minute.
-2. *Kafka: consumer lag*: lag on the gateway's consumer group means it cannot keep up.
-3. Gateway traces: the span from consume to fan-out; slow subscribers show as long write spans.
+
+1. In Grafana *Real time: SSE clients and event delay*, use *Delivery delay p50 / p95*
+   by service to identify the affected emitter. The five-second SLI sums histogram
+   observations across services.
+2. For gateway delay, check the consumer group in *Kafka: consumer lag* and compare
+   its trend with the gateway delay. For query API delay, compare the polling and
+   lake-query times with the stream measurements.
 
 ## Mitigate
 - Consumer lag: scale the gateway (KEDA scales on lag), check partition count versus replicas.
