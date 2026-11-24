@@ -14,7 +14,7 @@ plus the hand-written symptom alerts, live in
 | `AtlasFilingFreshnessBudgetBurn` | page / ticket | filings visible within 15 min, 95%, per source | [filing-freshness.md](filing-freshness.md) | data |
 | `AtlasSourceStale` | ticket | no ingestion for a business day | [source-stale.md](source-stale.md) | data |
 | `AtlasLiveEventDelayBudgetBurn` | page / ticket | live events within 5 s, 99% | [live-event-delay.md](live-event-delay.md) | platform |
-| `AtlasKafkaConsumerLagHigh` | ticket | consumer lag over 1,000 records | [kafka-consumer-lag.md](kafka-consumer-lag.md) | platform |
+| `AtlasKafkaConsumerLagHigh` | ticket | group lag over 1,000 records for 10 min | [kafka-consumer-lag.md](kafka-consumer-lag.md) | platform |
 | `AtlasTelemetryPipelineDown` | ticket | Collector not scraped | [telemetry-pipeline.md](telemetry-pipeline.md) | platform |
 
 ## Burn-rate alerts in one paragraph
