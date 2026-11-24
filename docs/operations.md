@@ -37,15 +37,37 @@ your containers apart from other checkouts that use the same compose file.
 
 ### 2. Migrate an existing Parquet lake
 
-Lakes created before DuckLake keep silver as Parquet files under `<lake>/silver/`. Load them once:
+Lakes created before DuckLake store silver Parquet under
+`<lake>/silver/<dataset>/<source>/`. Rehearse the migration on a separate local
+copy, with no other process opening its catalog. Record the source row totals
+before starting. Adjust `legacy_silver` if the old lake is elsewhere. The
+commands copy it to a fresh ignored directory under `lake/` and clear the
+catalog and data-path overrides in a subshell.
 
 ```bash
-disclosure-atlas --lake lake migrate-lake      # one DuckLake commit per file; re-running skips migrated files
-disclosure-atlas --lake lake snapshots         # snapshot ids, usable as ?as_of= in the API
-disclosure-atlas --lake lake stats             # same gold numbers as before the migration
+(
+  set -eu
+  unset ATLAS_CATALOG ATLAS_DATA_PATH ATLAS_SNAPSHOT_PUBLISHER
+  legacy_silver="lake/silver"
+  test -d "$legacy_silver"
+  mkdir -p lake
+  rehearsal="$(mktemp -d lake/atlas-migration.XXXXXX)"
+  cp -R "$legacy_silver" "$rehearsal/silver"
+  printf 'Rehearsal lake: %s\n' "$rehearsal"
+  disclosure-atlas --lake "$rehearsal" migrate-lake
+  disclosure-atlas --lake "$rehearsal" snapshots
+  disclosure-atlas --lake "$rehearsal" stats
+  disclosure-atlas --lake "$rehearsal" migrate-lake
+)
 ```
 
-The Parquet files are left in place; delete `<lake>/silver/` once you are satisfied.
+Compare the initial load and gold counts with the copied data, accounting for
+the views' deduplication. The second migration should report zero loaded rows.
+Each Parquet file commits separately. The catalog records the migrated relative
+path, so a later run skips that path even if the file's contents changed. Keep
+the source tree fixed during migration and retain it for verification. On a
+partial failure, inspect the snapshots before resuming against the same copy
+and catalog. Original Parquet files remain in place.
 
 ### 3. Run Dagster
 
