@@ -113,9 +113,36 @@ The API reports the same through `GET /v1/sources` (`last_published_at`, `last_i
 
 ### 6. Snapshots and time travel
 
-- `X-Atlas-Snapshot` on every API response is the DuckLake snapshot the answer came from.
-- `?as_of=<snapshot>` on `/v1/insider-transactions`, `/v1/insider-transactions/{id}`, `/v1/issuers` and
-  `/v1/issuers/{lei}` answers from that snapshot (cached as immutable); unknown ids return 404.
+Versioned read responses identify their DuckLake snapshot in
+`X-Atlas-Snapshot`. To page through a fixed transaction view, take the
+`snapshot` and `next_cursor` fields from the first response. Reuse the exact
+filters and pass that snapshot as `as_of` on each subsequent page.
+
+For an already-running local API with at least two matching transactions,
+use `curl` and `jq`:
+
+```bash
+(
+  set -eu
+  api="http://127.0.0.1:8000"
+  page=$(curl -fsS --max-time 5 "$api/v1/insider-transactions?limit=1")
+  snapshot=$(printf '%s' "$page" | jq -er '.snapshot')
+  cursor=$(printf '%s' "$page" | jq -r '.next_cursor // empty')
+  if [ -n "$cursor" ]; then
+    curl -fsS --max-time 5 --get "$api/v1/insider-transactions" \
+      --data-urlencode 'limit=1' --data-urlencode "as_of=$snapshot" \
+      --data-urlencode "cursor=$cursor"
+  fi
+)
+```
+
+A null `next_cursor` marks the final page. The pinned response returns the
+same `snapshot` even if newer records were committed. Repeat with the same
+`as_of` on the transaction detail or issuer routes as needed. Unknown snapshot
+IDs return 404. Issuer detail on the default branch includes rolling 90-day
+fields computed with the query clock, so a pinned snapshot fixes its inputs
+while the rolling window can still move.
+
 - Each run that commits snapshots publishes `snapshot.committed` events through the configured
   `SnapshotPublisher`. To plug in a broker, implement `publish(event)` and point
   `ATLAS_SNAPSHOT_PUBLISHER=package.module:factory` at a factory taking the lake root.
