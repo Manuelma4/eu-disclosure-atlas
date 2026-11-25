@@ -86,6 +86,42 @@ def test_transactions_filters_and_cursor_pagination(client):
     assert detail["id"] == second["items"][0]["id"]
 
 
+def test_pinned_transaction_pages_exclude_an_interleaved_commit(client, lake):
+    route = "/v1/insider-transactions"
+    filters = {"q": "robotics"}
+    original = client.get(route, params=filters).json()
+    original_ids = [item["id"] for item in original["items"]]
+    assert len(original_ids) == 2
+
+    first = client.get(route, params={**filters, "limit": 1})
+    assert first.status_code == 200
+    first_page = first.json()
+    snapshot = first_page["snapshot"]
+    assert first.headers["x-atlas-snapshot"] == snapshot
+    assert [item["id"] for item in first_page["items"]] == original_ids[:1]
+    assert first_page["next_cursor"]
+
+    # Insert a row between the original two so an unpinned continuation
+    # would encounter it after the first page's cursor.
+    _load(lake, [fi_row(**{"Publication date": _published(1.5), "Volume": "1.0"})])
+    latest = lake.version()
+    assert latest != snapshot
+    continuation = {**filters, "limit": 1, "cursor": first_page["next_cursor"]}
+    newer = client.get(route, params={**continuation, "as_of": latest})
+    assert newer.status_code == 200
+    newer_page = newer.json()
+    assert newer_page["snapshot"] == latest and newer_page["next_cursor"]
+    assert len(newer_page["items"]) == 1 and newer_page["items"][0]["id"] not in original_ids
+
+    second = client.get(route, params={**continuation, "as_of": snapshot})
+    assert second.status_code == 200
+    assert second.headers["x-atlas-snapshot"] == snapshot
+    second_page = second.json()
+    assert second_page["snapshot"] == snapshot
+    assert [item["id"] for item in second_page["items"]] == original_ids[1:]
+    assert second_page["next_cursor"] is None
+
+
 def test_etag_round_trip_and_new_data_changes_it(client, lake):
     first = client.get("/v1/insider-transactions")
     etag = first.headers["etag"]
