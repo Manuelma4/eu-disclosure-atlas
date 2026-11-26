@@ -5,16 +5,19 @@ or sold on the market. The data comes from `GET /v1/issuers/{lei}/prices`
 ([src/disclosure_atlas/api/prices.py](../src/disclosure_atlas/api/prices.py)).
 
 ## How it works
-1. **Which share.** The ISIN most often traded by the issuer's insiders in share transactions (overridable with
-   `?isin=`). WS5 will replace this with FIRDS and OpenFIGI reference data.
+1. **Which share.** The API selects the ISIN appearing most often in the issuer's share
+   transactions and sorts ties by ISIN. Use `?isin=` to choose a different instrument.
+   The request's `days` parameter accepts 30 to 1,830 calendar days and defaults to 730.
 2. **ISIN to listing.** The provider resolves the ISIN to a ticker. The yfinance provider searches Yahoo Finance
    for the ISIN, keeps equities and prefers the issuer's home market by the ISIN country prefix (`SE` → `.ST`,
    `FR` → `.PA`, `DE` → `.DE`…; table `HOME_SUFFIX` in
    [reference/prices.py](../src/disclosure_atlas/reference/prices.py)).
-3. **Cache.** Five years of daily bars per ISIN are stored in `lake/reference/prices/<provider>/<ISIN>.parquet`,
-   with the ticker, currency and fetch time in the Parquet metadata, and refreshed after 12 hours. When the
-   provider fails, stale prices are served. These files do not change the lake version, so they never
-   invalidate API caches.
+3. **Cache.** The store requests 1,830 calendar days of history on refresh and saves it in
+   `lake/reference/prices/<provider>/<ISIN>.parquet`. The Parquet metadata retains the listing,
+   currency and fetch time, and each response is sliced to the requested date range.
+   A cached entry is eligible for refresh after 12 hours. If refresh fails, the store
+   serves the retained entry. A provider failure on a cold miss returns HTTP 502.
+   Price-file writes leave the DuckLake snapshot ID unchanged.
 4. **Insider days.** Open-market share purchases and sales of the issuer, aggregated by transaction date, in euros.
 
 Prices are unadjusted closes of one listing in its trading currency. They are for context, not for returns

@@ -100,6 +100,17 @@ def test_issuer_prices_endpoint(client):
     assert client.get(f"/v1/issuers/{EXAMPLE_LEI}/prices", params={"days": 5}).status_code == 422
 
 
+def test_issuer_price_provider_failure_without_cache_returns_bad_gateway(lake):
+    store = PriceStore(lake, CountingProvider(fail=True))
+    client = TestClient(create_app(str(lake.root), price_store=store))
+
+    response = client.get(f"/v1/issuers/{EXAMPLE_LEI}/prices")
+
+    assert response.status_code == 502
+    assert response.json()["detail"] == "The price provider is not reachable"
+    assert not store.path(EXAMPLE_ISIN).exists()
+
+
 def test_prices_without_provider_return_empty_bars(lake):  # noqa: F811
     client = TestClient(create_app(str(lake.root), price_store=PriceStore(lake, NoPrices())))
     body = client.get(f"/v1/issuers/{EXAMPLE_LEI}/prices").json()
