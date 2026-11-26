@@ -56,16 +56,25 @@ export ATLAS_LAKE="$PWD/lake"
 dagster dev                                    # UI on http://127.0.0.1:3000 (the code location is set in pyproject.toml)
 ```
 
-What you get, for every registered connector (currently `se_fi_pdmr`):
+Dagster builds a chain for each connector discovered by the
+[connector registry](../src/disclosure_atlas/connectors/__init__.py). The Swedish
+`se_fi_pdmr` chain illustrates its assets and schedules.
 
 - assets `bronze/<source>` → `silver/<source>`, partitioned by publication day in the regulator's time zone,
   and the shared `gold/<dataset>` assets, refreshed by the `gold_automation` sensor;
 - schedule `<source>_business_hours` (Sweden: every 5 minutes, 07:00-20:00 Europe/Stockholm, Monday to Friday)
   and `<source>_nightly_settle` (06:30 local, re-ingests yesterday), both running by default;
-- job `lake_maintenance` (weekly, Sunday 03:00 Paris): flushes inlined rows to Parquet and merges small files.
+The shared `lake_maintenance_weekly` schedule runs the `lake_maintenance` job
+on Sunday at 03:00 Paris time. The job flushes inlined rows to Parquet and merges
+small files.
 
-Every step that opens the catalog runs in the `ducklake` concurrency pool; `infra/dagster/dagster.yaml` limits it
-to one, which a DuckDB-file catalog requires. With PostgreSQL you can raise `concurrency.pools.default_limit`.
+Silver writes, gold reads, catalog-backed checks and maintenance share
+Dagster's `ducklake` pool. Bronze fetches write source files and their manifest
+to disk. They run outside this pool. The shipped `infra/dagster/dagster.yaml`
+sets a default pool limit of one and a separate cap of four concurrent runs.
+Keep the pool limit at one with a DuckDB-file catalog. When the API or CLI
+also needs to open the catalog from another process, use the PostgreSQL setup
+above. Dagster's pool only coordinates Dagster steps.
 
 Re-polling an unchanged day is cheap: bronze stores the response, and silver skips documents whose SHA-256 was
 already committed by the same parser version (recorded in each snapshot's commit info). Bumping a connector's
