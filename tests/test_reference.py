@@ -305,6 +305,35 @@ def test_issuer_api_exposes_legal_name_and_tickers(lake):
     assert listed[OTHER_LEI]["legal_name"] == "Other Example Aktiebolag" and listed[OTHER_LEI]["tickers"] == []
 
 
+def test_reference_refresh_leaves_live_cache_until_read_model_rebuild(lake, monkeypatch):
+    monkeypatch.setenv("ATLAS_GOLD_CACHE", "1")
+    client = TestClient(create_app(str(lake.root)))
+    path = f"/v1/issuers/{EXAMPLE_LEI}"
+
+    before = client.get(path)
+    assert before.status_code == 200
+    snapshot = before.headers["x-atlas-snapshot"]
+    assert before.json()["primary_ticker"] is None
+
+    load_references(lake, FakeHttp())
+    assert lake.version() == snapshot
+
+    cached = client.get(path)
+    assert cached.status_code == 200
+    assert cached.headers["x-atlas-snapshot"] == snapshot
+    assert cached.json()["primary_ticker"] is None
+
+    pinned = client.get(path, params={"as_of": snapshot})
+    assert pinned.status_code == 200
+    assert pinned.headers["x-atlas-snapshot"] == snapshot
+    assert pinned.json()["primary_ticker"] == "EXROB"
+
+    rebuilt = TestClient(create_app(str(lake.root))).get(path)
+    assert rebuilt.status_code == 200
+    assert rebuilt.headers["x-atlas-snapshot"] == snapshot
+    assert rebuilt.json()["primary_ticker"] == "EXROB"
+
+
 def test_issuer_api_without_reference_data(lake):
     client = TestClient(create_app(str(lake.root)))
     detail = client.get(f"/v1/issuers/{EXAMPLE_LEI}").json()

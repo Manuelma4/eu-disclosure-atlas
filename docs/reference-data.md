@@ -19,9 +19,18 @@ ISINs from both datasets. Options:
 - `--refresh` (lei, figi) re-fetches identifiers that are already cached. Without it, only new ones are fetched.
 - `--all` (firds) keeps every equity instrument in the files, not only the lake's ISINs.
 
-A cache refresh writes a temporary file and renames it, so readers never see a partial file. The gold views
-read the files at query time, but the API keeps an in-memory copy of gold per DuckLake snapshot, so a refreshed
-reference file shows up in the API with the next ingest commit (or a restart).
+A refresh writes a temporary file and renames it atomically. Reference files live
+outside DuckLake's snapshots. With the default gold cache, live API requests
+reuse the in-memory view for the current snapshot. New reference contents become
+visible when a new snapshot causes the API to rebuild that view, or when the
+read model is restarted.
+
+An explicit `as_of` request that reaches the API bypasses this live cache. It
+pins the filing data to the requested DuckLake snapshot and reads reference
+Parquet files available at query time. The issuer API still advertises immutable
+caching for pinned responses. A client can therefore retain an earlier
+enrichment result after the reference files change. Reproducing historical
+enrichment requires the matching reference files as well as the snapshot ID.
 
 ## Sources
 
