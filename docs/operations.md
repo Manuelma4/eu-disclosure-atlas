@@ -115,7 +115,9 @@ The API reports the same through `GET /v1/sources` (`last_published_at`, `last_i
 
 - `X-Atlas-Snapshot` on every API response is the DuckLake snapshot the answer came from.
 - `?as_of=<snapshot>` on `/v1/insider-transactions`, `/v1/insider-transactions/{id}`, `/v1/issuers` and
-  `/v1/issuers/{lei}` answers from that snapshot (cached as immutable); unknown ids return 404.
+  `/v1/issuers/{lei}` select the filing snapshot. Unknown IDs return 404. Pinned transactions
+  use immutable caching. Pinned issuer responses include current reference enrichment and rolling fields,
+  and use a content-based ETag with revalidation before reuse. See [reference data](reference-data.md).
 - Each run that commits snapshots publishes `snapshot.committed` events through the configured
   `SnapshotPublisher`. To plug in a broker, implement `publish(event)` and point
   `ATLAS_SNAPSHOT_PUBLISHER=package.module:factory` at a factory taking the lake root.

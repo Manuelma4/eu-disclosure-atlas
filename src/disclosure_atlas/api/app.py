@@ -11,6 +11,7 @@ import contextlib
 import hashlib
 import json
 import os
+import re
 import time
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from datetime import UTC, date, datetime
@@ -19,6 +20,7 @@ from typing import Annotated, Any, Literal
 
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.concurrency import run_in_threadpool
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -60,6 +62,7 @@ ENRICHED_COLUMNS = "e.legal_name, e.primary_ticker, e.primary_exchange, coalesce
 """Issuer reference data (GLEIF legal name, OpenFIGI tickers) joined from the gold ``issuers`` view."""
 CACHE_CONTROL = "public, max-age=30, s-maxage=60, stale-while-revalidate=600"
 IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+_ETAG_LIST_MEMBER = re.compile(r'[ \t]*(?:W/)?"([\x21\x23-\x7e\x80-\xff]*)"[ \t]*(?:,|$)')
 AsOf = Annotated[
     int | None,
     Query(ge=0, description="Time travel: answer from this DuckLake snapshot id (see the X-Atlas-Snapshot header)"),
@@ -99,6 +102,38 @@ def _conditional(request: Request, response: Response, snapshot: Snapshot) -> Re
     cache = IMMUTABLE_CACHE_CONTROL if snapshot.pinned else CACHE_CONTROL
     headers = {"ETag": etag, "Cache-Control": cache, "X-Atlas-Snapshot": snapshot.version}
     if request.headers.get("if-none-match") == etag:
+        return Response(status_code=HTTPStatus.NOT_MODIFIED, headers=headers)
+    response.headers.update(headers)
+    return None
+
+
+def _if_none_match(value: str, opaque_tag: str) -> bool:
+    """Match a validator list using weak comparison, including quoted commas."""
+    if value.strip(" \t") == "*":
+        return True
+    offset = 0
+    matched = False
+    while offset < len(value):
+        member = _ETAG_LIST_MEMBER.match(value, offset)
+        if member is None:
+            return False
+        matched |= member[1] == opaque_tag
+        offset = member.end()
+    return matched
+
+
+def _pinned_issuer_conditional(
+    request: Request, response: Response, snapshot: Snapshot, result: IssuerDetail | list[IssuerSummary],
+) -> Response | None:
+    # Reference files and the rolling-window clock can change at a fixed filing snapshot.
+    payload = json.dumps(jsonable_encoder(result), sort_keys=True, separators=(",", ":")).encode()
+    opaque_tag = f"{snapshot.version}-{hashlib.sha256(payload).hexdigest()}"
+    headers = {
+        "ETag": f'W/"{opaque_tag}"',
+        "Cache-Control": "public, no-cache",
+        "X-Atlas-Snapshot": snapshot.version,
+    }
+    if _if_none_match(",".join(request.headers.getlist("if-none-match")), opaque_tag):
         return Response(status_code=HTTPStatus.NOT_MODIFIED, headers=headers)
     response.headers.update(headers)
     return None
@@ -334,21 +369,25 @@ def create_app(
             where.append("jurisdiction = ?")
             params.append(country.upper())
         with read_model.snapshot(as_of) as snap:
-            if not_modified := _conditional(request, response, snap):
+            if not snap.pinned and (not_modified := _conditional(request, response, snap)):
                 return not_modified
-            return snap.rows(
+            rows = snap.rows(
                 f"SELECT s.*, {ENRICHED_COLUMNS} FROM ("
                 f"SELECT {ISSUER_COLUMNS} FROM insider_transactions WHERE {' AND '.join(where)} "
                 "GROUP BY issuer_lei ORDER BY last_published_at DESC NULLS LAST LIMIT ?"
                 ") s LEFT JOIN issuers e ON e.lei = s.lei ORDER BY s.last_published_at DESC NULLS LAST, s.lei",
                 [*params, limit],
             )
+        if not snap.pinned:
+            return rows
+        result = [IssuerSummary(**row) for row in rows]
+        return _pinned_issuer_conditional(request, response, snap, result) or result
 
     @app.get("/v1/issuers/{lei}", response_model=IssuerDetail, tags=["issuers"])
     def get_issuer(lei: str, request: Request, response: Response, as_of: AsOf = None) -> Any:
         lei = lei.upper()
         with read_model.snapshot(as_of) as snap:
-            if not_modified := _conditional(request, response, snap):
+            if not snap.pinned and (not_modified := _conditional(request, response, snap)):
                 return not_modified
             summary = snap.one(
                 f"""
@@ -386,12 +425,15 @@ def create_app(
                 "ORDER BY published_at DESC NULLS LAST, record_id DESC LIMIT 100",
                 [lei],
             )
-        return IssuerDetail(
+        result = IssuerDetail(
             **summary,
             monthly=[MonthPoint(**m) for m in monthly],
             roles=[RoleStat(**r) for r in roles],
             recent=[Transaction(**t) for t in recent],
         )
+        if snap.pinned and (not_modified := _pinned_issuer_conditional(request, response, snap, result)):
+            return not_modified
+        return result
 
     @app.get("/v1/stats/overview", response_model=Overview, tags=["stats"])
     def overview(request: Request, response: Response) -> Any:

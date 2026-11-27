@@ -305,6 +305,48 @@ def test_issuer_api_exposes_legal_name_and_tickers(lake):
     assert listed[OTHER_LEI]["legal_name"] == "Other Example Aktiebolag" and listed[OTHER_LEI]["tickers"] == []
 
 
+@pytest.mark.parametrize("detail", [False, True], ids=["list", "detail"])
+def test_pinned_issuer_revalidates_after_reference_refresh(lake, detail):
+    client = TestClient(create_app(str(lake.root)))
+    route = f"/v1/issuers/{EXAMPLE_LEI}" if detail else "/v1/issuers"
+    snapshot = lake.version()
+    params = {"as_of": snapshot} if detail else {"as_of": snapshot, "q": EXAMPLE_LEI}
+
+    before = client.get(route, params=params)
+    assert before.status_code == 200
+    initial = before.json() if detail else before.json()[0]
+    assert initial["primary_ticker"] is None
+    previous = before.headers["etag"]
+    assert client.get(route, params=params, headers={"If-None-Match": previous}).status_code == 304
+
+    load_references(lake, FakeHttp())
+    assert lake.version() == snapshot
+    refreshed = client.get(route, params=params, headers={"If-None-Match": previous})
+    assert refreshed.status_code == 200
+    current = refreshed.json() if detail else refreshed.json()[0]
+    assert current["primary_ticker"] == "EXROB"
+    assert refreshed.headers["x-atlas-snapshot"] == snapshot
+    tag = refreshed.headers["etag"]
+    assert tag != previous
+    assert refreshed.headers["cache-control"] == "public, no-cache"
+
+    for header in (tag, tag.removeprefix("W/"), f'"unrelated,tag", {tag}', "*"):
+        unchanged = client.get(route, params=params, headers={"If-None-Match": header})
+        assert unchanged.status_code == 304 and unchanged.content == b""
+        assert unchanged.headers["etag"] == tag
+        assert unchanged.headers["cache-control"] == refreshed.headers["cache-control"]
+        assert unchanged.headers["x-atlas-snapshot"] == snapshot
+
+    repeated = client.get(route, params=params, headers=[("If-None-Match", '"other"'), ("If-None-Match", tag)])
+    assert repeated.status_code == 304
+
+
+def test_pinned_issuer_wildcard_requires_a_representation(lake):
+    client = TestClient(create_app(str(lake.root)))
+    response = client.get("/v1/issuers/UNKNOWN", params={"as_of": lake.version()}, headers={"If-None-Match": "*"})
+    assert response.status_code == 404
+
+
 def test_issuer_api_without_reference_data(lake):
     client = TestClient(create_app(str(lake.root)))
     detail = client.get(f"/v1/issuers/{EXAMPLE_LEI}").json()

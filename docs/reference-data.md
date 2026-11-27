@@ -23,6 +23,13 @@ A cache refresh writes a temporary file and renames it, so readers never see a p
 read the files at query time, but the API keeps an in-memory copy of gold per DuckLake snapshot, so a refreshed
 reference file shows up in the API with the next ingest commit (or a restart).
 
+Pinned issuer requests bypass the live gold cache. They fix the filing snapshot
+and read the reference files available at query time. The response includes a
+content-based ETag and `Cache-Control: public, no-cache`, so clients revalidate
+before reuse. The API builds the representation before checking the validator.
+A historical enrichment result requires the matching reference files as well as
+the filing snapshot. [HTTP cache revalidation](https://www.rfc-editor.org/rfc/rfc9111.html#section-5.2.2.4)
+
 ## Sources
 
 ### GLEIF: LEI records
