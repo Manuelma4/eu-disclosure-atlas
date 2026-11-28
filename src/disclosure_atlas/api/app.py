@@ -66,9 +66,10 @@ AsOf = Annotated[
 ]
 DESCRIPTION = """
 Open, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European
-markets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,
-exposed in the `ETag` and `X-Atlas-Snapshot` headers. Transaction and issuer endpoints accept `?as_of=<snapshot>`
-to answer from an earlier snapshot, so published figures stay reproducible. Not investment advice.
+markets. Natural persons appear only as pseudonymous ids. Filing-backed endpoints identify the selected
+DuckLake snapshot in the `X-Atlas-Snapshot` header. On transaction and issuer endpoints, `?as_of=<snapshot>`
+selects the filing snapshot. Issuer enrichment can change when reference files are refreshed, and rolling
+issuer metrics depend on the query clock. Not investment advice.
 """
 
 

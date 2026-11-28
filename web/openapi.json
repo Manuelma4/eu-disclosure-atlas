@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "EU Disclosure Atlas API",
-    "description": "\nOpen, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European\nmarkets. Natural persons appear only as pseudonymous ids. Every response is pinned to a data snapshot,\nexposed in the `ETag` and `X-Atlas-Snapshot` headers. Transaction and issuer endpoints accept `?as_of=<snapshot>`\nto answer from an earlier snapshot, so published figures stay reproducible. Not investment advice.\n",
+    "description": "\nOpen, unified data on insider trading (MAR Article 19) and short selling (SSR Article 6) across European\nmarkets. Natural persons appear only as pseudonymous ids. Filing-backed endpoints identify the selected\nDuckLake snapshot in the `X-Atlas-Snapshot` header. On transaction and issuer endpoints, `?as_of=<snapshot>`\nselects the filing snapshot. Issuer enrichment can change when reference files are refreshed, and rolling\nissuer metrics depend on the query clock. Not investment advice.\n",
     "contact": {
       "name": "Manuel David Maya Rosero",
       "url": "https://manuelma4.github.io/"
